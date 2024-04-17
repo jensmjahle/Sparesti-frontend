@@ -1,8 +1,19 @@
-/* color palette from <https://github.com/vuejs/theme> */
 :root {
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;
   --vt-c-white-mute: #f2f2f2;
+
+  --vt-c-kellyGreen: #6AB40A;
+  --vt-c-kellyGreen-Light: #A4ED45;
+  --vt-c-borderGrey: #C1C1C1;
+  --vt-c-borderGreyDark: #a19f9f;
+  --vt-c-Raspberry: #E91658;
+  --vt-c-Orange: #FFA600;
+  --vt-c-Orange-Light: #FCBD47;
+  --vt-c-DarkBlue: #1600B2;
+  --vt-c-Grape: #8332AC;
+  --vt-c-Grey: #A4A4A6;
+  --vt-c-Grey-Light: #CCCCCF;
 
   --vt-c-black: #181818;
   --vt-c-black-soft: #222222;
@@ -10,12 +21,7 @@
 
   --vt-c-indigo: #2c3e50;
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
+  --vt-c-text-light-1: var(--vt-c-black);
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
@@ -23,14 +29,39 @@
 
 /* semantic color variables for this project */
 :root {
+  --color-confirm-button: var(--vt-c-kellyGreen);
+  --color-cancel-button: var(--vt-c-Raspberry);
+  --color-buttonText: var(--vt-c-white);
+
+  --color-PathYetToTakeLight: var(--vt-c-Grey-Light);
+  --color-PathYetToTakeDark: var(--vt-c-Grey);
+  --color-PathCurrentLight: var(--vt-c-kellyGreen-Light);
+  --color-PathCurrentDark: var(--vt-c-kellyGreen);
+  --color-PathPreviousLight: var(--vt-c-Orange-Light);
+  --color-PathPreviousDark: var(--vt-c-Orange);
+  --color-PathLine: var(--vt-c-black);
+
+  --color-pieChartBlue: var(--vt-c-DarkBlue);
+  --color-pieChartRed: var(--vt-c-Raspberry);
+  --color-pieChartGreen: var(--vt-c-kellyGreen);
+  --color-pieChartOrange: var(--vt-c-Orange);
+
+  --color-header: var(--vt-c-kellyGreen);
+  --color-heading: var(--vt-c-kellyGreen);
+  --color-hamburgerMenu: var(--vt-c-white);
+
+  --color-emptyProgress: var(--vt-c-white);
+  --color-currentProgress: var(--vt-c-kellyGreen);
+
+  --color-sideBar: var(--vt-c-white);
+
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
+  --color-border: var(--vt-c-borderGrey);
+  --color-border-hover: var(--vt-c-borderGreyDark);
 
-  --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
   --section-gap: 160px;
@@ -38,15 +69,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --color-PathLine: var(--vt-c-white);
+
     --color-background: var(--vt-c-black);
     --color-background-soft: var(--vt-c-black-soft);
     --color-background-mute: var(--vt-c-black-mute);
 
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
+    --color-border: var(--vt-c-borderGrey);
+    --color-border-hover: var(--vt-c-borderGreyDark);
 
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    --color-text: var(--vt-c-text-dark-1);
   }
 }
 
