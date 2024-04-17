@@ -1,0 +1,45 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  image: node:latest
+  before_script:
+    - npm install -g @vue/cli
+    - npm ci
+
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - ./
+
+unit_test:
+  stage: test
+  image: node:latest
+  before_script:
+    - npm ci
+  script:
+    - npm run test:unit
+  dependencies:
+    - build
+
+
+e2e_tests:
+  stage: test
+  image: node:latest
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y xvfb
+    - npm install -g @vue/cli
+    - apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
+    - npm ci
+  script:
+    - ls
+    - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+    - export DISPLAY=:99
+    - npm run serve &
+    - npm run test:e2e
+  dependencies:
+    - build
