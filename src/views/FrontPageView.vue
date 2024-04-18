@@ -3,9 +3,14 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <div id = viewArea>
+    <router-view/>
+  </div>
 </template>
 
 <style scoped>
-
+#viewArea{
+  min-width: 100vw;
+  min-height: 100vh;
+}
 </style>

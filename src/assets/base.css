@@ -116,8 +116,44 @@ body {
     'Droid Sans',
     'Helvetica Neue',
     sans-serif;
-  font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root{
+  font-size: 12.5px;
+}
+
+@media only screen and (max-width: 1000px) {
+  :root{
+    font-size: 10px;
+  }
+}
+
+@media only screen and (min-width: 1200px){
+  :root{
+    font-size: 15px;
+  }
+
+}
+
+h1{
+  font-size: 5em;
+}
+
+h2{
+  font-size: 2.5em;
+}
+
+h3{
+  font-size: 1em;
+}
+
+h4{
+  font-size: 0.5em;
+}
+
+h5{
+  font-size: 0.25em;
 }
