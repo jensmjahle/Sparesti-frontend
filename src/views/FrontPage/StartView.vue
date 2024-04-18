@@ -28,6 +28,8 @@ function navigateToLogin(){
 
 #StartPage{
   background-image: url("../../assets/farm.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
   min-width: 100%;
   max-width: 100%;
   min-height: 100%;
@@ -39,7 +41,6 @@ function navigateToLogin(){
 
 #heading{
   text-align: center;
-  font-size: 250%;
   background-color: rgba(255,255,255,0.8);
   border-radius: 20px;
   border: 2px solid var(--color-border);
@@ -78,7 +79,6 @@ function navigateToLogin(){
 #LogInButton{
   min-width: 100%;
   padding: 30px;
-  font-size: 200%;
   background-color: var(--color-confirm-button);
   color: var(--color-buttonText);
   border: 0;
