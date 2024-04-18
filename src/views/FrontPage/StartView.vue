@@ -27,6 +27,7 @@ function navigateToLogin(){
 <style scoped>
 
 #StartPage{
+  background-image: url("../../assets/farm.jpg");
   min-width: 100%;
   max-width: 100%;
   min-height: 100%;
@@ -39,7 +40,12 @@ function navigateToLogin(){
 #heading{
   text-align: center;
   font-size: 250%;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 20px;
+  border: 2px solid var(--color-border);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
 }
+
 
 #logo{
   max-width: 15%;
@@ -60,6 +66,8 @@ function navigateToLogin(){
 #Info{
   margin: 1%;
   min-width: 80%;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 20px;
 }
 
 #LogIn{
@@ -79,6 +87,12 @@ function navigateToLogin(){
 
 #LogInButton:hover{
   transform: scale(1.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  #heading, #Info{
+    background-color: rgba(0,0,0,0.8);
+  }
 }
 
 </style>
