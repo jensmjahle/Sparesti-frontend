@@ -2,9 +2,15 @@
 import { RouterView } from 'vue-router'
 </script>
 
-<template class="app">
-  <RouterView />
+<template>
+  <div class="app">
+    <RouterView />
+  </div>
 </template>
 <style scoped>
+.app{
+  height: 100vh;
+  width: 100vw;
+}
 
 </style>

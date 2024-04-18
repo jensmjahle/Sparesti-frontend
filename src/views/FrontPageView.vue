@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h1>FrontPageView</h1>
+  <router-view></router-view>
 </template>
 
 <style scoped>
