@@ -48,6 +48,7 @@
 
   --color-header: var(--vt-c-kellyGreen);
   --color-heading: var(--vt-c-kellyGreen);
+  --color-headerText: var(--vt-c-white);
   --color-hamburgerMenu: var(--vt-c-white);
 
   --color-emptyProgress: var(--vt-c-white);
@@ -64,6 +65,8 @@
 
   --color-text: var(--vt-c-text-light-1);
 
+  --color-shadow: rgba(0, 0, 0, 0.2);
+
   --section-gap: 160px;
 }
 
@@ -79,6 +82,8 @@
     --color-border-hover: var(--vt-c-borderGreyDark);
 
     --color-text: var(--vt-c-text-dark-1);
+
+    --color-shadow: rgba(255, 255, 255, 0.2);
   }
 }
 
