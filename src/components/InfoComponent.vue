@@ -4,8 +4,8 @@
 
 <template>
   <div id = InfoComponent>
-    <h1 id = Quote><strong>Sparetips: </strong>Sett av et jevnt beløp hver måned på sparekonto eller lignende.</h1>
-    <h1 id = TotalSavings>Våre brukere har spart til sammen <strong>5000</strong> nok</h1>
+    <h2 id = Quote><strong>Sparetips: </strong>Sett av et jevnt beløp hver måned på sparekonto eller lignende.</h2>
+    <h2 id = TotalSavings>Våre brukere har spart til sammen <strong>5000</strong> nok</h2>
   </div>
 </template>
 
