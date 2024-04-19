@@ -61,6 +61,9 @@ import SideNav from '@/components/navigation/SideNav.vue'
   .side-nav{
     display: none;
   }
+  .view-element{
+    width: 100%;
+  }
 }
 
 
