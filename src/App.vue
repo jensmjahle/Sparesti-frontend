@@ -2,18 +2,15 @@
 import { RouterView } from 'vue-router'
 </script>
 
-<template class="app">
-  <div id = App>
+<template>
+  <div class="app">
     <RouterView />
   </div>
-
 </template>
 <style scoped>
-#App{
-  width: 100vw;
+.app{
   height: 100vh;
-  overflow-y: scroll;
-
+  width: 100vw;
 }
 
 </style>
