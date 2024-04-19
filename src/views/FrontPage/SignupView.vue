@@ -147,4 +147,10 @@ function buttonTest(){
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
     font-size: 250%;
   }
+
+  @media only screen and (max-width: 1000px) {
+    .Submit, .InactiveSubmit{
+      min-width: 80%;
+    }
+  }
 </style>
