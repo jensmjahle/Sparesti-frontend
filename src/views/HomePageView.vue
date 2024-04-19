@@ -54,14 +54,19 @@ import SideNav from '@/components/navigation/SideNav.vue'
 
 .view-element{
   width: 85%;
+  height: 100%;
   padding: 2.0%;
+
+  overflow-y: scroll;
 }
 
 @media only screen and (max-width: 1000px){
   .side-nav{
     display: none;
   }
+  .view-element{
+    width: 100%;
+  }
 }
-
 
 </style>

@@ -28,7 +28,7 @@ const navigate = (path: string) => {
 <template>
   <div class="top-nav">
     <div class="title-box">
-    <h1 class="title" @click="navigate('/homepage/home')">Sparesti</h1>
+    <h2 class="title" @click="navigate('/homepage/home')">Sparesti</h2>
     </div>
     <div class="button-menu">
       <img src="/src/components/icons/navigation/menu-burger.svg" v-if="!isBurgerMenuOpen" alt="Menu Options" class="burger-menu" @click="openBurgerMenu">
