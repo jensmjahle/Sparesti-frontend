@@ -65,8 +65,10 @@
 
   --color-border: var(--vt-c-borderGrey);
   --color-border-hover: var(--vt-c-borderGreyDark);
+  --color-border-error: var(--vt-c-Raspberry);
 
   --color-text: var(--vt-c-text-light-1);
+  --color-text-error: var(--vt-c-Raspberry);
 
   --color-shadow: rgba(0, 0, 0, 0.2);
 
@@ -130,7 +132,7 @@ body {
 
 @media only screen and (max-width: 1000px) {
   :root{
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 

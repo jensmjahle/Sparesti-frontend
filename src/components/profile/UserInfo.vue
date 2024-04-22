@@ -1,26 +1,76 @@
 <script setup lang="ts">
 
+import { ref } from 'vue'
+
+const usernameError = ref<null|string>(null);
+const emailError = ref<null|string>(null);
+
+const username = ref<string>('brukernavn');
+const email = ref<string>('brukernavne@epost.com');
+
+const checkInput = () => {
+  if(username.value.trim() == ''){
+    usernameError.value = 'Ikke gyldig brukernavn!'
+  } else {
+    usernameError.value = null;
+  }
+
+  if(email.value.trim() == '' || !isValidEmail(email.value)){
+    emailError.value = 'Ikke gyldig e-post adresse!'
+  } else {
+    emailError.value = null;
+  }
+
+}
+const isValidEmail = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return email.trim() !== '' && emailRegex.test(email);
+};
+
+const saveUserInfo = async ()=>{
+  checkInput()
+  if(usernameError.value == null && emailError.value == null){
+    alert('Ok!')
+  }
+}
+
 </script>
 
 <template>
   <div class="user-info">
     <div class="header">
       <h3 class="title">Bruker opplysninger</h3>
-      <button>Lagre</button>
+      <button class="save-button" @click="saveUserInfo">Lagre</button>
     </div>
     <div class="input-fields">
-      <button></button>
-      <div class="input-collection">
-        <label>E-post: </label>
-        <input>
+      <div class="img-input">
+        <button class="profile-picture-button">
+          <img src=/src/components/icons/navigation/user.svg alt="profile-picture" class="profile-picture">
+        </button>
+      </div>
+      <div class="text-input">
+        <div class="input-collection">
+          <H3>Brukernavn: </H3>
+          <input class="input" :class="{'error': usernameError}" v-model="username">
+          <div class="alert-box">
+            <h3 v-if="usernameError" class="error-message">{{usernameError}}</h3>
+          </div>
+        </div>
+        <div class="input-collection">
+          <H3>E-post: </H3>
+          <input class="input" :class="{'error': emailError}" v-model="email">
+          <div class="alert-box">
+            <h3 v-if="emailError" class="error-message">{{emailError}}</h3>
+          </div>
+        </div>
       </div>
     </div>
 
   </div>
-
 </template>
 
 <style scoped>
+
 .user-info{
   display: flex;
   flex-direction: column;
@@ -32,13 +82,100 @@
 .header{
   display: flex;
   flex-direction: row;
+  place-content: space-between;
+  width: 100%;
 }
+
 .title{
   font-weight: bold;
 }
-.input-collection{
+
+.save-button{
+  border-radius: 20px;
+  padding-right: 5.0%;
+  padding-left: 5.0%;
+}
+
+.input-fields{
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  justify-items: center;
+
+  height: 100%;
+  width: 100%;
+
+  gap: 2.0%;
+}
+
+.text-input{
+  flex: 1;
   display: flex;
   flex-direction: column;
+  place-content: start;
+
+  height: 100%;
+}
+
+.img-input{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 20%;
+  justify-content: center;
+}
+
+.input-collection{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 50%;
+}
+
+.input{
+  border-radius: 20px;
+  min-height: 30px;
+  padding-left: 2.0%;
+}
+
+.profile-picture-button{
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid var(--color-border);
+}
+
+.profile-picture-button:hover{
+  transform: scale(1.05);
+}
+
+.profile-picture{
+  width: 100%;
+  aspect-ratio: 1/1 ;
+  border-radius: 50%;
+}
+
+.alert-box{
+  display: flex;
+  flex-direction: column;
+
+  place-items: center;
+  width: 100%;
+}
+
+.error{
+  border-color: var(--color-border-error);
+}
+
+.error-message{
+  color: var(--color-text-error);
 }
 
 </style>
