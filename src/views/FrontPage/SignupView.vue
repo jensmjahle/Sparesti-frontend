@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import TopBanner from '@/components/TopBanner.vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
+
+function navigateToFirstTimeQuestion(){
+  router.push('/register')
+}
 
 const name = ref("")
 
@@ -70,7 +77,7 @@ function buttonTest(){
         <span data-testid="PasswordConfirmError" v-if="fieldTouched.confirmePassword && !validateConfirmPassword(password, confirmePassword)" class="error-message">Passordene er ikke like</span>
       </div>
     </div>
-    <button id = "CreateButton" @click="buttonTest()"
+    <button id = "CreateButton" @click="navigateToFirstTimeQuestion()"
             :disabled="!registerUserValid(name, email, password, confirmePassword)"
             :class="{ 'Submit': registerUserValid(name, email, password, confirmePassword),
              'InactiveSubmit': !registerUserValid(name, email, password, confirmePassword) }"
