@@ -7,7 +7,7 @@ const checkingAccount= ref('account 2');
 
 const accountError = ref<string | null>(null);
 
-const accounts = ref<[]>([savingAccount.value, checkingAccount.value])
+const accounts = ref<string[]>([savingAccount.value, checkingAccount.value])
 
 const savingAccountOptions = computed(() =>
   accounts.value.filter(account => account !== savingAccount.value))
@@ -30,6 +30,8 @@ const saveAccountInfo = async ()=> {
   }
 }
 
+
+
 </script>
 
 <template>
@@ -45,7 +47,7 @@ const saveAccountInfo = async ()=> {
         <h3>Forbrukskonto: </h3>
         <select class="accounts" v-model="checkingAccount">
           <option key="check-default" :value="checkingAccount">{{checkingAccount}}</option>
-          <option v-for="(account, index) in checkingAccountOptions" :key="check + index" :value="account">{{ account }}</option>
+          <option v-for="(account, index) in checkingAccountOptions" :key="'check' + index" :value="account">{{ account }}</option>
         </select>
       </div>
 
@@ -53,7 +55,7 @@ const saveAccountInfo = async ()=> {
         <h3>Sparekonto: </h3>
         <select class="accounts" :class="{'error': accountError}" v-model="savingAccount">
           <option key="saving-default" :value="savingAccount">{{savingAccount}}</option>
-          <option v-for="(account, index) in savingAccountOptions" :key="saving + index" :value="account">{{ account }}</option>
+          <option v-for="(account, index) in savingAccountOptions" :key="'saving' + index" :value="account">{{ account }}</option>
         </select>
       </div>
 

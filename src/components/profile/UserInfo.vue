@@ -22,7 +22,7 @@ const checkInput = () => {
   }
 
 }
-const isValidEmail = (email) => {
+const isValidEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return email.trim() !== '' && emailRegex.test(email);
 };
