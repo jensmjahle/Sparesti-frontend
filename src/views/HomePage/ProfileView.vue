@@ -46,6 +46,8 @@ const username = ref<string>('$$$$')
 
   width: 100%;
   height: 100%;
+  min-height: 650px;
+
   gap: 2.5%;
 }
 
@@ -58,12 +60,14 @@ const username = ref<string>('$$$$')
   flex-direction: row;
 
   width: 100%;
+  height: 33%;
   gap: 1.5%;
 }
 
 .component{
   border: 2px solid var(--color-border);
   border-radius: 20px;
+  box-shadow: 0 4px 4px var(--color-shadow);
   width: 100%;
   padding: 1.0%;
 }
@@ -80,6 +84,8 @@ const username = ref<string>('$$$$')
   #top, #middle{
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
   }
   #user-info, #password-info, #income-info, #account-info{
     width: 100%;
