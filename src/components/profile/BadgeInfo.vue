@@ -12,7 +12,6 @@ const title = ref<string>(props.title)
 <template>
   <div class="badge-container">
     <h3 class="title">{{title}}</h3>
-
   </div>
 
 </template>
