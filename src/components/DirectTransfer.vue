@@ -6,7 +6,7 @@
   <div id = DirectTransfer>
     <h2 id = Title>Direkte overføring:</h2>
     <div id = Transfer>
-      <input type="number" id = TransferInput />
+      <input type="number" min = "1" id = TransferInput />
       <button id = TransferButton>Overfør</button>
     </div>
   </div>

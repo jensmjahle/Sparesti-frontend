@@ -3,6 +3,7 @@
 import MilestoneProgress from '@/components/MilestoneProgress.vue'
 import { ref } from 'vue'
 import DirectTransfer from '@/components/DirectTransfer.vue'
+import MilestoneDescription from '@/components/MilestoneDescription.vue'
 
 const pathName = ref("PathNameHere")
 </script>
@@ -21,6 +22,7 @@ const pathName = ref("PathNameHere")
         <DirectTransfer/>
       </div>
       <div id = Description>
+        <MilestoneDescription/>
       </div>
     </div>
   </div>
