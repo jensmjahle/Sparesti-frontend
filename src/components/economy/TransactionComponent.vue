@@ -100,7 +100,7 @@ const toggleExpand = () => {
   }
 
   .component-title {
-    font-size: 2.3em; /* Adjust font size for smaller screens */
+    font-size: 2em; /* Adjust font size for smaller screens */
     height: 100%;
     width: 100%;
     display: flex;
@@ -114,7 +114,7 @@ const toggleExpand = () => {
     height: 95%;
     width: 95%;
     justify-content: right;
-    font-size: 1.9em; /* Adjust font size for smaller screens */
+    font-size: 1.5em; /* Adjust font size for smaller screens */
   }
 
 
