@@ -1,7 +1,21 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-const articles = ref([]);
+type Article = {
+  source: {
+    id: string | null;
+    name: string;
+  };
+  author: string | null;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: string;
+  content: string | null;
+};
+
+const articles = ref<Article[]>([]);
 
 // Fetch articles from NewsAPI
 onMounted(async () => {
