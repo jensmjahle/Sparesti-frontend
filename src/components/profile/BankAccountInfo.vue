@@ -38,13 +38,15 @@ const saveAccountInfo = async ()=> {
   <div class="account-info">
     <div class="header">
       <h3 class="title">Konto opplysninger</h3>
-      <button class="save-button" @click="saveAccountInfo">Lagre</button>
+      <button class="save-button" @click="saveAccountInfo">
+        <h3 class="save-button-title">Lagre</h3>
+      </button>
     </div>
 
     <div class="input-fields">
 
       <div class="input-collection">
-        <h3>Forbrukskonto: </h3>
+        <h4>Forbrukskonto: </h4>
         <select class="accounts" v-model="checkingAccount">
           <option key="check-default" :value="checkingAccount">{{checkingAccount}}</option>
           <option v-for="(account, index) in checkingAccountOptions" :key="'check' + index" :value="account">{{ account }}</option>
@@ -52,7 +54,7 @@ const saveAccountInfo = async ()=> {
       </div>
 
       <div class="input-collection">
-        <h3>Sparekonto: </h3>
+        <h4>Sparekonto: </h4>
         <select class="accounts" :class="{'error': accountError}" v-model="savingAccount">
           <option key="saving-default" :value="savingAccount">{{savingAccount}}</option>
           <option v-for="(account, index) in savingAccountOptions" :key="'saving' + index" :value="account">{{ account }}</option>
@@ -60,7 +62,7 @@ const saveAccountInfo = async ()=> {
       </div>
 
       <div class="alert-box">
-        <h3 v-if="accountError" class="error-message">{{accountError}}</h3>
+        <h4 v-if="accountError" class="error-message">{{accountError}}</h4>
       </div>
 
     </div>
@@ -91,6 +93,21 @@ const saveAccountInfo = async ()=> {
   border-radius: 20px;
   padding-right: 5.0%;
   padding-left: 5.0%;
+  color: var(--color-headerText);
+  background-color: var(--color-save-button);
+  border: none;
+}
+
+.save-button:hover{
+  transform: scale(1.02);
+}
+
+.save-button:active{
+  background-color: var(--color-save-button-click);
+}
+
+.save-button-title{
+  font-weight: bold;
 }
 
 
@@ -125,6 +142,7 @@ const saveAccountInfo = async ()=> {
   display: flex;
   flex-direction: column;
   place-items: center;
+  min-height: 25px;
 }
 
 .error{

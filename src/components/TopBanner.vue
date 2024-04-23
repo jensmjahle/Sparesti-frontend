@@ -10,7 +10,7 @@ function navigateToStartingPage(){
 
 <template>
   <div id = TopBanner>
-    <h2 id = "AppName">Sparesti<img src="../assets/pig_394778.png" alt = "logo" id = "logo" @click="navigateToStartingPage()"></h2>
+    <h2 id = "AppName">Sparesti<img src="../assets/png/pig_394778.png" alt = "logo" id = "logo" @click="navigateToStartingPage()"></h2>
   </div>
 </template>
 

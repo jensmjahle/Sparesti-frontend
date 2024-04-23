@@ -44,19 +44,21 @@ const saveInput = async () => {
   <div class="income-info">
     <div class="header">
       <h3 class="title">Økonomiske opplysninger</h3>
-      <button class="save-button" @click="saveInput">Lagre</button>
+      <button class="save-button" @click="saveInput">
+        <h3 class="save-button-title">Lagre</h3>
+      </button>
     </div>
     <div class="input-fields">
 
       <div class="description-collection">
         <div class="description-box">
-          <h3 class="description">Månedlig inntekt (nok): </h3>
+          <h4 class="description">Månedlig inntekt (nok): </h4>
         </div>
         <div class="description-box">
-          <h3 class="description">Faste utgifter (nok):   </h3>
+          <h4 class="description">Faste utgifter (nok):   </h4>
         </div>
         <div class="description-box">
-          <h3 class="description">Ønsket sparebeløp (nok): </h3>
+          <h4 class="description">Ønsket sparebeløp (nok): </h4>
         </div>
       </div>
 
@@ -64,21 +66,21 @@ const saveInput = async () => {
         <div class="input">
           <input class="input-field" :class="{'error': monthlyIncomeError}" v-model="monthlyIncome">
           <div class="alert-box">
-            <h3 v-if="monthlyIncomeError" class="error-message">{{monthlyIncomeError}}</h3>
+            <h4 v-if="monthlyIncomeError" class="error-message">{{monthlyIncomeError}}</h4>
           </div>
         </div>
 
         <div class="input">
           <input class="input-field" :class="{'error': monthlySpendingError}" v-model="monthlySpending">
           <div class="alert-box">
-            <h3 v-if="monthlySpendingError" class="error-message">{{monthlySpendingError}}</h3>
+            <h4 v-if="monthlySpendingError" class="error-message">{{monthlySpendingError}}</h4>
           </div>
         </div>
 
         <div class="input">
           <input class="input-field" :class="{'error': monthlySavingError}" v-model="monthlySaving">
           <div class="alert-box">
-            <h3 v-if="monthlySavingError" class="error-message">{{monthlySavingError}}</h3>
+            <h4 v-if="monthlySavingError" class="error-message">{{monthlySavingError}}</h4>
           </div>
         </div>
 
@@ -113,6 +115,21 @@ const saveInput = async () => {
   border-radius: 20px;
   padding-right: 5.0%;
   padding-left: 5.0%;
+  color: var(--color-headerText);
+  background-color: var(--color-save-button);
+  border: none;
+}
+
+.save-button:hover{
+  transform: scale(1.02);
+}
+
+.save-button:active{
+  background-color: var(--color-save-button-click);
+}
+
+.save-button-title{
+  font-weight: bold;
 }
 
 .input-fields{
@@ -171,8 +188,7 @@ const saveInput = async () => {
   place-items: center;
 
   width: 100%;
-  height: 50%;
-  min-height: 1rem;
+  min-height: 25px;
 }
 
 .error{
@@ -185,7 +201,7 @@ const saveInput = async () => {
 
 @media only screen and (max-width: 1000px){
   .input-fields{
-    padding-top: 1.0%;
+    padding-top: 3.0%;
   }
 }
 

@@ -45,29 +45,31 @@ const saveInfo = async () => {
   <div class="password-info">
     <div class="header">
       <h3 class="title">Passord</h3>
-      <button class="save-button" @click="saveInfo"> Lagre</button>
+      <button class="save-button" @click="saveInfo">
+        <h3 class="save-button-title">Lagre</h3>
+      </button>
     </div>
     <div class="input-fields">
 
       <div class="input-collection">
-        <h3>Nåværende passord: </h3>
+        <h4>Nåværende passord: </h4>
         <input class="input"
                :class="{'error': currentPasswordError}"
                type="password"
                v-model="currentPassword">
         <div class="alert-box">
-          <h3 v-if="currentPasswordError" class="error-message">{{currentPasswordError}}</h3>
+          <h4 v-if="currentPasswordError" class="error-message">{{currentPasswordError}}</h4>
         </div>
       </div>
 
       <div class="input-collection">
-        <h3>Nytt passord: </h3>
+        <h4>Nytt passord: </h4>
         <input class="input"
                :class="{'error': newPasswordError}"
                type="password"
                v-model="newPassword">
         <div class="alert-box">
-          <h3 v-if="newPasswordError" class="error-message">{{newPasswordError}}</h3>
+          <h4 v-if="newPasswordError" class="error-message">{{newPasswordError}}</h4>
         </div>
       </div>
     </div>
@@ -80,7 +82,7 @@ const saveInfo = async () => {
   flex-direction: column;
 
   width: 100%;
-  height: 100%;
+  min-height: 100%;
 
 }
 
@@ -98,14 +100,29 @@ const saveInfo = async () => {
   border-radius: 20px;
   padding-right: 5.0%;
   padding-left: 5.0%;
+  color: var(--color-headerText);
+  background-color: var(--color-save-button);
+  border: none;
+}
+
+.save-button:hover{
+  transform: scale(1.02);
+}
+
+.save-button:active{
+  background-color: var(--color-save-button-click);
+}
+
+.save-button-title{
+  font-weight: bold;
 }
 
 .input-fields{
 
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
+  height: 100%;
 
   place-content: start;
 }
@@ -126,6 +143,7 @@ const saveInfo = async () => {
   display: flex;
   flex-direction: column;
   place-items: center;
+  min-height: 20px;
 }
 
 .error{
