@@ -9,7 +9,7 @@ import ToggleButton from '@/components/economy/ToggleButton.vue'
 const selectedOption = ref<string | null>("")
 
 
-let page = 0;
+//let page = 0;
 let pages = 0;
 let currentPage = 0;
 
@@ -47,7 +47,7 @@ const transactions = ref([
 ])
 const chartVisible = ref(false)
 
-const toggleChart = (value) => {
+const toggleChart = (value: boolean) => {
   chartVisible.value = value
   console.log(chartVisible.value)
 }
