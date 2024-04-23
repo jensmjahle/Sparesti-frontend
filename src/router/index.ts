@@ -11,6 +11,7 @@ import LoginView from '@/views/FrontPage/LoginView.vue'
 import SignupView from '@/views/FrontPage/SignupView.vue'
 import RegisterPageView from '@/views/RegisterPageView.vue'
 import StartView from '@/views/FrontPage/StartView.vue'
+import CreateChallengeView from '@/views/HomePage/CreateChallengeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +64,10 @@ const router = createRouter({
         {
           path: 'challenge',
           component: ChallengeView
+        },
+        {
+          path: 'create-challenge',
+          component: CreateChallengeView
         },
         {
           path: 'economy',
