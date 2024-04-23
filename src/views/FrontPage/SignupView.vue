@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TopBanner from '@/components/TopBanner.vue'
-import { signUpUser } from '@/utils/frontPageUtils.ts'
+import { signUpUser } from '@/utils/frontPageUtils'
 import { useTokenStore } from '@/stores/token'
 import { ref } from 'vue'
 import router from "@/router";

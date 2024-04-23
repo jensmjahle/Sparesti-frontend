@@ -7,38 +7,29 @@ import {
 export const useTokenStore = defineStore('token', {
     state: () => ({
         timer: null,
-        jwtToken: null,
-        userRole: null,
-        loggedInUser: {
-            "username": null,
-            "email": null,
-            "firstName": null,
-            "lastName": null,
-            "birthDate": null,
-            "profilePictureBase64": null,
-            "monthlyIncome": null,
-            "monthlySavings": null,
-            "monthlyFixedExpenses": null,
-            "currentAccount": null,
-            "savingsAccount": null,
-            "isConnectedToBank": null
-        }
+        jwtToken: "",
+        userRole: null
 
     }),
 
     actions: {
-        async getTokenAndSaveInStore(username, password) {
+        async getTokenAndSaveInStore(username: string, password: string) {
             try {
                 const response = await getJwtToken(username, password);
-                console.log(response)
-                const data = response.data;
-                if (data !== "" && data !== undefined) {
-                    this.jwtToken = data;
-                    await getUserInfo(username, this.jwtToken).then(response => {
-                        this.loggedInUser = response.data
-                        console.log(this.loggedInUser)
+                if (response !== undefined) {
+                    console.log(response)
+                    const data = response.data;
+                    if (data !== "" && data !== undefined) {
+                        this.jwtToken = data;
+                        await getUserInfo(username, this.jwtToken).then(response => {
+                            if (response !== undefined) {
+                                this.userRole = response.data.userRole
+                                console.log(this.userRole)
 
-                    })
+                            }
+
+                        })
+                    }
                 }
             } catch (error) {
                 console.error(error);
@@ -51,56 +42,8 @@ export const useTokenStore = defineStore('token', {
             return state.jwtToken;
         },
 
-        getLoggedInUser: (state) => {
-            return state.loggedInUser;
-        },
-
-        getUsername: (state) => {
-            return state.loggedInUser ? state.loggedInUser.username : null;
-        },
-
-        getFirstName: (state) => {
-            return state.loggedInUser ? state.loggedInUser.firstName : null;
-        },
-
-        getLastName: (state) => {
-            return state.loggedInUser ? state.loggedInUser.lastName : null;
-        },
-
-        getEmail: (state) => {
-            return state.loggedInUser ? state.loggedInUser.email : null;
-        },
-
-        getBirthDate: (state) => {
-            return state.loggedInUser ? state.loggedInUser.birthDate : null;
-        },
-
-        getProfilePictureBase64: (state) => {
-            return state.loggedInUser ? state.loggedInUser.profilePictureBase64 : null;
-        },
-
-        getMonthlyIncome: (state) => {
-            return state.loggedInUser ? state.loggedInUser.monthlyIncome : null;
-        },
-
-        getMonthlySavings: (state) => {
-            return state.loggedInUser ? state.loggedInUser.monthlySavings : null;
-        },
-
-        getMonthlyFixedExpenses: (state) => {
-            return state.loggedInUser ? state.loggedInUser.monthlyFixedExpenses : null;
-        },
-
-        getCurrentAccount: (state) => {
-            return state.loggedInUser ? state.loggedInUser.currentAccount : null;
-        },
-
-        getSavingsAccount: (state) => {
-            return state.loggedInUser ? state.loggedInUser.savingsAccount : null;
-        },
-
-        getIsConnectedToBank: (state) => {
-            return state.loggedInUser ? state.loggedInUser.isConnectedToBank : null;
+        getUserRole: (state) => {
+            return state.userRole;
         }
     }
 });

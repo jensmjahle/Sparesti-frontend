@@ -1,8 +1,8 @@
 import axios from "axios";
-import {useTokenStore} from "../stores/token.ts"
+import {useTokenStore} from "../stores/token"
 import router from "@/router";
 
-export const getJwtToken = async (username, password) => {
+export const getJwtToken = async (username: string, password: string) => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -19,7 +19,7 @@ export const getJwtToken = async (username, password) => {
     }
 }
 
-export const signUpUser = async (username, email, password) => {
+export const signUpUser = async (username: string, email: string, password: string ) => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -40,7 +40,7 @@ export const signUpUser = async (username, email, password) => {
     }
 };
 
-export const getUserInfo = async(username, token) => {
+export const getUserInfo = async(username: string, token: string) => {
     const config = {
         headers: {
             "Content-Type": "application/json",
