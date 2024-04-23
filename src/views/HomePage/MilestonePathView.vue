@@ -1,10 +1,14 @@
 <script setup lang="ts">
 
 import MilestoneProgress from '@/components/MilestoneProgress.vue'
+import { ref } from 'vue'
+import DirectTransfer from '@/components/DirectTransfer.vue'
+
+const pathName = ref("PathNameHere")
 </script>
 
 <template>
-  <h1 id = title>Path name here</h1>
+  <h1 id = title>{{pathName}}</h1>
   <div id = MilestonePath>
     <div id = Path>
 
@@ -14,10 +18,9 @@ import MilestoneProgress from '@/components/MilestoneProgress.vue'
         <MilestoneProgress/>
       </div>
       <div id = Transfer>
-
+        <DirectTransfer/>
       </div>
       <div id = Description>
-
       </div>
     </div>
   </div>
@@ -27,12 +30,12 @@ import MilestoneProgress from '@/components/MilestoneProgress.vue'
 
 <style scoped>
   #title{
-    margin-left: 10%;
+    margin-left: 9%;
   }
 
   #MilestonePath{
     width: 100%;
-    height: 100%;
+    height: 80%;
     display: flex;
   }
 
@@ -44,10 +47,14 @@ import MilestoneProgress from '@/components/MilestoneProgress.vue'
   #Info{
     width: 40%;
     height: 100%;
+    display: block;
   }
 
   #Progress{
     width: 100%;
-    height: 100%;
+  }
+
+  #Progress, #Transfer, #Description{
+    margin-bottom: 5%;
   }
 </style>
