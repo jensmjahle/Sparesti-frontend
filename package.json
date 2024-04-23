@@ -16,8 +16,10 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "chart.js": "^4.4.2",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
+    "vue-chartjs": "^5.3.1",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
