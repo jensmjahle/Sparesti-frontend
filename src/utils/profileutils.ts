@@ -1,9 +1,4 @@
 import axios from 'axios';
-import { useTokenStore } from '@/stores/token';
-
-const token:string = useTokenStore().getJwtToken;
-
-
 
 const testDataUserAccounts:{}[] = [
   {
@@ -106,7 +101,7 @@ const testDataUser = {
   ],
 }
 
-export const deleteUser = async ():Promise<any>=>{
+export const deleteUser = async (token:string):Promise<any>=>{
   try{
     const config = {
       headers:{
@@ -120,7 +115,7 @@ export const deleteUser = async ():Promise<any>=>{
   }
 }
 
-export const getUserAccountInfo = async ():Promise<any> => {
+export const getUserAccountInfo = async (token:string):Promise<any> => {
   try{
     const config = {
       headers:{
@@ -134,7 +129,7 @@ export const getUserAccountInfo = async ():Promise<any> => {
     return testDataUserAccounts;
   }
 }
-export const getUserInfo = async (): Promise<any> => {
+export const getUserInfo = async (token:string): Promise<any> => {
   try{
     const config = {
       headers:{
@@ -150,6 +145,7 @@ export const getUserInfo = async (): Promise<any> => {
 }
 
 export const updateUserInfo = async (
+  token:string,
   email: string,
   profilePictureBase64: string)=> {
   try{
@@ -171,6 +167,7 @@ export const updateUserInfo = async (
 }
 
 export const updatePasswordInfo = async (
+  token:string,
   currentPassword: string,
   newPassword:string)=> {
   try{
@@ -191,6 +188,7 @@ export const updatePasswordInfo = async (
   }
 }
 export const updateBankAccountInfo = async (
+  token:string,
   checkingAccount: number,
   savingAccount: number): Promise<any> =>{
   try{
@@ -212,6 +210,7 @@ export const updateBankAccountInfo = async (
 }
 
 export const updateIncomeInfo = async (
+  token:string,
   monthlyIncome:number,
   monthlyFixedExpenses:number,
   monthlySavings:number): Promise<any> =>{

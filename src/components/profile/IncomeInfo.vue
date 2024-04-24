@@ -2,6 +2,9 @@
 
 import { onMounted, ref } from 'vue'
 import { getUserInfo, updateIncomeInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
+
+const token:string = useTokenStore().jwtToken;
 
 const monthlyIncome = ref<number>(0);
 const monthlyFixedExpenses = ref<number>(0);
@@ -22,7 +25,7 @@ onMounted(async () => {
 
 const fetchIncomeInfo = async () =>{
   try{
-    const response = await getUserInfo();
+    const response = await getUserInfo(token);
     console.log(response);
     monthlyIncome.value = response.monthlyIncome;
     monthlyFixedExpenses.value = response.monthlyFixedExpenses;
@@ -36,6 +39,7 @@ const saveInput = async () => {
   if(validInput()){
     try {
       await updateIncomeInfo(
+        token,
         monthlyIncome.value,
         monthlyFixedExpenses.value,
         monthlySavings.value)

@@ -2,6 +2,9 @@
 
 import { onMounted, ref } from 'vue'
 import { getUserAccountInfo, getUserInfo, updateBankAccountInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
+
+const token:string = useTokenStore().jwtToken;
 
 const savingAccount = ref<number>(0);
 const checkingAccount= ref<number>(0);
@@ -21,7 +24,7 @@ onMounted(async () => {
 })
 const fetchUserInfo = async () =>{
   try{
-    const response = await getUserInfo();
+    const response = await getUserInfo(token);
 
     checkingAccount.value = response.currentAccount;
     savingAccount.value = response.savingsAccount;
@@ -32,7 +35,7 @@ const fetchUserInfo = async () =>{
 }
 
 const fetchAccountInfo = async () => {
-  const response = await getUserAccountInfo();
+  const response = await getUserAccountInfo(token);
   console.log(response)
   for(let i = 0; i < response.length; i++){
     console.log(response[i].accountNumber)
@@ -53,7 +56,7 @@ const saveAccountInfo = async ()=> {
   checkInput()
   if(savingAccountError.value == null){
     try{
-      await updateBankAccountInfo(checkingAccount.value, savingAccount.value)
+      await updateBankAccountInfo(token,checkingAccount.value, savingAccount.value)
       await fetchAccountInfo();
       await fetchUserInfo();
     } catch (error){
