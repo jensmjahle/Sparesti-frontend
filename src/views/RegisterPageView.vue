@@ -16,6 +16,7 @@ const questions = ["Hva er fødselsdatoen din?",
   "Hva er ditt etternavn?",
   "Hvor stor intekt har du hver måned?",
   "Hvor mye har du i faste utgifter hver måned?",
+  "Hvor mye har du lyst stil å spare hver måned?",
   "Velg din brukskonto",
   "Velg din sparekonto",
 ]
@@ -34,7 +35,7 @@ const accounts = ref(<Account[]>[])
 let index = 0;
 let currentQuestion = ref(questions[index])
 
-const questionType = ["date", "text", "text", "number", "number", "selection", "selection"]
+const questionType = ["date", "text", "text", "number", "number", "number", "selection", "selection"]
 let currentQuestionType = ref(questionType[index])
 
 const answer = ref(FirstTimeAnswersStore().userResponses[index]);
@@ -46,7 +47,6 @@ const selectedOption = ref(accounts.value.indexOf(FirstTimeAnswersStore().userRe
 
 const fetchAccounts = async () => {
   accounts.value = await getUserBankAccounts(useTokenStore().getJwtToken)
-  console.log(accounts.value)
   console.log(useTokenStore().getJwtToken)
 }
 onMounted(  () => {
@@ -73,10 +73,7 @@ async function nextQuestion(){
       showSelect.value = false;
     }
   } else {
-    const json = convertToJsonObject(FirstTimeAnswersStore().userResponses)
-    console.log(typeof json)
     await updateUserAccount(convertToJsonObject(FirstTimeAnswersStore().userResponses), useTokenStore().getJwtToken)
-    console.log(convertToJsonObject(FirstTimeAnswersStore().userResponses))
     router.push("/homepage/home")
   }
   if(index === questions.length -1){
@@ -110,15 +107,14 @@ const nextButtonText = ref("Neste")
 
 function convertToJsonObject(responses: any[]): Record<string, any> {
   return {
-    username: useTokenStore().getUsername,
     birthDate: responses[0],
     firstName: responses[1],
     lastName: responses[2],
     monthlyIncome: responses[3],
     monthlyFixedExpenses: responses[4],
-    currentAccount: responses[5],
-    savingsAccount: responses[6],
-    isConnectedToBank: useTokenStore().getUserRole
+    monthlySavings: responses[5],
+    currentAccount: responses[6],
+    savingsAccount: responses[7],
   };
 }
 
