@@ -53,7 +53,7 @@ const toggleExpand = () => {
   display:flex;
   overflow: hidden;
   transition: height 0.3s ease;
-  background-color: var(--vt-c-kellyGreen-Light)
+  background-color: var(--vt-c-Orange)
 }
 
 .component.expanded {
@@ -80,7 +80,7 @@ const toggleExpand = () => {
   padding-left: 20px;
   font-size:1.4em;
   word-break: break-word;
-  color: black;
+  color: white;
 
 }
 
@@ -90,6 +90,7 @@ const toggleExpand = () => {
   width: 95%;
   justify-content: right;
   font-size: 1em;
+  color: white;
 }
 
 
@@ -119,5 +120,10 @@ const toggleExpand = () => {
 
 
 }
+@media (prefers-color-scheme: dark) {
+  .component{
+    background-color: var(--vt-c-Orange-Dark);
+  }
 
+}
 </style>
