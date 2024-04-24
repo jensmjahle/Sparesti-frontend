@@ -1,11 +1,19 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { ref} from 'vue'
+import { updatePasswordInfo } from '@/utils/profileutils'
 const currentPassword = ref<string>('');
 const newPassword = ref<string>('')
 
 const newPasswordError = ref<string|null>(null)
 const currentPasswordError = ref<string | null>(null)
+const passwordError = ref<string | null>(null)
+
+
+const validInput = () => {
+  checkInput();
+  return(newPasswordError.value == null && currentPasswordError.value == null);
+}
 
 const checkInput = () => {
 
@@ -24,19 +32,24 @@ const checkInput = () => {
   if(currentPassword.value == newPassword.value && newPassword.value.trim() && currentPassword.value.trim()){
     newPasswordError.value = 'Nytt passordet er likt nåværende passord!'
   }
+  passwordError.value = null;
+}
+
+const saveInfo = async () => {
+  checkInput();
+  if(validInput()){
+    try{
+      await updatePasswordInfo( currentPassword.value,newPassword.value)
+      clearInput()
+    } catch (error) {
+      passwordError.value = 'Noe gikk galt! Venligst prøv på nytt.'
+    }
+  }
 }
 
 const clearInput = () => {
   currentPassword.value = '';
   newPassword.value = '';
-}
-
-const saveInfo = async () => {
-  checkInput();
-  if(newPasswordError.value == null && currentPasswordError.value == null){
-    alert('Ok!')
-    clearInput()
-  }
 }
 
 </script>
@@ -70,6 +83,7 @@ const saveInfo = async () => {
                v-model="newPassword">
         <div class="alert-box">
           <h4 v-if="newPasswordError" class="error-message">{{newPasswordError}}</h4>
+          <h4 v-if="passwordError" class="error-message">{{passwordError}}</h4>
         </div>
       </div>
     </div>
@@ -135,6 +149,7 @@ const saveInfo = async () => {
 
 .input{
   border-radius: 20px;
+  border: 2px solid var(--color-border);
   min-height: 30px;
   padding-left: 2.0%;
 }
