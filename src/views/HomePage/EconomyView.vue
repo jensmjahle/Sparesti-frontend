@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import {Pie} from 'vue-chartjs'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-ChartJS.register(ArcElement,Tooltip,Legend)
+import { computed, onMounted, ref } from 'vue'
+import { Pie } from 'vue-chartjs'
+import { ArcElement, Chart as ChartJS, Colors, Legend, Tooltip } from 'chart.js'
 import TransactionComponent from '@/components/economy/TransactionComponent.vue'
 import ToggleButton from '@/components/economy/ToggleButton.vue'
+import { getTransactions } from '@/utils/TransactionUtils'
+
+ChartJS.register(ArcElement,Tooltip,Legend, Colors)
 
 const selectedOption = ref<string | null>("")
 
@@ -13,38 +15,24 @@ const selectedOption = ref<string | null>("")
 let pages = 0;
 let currentPage = 0;
 
-const transactions = ref([
-  { id: 1,
-    title: 'Rema 1000',
-    date: '2022-05-10',
-    amount: 100,
-    category: 'Dagligvare'
-  },
-  { id: 2,
-    title: 'Trondheim Kino',
-    date: '2022-05-15',
-    amount: 500,
-    category: 'Underholdning'
-  },
-  { id: 3,
-    title: 'SIT',
-    date: '2022-05-15',
-    amount: 4450,
-    category: 'regninger'
-  },
-  { id: 4,
-    title: 'Superhero Burger',
-    date: '2022-05-15',
-    amount: 1500,
-    category: 'Mat & Restaurant'
-  },
-  { id: 6,
-    title: 'Kiwi',
-    date: '2022-05-20',
-    amount: 100,
-    category: 'Dagligvare'
-  },
-])
+const transactions = ref<any[]>([])
+const fetchTransactions = async() =>  {
+  try{
+    transactions.value = await getTransactions(1, 2)
+    //const response = await getTransactions(1,2)
+    //transactions.value = response.data
+    //fordi akk nå benytter vi av test data
+  } catch (e) {
+    console.log(e)
+  }
+
+}
+onMounted(()  => {
+  fetchTransactions()
+})
+
+
+
 const chartVisible = ref(false)
 
 const toggleChart = (value: boolean) => {
@@ -58,7 +46,7 @@ const handleSelectionChange = (value: string | null) => {
 const distinctCategories = computed(() => {
   const categories = new Set<string>()
   transactions.value.forEach(transaction => {
-    categories.add(transaction.category)
+    categories.add(transaction.TransactionCategory.category)
   })
   return Array.from(categories)
 })
@@ -71,7 +59,7 @@ const filteredTransactions = computed(() => {
   if (selectedOption.value === 'Alle' || !selectedOption.value) {
     return transactions.value
   } else {
-    return transactions.value.filter(transaction => transaction.category === selectedOption.value)
+    return transactions.value.filter(transaction => transaction.TransactionCategory.category === selectedOption.value)
   }
 })
 const chartData = computed(() => {
@@ -87,7 +75,9 @@ const chartData = computed(() => {
   const categoryAmounts: { [key: string]: number } = {};
 
   transactions.value.forEach(transaction => {
-    const { category, amount } = transaction;
+    const { TransactionCategory, amount } = transaction;
+    console.log(TransactionCategory)
+    const category = TransactionCategory.category
     if (category in categoryAmounts) {
       categoryAmounts[category] += amount;
     } else {
@@ -101,7 +91,6 @@ const chartData = computed(() => {
   data.labels.forEach(label => {
     data.datasets[0].data.push(categoryAmounts[label]);
   });
-  console.log(data)
   return data;
 })
 
@@ -114,6 +103,40 @@ const getRandomColor = () => {
   }
   return color
 }
+
+//
+// const transactions1 = ref([
+//   { id: 1,
+//     title: 'Rema 1000',
+//     date: '2022-05-10',
+//     amount: 100,
+//     category: 'Dagligvare'
+//   },
+//   { id: 2,
+//     title: 'Trondheim Kino',
+//     date: '2022-05-15',
+//     amount: 500,
+//     category: 'Underholdning'
+//   },
+//   { id: 3,
+//     title: 'SIT',
+//     date: '2022-05-15',
+//     amount: 4450,
+//     category: 'regninger'
+//   },
+//   { id: 4,
+//     title: 'Superhero Burger',
+//     date: '2022-05-15',
+//     amount: 1500,
+//     category: 'Mat & Restaurant'
+//   },
+//   { id: 6,
+//     title: 'Kiwi',
+//     date: '2022-05-20',
+//     amount: 100,
+//     category: 'Dagligvare'
+//   },
+// ])
 </script>
 
 <template>
@@ -133,12 +156,12 @@ const getRandomColor = () => {
           <option v-for="option in dropdownOptions" :key="option" :value="option">{{ option }}</option>
         </select>
       </div>
-      <div class="component-container">
+      <div class="component-container" v-if="filteredTransactions">
         <transaction-component
         v-for="transaction in filteredTransactions"
-        :key="transaction.id"
-        :title="transaction.title"
-        :category="transaction.category"
+        :key="transaction.transactionId"
+        :title="transaction.transactionTitle"
+        :category="transaction.TransactionCategory.category"
         :amount="transaction.amount"
         :date="transaction.date"
         ></transaction-component>
