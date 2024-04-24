@@ -58,7 +58,7 @@ export const getTransactions = async (pageNumber: Number, pageSize: Number): Pro
       amount: 400,
       currency: "NOK",
       TransactionCategory: {
-        category: "Annoying shit"
+        category: "Annoying"
       }
     },
     {
