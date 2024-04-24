@@ -120,5 +120,10 @@ const toggleExpand = () => {
 
 
 }
+@media (prefers-color-scheme: dark) {
+  .component{
+    background-color: var(--vt-c-Orange-Dark);
+  }
 
+}
 </style>

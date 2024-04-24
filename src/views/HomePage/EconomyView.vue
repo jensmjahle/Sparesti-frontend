@@ -355,4 +355,9 @@ h2 {
   }
 
 }
+@media (prefers-color-scheme: dark){
+  h2{
+    color: var(--vt-c-kellyGreen-Light);
+  }
+}
 </style>
