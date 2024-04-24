@@ -9,7 +9,10 @@ describe('PathNode.vue', () => {
       const wrapper = shallowMount(MilestonePath, {
         props: { totalToSave, totalSaved: 0 }
       })
-      expect(wrapper.vm.totalNodes).toBe(Math.ceil(totalToSave / 250))
+
+      const actualValue = (wrapper.vm as any).totalNodes;
+
+      expect(actualValue).toBe(Math.ceil(totalToSave / 250))
     })
 
     it('calculates remaining nodes correctly', () => {
@@ -18,7 +21,10 @@ describe('PathNode.vue', () => {
       const wrapper = shallowMount(MilestonePath, {
         props: { totalToSave, totalSaved }
       })
-      expect(wrapper.vm.remainingNodes).toBe(Math.ceil(wrapper.vm.totalNodes - (wrapper.vm.totalNodes * (totalSaved / totalToSave))))
+
+      const actualValue = (wrapper.vm as any).remainingNodes;
+
+      expect(actualValue).toBe(Math.ceil((wrapper.vm as any).totalNodes - ((wrapper.vm as any).totalNodes * (totalSaved / totalToSave))))
     })
 
     it('sets remaining nodes to total nodes if total saved is 0', () => {
@@ -26,7 +32,10 @@ describe('PathNode.vue', () => {
       const wrapper = shallowMount(MilestonePath, {
         props: { totalToSave, totalSaved: 0 }
       })
-      expect(wrapper.vm.remainingNodes).toBe(wrapper.vm.totalNodes)
+
+      const actualValue = (wrapper.vm as any).remainingNodes;
+
+      expect(actualValue).toBe((wrapper.vm as any).totalNodes)
     })
   })
 
@@ -38,7 +47,10 @@ describe('PathNode.vue', () => {
       const wrapper = shallowMount(MilestonePath, {
         props: { totalToSave, totalSaved }
       })
-      expect(wrapper.vm.nodes).toHaveLength(totalNodes)
+
+      const actualValue = (wrapper.vm as any).nodes;
+
+      expect(actualValue).toHaveLength(totalNodes)
     })
 
     it('applies correct styles to nodes', () => {
@@ -49,9 +61,10 @@ describe('PathNode.vue', () => {
       })
       const nodes = wrapper.findAll('.node')
       nodes.forEach((node, index) => {
-        const colorIndex = index < wrapper.vm.remainingNodes - 1 ? 0 : (index === wrapper.vm.remainingNodes - 1 ? 1 : 2)
-        const foregroundColor = wrapper.vm.nodeForegroundColors[colorIndex]
-        const backgroundColor = wrapper.vm.nodeBackgroundColors[colorIndex]
+
+        const colorIndex = index < (wrapper.vm as any).remainingNodes - 1 ? 0 : (index === (wrapper.vm as any).remainingNodes - 1 ? 1 : 2)
+        const foregroundColor = (wrapper.vm as any).nodeForegroundColors[colorIndex]
+        const backgroundColor = (wrapper.vm as any).nodeBackgroundColors[colorIndex]
         const nodeStyle = (node.element as HTMLElement).style
         expect(nodeStyle.backgroundColor).toBe(`${backgroundColor}`)
         expect(nodeStyle.top).toBe(`${foregroundColor}`)

@@ -8,8 +8,9 @@ describe('DirectTransfer', () => {
     const input = wrapper.find('input[type="number"]');
 
     await input.setValue(50);
+    const actualValue = (wrapper.vm as any).transferValue;
 
-    expect(wrapper.vm.transferValue).toBe(50);
+    expect(actualValue).toBe(50);
   });
 
   it('emits "transfer-value" event with correct value when button is clicked', async () => {
@@ -20,7 +21,12 @@ describe('DirectTransfer', () => {
     await input.setValue(50);
     await button.trigger('click');
 
-    expect(wrapper.emitted('transfer-value')).toBeTruthy();
-    expect(wrapper.emitted('transfer-value')[0]).toEqual([50]);
+    const emittedValue = wrapper.emitted('transfer-value');
+    expect(emittedValue).toBeTruthy();
+
+    if (emittedValue) {
+      expect(emittedValue[0]).toEqual([50]);
+    }
   });
+
 });

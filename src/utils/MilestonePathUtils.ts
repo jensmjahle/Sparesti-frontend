@@ -7,7 +7,7 @@ export async function getMilestoneDetails(id: number){
   const config = {
     headers: {
       'Content-Type': 'Application/json',
-      'Authorization': 'Bearer ' + TokenStore().getToken()
+      //'Authorization': 'Bearer ' + TokenStore().getToken()
     }
   }
 

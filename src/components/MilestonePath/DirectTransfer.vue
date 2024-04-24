@@ -3,7 +3,7 @@
 import { ref, defineEmits } from 'vue';
 
 const transferValue = ref<number>(0);
-const emits = defineEmits(['transfer-value']); // Define custom events
+const emits = defineEmits(['transfer-value']);
 
 function transfer() {
   emits('transfer-value', transferValue.value);
