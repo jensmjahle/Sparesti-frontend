@@ -8,7 +8,7 @@ export const useTokenStore = defineStore('token', {
     state: () => ({
         timer: null,
         jwtToken: "",
-        userRole: null
+        isConnectedToBank: null
 
     }),
 
@@ -23,8 +23,8 @@ export const useTokenStore = defineStore('token', {
                         this.jwtToken = data;
                         await getUserInfo(username, this.jwtToken).then(response => {
                             if (response !== undefined) {
-                                this.userRole = response.data.userRole
-                                console.log(this.userRole)
+                                this.isConnectedToBank = response.data.isConnectedToBank
+                                console.log(this.isConnectedToBank)
 
                             }
 
@@ -37,13 +37,13 @@ export const useTokenStore = defineStore('token', {
         }
     },
 
-    getters: {
+    getters:{
         getJwtToken: (state) => {
             return state.jwtToken;
         },
 
         getUserRole: (state) => {
-            return state.userRole;
+            return state.isConnectedToBank;
         }
     }
 });

@@ -17,10 +17,9 @@ type Article = {
 
 const articles = ref<Article[]>([]);
 
-// Fetch articles from NewsAPI
 onMounted(async () => {
   try {
-    const response = await fetch('https://newsapi.org/v2/everything?q="spare"OR"sparing"OR"bank"OR"pris"&domains=e24.no&apiKey=b01f36ab840346f3b28c7c0a30cad606');
+    const response = await fetch('https://newsapi.org/v2/everything?q="spare"OR"sparing"OR"bank"OR"rente"&domains=e24.no&apiKey=b01f36ab840346f3b28c7c0a30cad606');
     const data = await response.json();
     articles.value = data.articles;
   } catch (error) {
@@ -127,9 +126,9 @@ onMounted(async () => {
 
 .image {
   margin-top: 5px;
-  max-width: 100%; /* Ensures image does not exceed container width */
-  max-height: 100%; /* Ensures image does not exceed container height */
-  object-fit: contain; /* Ensures the image fits within the container while maintaining aspect ratio */
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   border-radius: 10px;
 }
 
@@ -154,8 +153,8 @@ onMounted(async () => {
 
 .article-link {
   text-decoration: none;
-  color: inherit; /* or any color you want for the article links */
-  transition: none; /* or any transition you want for the article links */
-  padding: 0; /* or any padding you want for the article links */
+  color: inherit;
+  transition: none;
+  padding: 0;
 }
 </style>
