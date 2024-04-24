@@ -1,10 +1,13 @@
 <script setup lang="ts">
 
 import ProgressBar from '@/components/ProgressBar.vue'
-import { ref } from 'vue'
 
-const current = ref(50)
-const max = ref(100)
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  totalToSave: Number,
+  totalSaved: Number
+});
 
 
 </script>
@@ -12,8 +15,8 @@ const max = ref(100)
 <template>
   <div id = MilestoneProgress>
     <h3 id = TotalSavings>Totalt oppspart:</h3>
-    <h3 id = Savings>{{current + " / " + max + " NOK"}}</h3>
-    <ProgressBar :Max="max" :Current="current" id = progress />
+    <h3 id = Savings>{{props.totalSaved + " / " + props.totalToSave + " NOK"}}</h3>
+    <ProgressBar :Max="props.totalToSave" :Current="props.totalSaved" id = progress />
   </div>
 </template>
 
