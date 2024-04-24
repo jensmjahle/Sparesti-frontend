@@ -18,7 +18,7 @@ const imageUrl = "src/assets/pig.png"
 const openMilestone = () => {
   if (props.id !== undefined) {
     useMilestoneStore().setMilestoneId(props.id)
-    router.push("/path")
+    router.push("/homepage/path")
   }
   console.log("Milestone id is not defined")
 }

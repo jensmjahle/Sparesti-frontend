@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import router from "@/router";
 import CompletedMilestoneDisplay from '@/components/milestone/CompletedMilestoneDisplay.vue'
 import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDisplay.vue'
+import {getAllMilestones} from "@/utils/MilestoneUtils";
+import {useTokenStore} from "@/stores/token";
 
 
 const activeMilestonesTestData = [
@@ -51,7 +53,7 @@ const activeMilestonesTestData = [
 
   }
 ]
-
+const activeMilestones = ref(<Milestone[]>[])
 const completedMilestonesTestData = [
   {
     id: 4,
@@ -87,9 +89,15 @@ const completedMilestonesTestData = [
   }
 ]
 
-const activeMilestones = ref<Milestone[] | null>(activeMilestonesTestData)
-const completedMilestones = ref<Milestone[] | null>(completedMilestonesTestData)
+onMounted(async () => {
+  const token = useTokenStore().$state.jwtToken
+  activeMilestones.value = await getAllMilestones(token)
+})
 
+//const activeMilestones = ref(activeMilestonesList);
+console.log(activeMilestones.value)
+//const completedMilestones = ref<Milestone[] | null>(completedMilestonesTestData)
+const completedMilestones =  ref(<Milestone[]>[])
 const pages = ref<number>(1)
 const currentPage = ref<number>(0)
 const navigateTo = (path: string) => {
@@ -102,14 +110,15 @@ const goToPage = (pageNumber:number) => {}
 const nextPage = () =>{}
 
 interface Milestone{
-  id: number;
-  title: string;
-  description: string
-  goalSum: number;
-  currentSum: number;
-  deadline: Date;
+  milestoneId: number;
+  milestoneTitle: string;
+  milestoneDescription: string
+  milestoneGoalSum: number;
+  milestoneCurrentSum: number;
+  deadlineDate: Date;
   startDate: Date;
-  image: string;
+  milestoneImage: string;
+  username: string;
 }
 
 
@@ -129,14 +138,14 @@ interface Milestone{
             class="active-milestone"
             v-for="(activeMilestone, index) in activeMilestones"
             :key="index"
-            :id="activeMilestone.id"
-            :title="activeMilestone.title"
-            :description="activeMilestone.description"
-            :goalSum="activeMilestone.goalSum"
-            :currentSum="activeMilestone.currentSum"
-            :deadline="activeMilestone.deadline"
+            :id="activeMilestone.milestoneId"
+            :title="activeMilestone.milestoneTitle"
+            :description="activeMilestone.milestoneDescription"
+            :goalSum="activeMilestone.milestoneGoalSum"
+            :currentSum="activeMilestone.milestoneCurrentSum"
+            :deadline="activeMilestone.deadlineDate"
             :startDate="activeMilestone.startDate"
-            :image="activeMilestone.image"
+            :image="activeMilestone.milestoneImage"
           ></ActiveMilestoneDisplay>
         </div>
       </div>
@@ -149,14 +158,14 @@ interface Milestone{
             class="completed-milestone"
             v-for="(completedMilestone, index) in completedMilestones"
             :key="index"
-            :id="completedMilestone.id"
-            :title="completedMilestone.title"
-            :description="completedMilestone.description"
-            :current-sum="completedMilestone.currentSum"
-            :goal-sum="completedMilestone.goalSum"
-            :deadline="completedMilestone.deadline"
+            :id="completedMilestone.milestoneId"
+            :title="completedMilestone.milestoneTitle"
+            :description="completedMilestone.milestoneDescription"
+            :current-sum="completedMilestone.milestoneCurrentSum"
+            :goal-sum="completedMilestone.milestoneGoalSum"
+            :deadline="completedMilestone.deadlineDate"
             :start-date="completedMilestone.startDate"
-            :image="completedMilestone.image"
+            :image="completedMilestone.milestoneImage"
           ></CompletedMilestoneDisplay>
           <div class="pagination">
             <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
