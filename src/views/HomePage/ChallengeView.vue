@@ -250,7 +250,7 @@ interface Challenge{
 }
 
 .pagination button:disabled {
-  color: #ccc;
+  color:  var(--color-inactive-button-text);
   cursor: not-allowed;
   transform: none;
   background-color: var(--color-pageination-button) ;
