@@ -15,7 +15,7 @@ export const getUserBankAccounts = async(token: string):Promise<any> => {
     }
 }
 
-export const updateUserAccount = async (user: Record<string, any>, token: string) => {
+export const updateUserAccount = async(user: Record<string, any>, token: string):Promise<any> => {
     const config = {
         headers: {
             "Content-Type": "application/json",
@@ -23,11 +23,9 @@ export const updateUserAccount = async (user: Record<string, any>, token: string
         }
     };
     try {
-        const data = {}
-
-        console.log(JSON.stringify(user))
-        const response = await axios.put("http://localhost:8080/users/update", data, config)
-        console.log(response.data)
+        const response = await axios.post("http://localhost:8080/users/update",
+            JSON.stringify(user),
+            config)
         return response.data
     } catch (error) {
         console.log(error)
