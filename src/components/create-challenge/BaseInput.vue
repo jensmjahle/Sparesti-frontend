@@ -44,4 +44,10 @@ input {
 label {
   font-size: 1.5em;
 }
+
+@media screen and (max-width: 1200px){
+  label{
+    font-size: 1.2em;
+  }
+}
 </style>
