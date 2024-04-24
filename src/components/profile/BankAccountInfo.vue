@@ -1,36 +1,66 @@
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { getUserAccountInfo, getUserInfo, updateBankAccountInfo } from '@/utils/profileutils'
 
-const savingAccount = ref('account 1');
-const checkingAccount= ref('account 2');
+const savingAccount = ref<number>(0);
+const checkingAccount= ref<number>(0);
 
+const savingAccountError = ref<string | null>(null);
 const accountError = ref<string | null>(null);
 
-const accounts = ref<string[]>([savingAccount.value, checkingAccount.value])
+const accounts = ref<number[]>([])
 
-const savingAccountOptions = computed(() =>
-  accounts.value.filter(account => account !== savingAccount.value))
+onMounted(async () => {
+  try {
+    await fetchUserInfo();
+    await fetchAccountInfo();
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+  }
+})
+const fetchUserInfo = async () =>{
+  try{
+    const response = await getUserInfo();
 
-const checkingAccountOptions = computed(() =>
-  accounts.value.filter(account => account !== checkingAccount.value))
+    checkingAccount.value = response.currentAccount;
+    savingAccount.value = response.savingsAccount;
+
+  } catch (error){
+    console.error('Error fetching user info:', error);
+  }
+}
+
+const fetchAccountInfo = async () => {
+  const response = await getUserAccountInfo();
+  console.log(response)
+  for(let i = 0; i < response.length; i++){
+    console.log(response[i].accountNumber)
+    accounts.value.push(response[i].accountNumber)
+  }
+}
 
 const checkInput = () => {
   if(savingAccount.value == checkingAccount.value){
-    accountError.value = 'Sparekonto er lik brukskonto!'
+    savingAccountError.value = 'Sparekonto er lik brukskonto!'
   } else{
-    accountError.value = null;
+    savingAccountError.value = null;
   }
+  accountError.value = null;
 }
 
 const saveAccountInfo = async ()=> {
   checkInput()
-  if(accountError.value == null){
-    alert('Ok!')
+  if(savingAccountError.value == null){
+    try{
+      await updateBankAccountInfo(checkingAccount.value, savingAccount.value)
+      await fetchAccountInfo();
+      await fetchUserInfo();
+    } catch (error){
+      accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
+    }
   }
 }
-
-
 
 </script>
 
@@ -48,20 +78,19 @@ const saveAccountInfo = async ()=> {
       <div class="input-collection">
         <h4>Forbrukskonto: </h4>
         <select class="accounts" v-model="checkingAccount">
-          <option key="check-default" :value="checkingAccount">{{checkingAccount}}</option>
-          <option v-for="(account, index) in checkingAccountOptions" :key="'check' + index" :value="account">{{ account }}</option>
+          <option v-for="(account, index) in accounts" :key="'check' + index" :value="account">{{ account }}</option>
         </select>
       </div>
 
       <div class="input-collection">
         <h4>Sparekonto: </h4>
-        <select class="accounts" :class="{'error': accountError}" v-model="savingAccount">
-          <option key="saving-default" :value="savingAccount">{{savingAccount}}</option>
-          <option v-for="(account, index) in savingAccountOptions" :key="'saving' + index" :value="account">{{ account }}</option>
+        <select class="accounts" :class="{'error': savingAccountError}" v-model="savingAccount">
+          <option v-for="(account, index) in accounts"  :key="'saving' + index" :value="account">{{ account }}</option>
         </select>
       </div>
 
       <div class="alert-box">
+        <h4 v-if="savingAccountError" class="error-message">{{savingAccountError}}</h4>
         <h4 v-if="accountError" class="error-message">{{accountError}}</h4>
       </div>
 

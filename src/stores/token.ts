@@ -8,9 +8,14 @@ export const useTokenStore = defineStore('token', {
     state: () => ({
         timer: null,
         jwtToken: "",
-        userRole: null
+        username: null,
+        isConnectedToBank: null
 
     }),
+
+    persist: {
+        storage: sessionStorage
+    },
 
     actions: {
         async getTokenAndSaveInStore(username: string, password: string) {
@@ -23,8 +28,9 @@ export const useTokenStore = defineStore('token', {
                         this.jwtToken = data;
                         await getUserInfo(username, this.jwtToken).then(response => {
                             if (response !== undefined) {
-                                this.userRole = response.data.userRole
-                                console.log(this.userRole)
+                                this.username = response.data.username
+                                this.isConnectedToBank = response.data.isConnectedToBank
+                                console.log(this.isConnectedToBank)
 
                             }
 
@@ -43,7 +49,11 @@ export const useTokenStore = defineStore('token', {
         },
 
         getUserRole: (state) => {
-            return state.userRole;
+            return state.isConnectedToBank;
+        },
+
+        getUsername: (state) => {
+            return state.username;
         }
     }
 });
