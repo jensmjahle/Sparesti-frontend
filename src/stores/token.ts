@@ -71,7 +71,7 @@ export const useTokenStore = defineStore('token', {
                 } else {
                     this.logout();
                 }
-            }, 10000);
+            }, 300000);
         },
     },
 
