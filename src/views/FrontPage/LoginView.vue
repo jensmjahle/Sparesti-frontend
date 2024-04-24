@@ -13,29 +13,19 @@ function navigateToNewUser() {
 }
 
 async function login() {
-  if (password.value.length < 8) {
-    alert('Password must be at least 8 characters');
-    return;
+  await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
+  if (useTokenStore().$state.isConnectedToBank){
+    await router.push('/homepage')
   }
-
-  const tokenStore = useTokenStore();
-  if (!tokenStore) {
-    alert('Token store is not available');
-    return;
-  }
-
-  await tokenStore.getTokenAndSaveInStore(username.value, password.value);
-
-  if (tokenStore.$state.isConnectedToBank) {
-    await router.push('/homepage');
-  } else if (!tokenStore.$state.isConnectedToBank) {
-    alert('Not complete user, routing to registration page');
-    await router.push('/register');
+  else if (useTokenStore().$state.isConnectedToBank === false){
+    alert('Brukern finnes, men er ikke koblet til banken. Vennligst koble til banken før du logger inn.')
+    await router.push('/register')
   }
   else {
-    alert('Login failed');
+    alert('Feil brukernavn eller passord. Vennligst prøv igjen eller lag bruker.')
   }
 }
+
 
 </script>
 

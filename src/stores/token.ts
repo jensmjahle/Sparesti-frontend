@@ -23,7 +23,7 @@ export const useTokenStore = defineStore({
         async getTokenAndSaveInStore(username: string, password: string) {
             try {
                 const response = await getJwtToken(username, password);
-                if (response !== undefined) {
+                if (response !== undefined && response.data.useername !== "") {
                     console.log(response)
                     const data = response.data;
                     if (data !== "" && data !== undefined) {
@@ -41,7 +41,7 @@ export const useTokenStore = defineStore({
                 }
                 this.startTimer();
             } catch (error) {
-                console.error(error);
+                console.error(error, "Error getting token");
             }
         },
 

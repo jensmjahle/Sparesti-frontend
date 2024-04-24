@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useTokenStore } from '../stores/token';
+import router from "@/router";
 
 export const getJwtToken = async (username: string, password: string) => {
     const config = {
