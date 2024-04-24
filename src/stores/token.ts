@@ -6,12 +6,13 @@ import {
 } from "@/utils/frontPageUtils";
 import router from "@/router";
 
-export const useTokenStore = defineStore('token', {
+export const useTokenStore = defineStore({
+    id: 'token',
     state: () => ({
-        timer: null as number | null,
+        timer: null as ReturnType<typeof setTimeout> | null,
         jwtToken: "",
-        username: null,
-        isConnectedToBank: null
+        username: null as string | null,
+        isConnectedToBank: null as boolean | null
     }),
 
     persist: {
@@ -65,7 +66,6 @@ export const useTokenStore = defineStore('token', {
 
         startTimer() {
             this.timer = setTimeout(() => {
-                // Display a dialog box to the user
                 if (window.confirm("Your session is about to expire. Do you want to extend it?")) {
                     this.refreshToken().then(r => r);
                 } else {
