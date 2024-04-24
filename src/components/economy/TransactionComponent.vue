@@ -93,7 +93,7 @@ const toggleExpand = () => {
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1300px) {
   .component {
     width: 90% ;
     height: 10%;

@@ -286,10 +286,10 @@ h2 {
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1300px) {
   .box {
     width: 100%;
-    min-height: 510px;
+    min-height: 580px;
     margin:10px /* Adjust margin for smaller screens */
   }
 
