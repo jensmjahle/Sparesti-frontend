@@ -7,6 +7,9 @@ import IncomeInfo from '@/components/profile/IncomeInfo.vue'
 import BadgeInfo from '@/components/profile/BadgeInfo.vue'
 import PasswordInfo from '@/components/profile/PasswordInfo.vue'
 import { getUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
+
+const token:string = useTokenStore().jwtToken;
 
 const firstName = ref<string>('');
 const lastName = ref<string>('');
@@ -20,7 +23,7 @@ onMounted(async () => {
 })
 const fetchUserInfo = async () =>{
   try{
-    const response = await getUserInfo()
+    const response = await getUserInfo(token)
     console.log(response)
     firstName.value = response.firstName;
     lastName.value = response.lastName;
