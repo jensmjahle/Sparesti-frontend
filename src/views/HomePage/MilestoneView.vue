@@ -10,7 +10,12 @@ const activeMilestonesTestData = [
   {
     id: 1,
     title: 'Spar 1000kr!',
-    description: 'Spar 1000kr i løpet av denne måneden.'
+    description: 'Spar 1000kr i løpet av denne måneden.',
+    goalSum: 1000,
+    currentSum: 500,
+    deadline: new Date('2021-12-24'),
+    startDate: new Date('2021-12-01'),
+    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
   },
   {
     id: 2,
@@ -22,6 +27,11 @@ const activeMilestonesTestData = [
     title: 'Spar 200kr!',
     description: 'Spar 200kr i løpet av denne måneden.'
   },
+  {
+    id: 4,
+    title: 'Spar 100kr!',
+    description: 'Spar 100kr i løpet av denne måneden.'
+  }
 ]
 
 const completedMilestonesTestData = [
@@ -30,16 +40,25 @@ const completedMilestonesTestData = [
     title: 'Spar 100kr!',
     description: 'Spar 100kr i løpet av denne måneden.'
   },
+
   {
-    id: 5,
-    title: 'Spar 50kr!',
-    description: 'Spar 50kr i løpet av denne måneden.'
+    id: 8,
+    title: 'Spar 5kr!',
+    description: 'Spar 5kr i løpet av denne måneden.',
+    goalSum: 5,
+    currentSum: 5,
+    deadline: new Date('2021-12-24'),
+    startDate: new Date('2021-12-01'),
   },
   {
-    id: 6,
-    title: 'Spar 20kr!',
-    description: 'Spar 20kr i løpet av denne måneden.'
-  },
+    id: 9,
+    title: 'Spar 5kr!',
+    description: 'Spar 5kr i løpet av denne måneden.',
+    goalSum: 5,
+    currentSum: 5,
+    deadline: new Date('2021-12-24'),
+    startDate: new Date('2021-12-01'),
+  }
 ]
 
 const activeMilestones = ref<Milestone[] | null>(activeMilestonesTestData)
@@ -60,7 +79,14 @@ interface Milestone{
   id: number;
   title: string;
   description: string
+  goalSum: number;
+  currentSum: number;
+  deadline: Date;
+  startDate: Date;
+  image: string;
 }
+
+
 
 </script>
 
@@ -70,7 +96,7 @@ interface Milestone{
     <div class="main">
       <div class="left">
         <button class="create-milestone-button" @click="navigateTo('/homepage/create-milestone')">
-          <h2 class="create-milestone-button-title">Personlig sparemål + </h2>
+          <h2 class="create-milestone-button-title">Lag nytt sparemål + </h2>
         </button>
         <div class="active-milestones">
           <ActiveMilestoneDisplay
@@ -80,6 +106,11 @@ interface Milestone{
             :id="activeMilestone.id"
             :title="activeMilestone.title"
             :description="activeMilestone.description"
+            :goalSum="activeMilestone.goalSum"
+            :currentSum="activeMilestone.currentSum"
+            :deadline="activeMilestone.deadline"
+            :startDate="activeMilestone.startDate"
+            :image="activeMilestone.image"
           ></ActiveMilestoneDisplay>
         </div>
       </div>
@@ -95,6 +126,11 @@ interface Milestone{
             :id="completedMilestone.id"
             :title="completedMilestone.title"
             :description="completedMilestone.description"
+            :current-sum="completedMilestone.currentSum"
+            :goal-sum="completedMilestone.goalSum"
+            :deadline="completedMilestone.deadline"
+            :start-date="completedMilestone.startDate"
+            :image="completedMilestone.image"
           ></CompletedMilestoneDisplay>
           <div class="pagination">
             <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
@@ -208,7 +244,7 @@ flex-direction: column;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  padding: 5%;
+  padding: 5.0%;
   gap: 2.5%;
 }
 
