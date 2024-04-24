@@ -27,7 +27,7 @@ const displayDescription = ref(false)
   <h2 class="title">{{props.title}}</h2>
   <div class="info" v-if="!displayDescription">
   <h4  v-if="currentSum">Du sparte {{props.currentSum}}kr</h4>
-    <h4 v-if="deadline">{{props.deadline.getDate()}}/{{props.deadline.getMonth()}}-{{props.deadline.getFullYear()}}</h4>
+    <h4 v-if="props.deadline">{{props.deadline.getDate()}}/{{props.deadline.getMonth()}}-{{props.deadline.getFullYear()}}</h4>
   </div>
   <div class="info" v-if="displayDescription">
     <h4>{{props.description}}</h4>

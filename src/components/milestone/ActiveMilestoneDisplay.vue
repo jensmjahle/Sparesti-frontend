@@ -16,8 +16,11 @@ const props = defineProps({
 const imageUrl = "src/assets/pig.png"
 
 const openMilestone = () => {
-  useMilestoneStore().setMilestoneId(props.id)
-  router.push("/path")
+  if (props.id !== undefined) {
+    useMilestoneStore().setMilestoneId(props.id)
+    router.push("/path")
+  }
+  console.log("Milestone id is not defined")
 }
 
 
@@ -31,9 +34,9 @@ const openMilestone = () => {
         }">
   <h2 class="title">{{props.title}}</h2>
   <div class="progress">
-    <h4 class="description" v-if="hovering">{{props.description}}</h4>
+    <h4 class="description">{{props.description}}</h4>
   <h4 class="description" v-if="goalSum&&currentSum">{{props.currentSum}}kr av {{props.goalSum}}kr</h4>
-   <ProgressBar class="progress-bar" :Max="goalSum" :Current="currentSum"/>
+   <ProgressBar class="progress-bar" :Max="goalSum || 0" :Current="currentSum || 0"/>
   </div>
 </div>
 </template>

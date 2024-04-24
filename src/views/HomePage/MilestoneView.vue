@@ -20,17 +20,35 @@ const activeMilestonesTestData = [
   {
     id: 2,
     title: 'Spar 500kr!',
-    description: 'Spar 500kr i løpet av denne måneden.'
+    description: 'Spar 500kr i løpet av denne måneden.',
+    goalSum: 500,
+    currentSum: 500,
+    deadline: new Date('2021-12-24'),
+    startDate: new Date('2021-12-01'),
+    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
+
   },
   {
     id: 3,
     title: 'Spar 200kr!',
-    description: 'Spar 200kr i løpet av denne måneden.'
+    description: 'Spar 200kr i løpet av denne måneden.',
+    goalSum: 200,
+    currentSum: 200,
+    deadline: new Date('2021-12-24'),
+    startDate: new Date('2021-12-01'),
+    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
+
   },
   {
     id: 4,
     title: 'Spar 100kr!',
-    description: 'Spar 100kr i løpet av denne måneden.'
+    description: 'Spar 100kr i løpet av denne måneden.',
+    goalSum: 100,
+    currentSum: 100,
+    deadline: new Date('2021-12-24'),
+    startDate: new Date('2021-12-01'),
+    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
+
   }
 ]
 
@@ -38,7 +56,13 @@ const completedMilestonesTestData = [
   {
     id: 4,
     title: 'Spar 100kr!',
-    description: 'Spar 100kr i løpet av denne måneden.'
+    description: 'Spar 100kr i løpet av denne måneden.',
+    goalSum: 100,
+    currentSum: 100,
+    deadline: new Date('2021-12-24'),
+    startDate: new Date('2021-12-01'),
+    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
+
   },
 
   {
@@ -49,6 +73,7 @@ const completedMilestonesTestData = [
     currentSum: 5,
     deadline: new Date('2021-12-24'),
     startDate: new Date('2021-12-01'),
+    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
   },
   {
     id: 9,
@@ -58,6 +83,7 @@ const completedMilestonesTestData = [
     currentSum: 5,
     deadline: new Date('2021-12-24'),
     startDate: new Date('2021-12-01'),
+    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
   }
 ]
 
