@@ -220,6 +220,7 @@ flex-direction: column;
 
 .active-milestone:hover{
   transform: scale(1.02);
+  transition: 0.3s;
 }
 
 .right{
@@ -259,6 +260,7 @@ flex-direction: column;
 
 .completed-milestone:hover{
   transform: scale(1.05);
+  transition: 0.3s;
 }
 
 .pagination {
@@ -278,6 +280,7 @@ flex-direction: column;
 }
 
 .pagination button:hover {
+  transition: 0.3s;
   transform: scale(1.05);
 }
 
@@ -303,6 +306,7 @@ flex-direction: column;
 }
 
 .page-numbers button:hover {
+  transition: 0.3s;
   transform: scale(1.05);
 }
 

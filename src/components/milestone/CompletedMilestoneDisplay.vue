@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {ref} from "vue";
+
 const props = defineProps({
   id: Number,
   title: String,
@@ -11,21 +13,24 @@ const props = defineProps({
 });
 
 const imageUrl = "src/assets/pig.png"
-function openMilestone(){
-  console.log("Open milestone")
-}
+const displayDescription = ref(false)
+
 </script>
 
 <template>
 <div class="completed-milestone-display"
-     @click="openMilestone"
+     @mouseover="displayDescription = true"
+      @mouseleave="displayDescription = false"
      :style="{
             backgroundImage: image ? 'url(' + image + ')' : 'url(' + imageUrl + ')'
         }">
   <h2 class="title">{{props.title}}</h2>
-  <div class="info">
+  <div class="info" v-if="!displayDescription">
   <h4  v-if="currentSum">Du sparte {{props.currentSum}}kr</h4>
     <h4 v-if="deadline">{{props.deadline.getDate()}}/{{props.deadline.getMonth()}}-{{props.deadline.getFullYear()}}</h4>
+  </div>
+  <div class="info" v-if="displayDescription">
+    <h4>{{props.description}}</h4>
   </div>
 
 

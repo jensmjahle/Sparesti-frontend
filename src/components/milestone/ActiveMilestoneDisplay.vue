@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import ProgressBar from "@/components/ProgressBar.vue";
+import {useMilestoneStore} from "@/stores/currentMilestone";
+import router from "@/router";
 
 const props = defineProps({
   id: Number,
@@ -14,8 +16,11 @@ const props = defineProps({
 const imageUrl = "src/assets/pig.png"
 
 const openMilestone = () => {
-  console.log("Open dialog")
+  useMilestoneStore().setMilestoneId(props.id)
+  router.push("/path")
 }
+
+
 </script>
 
 <template>
@@ -52,5 +57,6 @@ const openMilestone = () => {
   flex-direction: column;
   place-content: space-between;
   gap: 2.5%;
+  transition: 0.3s;
 }
 </style>
