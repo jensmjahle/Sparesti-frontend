@@ -4,7 +4,7 @@ import BaseInput from '@/components/create-challenge/BaseInput.vue'
 import BaseTextArea from '@/components/create-challenge/BaseTextArea.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { createMilestone } from '@/utils/createMilestoneUtils'
 import { useTokenStore } from '@/stores/token'
 import { useRouter } from 'vue-router'
@@ -48,7 +48,7 @@ const validate = () => {
   return isValid
 }
 
-const milestoneData = {
+const milestoneData = computed(() => ({
   milestoneTitle: title.value,
   milestoneDescription: description.value,
   milestoneGoalSum: goal_sum.value,
@@ -56,12 +56,13 @@ const milestoneData = {
   milestoneImage: image.value,
   deadlineDate: end_date.value ? start_date.value.toISOString().substring(0, 10) : null,
   startDate: start_date.value ? start_date.value.toISOString().substring(0, 10) : null
-}
+}));
 
 const saveInput = () => {
   if (validate()) {
-    createMilestone(milestoneData, tokenStore.jwtToken)
-    router.push('/homepage/home')
+    console.log(milestoneData.value)
+    //createMilestone(milestoneData, tokenStore.jwtToken)
+    //router.push('/homepage/home')
   } else {
     console.log('fail')
   }
