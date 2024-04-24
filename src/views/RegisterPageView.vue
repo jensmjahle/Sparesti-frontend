@@ -46,7 +46,6 @@ const selectedOption = ref(accounts.value.indexOf(FirstTimeAnswersStore().userRe
 
 const fetchAccounts = async () => {
   accounts.value = await getUserBankAccounts(useTokenStore().getJwtToken)
-  console.log(accounts.value)
   console.log(useTokenStore().getJwtToken)
 }
 onMounted(  () => {
@@ -73,10 +72,7 @@ async function nextQuestion(){
       showSelect.value = false;
     }
   } else {
-    const json = convertToJsonObject(FirstTimeAnswersStore().userResponses)
-    console.log(typeof json)
     await updateUserAccount(convertToJsonObject(FirstTimeAnswersStore().userResponses), useTokenStore().getJwtToken)
-    console.log(convertToJsonObject(FirstTimeAnswersStore().userResponses))
     router.push("/homepage/home")
   }
   if(index === questions.length -1){
