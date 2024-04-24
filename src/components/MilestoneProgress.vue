@@ -16,7 +16,7 @@ const props = defineProps({
   <div id = MilestoneProgress>
     <h3 id = TotalSavings>Totalt oppspart:</h3>
     <h3 id = Savings>{{props.totalSaved + " / " + props.totalToSave + " NOK"}}</h3>
-    <ProgressBar :Max="props.totalToSave" :Current="props.totalSaved" id = progress />
+    <ProgressBar :Max="props.totalToSave || 0" :Current="props.totalSaved || 0" id = progress />
   </div>
 </template>
 

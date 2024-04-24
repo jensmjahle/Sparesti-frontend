@@ -8,9 +8,13 @@ const props = defineProps({
   totalSaved: Number
 });
 
-const totalNodes = ref(Math.ceil(props.totalToSave / 250));
+const totalNodes = ref(props.totalToSave ? Math.ceil(props.totalToSave / 250) : 0);
 console.log("TotalNodes: " + totalNodes.value)
-const remainingNodes = ref(Math.ceil(totalNodes.value - (totalNodes.value * (props.totalSaved / props.totalToSave))));
+const remainingNodes = ref(
+  totalNodes.value && props.totalSaved && props.totalToSave
+    ? Math.ceil(totalNodes.value - (totalNodes.value * (props.totalSaved / props.totalToSave)))
+    : 0
+);
 console.log(("RemainingNodes: " + remainingNodes.value))
 
 const nodes = Array.from({ length: totalNodes.value }, (_, index) => ({
