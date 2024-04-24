@@ -1,15 +1,17 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { defineProps } from 'vue'
 
-const description = ref("Placeholder Description")
+const props = defineProps({
+  pathDescription: String
+});
 
 </script>
 
 <template>
   <div id = MilestoneDescription>
     <h2 id = Title>Sparemåls beskrivelse:</h2>
-    <h3 id = Description>{{description}}</h3>
+    <h3 id = Description>{{props.pathDescription}}</h3>
   </div>
 </template>
 

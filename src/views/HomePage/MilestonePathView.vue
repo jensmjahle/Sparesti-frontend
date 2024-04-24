@@ -1,18 +1,22 @@
 <script setup lang="ts">
 
-import MilestoneProgress from '@/components/MilestoneProgress.vue'
+import MilestoneProgress from '@/components/MilestonePath/MilestoneProgress.vue'
 import { ref } from 'vue'
-import DirectTransfer from '@/components/DirectTransfer.vue'
-import MilestoneDescription from '@/components/MilestoneDescription.vue'
-import MilestonePath from '@/components/MilestonePath.vue'
+import DirectTransfer from '@/components/MilestonePath/DirectTransfer.vue'
+import MilestoneDescription from '@/components/MilestonePath/MilestoneDescription.vue'
+import MilestonePath from '@/components/MilestonePath/MilestonePath.vue'
+import { getMilestoneDetails } from '@/utils/MilestonePathUtils'
 
 const pathName = ref("PathNameHere")
+const pathDescription = ref("PathDescriptionHere")
 
 const totalToSave = ref(2000)
-const totalSaved = ref(1000)
+const totalSaved = ref(0)
 
 const showPath = ref(true);
 const showInfo = ref(false);
+
+const milestonePathKey = ref(0);
 
 function checkScreenWidth() {
   if(window.innerWidth >= 1000){
@@ -33,6 +37,17 @@ function showPathField(){
 
 checkScreenWidth()
 
+//Re-add when token store is up and running
+//const response = getMilestoneDetails(1)
+//pathName.value = response//data//milestoneTitle
+//pathDescription.value = response//data//milestoneDescription
+//totalToSave.value = response//data//milestoneGoalSum
+//totalSaved.value = response//data//milestoneCurrentSum
+
+function updateTotalSaved(value: number) {
+  totalSaved.value += value;
+  milestonePathKey.value++;
+}
 </script>
 
 <template>
@@ -44,17 +59,17 @@ checkScreenWidth()
     </div>
     <div id = MilestonePath>
       <div id = Path v-show="showPath">
-        <MilestonePath :total-to-save="totalToSave" :total-saved="totalSaved"/>
+        <MilestonePath :total-to-save="totalToSave" :total-saved="totalSaved" :key="milestonePathKey"/>
       </div>
       <div id = Info v-show="showInfo">
         <div id = Progress>
           <MilestoneProgress :total-to-save="totalToSave" :total-saved="totalSaved"/>
         </div>
         <div id = Transfer>
-          <DirectTransfer/>
+          <DirectTransfer @transfer-value="updateTotalSaved"/>
         </div>
         <div id = Description>
-          <MilestoneDescription/>
+          <MilestoneDescription :path-description="pathDescription"/>
         </div>
       </div>
     </div>

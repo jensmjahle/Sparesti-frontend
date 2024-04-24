@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import PathNode from '@/components/PathNode.vue'
+import PathNode from '@/components/MilestonePath/PathNode.vue'
 import { ref } from 'vue'
 import { defineProps } from 'vue';
+
 
 const props = defineProps({
   totalToSave: Number,
@@ -17,13 +18,20 @@ const remainingNodes = ref(
 );
 console.log(("RemainingNodes: " + remainingNodes.value))
 
+if(props.totalSaved === 0){
+  remainingNodes.value = totalNodes.value;
+}
+
 const nodes = Array.from({ length: totalNodes.value }, (_, index) => ({
   offset: `${Math.random() > 0.5 ? Math.random() * 2 * 100 + 'px' : '-' + (Math.random() * 2 * 100 + 'px')}`,
   colorIndex: index < remainingNodes.value - 1 ? 0 : (index === remainingNodes.value - 1 ? 1 : 2)
 }));
 
+
+
 const nodeForegroundColors = ref(['#CCCCCF', '#A4ED45', '#FCBD47'])
 const nodeBackgroundColors = ref(['#A4A4A6', '#6AB40A', '#FFA600'])
+
 </script>
 
 <template>

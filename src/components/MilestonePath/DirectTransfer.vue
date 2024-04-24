@@ -1,13 +1,22 @@
 <script setup lang="ts">
 
+import { ref, defineEmits } from 'vue';
+
+const transferValue = ref<number>(0);
+const emits = defineEmits(['transfer-value']); // Define custom events
+
+function transfer() {
+  emits('transfer-value', transferValue.value);
+}
+
 </script>
 
 <template>
   <div id = DirectTransfer>
     <h2 id = Title>Direkte overføring:</h2>
     <div id = Transfer>
-      <input type="number" min = "1" id = TransferInput />
-      <button id = TransferButton>Overfør</button>
+      <input type="number" min = "1" id = TransferInput v-model="transferValue"/>
+      <button id = TransferButton @click = "transfer()">Overfør</button>
     </div>
   </div>
 </template>
