@@ -1,4 +1,9 @@
 import axios from 'axios';
+import { useTokenStore } from '@/stores/token';
+
+const token:string = useTokenStore().getJwtToken;
+
+
 
 const testDataUserAccounts:{}[] = [
   {
@@ -106,7 +111,7 @@ export const deleteUser = async ():Promise<any>=>{
     const config = {
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': `Bearer temporary token`
+        'Authorization': `Bearer ${token}`
       }
     };
     return await axios.delete('http://localhost:8080/users/delete',config);
@@ -120,7 +125,7 @@ export const getUserAccountInfo = async ():Promise<any> => {
     const config = {
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': `Bearer temporary token`
+        'Authorization': `Bearer ${token}`
       },
     };
     return await axios.get('http://localhost:8080/users/get', config);
@@ -134,7 +139,7 @@ export const getUserInfo = async (): Promise<any> => {
     const config = {
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': `Bearer temporary token`
+        'Authorization': `Bearer ${token}`
       },
     };
     return await axios.get('http://localhost:8080/user/account', config);
@@ -151,7 +156,7 @@ export const updateUserInfo = async (
     const config ={
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': `Bearer temporary token`
+        'Authorization': `Bearer ${token}`
       },
     };
     const data = {
@@ -172,7 +177,7 @@ export const updatePasswordInfo = async (
     const config ={
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': `Bearer temporary token`
+        'Authorization': `Bearer ${token}`
       },
     };
     const data = {
@@ -192,7 +197,7 @@ export const updateBankAccountInfo = async (
     const config ={
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': `Bearer temporary token`
+        'Authorization': `Bearer ${token}`
       },
     };
     const data = {
@@ -214,7 +219,7 @@ export const updateIncomeInfo = async (
     const config ={
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': `Bearer temporary token`
+        'Authorization': `Bearer ${token}`
       }
     };
     const data = {
