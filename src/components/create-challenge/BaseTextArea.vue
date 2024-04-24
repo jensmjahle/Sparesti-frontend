@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
     label: {
       type: String,
@@ -22,7 +22,7 @@ const props = defineProps({
     :placeholder=placeHolder
     class="field"
     :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement)?.value)"
   />
 </template>
 
