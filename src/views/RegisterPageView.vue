@@ -2,9 +2,14 @@
 
 import ProgressBar from '@/components/ProgressBar.vue'
 import TopBanner from '@/components/TopBanner.vue'
-import { ref } from 'vue'
-import { FirstTimeAnswersStore } from '@/stores/FirstTimeAnswers'
+import {onMounted, ref} from 'vue'
+import {FirstTimeAnswersStore} from '@/stores/FirstTimeAnswers'
 import router from '@/router'
+import {
+  getUserBankAccounts,
+  updateUserAccount
+} from "@/utils/registerPageUtils";
+import {useTokenStore} from "@/stores/token";
 
 const questions = ["Hva er fødselsdatoen din?",
   "Hva er ditt fornavn?",
@@ -15,7 +20,16 @@ const questions = ["Hva er fødselsdatoen din?",
   "Velg din sparekonto",
 ]
 
-const accounts = ["Account 1", "Account 2", "Account 3"]
+interface Account {
+  accountNumber: number;
+  username: string;
+  balance: number;
+  name: string;
+  type: string;
+  currency: string;
+}
+
+const accounts = ref(<Account[]>[])
 
 let index = 0;
 let currentQuestion = ref(questions[index])
@@ -28,7 +42,16 @@ const answer = ref(FirstTimeAnswersStore().userResponses[index]);
 const showInput = ref(true);
 const showSelect= ref(false);
 
-const selectedOption = ref(accounts.indexOf(FirstTimeAnswersStore().userResponses[index]))
+const selectedOption = ref(accounts.value.indexOf(FirstTimeAnswersStore().userResponses[index]));
+
+const fetchAccounts = async () => {
+  accounts.value = await getUserBankAccounts(useTokenStore().getJwtToken)
+  console.log(accounts.value)
+  console.log(useTokenStore().getJwtToken)
+}
+onMounted(  () => {
+  fetchAccounts()
+})
 
 async function nextQuestion(){
   if(index !== questions.length - 1){
@@ -42,7 +65,7 @@ async function nextQuestion(){
     await new Promise(resolve => setTimeout(resolve, 50));
     answer.value= FirstTimeAnswersStore().userResponses[index]
     if(currentQuestionType.value === "selection"){
-      selectedOption.value = accounts.indexOf((FirstTimeAnswersStore().userResponses[index]))
+      selectedOption.value = accounts.value.indexOf(FirstTimeAnswersStore().userResponses[index]);
       showInput.value = false;
       showSelect.value = true;
     } else {
@@ -50,6 +73,10 @@ async function nextQuestion(){
       showSelect.value = false;
     }
   } else {
+    const json = convertToJsonObject(FirstTimeAnswersStore().userResponses)
+    console.log(typeof json)
+    await updateUserAccount(convertToJsonObject(FirstTimeAnswersStore().userResponses), useTokenStore().getJwtToken)
+    console.log(convertToJsonObject(FirstTimeAnswersStore().userResponses))
     router.push("/homepage/home")
   }
   if(index === questions.length -1){
@@ -68,7 +95,7 @@ async function prevQuestion(){
     await new Promise(resolve => setTimeout(resolve, 50));
     answer.value= FirstTimeAnswersStore().userResponses[index]
     if(currentQuestionType.value === "selection"){
-      selectedOption.value = accounts.indexOf((FirstTimeAnswersStore().userResponses[index]))
+      selectedOption.value = accounts.value.indexOf(FirstTimeAnswersStore().userResponses[index]);
       showInput.value = false;
       showSelect.value = true;
     } else {
@@ -81,9 +108,22 @@ async function prevQuestion(){
 
 const nextButtonText = ref("Neste")
 
+function convertToJsonObject(responses: any[]): Record<string, any> {
+  return {
+    username: useTokenStore().getUsername,
+    birthDate: responses[0],
+    firstName: responses[1],
+    lastName: responses[2],
+    monthlyIncome: responses[3],
+    monthlyFixedExpenses: responses[4],
+    currentAccount: responses[5],
+    savingsAccount: responses[6],
+    isConnectedToBank: useTokenStore().getUserRole
+  };
+}
 
 function updateSelectedOption() {
-  FirstTimeAnswersStore().setUserAnswer(index, accounts[selectedOption.value])
+  FirstTimeAnswersStore().setUserAnswer(index, accounts.value[selectedOption.value].accountNumber)
 }
 
 
@@ -98,7 +138,7 @@ function updateSelectedOption() {
       <input id = answerField :type=currentQuestionType v-model="answer" v-show="showInput">
       <select id = selectField v-show="showSelect" @change="updateSelectedOption" v-model="selectedOption">
         <option value="" disabled selected>Velg konto</option>
-        <option v-for="(option, index) in accounts" :key="index" :value="index">{{ option }}</option>
+        <option v-for="(option, index) in accounts" :key="index" :value="index">{{ option.accountNumber + ": " + option.type }}</option>
       </select>
     </div>
     <div id = buttons>
