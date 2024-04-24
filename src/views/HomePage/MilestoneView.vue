@@ -4,100 +4,19 @@ import {onMounted, ref} from "vue";
 import router from "@/router";
 import CompletedMilestoneDisplay from '@/components/milestone/CompletedMilestoneDisplay.vue'
 import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDisplay.vue'
-import {getAllMilestones} from "@/utils/MilestoneUtils";
+import {getAllMilestoneLogs, getAllMilestones} from "@/utils/MilestoneUtils";
 import {useTokenStore} from "@/stores/token";
 
-
-const activeMilestonesTestData = [
-  {
-    id: 1,
-    title: 'Spar 1000kr!',
-    description: 'Spar 1000kr i løpet av denne måneden.',
-    goalSum: 1000,
-    currentSum: 500,
-    deadline: new Date('2021-12-24'),
-    startDate: new Date('2021-12-01'),
-    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
-  },
-  {
-    id: 2,
-    title: 'Spar 500kr!',
-    description: 'Spar 500kr i løpet av denne måneden.',
-    goalSum: 500,
-    currentSum: 500,
-    deadline: new Date('2021-12-24'),
-    startDate: new Date('2021-12-01'),
-    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
-
-  },
-  {
-    id: 3,
-    title: 'Spar 200kr!',
-    description: 'Spar 200kr i løpet av denne måneden.',
-    goalSum: 200,
-    currentSum: 200,
-    deadline: new Date('2021-12-24'),
-    startDate: new Date('2021-12-01'),
-    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
-
-  },
-  {
-    id: 4,
-    title: 'Spar 100kr!',
-    description: 'Spar 100kr i løpet av denne måneden.',
-    goalSum: 100,
-    currentSum: 100,
-    deadline: new Date('2021-12-24'),
-    startDate: new Date('2021-12-01'),
-    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
-
-  }
-]
 const activeMilestones = ref(<Milestone[]>[])
-const completedMilestonesTestData = [
-  {
-    id: 4,
-    title: 'Spar 100kr!',
-    description: 'Spar 100kr i løpet av denne måneden.',
-    goalSum: 100,
-    currentSum: 100,
-    deadline: new Date('2021-12-24'),
-    startDate: new Date('2021-12-01'),
-    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
-
-  },
-
-  {
-    id: 8,
-    title: 'Spar 5kr!',
-    description: 'Spar 5kr i løpet av denne måneden.',
-    goalSum: 5,
-    currentSum: 5,
-    deadline: new Date('2021-12-24'),
-    startDate: new Date('2021-12-01'),
-    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
-  },
-  {
-    id: 9,
-    title: 'Spar 5kr!',
-    description: 'Spar 5kr i løpet av denne måneden.',
-    goalSum: 5,
-    currentSum: 5,
-    deadline: new Date('2021-12-24'),
-    startDate: new Date('2021-12-01'),
-    image: 'https://www.tlctranslation.com/wp-content/uploads/2016/05/translation-makes-you-money-1024x602-1.jpg'
-  }
-]
+const completedMilestones = ref<Milestone[]>([])
 
 onMounted(async () => {
   const token = useTokenStore().$state.jwtToken
-  activeMilestones.value = await getAllMilestones(token)
+  activeMilestones.value = await getAllMilestones(token);
+  completedMilestones.value = await getAllMilestoneLogs(token);
+  console.log(completedMilestones.value);
 })
 
-//const activeMilestones = ref(activeMilestonesList);
-console.log(activeMilestones.value)
-//const completedMilestones = ref<Milestone[] | null>(completedMilestonesTestData)
-const completedMilestones =  ref(<Milestone[]>[])
 const pages = ref<number>(1)
 const currentPage = ref<number>(0)
 const navigateTo = (path: string) => {
@@ -120,9 +39,6 @@ interface Milestone{
   milestoneImage: string;
   username: string;
 }
-
-
-
 </script>
 
 <template>
@@ -134,6 +50,10 @@ interface Milestone{
           <h2 class="create-milestone-button-title">Lag nytt sparemål + </h2>
         </button>
         <div class="active-milestones">
+          <template v-if="activeMilestones.length === 0">
+            <h4>Opps, her var det tomt.<br>Lag ditt første sparemål for å komme i gang!</h4>
+          </template>
+          <template v-else>
           <ActiveMilestoneDisplay
             class="active-milestone"
             v-for="(activeMilestone, index) in activeMilestones"
@@ -147,6 +67,7 @@ interface Milestone{
             :startDate="activeMilestone.startDate"
             :image="activeMilestone.milestoneImage"
           ></ActiveMilestoneDisplay>
+          </template>
         </div>
       </div>
 
@@ -154,6 +75,10 @@ interface Milestone{
 
         <h2 class="completed-milestones-title">Sparemål historikk</h2>
         <div class="completed-milestones">
+          <template v-if="activeMilestones.length === 0">
+            <h4>Du har ingen fullførte sparemål<br>Avsluttede sparemål ender opp her sånn at du får full oversikt.</h4>
+          </template>
+          <template v-else>
           <CompletedMilestoneDisplay
             class="completed-milestone"
             v-for="(completedMilestone, index) in completedMilestones"
@@ -179,7 +104,9 @@ interface Milestone{
             </div>
             <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
         </div>
+        </template>
         </div>
+
     </div>
 </div>
 </div>
@@ -237,7 +164,7 @@ flex-direction: column;
 .active-milestones{
   display: flex;
   flex-direction: column;
-  place-content: space-between;
+  text-align: center;
 
   height: 100%;
   width: 100%;
@@ -278,6 +205,7 @@ flex-direction: column;
 .completed-milestones{
   display: flex;
   flex-direction: column;
+  text-align: center;
   height: 100%;
   width: 100%;
   padding: 5.0%;
