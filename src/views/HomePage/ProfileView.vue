@@ -1,19 +1,43 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import UserInfo from '@/components/profile/UserInfo.vue'
 import BankAccountInfo from '@/components/profile/BankAccountInfo.vue'
 import IncomeInfo from '@/components/profile/IncomeInfo.vue'
 import BadgeInfo from '@/components/profile/BadgeInfo.vue'
 import PasswordInfo from '@/components/profile/PasswordInfo.vue'
+import { getUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
 
-const username = ref<string>('$$$$')
+const token:string = useTokenStore().jwtToken;
+
+const firstName = ref<string>('');
+const lastName = ref<string>('');
+
+onMounted(async () => {
+  try {
+    await fetchUserInfo();
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+  }
+})
+const fetchUserInfo = async () =>{
+  try{
+    const response = await getUserInfo(token)
+    console.log(response)
+    firstName.value = response.firstName;
+    lastName.value = response.lastName;
+
+  } catch (error){
+    console.error('Error fetching user info:', error);
+  }
+}
 
 </script>
 
 <template>
   <div class="profile-view">
-    <h2 class="view-title">{{username}}</h2>
+    <h2 class="view-title">{{firstName}} {{lastName}}</h2>
     <div id="top">
       <div class="component" id="user-info" >
         <UserInfo></UserInfo>
@@ -31,7 +55,7 @@ const username = ref<string>('$$$$')
       </div>
     </div>
     <div id="bottom">
-      <div class="component">
+      <div class="component" id="badges">
         <BadgeInfo title="Mynter"></BadgeInfo>
       </div>
     </div>
@@ -46,7 +70,6 @@ const username = ref<string>('$$$$')
 
   width: 100%;
   height: 100%;
-  min-height: 650px;
 
   gap: 2.5%;
 }
@@ -58,12 +81,22 @@ const username = ref<string>('$$$$')
 #top, #middle{
   display: flex;
   flex-direction: row;
-
   width: 100%;
-  height: 33%;
   gap: 1.5%;
 }
 
+#top{
+  min-height: 35%;
+}
+
+#middle{
+  min-height: 38.5%;
+}
+
+#bottom{
+  padding-bottom: 100px;
+  min-height: 35%;
+}
 .component{
   border: 2px solid var(--color-border);
   border-radius: 20px;
@@ -74,21 +107,39 @@ const username = ref<string>('$$$$')
 
 #user-info, #income-info{
   width: 60%;
+  height: 100%;
 }
 
 #password-info, #account-info{
   width: 40%;
+  height: 100%;
+}
+
+#badges{
+  width: 100%;
 }
 
 @media only screen and (max-width: 1000px){
-  #top, #middle{
+  #top{
     display: flex;
     flex-direction: column;
+    place-content: space-evenly;
     width: 100%;
-    height: 100%;
+    min-height: 60%;
+  }
+  #middle{
+    display: flex;
+    flex-direction: column;
+    place-content: space-evenly;
+    width: 100%;
+    min-height: 70%;
   }
   #user-info, #password-info, #income-info, #account-info{
     width: 100%;
+  }
+
+  #user-info, #password-info{
+    height: 50%;
   }
 }
 

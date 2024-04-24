@@ -1,36 +1,69 @@
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { getUserAccountInfo, getUserInfo, updateBankAccountInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
 
-const savingAccount = ref('account 1');
-const checkingAccount= ref('account 2');
+const token:string = useTokenStore().jwtToken;
 
+const savingAccount = ref<number>(0);
+const checkingAccount= ref<number>(0);
+
+const savingAccountError = ref<string | null>(null);
 const accountError = ref<string | null>(null);
 
-const accounts = ref<string[]>([savingAccount.value, checkingAccount.value])
+const accounts = ref<number[]>([])
 
-const savingAccountOptions = computed(() =>
-  accounts.value.filter(account => account !== savingAccount.value))
+onMounted(async () => {
+  try {
+    await fetchUserInfo();
+    await fetchAccountInfo();
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+  }
+})
+const fetchUserInfo = async () =>{
+  try{
+    const response = await getUserInfo(token);
 
-const checkingAccountOptions = computed(() =>
-  accounts.value.filter(account => account !== checkingAccount.value))
+    checkingAccount.value = response.currentAccount;
+    savingAccount.value = response.savingsAccount;
+
+  } catch (error){
+    console.error('Error fetching user info:', error);
+  }
+}
+
+const fetchAccountInfo = async () => {
+  const response = await getUserAccountInfo(token);
+  console.log(response)
+  for(let i = 0; i < response.length; i++){
+    console.log(response[i].accountNumber)
+    accounts.value.push(response[i].accountNumber)
+  }
+}
 
 const checkInput = () => {
   if(savingAccount.value == checkingAccount.value){
-    accountError.value = 'Sparekonto er lik brukskonto!'
+    savingAccountError.value = 'Sparekonto er lik brukskonto!'
   } else{
-    accountError.value = null;
+    savingAccountError.value = null;
   }
+  accountError.value = null;
 }
 
 const saveAccountInfo = async ()=> {
   checkInput()
-  if(accountError.value == null){
-    alert('Ok!')
+  if(savingAccountError.value == null){
+    try{
+      await updateBankAccountInfo(token,checkingAccount.value, savingAccount.value)
+      await fetchAccountInfo();
+      await fetchUserInfo();
+    } catch (error){
+      accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
+    }
   }
 }
-
-
 
 </script>
 
@@ -38,29 +71,30 @@ const saveAccountInfo = async ()=> {
   <div class="account-info">
     <div class="header">
       <h3 class="title">Konto opplysninger</h3>
-      <button class="save-button" @click="saveAccountInfo">Lagre</button>
+      <button class="save-button" @click="saveAccountInfo">
+        <h3 class="save-button-title">Lagre</h3>
+      </button>
     </div>
 
     <div class="input-fields">
 
       <div class="input-collection">
-        <h3>Forbrukskonto: </h3>
+        <h4>Forbrukskonto: </h4>
         <select class="accounts" v-model="checkingAccount">
-          <option key="check-default" :value="checkingAccount">{{checkingAccount}}</option>
-          <option v-for="(account, index) in checkingAccountOptions" :key="'check' + index" :value="account">{{ account }}</option>
+          <option v-for="(account, index) in accounts" :key="'check' + index" :value="account">{{ account }}</option>
         </select>
       </div>
 
       <div class="input-collection">
-        <h3>Sparekonto: </h3>
-        <select class="accounts" :class="{'error': accountError}" v-model="savingAccount">
-          <option key="saving-default" :value="savingAccount">{{savingAccount}}</option>
-          <option v-for="(account, index) in savingAccountOptions" :key="'saving' + index" :value="account">{{ account }}</option>
+        <h4>Sparekonto: </h4>
+        <select class="accounts" :class="{'error': savingAccountError}" v-model="savingAccount">
+          <option v-for="(account, index) in accounts"  :key="'saving' + index" :value="account">{{ account }}</option>
         </select>
       </div>
 
       <div class="alert-box">
-        <h3 v-if="accountError" class="error-message">{{accountError}}</h3>
+        <h4 v-if="savingAccountError" class="error-message">{{savingAccountError}}</h4>
+        <h4 v-if="accountError" class="error-message">{{accountError}}</h4>
       </div>
 
     </div>
@@ -91,6 +125,21 @@ const saveAccountInfo = async ()=> {
   border-radius: 20px;
   padding-right: 5.0%;
   padding-left: 5.0%;
+  color: var(--color-headerText);
+  background-color: var(--color-save-button);
+  border: none;
+}
+
+.save-button:hover{
+  transform: scale(1.02);
+}
+
+.save-button:active{
+  background-color: var(--color-save-button-click);
+}
+
+.save-button-title{
+  font-weight: bold;
 }
 
 
@@ -125,6 +174,7 @@ const saveAccountInfo = async ()=> {
   display: flex;
   flex-direction: column;
   place-items: center;
+  min-height: 25px;
 }
 
 .error{

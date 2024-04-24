@@ -4,13 +4,18 @@
   --vt-c-white-mute: #f2f2f2;
 
   --vt-c-kellyGreen: #6AB40A;
+  --vt-c-kellyGreen-Dark: #4E9208;
   --vt-c-kellyGreen-Light: #A4ED45;
   --vt-c-borderGrey: #C1C1C1;
   --vt-c-borderGreyDark: #a19f9f;
   --vt-c-Raspberry: #E91658;
+  --vt-c-Raspberry-Dark: #C2134A;
   --vt-c-Orange: #FFA600;
+  --vt-c-Orange-Dark: #CC8400;;
   --vt-c-Orange-Light: #FCBD47;
   --vt-c-DarkBlue: #1600B2;
+  --vt-c-DarkBlue-Dark: #0F0099;;
+  --vt-c-DarkBlue-Light: #2500CC;
   --vt-c-Grape: #8332AC;
   --vt-c-Grey: #A4A4A6;
   --vt-c-Grey-Light: #CCCCCF;
@@ -29,9 +34,16 @@
 
 /* semantic color variables for this project */
 :root {
+  --color-pageination-button: var(--vt-c-white);
+  --color-pageination-button-click: var(--vt-c-borderGrey);
   --color-confirm-button: var(--vt-c-kellyGreen);
+  --color-confirm-button-click: var(--vt-c-kellyGreen-Dark);
   --color-cancel-button: var(--vt-c-Raspberry);
+  --color-cancel-button-click: var(--vt-c-Raspberry-Dark);
+  --color-save-button: var(--vt-c-Orange);
+  --color-save-button-click: var(--vt-c-Orange-Dark);
   --color-buttonText: var(--vt-c-white);
+  --color-button-text: var(--vt-c-white);
 
   --color-inactive-button: var(--vt-c-borderGrey);
   --color-inactive-button-text: var(--vt-c-borderGreyDark);
@@ -60,6 +72,7 @@
   --color-sideBar: var(--vt-c-white);
 
   --color-background: var(--vt-c-white);
+  --color-background-white: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
@@ -68,6 +81,7 @@
   --color-border-error: var(--vt-c-Raspberry);
 
   --color-text: var(--vt-c-text-light-1);
+  --color-text-black: var(--vt-c-black);
   --color-text-error: var(--vt-c-Raspberry);
 
   --color-shadow: rgba(0, 0, 0, 0.2);
@@ -148,17 +162,17 @@ h1{
 }
 
 h2{
-  font-size: 2.5em;
+  font-size: 2.0em;
 }
 
 h3{
-  font-size: 1em;
+  font-size: 1.5em;
 }
 
 h4{
-  font-size: 0.5em;
+  font-size: 1.0em;
 }
 
 h5{
-  font-size: 0.25em;
+  font-size: 0.5em;
 }

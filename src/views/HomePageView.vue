@@ -40,13 +40,13 @@ import SideNav from '@/components/navigation/SideNav.vue'
 .main{
   display: flex;
   flex-direction: row;
-  height: 100%;
+  height: 88%;
   width: 100%;
+  min-height: 650px;
 }
 
 .side-nav{
   width: 15%;
-  min-height: 650px;
   padding: 2.0% 1.0% 2.0%  1.0% ;
   box-shadow: 0 2px 5px var(--color-shadow);
 }
@@ -65,6 +65,14 @@ import SideNav from '@/components/navigation/SideNav.vue'
   }
   .view-element{
     width: 100%;
+  }
+
+  .main{
+    min-height: 0;
+  }
+
+  .view-element{
+    min-height: 650px;
   }
 }
 

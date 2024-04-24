@@ -1,19 +1,43 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { getUserInfo, updateUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
 
-const usernameError = ref<null|string>(null);
+const token:string = useTokenStore().jwtToken;
+
 const emailError = ref<null|string>(null);
+const imgError = ref<null|string>(null);
+const inputError = ref<null|string>(null)
 
-const username = ref<string>('brukernavn');
-const email = ref<string>('brukernavne@epost.com');
+const username = ref<string>('');
+const email = ref<string>('');
+const profilePictureBase64 = ref<string>('')
 
-const checkInput = () => {
-  if(username.value.trim() == ''){
-    usernameError.value = 'Ikke gyldig brukernavn!'
-  } else {
-    usernameError.value = null;
+onMounted(async () => {
+  try {
+    await fetchUserInfo();
+  } catch (error) {
+    console.error('Error fetching user info:', error);
   }
+})
+const fetchUserInfo = async () =>{
+  try{
+    const response = await getUserInfo(token)
+    console.log(response)
+    username.value = response.username;
+    email.value = response.email;
+    profilePictureBase64.value = response.profilePictureBase64;
+  } catch (error){
+    console.error('Error fetching user info:', error);
+  }
+}
+
+const validInput = () => {
+  checkInput();
+  return (emailError.value == null && imgError.value == null)
+}
+const checkInput = () => {
 
   if(email.value.trim() == '' || !isValidEmail(email.value)){
     emailError.value = 'Ikke gyldig e-post adresse!'
@@ -21,18 +45,26 @@ const checkInput = () => {
     emailError.value = null;
   }
 
+  inputError.value = null;
+
 }
 const isValidEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return email.trim() !== '' && emailRegex.test(email);
 };
 
-const saveUserInfo = async ()=>{
-  checkInput()
-  if(usernameError.value == null && emailError.value == null){
-    alert('Ok!')
+const saveUserInfo = async () => {
+  checkInput();
+  if(validInput()){
+    try{
+      await updateUserInfo( token,email.value, profilePictureBase64.value);
+    } catch (error) {
+      inputError.value = 'Noe gikk galt! Venligst prøv på nytt.'
+    }
   }
 }
+
+watch(email, checkInput);
 
 </script>
 
@@ -40,7 +72,9 @@ const saveUserInfo = async ()=>{
   <div class="user-info">
     <div class="header">
       <h3 class="title">Bruker opplysninger</h3>
-      <button class="save-button" @click="saveUserInfo">Lagre</button>
+      <button class="save-button" @click="saveUserInfo">
+        <h3 class="save-button-title">Lagre</h3>
+      </button>
     </div>
     <div class="input-fields">
       <div class="img-input">
@@ -50,17 +84,15 @@ const saveUserInfo = async ()=>{
       </div>
       <div class="text-input">
         <div class="input-collection">
-          <H3>Brukernavn: </H3>
-          <input class="input" :class="{'error': usernameError}" v-model="username">
-          <div class="alert-box">
-            <h3 v-if="usernameError" class="error-message">{{usernameError}}</h3>
-          </div>
+          <H4>Brukernavn: </H4>
+          <input class="input" id="username-input" v-model="username" readonly disabled>
         </div>
         <div class="input-collection">
-          <H3>E-post: </H3>
+          <H4>E-post: </H4>
           <input class="input" :class="{'error': emailError}" v-model="email">
           <div class="alert-box">
-            <h3 v-if="emailError" class="error-message">{{emailError}}</h3>
+            <h4 v-if="emailError" class="error-message">{{emailError}}</h4>
+            <h4 v-if="inputError" class="error-message">{{inputError}}</h4>
           </div>
         </div>
       </div>
@@ -94,6 +126,21 @@ const saveUserInfo = async ()=>{
   border-radius: 20px;
   padding-right: 5.0%;
   padding-left: 5.0%;
+  color: var(--color-headerText);
+  background-color: var(--color-save-button);
+  border: none;
+}
+
+.save-button:hover{
+  transform: scale(1.02);
+}
+
+.save-button:active{
+  background-color: var(--color-save-button-click);
+}
+
+.save-button-title{
+  font-weight: bold;
 }
 
 .input-fields{
@@ -118,6 +165,20 @@ const saveUserInfo = async ()=>{
   height: 100%;
 }
 
+.input{
+  border-radius: 20px;
+  border: 2px solid var(--color-border);
+  min-height: 30px;
+  padding-left: 2.0%;
+}
+
+#username-input{
+  background-color: #cccccc;
+  border:none;
+  color: var(--color-text-black);
+
+}
+
 .img-input{
   display: flex;
   flex-direction: column;
@@ -135,10 +196,22 @@ const saveUserInfo = async ()=>{
   height: 50%;
 }
 
-.input{
+.save-button{
   border-radius: 20px;
-  min-height: 30px;
-  padding-left: 2.0%;
+  padding-right: 5.0%;
+  padding-left: 5.0%;
+  color: var(--color-headerText);
+  font-weight: bold;
+  background-color: var(--color-save-button);
+  border: none;
+}
+
+.save-button:hover{
+  transform: scale(1.02);
+}
+
+.save-button:active{
+  background-color: var(--color-save-button-click);
 }
 
 .profile-picture-button{
@@ -148,7 +221,7 @@ const saveUserInfo = async ()=>{
   width: 100%;
   aspect-ratio: 1/1;
   border-radius: 50%;
-  background-color: transparent;
+  background-color: var(--color-headerText);
   border: 2px solid var(--color-border);
 }
 
@@ -168,6 +241,7 @@ const saveUserInfo = async ()=>{
 
   place-items: center;
   width: 100%;
+  min-height: 20px;
 }
 
 .error{
@@ -176,6 +250,12 @@ const saveUserInfo = async ()=>{
 
 .error-message{
   color: var(--color-text-error);
+}
+
+@media only screen and (max-width: 1000px) {
+  .img-input{
+    max-width: 15%;
+  }
 }
 
 </style>

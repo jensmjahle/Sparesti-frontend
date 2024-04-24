@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import TopBanner from '@/components/TopBanner.vue'
+import { signUpUser } from '@/utils/frontPageUtils'
+import { useTokenStore } from '@/stores/token'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter();
-
-function navigateToFirstTimeQuestion(){
-  router.push('/register')
-}
+import router from "@/router";
 
 const name = ref("")
 
@@ -45,8 +41,9 @@ function registerUserValid (nameToCheck:string, emailToCheck:string, passwordToC
   return validateName(nameToCheck) && validateEmail(emailToCheck) && validatePassword(passwordToCheck) && validateConfirmPassword(passwordToCheck, passwordConfirmation);
 }
 
-function buttonTest(){
-  console.log("Active")
+async function submit() {
+  await signUpUser(name.value, email.value, password.value)
+  await router.push("/register")
 }
 </script>
 
@@ -77,7 +74,7 @@ function buttonTest(){
         <span data-testid="PasswordConfirmError" v-if="fieldTouched.confirmePassword && !validateConfirmPassword(password, confirmePassword)" class="error-message">Passordene er ikke like</span>
       </div>
     </div>
-    <button id = "CreateButton" @click="navigateToFirstTimeQuestion()"
+    <button id = "CreateButton" @click="submit()"
             :disabled="!registerUserValid(name, email, password, confirmePassword)"
             :class="{ 'Submit': registerUserValid(name, email, password, confirmePassword),
              'InactiveSubmit': !registerUserValid(name, email, password, confirmePassword) }"
