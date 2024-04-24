@@ -2,6 +2,10 @@
 
 import { ref} from 'vue'
 import { updatePasswordInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
+
+const token:string = useTokenStore().jwtToken;
+
 const currentPassword = ref<string>('');
 const newPassword = ref<string>('')
 
@@ -39,7 +43,7 @@ const saveInfo = async () => {
   checkInput();
   if(validInput()){
     try{
-      await updatePasswordInfo( currentPassword.value,newPassword.value)
+      await updatePasswordInfo( token, currentPassword.value,newPassword.value)
       clearInput()
     } catch (error) {
       passwordError.value = 'Noe gikk galt! Venligst prøv på nytt.'

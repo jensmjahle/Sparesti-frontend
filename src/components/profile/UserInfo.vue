@@ -2,6 +2,9 @@
 
 import { onMounted, ref, watch } from 'vue'
 import { getUserInfo, updateUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
+
+const token:string = useTokenStore().jwtToken;
 
 const emailError = ref<null|string>(null);
 const imgError = ref<null|string>(null);
@@ -20,7 +23,7 @@ onMounted(async () => {
 })
 const fetchUserInfo = async () =>{
   try{
-    const response = await getUserInfo()
+    const response = await getUserInfo(token)
     console.log(response)
     username.value = response.username;
     email.value = response.email;
@@ -54,7 +57,7 @@ const saveUserInfo = async () => {
   checkInput();
   if(validInput()){
     try{
-      await updateUserInfo( email.value, profilePictureBase64.value);
+      await updateUserInfo( token,email.value, profilePictureBase64.value);
     } catch (error) {
       inputError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }

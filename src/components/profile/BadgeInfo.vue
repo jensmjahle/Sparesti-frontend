@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { getUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
 interface Achievement{
   id: number,
   title: string,
@@ -10,6 +11,8 @@ interface Achievement{
 const props = defineProps <{
   title: string
 }>();
+
+const token:string = useTokenStore().jwtToken;
 
 const title = ref<string>(props.title)
 const achievements = ref<Achievement[]>([])
@@ -24,7 +27,7 @@ onMounted(async () => {
 
 const fetchBadgeInfo = async ()=>{
   try {
-    const response = await getUserInfo()
+    const response = await getUserInfo(token)
     console.log(response)
     achievements.value = response.achievements;
   } catch (error){
