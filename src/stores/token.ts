@@ -9,7 +9,7 @@ export const useTokenStore = defineStore('token', {
         timer: null,
         jwtToken: "",
         username: null,
-        isConnectedToBank: null
+        isConnectedToBank: false
 
     }),
 
