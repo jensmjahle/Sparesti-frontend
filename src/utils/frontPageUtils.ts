@@ -52,3 +52,17 @@ export const getUserInfo = async(username: string, token: string) => {
         console.log(error)
     }
 }
+
+export const refreshToken = async (token: string) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+        }
+    };
+    try {
+        return await axios.get("http://localhost:8080/auth/refresh", config)
+    } catch (error) {
+        console.log(error)
+    }
+}

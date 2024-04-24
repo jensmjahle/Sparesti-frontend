@@ -1,16 +1,18 @@
 import { defineStore } from "pinia";
 import {
     getJwtToken,
-    getUserInfo
+    getUserInfo,
+    refreshToken
 } from "@/utils/frontPageUtils";
+import router from "@/router";
 
-export const useTokenStore = defineStore('token', {
+export const useTokenStore = defineStore({
+    id: 'token',
     state: () => ({
-        timer: null,
+        timer: null as ReturnType<typeof setTimeout> | null,
         jwtToken: "",
-        username: null,
-        isConnectedToBank: false
-
+        username: null as string | null,
+        isConnectedToBank: null as boolean | null
     }),
 
     persist: {
@@ -37,10 +39,40 @@ export const useTokenStore = defineStore('token', {
                         })
                     }
                 }
+                this.startTimer();
             } catch (error) {
                 console.error(error);
             }
-        }
+        },
+
+        async refreshToken() {
+            try {
+                const response = await refreshToken(this.jwtToken);
+                if (response !== undefined) {
+                    this.jwtToken = response.data;
+                    this.startTimer();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        logout() {
+            this.jwtToken = "";
+            this.username = null;
+            this.isConnectedToBank = null;
+            router.push("/login").then(r => r);
+        },
+
+        startTimer() {
+            this.timer = setTimeout(() => {
+                if (window.confirm("Your session is about to expire. Do you want to extend it?")) {
+                    this.refreshToken().then(r => r);
+                } else {
+                    this.logout();
+                }
+            }, 300000);
+        },
     },
 
     getters: {
