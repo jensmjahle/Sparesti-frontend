@@ -112,6 +112,7 @@ export const deleteUser = async (token:string):Promise<any>=>{
     return await axios.delete('http://localhost:8080/users/delete',config);
   } catch (error){
     console.error(error);
+    throw error;
   }
 }
 

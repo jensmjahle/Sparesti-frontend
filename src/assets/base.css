@@ -48,6 +48,9 @@
   --color-inactive-button: var(--vt-c-borderGrey);
   --color-inactive-button-text: var(--vt-c-borderGreyDark);
 
+  --color-logout-button: var(--vt-c-DarkBlue-Light);
+  --color-logout-button-click: var(--vt-c-DarkBlue-Dark);
+
   --color-PathYetToTakeLight: var(--vt-c-Grey-Light);
   --color-PathYetToTakeDark: var(--vt-c-Grey);
   --color-PathCurrentLight: var(--vt-c-kellyGreen-Light);

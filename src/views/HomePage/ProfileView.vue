@@ -6,7 +6,7 @@ import BankAccountInfo from '@/components/profile/BankAccountInfo.vue'
 import IncomeInfo from '@/components/profile/IncomeInfo.vue'
 import BadgeInfo from '@/components/profile/BadgeInfo.vue'
 import PasswordInfo from '@/components/profile/PasswordInfo.vue'
-import { getUserInfo } from '@/utils/profileutils'
+import { deleteUser, getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 
 const token:string = useTokenStore().jwtToken;
@@ -33,11 +33,30 @@ const fetchUserInfo = async () =>{
   }
 }
 
+const logout = () => {
+  useTokenStore().logout();
+}
+
+const deleteUserAccount = async () => {
+  try{
+    const response = await deleteUser(token);
+    console.log(response);
+    useTokenStore().logout();
+  } catch (error){
+    console.error('Error deleting user:', error);
+  }
+}
+
 </script>
 
 <template>
   <div class="profile-view">
-    <h2 class="view-title">{{firstName}} {{lastName}}</h2>
+    <div class="header">
+      <h2 class="view-title">{{firstName}} {{lastName}}</h2>
+      <button class="user-button" id="logout-button" @click="logout">
+        <h3 class="user-button-title">Logg ut</h3>
+      </button>
+    </div>
     <div id="top">
       <div class="component" id="user-info" >
         <UserInfo></UserInfo>
@@ -58,6 +77,11 @@ const fetchUserInfo = async () =>{
       <div class="component" id="badges">
         <BadgeInfo title="Mynter"></BadgeInfo>
       </div>
+      <div class="delete-user-button-box">
+        <button class="user-button" id="delete-user-button" @click="deleteUserAccount">
+          <h3 class="user-button-title">Slett bruker</h3>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -74,8 +98,38 @@ const fetchUserInfo = async () =>{
   gap: 2.5%;
 }
 
+.header{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  place-content: space-between;
+}
+
 .view-title{
   color: var(--color-heading);
+}
+
+.user-button{
+  border-radius: 20px;
+  width: 20%;
+  border: none;
+}
+
+.user-button:hover{
+  transform: scale(1.02);
+}
+
+#logout-button{
+  background-color: var(--color-logout-button);
+}
+
+#logout-button:active{
+  background-color: var(--color-logout-button-click);
+}
+
+.user-button-title{
+  color: var(--color-headerText);
+  font-weight: bold;
 }
 
 #top, #middle{
@@ -94,8 +148,8 @@ const fetchUserInfo = async () =>{
 }
 
 #bottom{
-  padding-bottom: 100px;
-  min-height: 35%;
+  height: fit-content;
+  min-height: 40%;
 }
 .component{
   border: 2px solid var(--color-border);
@@ -117,6 +171,26 @@ const fetchUserInfo = async () =>{
 
 #badges{
   width: 100%;
+  min-height: 80%;
+}
+
+.delete-user-button-box{
+  display: flex;
+  width: 100%;
+  height: 20%;
+  margin-top: 1.5%;
+  margin-bottom: 1.5%;
+  padding: 0.02%;
+  place-content: center;
+}
+
+#delete-user-button{
+  width: 25%;
+  background-color: var(--color-cancel-button);
+}
+
+#delete-user-button:active{
+  background-color: var(--color-cancel-button-click);
 }
 
 @media only screen and (max-width: 1000px){
@@ -141,6 +215,12 @@ const fetchUserInfo = async () =>{
   #user-info, #password-info{
     height: 50%;
   }
+
+  #delete-user-button{
+    width: 35%;
+    height: 75%;
+  }
+
 }
 
 </style>
