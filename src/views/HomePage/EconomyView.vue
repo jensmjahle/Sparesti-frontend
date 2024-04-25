@@ -9,6 +9,15 @@ import { useTokenStore } from '@/stores/token'
 
 ChartJS.register(ArcElement,Tooltip,Legend, Colors)
 
+interface Transaction {
+  "transactionCategory": string,
+  "transactionTitle": string,
+  "amount": number,
+  "transactionId": number,
+  "date": string,
+
+}
+
 const token:string = useTokenStore().jwtToken;
 
 const selectedOption = ref<string | null>("")
@@ -17,7 +26,7 @@ const selectedOption = ref<string | null>("")
 let pages = 0;
 let currentPage = 0;
 
-const transactions = ref<[]>([])
+const transactions = ref<Transaction[]>([])
 const fetchTransactions = async() =>  {
   try{
     const response = await getTransactions(token,0,6)
