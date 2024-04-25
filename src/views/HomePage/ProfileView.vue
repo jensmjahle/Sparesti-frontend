@@ -1,19 +1,43 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import UserInfo from '@/components/profile/UserInfo.vue'
 import BankAccountInfo from '@/components/profile/BankAccountInfo.vue'
 import IncomeInfo from '@/components/profile/IncomeInfo.vue'
 import BadgeInfo from '@/components/profile/BadgeInfo.vue'
 import PasswordInfo from '@/components/profile/PasswordInfo.vue'
+import { getUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
 
-const username = ref<string>('$$$$')
+const token:string = useTokenStore().jwtToken;
+
+const firstName = ref<string>('');
+const lastName = ref<string>('');
+
+onMounted(async () => {
+  try {
+    await fetchUserInfo();
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+  }
+})
+const fetchUserInfo = async () =>{
+  try{
+    const response = await getUserInfo(token)
+    console.log(response)
+    firstName.value = response.firstName;
+    lastName.value = response.lastName;
+
+  } catch (error){
+    console.error('Error fetching user info:', error);
+  }
+}
 
 </script>
 
 <template>
   <div class="profile-view">
-    <h2 class="view-title">{{username}}</h2>
+    <h2 class="view-title">{{firstName}} {{lastName}}</h2>
     <div id="top">
       <div class="component" id="user-info" >
         <UserInfo></UserInfo>

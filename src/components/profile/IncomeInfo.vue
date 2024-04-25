@@ -1,43 +1,89 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { getUserInfo, updateIncomeInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
 
-const monthlyIncome = ref<number | string>(9400);
-const monthlySpending = ref<number | string>(5000);
-const monthlySaving = ref<number | string>(0)
+const token:string = useTokenStore().jwtToken;
+
+const monthlyIncome = ref<number>(0);
+const monthlyFixedExpenses = ref<number>(0);
+const monthlySavings = ref<number>(0);
 
 const monthlyIncomeError = ref<string|null>(null);
 const monthlySpendingError = ref<string|null>(null);
 const monthlySavingError = ref<string|null>(null);
+const incomeError = ref<string|null>(null);
 
+onMounted(async () => {
+  try {
+    await fetchIncomeInfo();
+  } catch (error) {
+    console.error('Error fetching achievements:', error);
+  }
+})
+
+const fetchIncomeInfo = async () =>{
+  try{
+    const response = await getUserInfo(token);
+    console.log(response);
+    monthlyIncome.value = response.monthlyIncome;
+    monthlyFixedExpenses.value = response.monthlyFixedExpenses;
+    monthlySavings.value = response.monthlySavings;
+  } catch (error){
+    console.error('Error fetching income info:', error);
+  }
+}
+
+const saveInput = async () => {
+  if(validInput()){
+    try {
+      await updateIncomeInfo(
+        token,
+        monthlyIncome.value,
+        monthlyFixedExpenses.value,
+        monthlySavings.value)
+        await fetchIncomeInfo();
+    } catch (error){
+      console.error('Error updating income info: ', error);
+      incomeError.value = 'Noe gikk galt! Venligst prøv på nytt.'
+    }
+  }
+}
+
+const validInput = () => {
+  checkInput();
+  return (
+    monthlyIncomeError.value === null &&
+    monthlySpendingError.value === null &&
+    monthlySavingError.value === null
+  );
+};
 const checkInput = () => {
-  if (monthlyIncome.value === '' || isNaN(Number(monthlyIncome.value)) || Number(monthlyIncome.value) < 0) {
+  const stringIncome = monthlyIncome.value.toString();
+  const stringFixedExpenses = monthlyFixedExpenses.value.toString();
+  const stringSavings = monthlySavings.value.toString();
+
+  if (isNaN(monthlyIncome.value) || monthlyIncome.value< 0 || stringIncome == '') {
     monthlyIncomeError.value = 'Vennligst oppgi en gyldig månedlig inntekt!';
   } else {
     monthlyIncomeError.value = null;
   }
 
-  if (monthlySpending.value === '' || isNaN(Number(monthlySpending.value)) || Number(monthlySpending.value) < 0) {
+  if (isNaN(monthlyFixedExpenses.value) ||monthlyFixedExpenses.value< 0 || stringFixedExpenses == '') {
     monthlySpendingError.value = 'Vennligst oppgi gyldige faste utgifter!';
   } else {
     monthlySpendingError.value = null;
   }
 
-  if (monthlySaving.value === '' || isNaN(Number(monthlySaving.value)) || Number(monthlySaving.value) < 0) {
+  if (isNaN(monthlySavings.value) ||monthlySavings.value< 0 || stringSavings == '') {
     monthlySavingError.value = 'Vennligst oppgi et gyldig ønsket sparebeløp!';
   } else {
     monthlySavingError.value = null;
   }
+  incomeError.value = null;
 };
-const saveInput = async () => {
-  checkInput()
-  if(monthlyIncomeError.value == null
-    && monthlySpendingError.value == null
-    && monthlySavingError.value == null){
-    alert('Ok!')
-  }
 
-}
 </script>
 
 <template>
@@ -71,16 +117,17 @@ const saveInput = async () => {
         </div>
 
         <div class="input">
-          <input class="input-field" :class="{'error': monthlySpendingError}" v-model="monthlySpending">
+          <input class="input-field" :class="{'error': monthlySpendingError}" v-model="monthlyFixedExpenses">
           <div class="alert-box">
             <h4 v-if="monthlySpendingError" class="error-message">{{monthlySpendingError}}</h4>
           </div>
         </div>
 
         <div class="input">
-          <input class="input-field" :class="{'error': monthlySavingError}" v-model="monthlySaving">
+          <input class="input-field" :class="{'error': monthlySavingError}" v-model="monthlySavings">
           <div class="alert-box">
             <h4 v-if="monthlySavingError" class="error-message">{{monthlySavingError}}</h4>
+            <h4 v-if="incomeError" class="error-message">{{incomeError}}</h4>
           </div>
         </div>
 
@@ -178,6 +225,7 @@ const saveInput = async () => {
   width: 100%;
   height: 50%;
   border-radius: 20px;
+  border: 2px solid var(--color-border);
   min-height: 30px;
   padding-left: 2.0%;
 }

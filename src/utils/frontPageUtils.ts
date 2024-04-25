@@ -1,5 +1,5 @@
 import axios from "axios";
-import {useTokenStore} from "../stores/token"
+import { useTokenStore } from '../stores/token';
 import router from "@/router";
 
 export const getJwtToken = async (username: string, password: string) => {
@@ -15,7 +15,7 @@ export const getJwtToken = async (username: string, password: string) => {
             config
         );
     } catch (error) {
-        console.log("potetmos")
+        console.log("Error getting JWT token: ", error);
     }
 }
 
@@ -48,8 +48,21 @@ export const getUserInfo = async(username: string, token: string) => {
         }
     };
     try {
-        console.log(token)
         return await axios.get("http://localhost:8080/users/get", config)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const refreshToken = async (token: string) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+        }
+    };
+    try {
+        return await axios.get("http://localhost:8080/auth/refresh", config)
     } catch (error) {
         console.log(error)
     }

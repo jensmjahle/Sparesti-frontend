@@ -25,9 +25,8 @@
 <style scoped>
 
   #QuestionProgress{
-    width: 80vw;
+    width: 90%;
     height: 10vh;
-    margin-top: 1%;
   }
 
   @media only screen and (max-width: 1000px) {

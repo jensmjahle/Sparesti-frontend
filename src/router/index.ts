@@ -11,8 +11,12 @@ import LoginView from '@/views/FrontPage/LoginView.vue'
 import SignupView from '@/views/FrontPage/SignupView.vue'
 import RegisterPageView from '@/views/RegisterPageView.vue'
 import StartView from '@/views/FrontPage/StartView.vue'
+
+import MilestonePathView from '@/views/HomePage/MilestonePathView.vue'
+
 import CreateChallengeView from '@/views/HomePage/CreateChallengeView.vue'
 import CreateMilestoneView from '@/views/HomePage/CreateMilestoneView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,6 +65,10 @@ const router = createRouter({
         {
           path: 'milestone',
           component: MilestoneView
+        },
+        {
+          path: 'path',
+          component: MilestonePathView
         },
         {
           path: 'challenge',

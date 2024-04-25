@@ -1,72 +1,39 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { getUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
+interface Achievement{
+  id: number,
+  title: string,
+  img: string
+}
 
 const props = defineProps <{
   title: string
 }>();
 
-const testData = [
-  {
-    id:1,
-    title: 'Mynt A',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:2,
-    title: 'Mynt B',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:3,
-    title: 'Mynt C',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:4,
-    title: 'Mynt D',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:5,
-    title: 'Mynt E',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:6,
-    title: 'Mynt F',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:7,
-    title: 'Mynt G',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:8,
-    title: 'Mynt H',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:9,
-    title: 'Mynt I',
-    img:'/src/assets/png/gold-coin.png'
-  },
-  {
-    id:10,
-    title: 'Mynt J',
-    img:'/src/assets/png/gold-coin.png'
-  },
-
-]
+const token:string = useTokenStore().jwtToken;
 
 const title = ref<string>(props.title)
-const achievements = ref<Achievement[]>(testData)
+const achievements = ref<Achievement[]>([])
 
-interface Achievement{
-  id: number,
-  title: string,
-  img: string
-};
+onMounted(async () => {
+  try {
+    await fetchBadgeInfo()
+  } catch (error) {
+    console.error('Error fetching achievements:', error);
+  }
+})
+
+const fetchBadgeInfo = async ()=>{
+  try {
+    const response = await getUserInfo(token)
+    console.log(response)
+    achievements.value = response.achievements;
+  } catch (error){
+    console.error('Error fetching achievements:')
+  }
+}
 
 </script>
 

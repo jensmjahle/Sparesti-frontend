@@ -1,19 +1,42 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { getUserInfo, updateUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
 
-const usernameError = ref<null|string>(null);
+const token:string = useTokenStore().jwtToken;
+
 const emailError = ref<null|string>(null);
+const imgError = ref<null|string>(null);
+const inputError = ref<null|string>(null)
 
-const username = ref<string>('brukernavn');
-const email = ref<string>('brukernavne@epost.com');
+const username = ref<string>('');
+const email = ref<string>('');
+const profilePictureBase64 = ref<string>('')
 
-const checkInput = () => {
-  if(username.value.trim() == ''){
-    usernameError.value = 'Ikke gyldig brukernavn!'
-  } else {
-    usernameError.value = null;
+onMounted(async () => {
+  try {
+    await fetchUserInfo();
+  } catch (error) {
+    console.error('Error fetching user info:', error);
   }
+})
+const fetchUserInfo = async () =>{
+  try{
+    const response = await getUserInfo(token)
+    username.value = response.username;
+    email.value = response.email;
+    profilePictureBase64.value = response.profilePictureBase64;
+  } catch (error){
+    console.error('Error fetching user info:', error);
+  }
+}
+
+const validInput = () => {
+  checkInput();
+  return (emailError.value == null && imgError.value == null)
+}
+const checkInput = () => {
 
   if(email.value.trim() == '' || !isValidEmail(email.value)){
     emailError.value = 'Ikke gyldig e-post adresse!'
@@ -21,18 +44,26 @@ const checkInput = () => {
     emailError.value = null;
   }
 
+  inputError.value = null;
+
 }
 const isValidEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return email.trim() !== '' && emailRegex.test(email);
 };
 
-const saveUserInfo = async ()=>{
-  checkInput()
-  if(usernameError.value == null && emailError.value == null){
-    alert('Ok!')
+const saveUserInfo = async () => {
+  checkInput();
+  if(validInput()){
+    try{
+      await updateUserInfo( token,email.value, profilePictureBase64.value);
+    } catch (error) {
+      inputError.value = 'Noe gikk galt! Venligst prøv på nytt.'
+    }
   }
 }
+
+watch(email, checkInput);
 
 </script>
 
@@ -53,16 +84,14 @@ const saveUserInfo = async ()=>{
       <div class="text-input">
         <div class="input-collection">
           <H4>Brukernavn: </H4>
-          <input class="input" :class="{'error': usernameError}" v-model="username">
-          <div class="alert-box">
-            <h4 v-if="usernameError" class="error-message">{{usernameError}}</h4>
-          </div>
+          <input class="input" id="username-input" v-model="username" readonly disabled>
         </div>
         <div class="input-collection">
           <H4>E-post: </H4>
           <input class="input" :class="{'error': emailError}" v-model="email">
           <div class="alert-box">
             <h4 v-if="emailError" class="error-message">{{emailError}}</h4>
+            <h4 v-if="inputError" class="error-message">{{inputError}}</h4>
           </div>
         </div>
       </div>
@@ -137,8 +166,16 @@ const saveUserInfo = async ()=>{
 
 .input{
   border-radius: 20px;
+  border: 2px solid var(--color-border);
   min-height: 30px;
   padding-left: 2.0%;
+}
+
+#username-input{
+  background-color: #cccccc;
+  border:none;
+  color: var(--color-text-black);
+
 }
 
 .img-input{
