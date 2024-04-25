@@ -9,7 +9,7 @@ const props = defineProps({
   totalSaved: Number
 });
 
-const totalNodes = ref(props.totalToSave ? Math.ceil(props.totalToSave / 250) : 0);
+const totalNodes = ref(50)
 const remainingNodes = ref(
   totalNodes.value && props.totalSaved && props.totalToSave
     ? Math.ceil(totalNodes.value - (totalNodes.value * (props.totalSaved / props.totalToSave)))
@@ -29,6 +29,9 @@ const nodes = Array.from({ length: totalNodes.value }, (_, index) => ({
 
 const nodeForegroundColors = ref(['#CCCCCF', '#A4ED45', '#FCBD47'])
 const nodeBackgroundColors = ref(['#A4A4A6', '#6AB40A', '#FFA600'])
+
+console.log("Total to Save: " + props.totalToSave)
+console.log("Total saved: " + props.totalSaved)
 
 </script>
 

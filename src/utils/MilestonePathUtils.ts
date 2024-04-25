@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {useTokenStore} from '@/stores/token'
 
 export async function getMilestoneDetails(id: number){
 
@@ -7,9 +8,9 @@ export async function getMilestoneDetails(id: number){
   const config = {
     headers: {
       'Content-Type': 'Application/json',
-      //'Authorization': 'Bearer ' + TokenStore().getToken()
+      'Authorization': 'Bearer ' + useTokenStore().getJwtToken
     }
   }
 
-  return await axios.post("http://Localhost:8080/milestone/id", id, config);
+  return await axios.get("http://Localhost:8080/milestone/" + id, config);
 }
