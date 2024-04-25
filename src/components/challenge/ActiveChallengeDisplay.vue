@@ -1,18 +1,38 @@
 <script setup lang="ts">
+import { completeChallenge } from '@/utils/challengeutils'
+import { useTokenStore } from '@/stores/token'
+import { ref } from 'vue'
+
+const token:string = useTokenStore().jwtToken;
+
+const emits = defineEmits(['challengeCompleted']);
+const milestoneId = ref(1)
+
 const props = defineProps({
-  id: Number,
-  title: String,
-  description: String
+  challengeId: Number,
+  challengeTitle: String,
+  challengeDescription: String
 });
+
+const completeTheChallenge = async () => {
+  if(props.challengeId){
+    try{
+    await completeChallenge(token,props.challengeId, milestoneId.value)
+    emits('challengeCompleted', props.challengeId);
+    } catch (error){
+      alert('Noe gikk galt! Venligst prøv på nytt!')
+    }
+  }
+}
 
 </script>
 
 <template>
   <div class="potential-challenge-display">
-    <h3 class="title">{{props.title}}</h3>
-    <h4 class="description">{{props.description}}</h4>
+    <h3 class="title">{{ props.challengeTitle }}</h3>
+    <h4 class="description">{{ props.challengeDescription }}</h4>
     <div class="button-container">
-      <button class="complete-button">
+      <button class="complete-button" @click="completeTheChallenge()">
         <h3 class="complete-button-text">Fullfør</h3>
       </button>
     </div>
