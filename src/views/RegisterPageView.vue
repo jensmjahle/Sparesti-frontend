@@ -2,7 +2,7 @@
 
 import ProgressBar from '@/components/ProgressBar.vue'
 import TopBanner from '@/components/TopBanner.vue'
-import {onMounted, ref} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import {FirstTimeAnswersStore} from '@/stores/FirstTimeAnswers'
 import router from '@/router'
 import {
@@ -39,6 +39,10 @@ const questionType = ["date", "text", "text", "number", "number", "number", "sel
 let currentQuestionType = ref(questionType[index])
 
 const answer = ref(FirstTimeAnswersStore().userResponses[index]);
+
+const answerIsEmpty = computed(() => {
+  return !answer.value;
+});
 
 const showInput = ref(true);
 const showSelect= ref(false);
@@ -139,7 +143,7 @@ function updateSelectedOption() {
     </div>
     <div id = buttons>
       <button id = backButton @click ="prevQuestion()" :disabled="index === 0" :class="{ 'active': index !==0, 'disabled': index === 0 }">Tilbake</button>
-      <button id = nextButton @click="nextQuestion()">{{ nextButtonText }}</button>
+      <button id = nextButton @click="nextQuestion()" :disabled="answerIsEmpty">{{ nextButtonText }}</button>
     </div>
   </div>
 </template>
@@ -186,6 +190,12 @@ function updateSelectedOption() {
     margin-top: 1%;
   }
 
+  .disabled,
+  #nextButton[disabled] {
+    background-color: var(--color-inactive-button); /* Use the inactive button color */
+    color: var(--color-inactive-button-text);
+  }
+
   .active, #nextButton{
     width: 15%;
     height: 50%;
@@ -195,7 +205,7 @@ function updateSelectedOption() {
     font-size: 2em;
   }
 
-  .active:hover, #nextButton:hover{
+  .active:hover, #nextButton:hover:not([disabled]){
     transform: scale(1.05);
   }
 
