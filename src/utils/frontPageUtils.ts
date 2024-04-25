@@ -67,3 +67,8 @@ export const refreshToken = async (token: string) => {
         console.log(error)
     }
 }
+
+export const logout = async () => {
+    useTokenStore().logout();
+    router.push("/login").then(r => r);
+}
