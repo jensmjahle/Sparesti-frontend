@@ -13,30 +13,20 @@ function navigateToNewUser() {
 }
 
 async function login() {
-  if (password.value.length < 8) {
-    alert('Password must be at least 8 characters');
-    return;
+  await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
+  if (useTokenStore().$state.jwtToken !== '' && !useTokenStore().$state.jwtToken.includes('Request')) {
+    await router.push('/homepage')
   }
-
-  const tokenStore = useTokenStore();
-  if (!tokenStore) {
-    alert('Token store is not available');
-    return;
+  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 401'){
+    alert('Feil brukernavn eller passord')
   }
-
-  await tokenStore.getTokenAndSaveInStore(username.value, password.value);
-
-  if (tokenStore.$state.isConnectedToBank) {
-    await router.push('/homepage');
-  } else if (!tokenStore.$state.isConnectedToBank) {
-    alert('Not complete user, routing to registration page');
-    await router.push('/register');
+  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 403') {
+    alert('Du kommer fra et utrygt nettverk, vennligst prøv igjen senere')
   }
-  else {
-    alert('Login failed');
+  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 500') {
+    alert('Serveren er nede, vennligst prøv igjen senere')
   }
 }
-
 </script>
 
 <template>

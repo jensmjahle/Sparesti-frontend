@@ -1,65 +1,98 @@
 <script setup lang="ts">
 
 import PotentialChallengeDisplay from '@/components/challenge/PotentialChallengeDisplay.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ActiveChallengeDisplay from '@/components/challenge/ActiveChallengeDisplay.vue'
 import router from '@/router'
+import { useTokenStore } from '@/stores/token'
+import { getActiveChallenges, getInactiveChallenges } from '@/utils/challengeutils'
 
-const challengeRecomendationsTestData = [
-  {
-    id:1,
-    title:'Gå til skolen!',
-    description:'Spar 46kr hver dag du går isteden for å ta buss til skolen denne uken.'
-  },
-  { id: 2,
-    title:'Unngå kjøp av kaffe!',
-    description:'Spar 59kr for å unngå kjøp av kaffe i dag.'
-  },
-  { id: 3,
-    title:'Bruk handlenett på butikken!',
-    description:'Spar 5kr for å burke handlenett på butikken.'
-  },
-];
+interface Challenge{
+  challengeId: number;
+  challengeTitle: string;
+  challengeDescription: string
+}
 
-const activeChallengesTestData = [
-  {
-    id: 4,
-    title:'Spis middag hjemme!',
-    description:'Spar 200kr for å spise middag hjemme i dag.'
-  },
-  { id: 5,
-    title:'Kjøp brukt isteden for nytt!',
-    description:'Spar 250kr for å kun kjøpe brukt denne uken.'
-  },
-  { id: 6,
-    title: 'Ta med lunsj hjemmefra!',
-    description:'Spar 100kr for å ta med lunsj hjemmefra i dag.'
-  },
-  { id: 7,
-    title: 'Unngå netthandel!',
-    description:'Spar 500kr for å unngå netthandel denne måneden.'
-  },
-]
+const token:string = useTokenStore().jwtToken;
 
-const activeChallenges = ref<Challenge[] | null>(activeChallengesTestData)
-
-const challengeRecommendations = ref<Challenge[] | null>(challengeRecomendationsTestData)
+const activeChallenges = ref<Challenge[]>([])
+const inactiveChallenges = ref<Challenge[]>([])
 
 const pages = ref<number>(1)
 const currentPage = ref<number>(0)
-const navigateTo = (path: string) => {
-  router.push(path)
+
+
+onMounted(async () => {
+  try {
+    await fetchInactiveChallenges();
+    await fetchActiveChallenges();
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+  }
+})
+
+const fetchInactiveChallenges = async () => {
+  try {
+    const response = await getInactiveChallenges(token)
+    inactiveChallenges.value = []
+    for (let i = 0; i < response.length; i++) {
+      inactiveChallenges.value.push({
+        challengeId: response[i].challengeId,
+        challengeTitle: response[i].challengeTitle,
+        challengeDescription: response[i].challengeDescription
+      })
+    }
+
+    console.log(inactiveChallenges.value)
+  } catch (error) {
+    console.error('Error fetching active challenges:', error);
+  }
+}
+
+const fetchActiveChallenges = async () => {
+  try{
+    const response = await getActiveChallenges(token)
+    console.log(response)
+    activeChallenges.value = [];
+    for(let i = 0; i < response.length; i ++){
+      console.log(response.data)
+      activeChallenges.value.push({
+        challengeId:response[i].challengeId,
+        challengeTitle:response[i].challengeTitle,
+        challengeDescription:response[i].challengeDescription
+      })
+    }
+    console.log(activeChallenges.value)
+  } catch (error){
+    console.error('Error fetching inactive challenges:', error);
+  }
+}
+
+// Function to handle the emitted challengeAccepted event
+const handleChallengeAccepted = async () => {
+  console.log('handling it')
+  await fetchActiveChallenges();
+  await fetchInactiveChallenges();
+}
+
+// Function to handle the emitted challengeDeclined event
+const handleChallengeDeclined = async () => {
+  await fetchInactiveChallenges();
+}
+
+const handleChallengeCompleted = async () => {
+  await fetchActiveChallenges();
 }
 
 const previousPage = () => {}
-const goToPage = (pageNumber:number) => {}
+const goToPage = (pageNumber:number) => {
+  currentPage.value = pageNumber;
+}
 
 const nextPage = () =>{}
 
-interface Challenge{
-  id: number;
-  title: string;
-  description: string
+const navigateTo = (path: string) => {
+  router.push(path)
 }
 
 </script>
@@ -75,11 +108,13 @@ interface Challenge{
         <div class="challenge-recommendations">
           <PotentialChallengeDisplay
             class="potential-challenge"
-            v-for="(potentialChallenge, index) in challengeRecommendations"
+            v-for="(potentialChallenge, index) in inactiveChallenges"
             :key="index"
-            :id="potentialChallenge.id"
-            :title="potentialChallenge.title"
-            :description="potentialChallenge.description"
+            :challengeId="potentialChallenge.challengeId"
+            :challengeTitle="potentialChallenge.challengeTitle"
+            :challengeDescription="potentialChallenge.challengeDescription"
+            @challengeAccepted="handleChallengeAccepted"
+            @challengeDeclined="handleChallengeDeclined"
           ></PotentialChallengeDisplay>
         </div>
       </div>
@@ -92,9 +127,10 @@ interface Challenge{
             class="active-challenge"
             v-for="(activeChallenge, index) in activeChallenges"
             :key="index"
-            :id="activeChallenge.id"
-            :title="activeChallenge.title"
-            :description="activeChallenge.description"
+            :challengeId="activeChallenge.challengeId"
+            :challengeTitle="activeChallenge.challengeTitle"
+            :challengeDescription="activeChallenge.challengeDescription"
+            @challengeCompleted="handleChallengeCompleted"
           ></ActiveChallengeDisplay>
           <div class="pagination">
             <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
@@ -102,8 +138,8 @@ interface Challenge{
               <button
                 v-for="pageNumber in pages"
                 :key="pageNumber-2"
-                @click="goToPage(pageNumber-1)"
                 :class="{ chosen: pageNumber-1 === currentPage }"
+                @click="goToPage(pageNumber-1)"
               >{{ pageNumber}}</button>
             </div>
             <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>

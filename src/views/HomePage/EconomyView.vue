@@ -1,50 +1,48 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import {Pie} from 'vue-chartjs'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-ChartJS.register(ArcElement,Tooltip,Legend)
+import { computed, onMounted, ref } from 'vue'
+import { Pie } from 'vue-chartjs'
+import { ArcElement, Chart as ChartJS, Colors, Legend, Tooltip } from 'chart.js'
 import TransactionComponent from '@/components/economy/TransactionComponent.vue'
 import ToggleButton from '@/components/economy/ToggleButton.vue'
+import { getTransactions } from '@/utils/TransactionUtils'
+import { useTokenStore } from '@/stores/token'
+
+ChartJS.register(ArcElement,Tooltip,Legend, Colors)
+
+interface Transaction {
+  "transactionCategory": string,
+  "transactionTitle": string,
+  "amount": number,
+  "transactionId": number,
+  "date": string,
+
+}
+
+const token:string = useTokenStore().jwtToken;
 
 const selectedOption = ref<string | null>("")
-
 
 //let page = 0;
 let pages = 0;
 let currentPage = 0;
 
-const transactions = ref([
-  { id: 1,
-    title: 'Rema 1000',
-    date: '2022-05-10',
-    amount: 100,
-    category: 'Dagligvare'
-  },
-  { id: 2,
-    title: 'Trondheim Kino',
-    date: '2022-05-15',
-    amount: 500,
-    category: 'Underholdning'
-  },
-  { id: 3,
-    title: 'SIT',
-    date: '2022-05-15',
-    amount: 4450,
-    category: 'regninger'
-  },
-  { id: 4,
-    title: 'Superhero Burger',
-    date: '2022-05-15',
-    amount: 1500,
-    category: 'Mat & Restaurant'
-  },
-  { id: 6,
-    title: 'Kiwi',
-    date: '2022-05-20',
-    amount: 100,
-    category: 'Dagligvare'
-  },
-])
+const transactions = ref<Transaction[]>([])
+const fetchTransactions = async() =>  {
+  try{
+    const response = await getTransactions(token,0,6)
+    transactions.value = response
+    console.log(transactions.value)
+  } catch (e) {
+    console.log(e)
+  }
+
+}
+onMounted(()  => {
+  fetchTransactions()
+})
+
+
+
 const chartVisible = ref(false)
 
 const toggleChart = (value: boolean) => {
@@ -58,7 +56,9 @@ const handleSelectionChange = (value: string | null) => {
 const distinctCategories = computed(() => {
   const categories = new Set<string>()
   transactions.value.forEach(transaction => {
-    categories.add(transaction.category)
+    console.log(transaction.transactionCategory)
+    categories.add(transaction.transactionCategory)
+    console.log(categories)
   })
   return Array.from(categories)
 })
@@ -69,11 +69,13 @@ const dropdownOptions = computed(() => {
 
 const filteredTransactions = computed(() => {
   if (selectedOption.value === 'Alle' || !selectedOption.value) {
+    console.log(transactions.value)
     return transactions.value
   } else {
-    return transactions.value.filter(transaction => transaction.category === selectedOption.value)
+    return transactions.value.filter(transaction => transaction.transactionCategory === selectedOption.value)
   }
 })
+
 const chartData = computed(() => {
   const data: { labels: string[], datasets: { data: number[], label:string ,backgroundColor: string[] }[] } = {
     labels: [],
@@ -87,7 +89,9 @@ const chartData = computed(() => {
   const categoryAmounts: { [key: string]: number } = {};
 
   transactions.value.forEach(transaction => {
-    const { category, amount } = transaction;
+    const { transactionCategory, amount } = transaction;
+    console.log(transactionCategory)
+    const category = transactionCategory
     if (category in categoryAmounts) {
       categoryAmounts[category] += amount;
     } else {
@@ -101,7 +105,6 @@ const chartData = computed(() => {
   data.labels.forEach(label => {
     data.datasets[0].data.push(categoryAmounts[label]);
   });
-  console.log(data)
   return data;
 })
 
@@ -114,6 +117,40 @@ const getRandomColor = () => {
   }
   return color
 }
+
+//
+// const transactions1 = ref([
+//   { id: 1,
+//     title: 'Rema 1000',
+//     date: '2022-05-10',
+//     amount: 100,
+//     category: 'Dagligvare'
+//   },
+//   { id: 2,
+//     title: 'Trondheim Kino',
+//     date: '2022-05-15',
+//     amount: 500,
+//     category: 'Underholdning'
+//   },
+//   { id: 3,
+//     title: 'SIT',
+//     date: '2022-05-15',
+//     amount: 4450,
+//     category: 'regninger'
+//   },
+//   { id: 4,
+//     title: 'Superhero Burger',
+//     date: '2022-05-15',
+//     amount: 1500,
+//     category: 'Mat & Restaurant'
+//   },
+//   { id: 6,
+//     title: 'Kiwi',
+//     date: '2022-05-20',
+//     amount: 100,
+//     category: 'Dagligvare'
+//   },
+// ])
 </script>
 
 <template>
@@ -133,12 +170,12 @@ const getRandomColor = () => {
           <option v-for="option in dropdownOptions" :key="option" :value="option">{{ option }}</option>
         </select>
       </div>
-      <div class="component-container">
+      <div class="component-container" v-if="filteredTransactions">
         <transaction-component
         v-for="transaction in filteredTransactions"
-        :key="transaction.id"
-        :title="transaction.title"
-        :category="transaction.category"
+        :key="transaction.transactionId"
+        :title="transaction.transactionTitle"
+        :category="transaction.transactionCategory"
         :amount="transaction.amount"
         :date="transaction.date"
         ></transaction-component>
@@ -286,10 +323,10 @@ h2 {
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1300px) {
   .box {
     width: 100%;
-    min-height: 510px;
+    min-height: 580px;
     margin:10px /* Adjust margin for smaller screens */
   }
 
@@ -331,5 +368,10 @@ h2 {
     display: none;
   }
 
+}
+@media (prefers-color-scheme: dark){
+  h2{
+    color: var(--vt-c-kellyGreen-Light);
+  }
 }
 </style>

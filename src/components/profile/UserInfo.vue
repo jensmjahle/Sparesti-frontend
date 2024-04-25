@@ -24,7 +24,6 @@ onMounted(async () => {
 const fetchUserInfo = async () =>{
   try{
     const response = await getUserInfo(token)
-    console.log(response)
     username.value = response.username;
     email.value = response.email;
     profilePictureBase64.value = response.profilePictureBase64;
