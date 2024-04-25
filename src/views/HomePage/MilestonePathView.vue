@@ -1,16 +1,17 @@
 <script setup lang="ts">
 
 import MilestoneProgress from '@/components/MilestonePath/MilestoneProgress.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import DirectTransfer from '@/components/MilestonePath/DirectTransfer.vue'
 import MilestoneDescription from '@/components/MilestonePath/MilestoneDescription.vue'
 import MilestonePath from '@/components/MilestonePath/MilestonePath.vue'
 import { getMilestoneDetails } from '@/utils/MilestonePathUtils'
+import { useMilestoneStore } from '@/stores/currentMilestone'
 
 const pathName = ref("PathNameHere")
 const pathDescription = ref("PathDescriptionHere")
 
-const totalToSave = ref(2000)
+const totalToSave = ref(3000)
 const totalSaved = ref(0)
 
 const showPath = ref(true);
@@ -37,12 +38,17 @@ function showPathField(){
 
 checkScreenWidth()
 
-//Re-add when token store is up and running
-//const response = getMilestoneDetails(1)
-//pathName.value = response//data//milestoneTitle
-//pathDescription.value = response//data//milestoneDescription
-//totalToSave.value = response//data//milestoneGoalSum
-//totalSaved.value = response//data//milestoneCurrentSum
+onMounted( async () =>{
+  const milestoneId = useMilestoneStore().milestoneId;
+  console.log(milestoneId)
+  const response = await getMilestoneDetails(milestoneId)
+  pathName.value = response.data.milestoneTitle
+  pathDescription.value = response.data.milestoneDescription
+  totalToSave.value = response.data.milestoneGoalSum
+  totalSaved.value = response.data.milestoneCurrentSum
+  milestonePathKey.value++;
+})
+
 
 function updateTotalSaved(value: number) {
   totalSaved.value += value;
