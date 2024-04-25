@@ -15,6 +15,7 @@ import StartView from '@/views/FrontPage/StartView.vue'
 import MilestonePathView from '@/views/HomePage/MilestonePathView.vue'
 
 import CreateChallengeView from '@/views/HomePage/CreateChallengeView.vue'
+import CreateMilestoneView from '@/views/HomePage/CreateMilestoneView.vue'
 
 
 const router = createRouter({
@@ -84,6 +85,10 @@ const router = createRouter({
         {
           path: 'profile',
           component: ProfileView
+        },
+        {
+          path: 'create-milestone',
+          component: CreateMilestoneView
         }
       ]
     }
