@@ -5,23 +5,24 @@ import { ArcElement, Chart as ChartJS, Colors, Legend, Tooltip } from 'chart.js'
 import TransactionComponent from '@/components/economy/TransactionComponent.vue'
 import ToggleButton from '@/components/economy/ToggleButton.vue'
 import { getTransactions } from '@/utils/TransactionUtils'
+import { useTokenStore } from '@/stores/token'
 
 ChartJS.register(ArcElement,Tooltip,Legend, Colors)
 
-const selectedOption = ref<string | null>("")
+const token:string = useTokenStore().jwtToken;
 
+const selectedOption = ref<string | null>("")
 
 //let page = 0;
 let pages = 0;
 let currentPage = 0;
 
-const transactions = ref<any[]>([])
+const transactions = ref<[]>([])
 const fetchTransactions = async() =>  {
   try{
-    transactions.value = await getTransactions(1, 2)
-    //const response = await getTransactions(1,2)
-    //transactions.value = response.data
-    //fordi akk nå benytter vi av test data
+    const response = await getTransactions(token,0,6)
+    transactions.value = response
+    console.log(transactions.value)
   } catch (e) {
     console.log(e)
   }
@@ -46,7 +47,9 @@ const handleSelectionChange = (value: string | null) => {
 const distinctCategories = computed(() => {
   const categories = new Set<string>()
   transactions.value.forEach(transaction => {
-    categories.add(transaction.TransactionCategory.category)
+    console.log(transaction.transactionCategory)
+    categories.add(transaction.transactionCategory)
+    console.log(categories)
   })
   return Array.from(categories)
 })
@@ -57,11 +60,13 @@ const dropdownOptions = computed(() => {
 
 const filteredTransactions = computed(() => {
   if (selectedOption.value === 'Alle' || !selectedOption.value) {
+    console.log(transactions.value)
     return transactions.value
   } else {
-    return transactions.value.filter(transaction => transaction.TransactionCategory.category === selectedOption.value)
+    return transactions.value.filter(transaction => transaction.transactionCategory === selectedOption.value)
   }
 })
+
 const chartData = computed(() => {
   const data: { labels: string[], datasets: { data: number[], label:string ,backgroundColor: string[] }[] } = {
     labels: [],
@@ -75,9 +80,9 @@ const chartData = computed(() => {
   const categoryAmounts: { [key: string]: number } = {};
 
   transactions.value.forEach(transaction => {
-    const { TransactionCategory, amount } = transaction;
-    console.log(TransactionCategory)
-    const category = TransactionCategory.category
+    const { transactionCategory, amount } = transaction;
+    console.log(transactionCategory)
+    const category = transactionCategory
     if (category in categoryAmounts) {
       categoryAmounts[category] += amount;
     } else {
@@ -161,7 +166,7 @@ const getRandomColor = () => {
         v-for="transaction in filteredTransactions"
         :key="transaction.transactionId"
         :title="transaction.transactionTitle"
-        :category="transaction.TransactionCategory.category"
+        :category="transaction.transactionCategory"
         :amount="transaction.amount"
         :date="transaction.date"
         ></transaction-component>
