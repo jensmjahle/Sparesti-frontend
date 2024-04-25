@@ -45,6 +45,12 @@ const validate = () => {
     amountError.value = 'Vennligst bruk bare tall'
     isValid = false
   }
+
+  if (<number>goal_sum.value < <number>current_sum.value) {
+    amountError.value = 'Målet kan ikke være større enn det nåværende beløpet';
+    isValid = false;
+  }
+
   return isValid
 }
 
@@ -54,15 +60,15 @@ const milestoneData = computed(() => ({
   milestoneGoalSum: goal_sum.value,
   milestoneCurrentSum: current_sum.value,
   milestoneImage: image.value,
-  deadlineDate: end_date.value ? start_date.value.toISOString().substring(0, 10) : null,
-  startDate: start_date.value ? start_date.value.toISOString().substring(0, 10) : null
+  deadlineDate: end_date.value ? end_date.value : null,
+  startDate: start_date.value ? start_date.value : null
 }));
 
 const saveInput = () => {
   if (validate()) {
     console.log(milestoneData.value)
-    //createMilestone(milestoneData, tokenStore.jwtToken)
-    //router.push('/homepage/home')
+    createMilestone(milestoneData.value, tokenStore.jwtToken)
+    router.push('/homepage/home')
   } else {
     console.log('fail')
   }
@@ -332,6 +338,10 @@ label {
 
   .add-image-box {
     height: 170px;
+  }
+
+  #literal-image{
+    max-height: 170px;
   }
 }
 </style>
