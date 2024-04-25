@@ -14,19 +14,19 @@ function navigateToNewUser() {
 
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
-  if (useTokenStore().$state.isConnectedToBank){
+  if (useTokenStore().$state.jwtToken !== '' && !useTokenStore().$state.jwtToken.includes('Request')) {
     await router.push('/homepage')
   }
-  else if (useTokenStore().$state.isConnectedToBank === false){
-    alert('Brukern finnes, men er ikke koblet til banken. Vennligst koble til banken før du logger inn.')
-    await router.push('/register')
+  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 401'){
+    alert('Feil brukernavn eller passord')
   }
-  else {
-    alert('Feil brukernavn eller passord. Vennligst prøv igjen eller lag bruker.')
+  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 403') {
+    alert('Du kommer fra et utrygt nettverk, vennligst prøv igjen senere')
+  }
+  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 500') {
+    alert('Serveren er nede, vennligst prøv igjen senere')
   }
 }
-
-
 </script>
 
 <template>
