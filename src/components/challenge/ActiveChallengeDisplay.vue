@@ -1,27 +1,25 @@
 <script setup lang="ts">
-import { completeChallenge } from '@/utils/challengeutils'
-import { useTokenStore } from '@/stores/token'
-import { ref } from 'vue'
-
-const token:string = useTokenStore().jwtToken;
 
 const emits = defineEmits(['challengeCompleted']);
-const milestoneId = ref(1)
+
+interface Challenge{
+  'challengeId':number,
+  'challengeTitle':string,
+  'challengeDescription':string,
+  'goalSum':number,
+  'expirationDate':string
+}
 
 const props = defineProps({
-  challengeId: Number,
-  challengeTitle: String,
-  challengeDescription: String
+  challenge: {
+    type: Object as () => Challenge,
+    required: true
+  }
 });
 
-const completeTheChallenge = async () => {
-  if(props.challengeId){
-    try{
-    await completeChallenge(token,props.challengeId, milestoneId.value)
-    emits('challengeCompleted', props.challengeId);
-    } catch (error){
-      alert('Noe gikk galt! Venligst prøv på nytt!')
-    }
+const completeTheChallenge = () => {
+  if(props.challenge.challengeId){
+    emits('challengeCompleted', props.challenge.challengeId);
   }
 }
 
@@ -29,8 +27,12 @@ const completeTheChallenge = async () => {
 
 <template>
   <div class="potential-challenge-display">
-    <h3 class="title">{{ props.challengeTitle }}</h3>
-    <h4 class="description">{{ props.challengeDescription }}</h4>
+    <h3 class="title">{{ props.challenge.challengeTitle }}</h3>
+    <h4 class="description">{{ props.challenge.challengeDescription }}</h4>
+    <div class="on-object-hover">
+      <h4>Utløpsdato: {{props.challenge.expirationDate}} |</h4>
+      <h4 class="sum"> Sparesum: {{props.challenge.goalSum}} kr,-</h4>
+    </div>
     <div class="button-container">
       <button class="complete-button" @click="completeTheChallenge()">
         <h3 class="complete-button-text">Fullfør</h3>
@@ -47,6 +49,7 @@ const completeTheChallenge = async () => {
   padding: 1.5%;
   place-content: space-between;
 }
+
 .title{
   text-align: center;
   color: var(--color-text-black);
@@ -55,6 +58,23 @@ const completeTheChallenge = async () => {
 .description{
   text-align: center;
   color: var(--color-text-black);
+}
+
+.on-object-hover{
+  display: none;
+}
+
+
+.potential-challenge-display:hover{
+  .on-object-hover{
+    display: flex;
+    flex-direction: row;
+    place-content: center;
+    gap: 1.0%;
+  }
+  .description{
+    display: none;
+  }
 }
 
 .button-container{

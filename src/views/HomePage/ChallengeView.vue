@@ -1,16 +1,23 @@
 <script setup lang="ts">
 
 import PotentialChallengeDisplay from '@/components/challenge/PotentialChallengeDisplay.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import ActiveChallengeDisplay from '@/components/challenge/ActiveChallengeDisplay.vue'
 import router from '@/router'
 import { useTokenStore } from '@/stores/token'
 import { getActiveChallenges, getInactiveChallenges } from '@/utils/challengeutils'
+import CompleteChallengePopUp from '@/components/challenge/CompleteChallengePopUp.vue'
+
+import JSConfetti from 'js-confetti'
+
+const jsConfetti = new JSConfetti()
 
 interface Challenge{
-  challengeId: number;
-  challengeTitle: string;
-  challengeDescription: string
+  challengeId: number,
+  challengeTitle: string,
+  challengeDescription: string,
+  goalSum:number,
+  expirationDate:string
 }
 
 const token:string = useTokenStore().jwtToken;
@@ -18,12 +25,21 @@ const token:string = useTokenStore().jwtToken;
 const activeChallenges = ref<Challenge[]>([])
 const inactiveChallenges = ref<Challenge[]>([])
 
+const SIZE = 4
+
 const pages = ref<number>(1)
 const currentPage = ref<number>(0)
+
+const displayType = ref<boolean>(true);
+
+const displayPopUp = ref<boolean>(false);
+const completedChallenge = ref<number|any>(null)
 
 
 onMounted(async () => {
   try {
+    currentPage.value = 0;
+
     await fetchInactiveChallenges();
     await fetchActiveChallenges();
   } catch (error) {
@@ -33,16 +49,28 @@ onMounted(async () => {
 
 const fetchInactiveChallenges = async () => {
   try {
-    const response = await getInactiveChallenges(token)
+    const { content }  = await getInactiveChallenges(token)
+
     inactiveChallenges.value = []
-    for (let i = 0; i < response.length; i++) {
+
+    for (let i = 0; i < content.length; i++) {
+
+      const date = new Date(content[i].expirationDate);
+
+      const formattedDate = date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+
       inactiveChallenges.value.push({
-        challengeId: response[i].challengeId,
-        challengeTitle: response[i].challengeTitle,
-        challengeDescription: response[i].challengeDescription
+        challengeId: content[i].challengeId,
+        challengeTitle: content[i].challengeTitle,
+        challengeDescription: content[i].challengeDescription,
+        goalSum: content[i].goalSum,
+        expirationDate: formattedDate
       })
     }
-
     console.log(inactiveChallenges.value)
   } catch (error) {
     console.error('Error fetching active challenges:', error);
@@ -51,15 +79,31 @@ const fetchInactiveChallenges = async () => {
 
 const fetchActiveChallenges = async () => {
   try{
-    const response = await getActiveChallenges(token)
-    console.log(response)
+    const { content, totalPages, number } =
+      await getActiveChallenges(token, currentPage.value,SIZE)
+
+    pages.value = totalPages;
+    currentPage.value = number;
+
     activeChallenges.value = [];
-    for(let i = 0; i < response.length; i ++){
-      console.log(response.data)
+
+    for(let i = 0; i < content.length; i ++){
+      console.log(content.data)
+
+      const date = new Date(content[i].expirationDate);
+
+      const formattedDate = date.toLocaleDateString('en-US', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+
       activeChallenges.value.push({
-        challengeId:response[i].challengeId,
-        challengeTitle:response[i].challengeTitle,
-        challengeDescription:response[i].challengeDescription
+        challengeId:content[i].challengeId,
+        challengeTitle:content[i].challengeTitle,
+        challengeDescription:content[i].challengeDescription,
+        goalSum:content[i].goalSum,
+        expirationDate:formattedDate
       })
     }
     console.log(activeChallenges.value)
@@ -80,58 +124,114 @@ const handleChallengeDeclined = async () => {
   await fetchInactiveChallenges();
 }
 
+const handleRequestToCompleteChallenge = (challengeId: number) => {
+  displayPopUp.value = true;
+  completedChallenge.value = challengeId;
+}
+
 const handleChallengeCompleted = async () => {
+  await closePopUp();
+  await jsConfetti.addConfetti();
+}
+
+const closePopUp = async () => {
+  displayPopUp.value = false;
   await fetchActiveChallenges();
 }
 
-const previousPage = () => {}
-const goToPage = (pageNumber:number) => {
-  currentPage.value = pageNumber;
+const displayNewChallenges = () => {
+  displayType.value = false;
 }
 
-const nextPage = () =>{}
+const displayActiveChallenges = () => {
+  displayType.value = true;
+
+}
 
 const navigateTo = (path: string) => {
   router.push(path)
 }
+const previousPage = () => {
+  currentPage.value --
+}
+const goToPage = (pageNumber:number) => {
+  currentPage.value = pageNumber;
+}
+
+const nextPage = () =>{
+  currentPage.value ++;
+}
+
+watch(currentPage, fetchActiveChallenges);
 
 </script>
 
 <template>
-  <div class="challenge-view">
+  <div class="challenge-view" :aria-disabled="displayPopUp">
+
+    <div v-if="displayPopUp" class="popup-container">
+      <CompleteChallengePopUp
+        :challenge-id="completedChallenge"
+        @closePopUp="closePopUp"
+        @challengeCompleted="handleChallengeCompleted"
+      ></CompleteChallengePopUp>
+    </div>
+
+
     <h2 class="title">Dine utfordringer</h2>
+    <div class="toggle-buttons">
+      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+        <h3 class="toggle-button-title">Nye utfordringer</h3>
+      </button>
+
+      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+        <h3 class="toggle-button-title">Aktive utfordringer</h3>
+      </button>
+
+    </div>
     <div class="main">
-      <div class="left">
+      <div class="left" :class="{ 'mobile-hide': !displayType }">
+
         <button class="create-challenge-button" @click="navigateTo('/homepage/create-challenge')">
-          <h2 class="create-challenge-button-title">Personlig utfordring + </h2>
+          <h2 class="create-challenge-button-title">Ny personlig utfordring + </h2>
         </button>
         <div class="challenge-recommendations">
           <PotentialChallengeDisplay
             class="potential-challenge"
             v-for="(potentialChallenge, index) in inactiveChallenges"
             :key="index"
-            :challengeId="potentialChallenge.challengeId"
-            :challengeTitle="potentialChallenge.challengeTitle"
-            :challengeDescription="potentialChallenge.challengeDescription"
+            :challenge="potentialChallenge"
             @challengeAccepted="handleChallengeAccepted"
             @challengeDeclined="handleChallengeDeclined"
           ></PotentialChallengeDisplay>
+
+          <h4 class="challenge-placeholder" v-if="inactiveChallenges.length == 0">
+            Ojda, her gikk det unna.<br>
+            Vi har for øyeblikket ingen flere forslag til utfordringer. <br>
+            Lag din egen personlige utfordring eller kom tilbake senere! <br>
+            Nye utfordringer blir generert med gjevne mellomrom.
+          </h4>
         </div>
+
       </div>
 
-      <div class="right">
-
+      <div class="right" :class="{ 'mobile-hide': displayType }">
         <h2 class="active-challenges-title">Aktive utfordringer</h2>
-        <div class="active-challenges">
-          <ActiveChallengeDisplay
-            class="active-challenge"
-            v-for="(activeChallenge, index) in activeChallenges"
-            :key="index"
-            :challengeId="activeChallenge.challengeId"
-            :challengeTitle="activeChallenge.challengeTitle"
-            :challengeDescription="activeChallenge.challengeDescription"
-            @challengeCompleted="handleChallengeCompleted"
-          ></ActiveChallengeDisplay>
+        <div class="active-challenge-box">
+          <div class="active-challenges">
+            <ActiveChallengeDisplay
+              class="active-challenge"
+              v-for="(activeChallenge, index) in activeChallenges"
+              :key="index"
+              :challenge="activeChallenge"
+              @challengeCompleted="handleRequestToCompleteChallenge(activeChallenge.challengeId)"
+            ></ActiveChallengeDisplay>
+            <h4 class="challenge-placeholder" id="active-challenge-placeholder" v-if="activeChallenges.length == 0">
+              Du har ingen aktive utfordringer.<br>
+              Lag din egen utfordring eller aksepter våre tilpassede forslag!
+              Aktive utfordringer vil vises i denne boksen.
+            </h4>
+          </div>
           <div class="pagination">
             <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
             <div  v-if="pages>0" class="page-numbers">
@@ -148,12 +248,15 @@ const navigateTo = (path: string) => {
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>
 .challenge-view{
   display: flex;
   flex-direction: column;
+
+  gap: 2.5%;
 
   height: 100%;
   width: 100%;
@@ -163,11 +266,15 @@ const navigateTo = (path: string) => {
   color: var(--color-heading);
 }
 
+.toggle-buttons {
+  display: none;
+}
+
 .main{
   display: flex;
   flex-direction: row;
 
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   gap: 2.5%;
 }
@@ -178,7 +285,6 @@ const navigateTo = (path: string) => {
   width: 60%;
   gap: 2.5%;
 }
-
 .create-challenge-button{
   border-radius: 20px;
   background-color: var(--color-confirm-button);
@@ -202,19 +308,25 @@ const navigateTo = (path: string) => {
 .challenge-recommendations{
   display: flex;
   flex-direction: column;
-  place-content: space-between;
 
   height: 100%;
   width: 100%;
   gap: 2.5%;
 }
 
+.challenge-placeholder{
+  text-align: center;
+}
+
+#active-challenge-placeholder{
+  color: var(--color-headerText);
+}
 .potential-challenge{
   border-radius: 20px;
   border: 2px solid var(--color-border);
   box-shadow: 0 4px 4px var(--color-shadow);
 
-  min-height: 30%;
+  height: calc(100%/3);
   width: 100%;
 }
 
@@ -225,6 +337,8 @@ const navigateTo = (path: string) => {
 .right{
   display: flex;
   flex-direction: column;
+  place-content: space-evenly;
+
   border: 2px solid var(--color-border);
   border-radius: 20px;
   box-shadow: 0 4px 4px var(--color-shadow);
@@ -239,12 +353,23 @@ const navigateTo = (path: string) => {
   font-weight: bold;
 }
 
+.active-challenge-box{
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  width: 100%;
+
+  padding: 5.0%;
+
+  place-content: space-between;
+}
+
 .active-challenges{
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  padding: 5.0%;
   gap:2.5%
 }
 
@@ -253,7 +378,7 @@ const navigateTo = (path: string) => {
   border: 2px solid var(--color-border);
   background-color: var(--color-background-white);
 
-  min-height: calc(100%/4.8);
+  min-height: calc(calc(100% - 2.5*4%)/4);
   width: 100%;
 }
 
@@ -311,7 +436,83 @@ const navigateTo = (path: string) => {
 }
 
 .chosen{
-  background-color: black;
+  color: var(--color-heading);
+  font-weight: bold;
+}
+
+.popup-container {
+  position: fixed; /* Change to fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(64, 64, 64, 0.5);
+
+  align-items: center;
+  z-index: 1000; /* Adjust z-index as needed */
+}
+
+
+@media only screen and (max-width: 1000px){
+  .main{
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100%;
+    width: 100%;
+
+    padding-top: 1.0%;
+    padding-bottom: 1.0%;
+  }
+
+  .toggle-buttons{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 7.5%;
+    place-content: space-between;
+  }
+
+  .toggle-button{
+    width: 49.5%;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--color-confirm-button);
+  }
+
+  .toggle-button:hover{
+    transform: scale(1.02);
+  }
+
+  .toggle-button-title{
+    font-weight: bold;
+    color: var(--color-headerText);
+  }
+
+  .active-button{
+    background-color: var(--color-confirm-button-click);
+  }
+
+  .mobile-hide{
+    display: none;
+  }
+
+  .left{
+    width: 100%;
+    height: 100%;
+  }
+
+  .right{
+    min-height: 110%;
+    width: 100%;
+  }
+
+  .challenge-recommendations{
+    min-height: 100%;
+  }
+
 }
 
 </style>

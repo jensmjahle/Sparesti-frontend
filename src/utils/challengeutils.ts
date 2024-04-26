@@ -130,7 +130,7 @@ export const getChallenge = async (token:string, challengeId: number):Promise<an
 }
 
 
-export const getActiveChallenges = async (token:string):Promise<any>=>{
+export const getActiveChallenges = async (token:string, page:number, size:number):Promise<any>=>{
   console.log(token)
   try{
     const config = {
@@ -139,8 +139,8 @@ export const getActiveChallenges = async (token:string):Promise<any>=>{
         'Authorization': `Bearer ${token}`
       },
       params: {
-        'page': 0,
-        'size': 10
+        'page': page,
+        'size': size
       }
 
     };

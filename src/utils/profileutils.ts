@@ -142,8 +142,8 @@ export const getUserInfo = async (token:string): Promise<any> => {
     const result = await axios.get('http://localhost:8080/users/get', config);
     return result.data;
   } catch (error){
-    console.log('sending mock data')
-    return testDataUser;
+    console.log(error);
+    throw error;
   }
 }
 
