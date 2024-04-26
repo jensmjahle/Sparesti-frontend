@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {useTokenStore} from "@/stores/token";
 
 export const getAllMilestones = async(token: string) => {
   const config = {
