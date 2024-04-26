@@ -52,8 +52,11 @@ export const useTokenStore = defineStore({
 
         async refreshToken() {
             try {
+                console.log("potetmos")
                 const response = await refreshToken(this.jwtToken);
+                console.log(response)
                 if (response !== undefined) {
+                    console.log(response)
                     this.jwtToken = response.data;
                     this.displayPopUp = false;
                     this.startTimer();
@@ -67,21 +70,32 @@ export const useTokenStore = defineStore({
             this.jwtToken = "";
             this.username = null;
             this.isConnectedToBank = null;
+            this.timerClear();
             router.push("/login").then(r => r);
         },
 
-        startTimer() {
-            this.timer = setTimeout(() => {
-                    this.displayPopUp = true;
-            }, 300000);
+        timerClear() {
+            if (this.timer) clearTimeout(this.timer)
+            if (this.tokenTimer) clearTimeout(this.tokenTimer)
+
         },
 
-        actualTokenTimer() {
+        startTimer() {
+            // Clear the existing timer if it's already set
+            this.timerClear()
+
+            // Set a new timer for displayPopUp after 10 seconds (10000 ms)
+            this.timer = setTimeout(() => {
+                this.displayPopUp = true;
+            }, 300000);
+
+            // Set a new timer for logout after 15 seconds (15000 ms)
             this.tokenTimer = setTimeout(() => {
                 this.displayPopUp = false;
                 this.logout();
-            }, 3600000);
-        }
+            }, 360000);
+        },
+
     },
 
     getters: {
