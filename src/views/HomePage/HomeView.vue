@@ -6,6 +6,7 @@ import { getActiveChallenges } from '@/utils/challengeutils'
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
 import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
 import { ref } from 'vue'
+import { getUserTotalSavings } from '@/utils/HomePageUtils'
 
 console.log(getAllMilestones(useTokenStore().getJwtToken));
 console.log(getActiveChallenges(useTokenStore().getJwtToken, 0, 5))
@@ -31,12 +32,21 @@ function showChallengesView(){
 }
 
 checkScreenWidth()
+
+
+const saved = ref(0)
+
+async function userSavings(){
+  saved.value = await getUserTotalSavings()
+}
+
+userSavings()
 </script>
 
 <template>
   <div id = TopInfo>
     <h2 id ="Welcome">Velkommen!</h2>
-    <TotalSavings id = TotalSavings />
+    <TotalSavings id = TotalSavings :total-saved="saved"/>
   </div>
   <div id = MobileButtons>
     <button class = mobileButton @click="showMilestonesView()">Sparemål</button>

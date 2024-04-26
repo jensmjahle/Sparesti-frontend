@@ -1,15 +1,11 @@
 <script setup lang="ts">
 
-import {getUserTotalSavings} from '@/utils/HomePageUtils'
-import { ref } from 'vue'
+import { defineProps } from 'vue'
 
-const saved = ref(0)
+const props = defineProps({
+  totalSaved: Number
+});
 
-async function userSavings(){
-  saved.value = await getUserTotalSavings()
-}
-
-userSavings()
 
 </script>
 
@@ -18,7 +14,7 @@ userSavings()
     <img src="../../assets/png/pig_394778.png" alt = "logo" id = "logo"/>
     <div id = SavingsText>
       <h3 id = SavedInfo>Du har spart totalt: </h3>
-      <h3 id = Saved>{{ saved }} nok</h3>
+      <h3 id = Saved>{{ props.totalSaved }} nok</h3>
     </div>
   </div>
 </template>

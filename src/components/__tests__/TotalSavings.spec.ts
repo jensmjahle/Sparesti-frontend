@@ -1,24 +1,19 @@
-// Import the necessary packages
 import { mount } from '@vue/test-utils'
 import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
 import { describe, it, expect } from 'vitest'
-import { createPinia } from 'pinia'
 
-describe('YourComponent', () => {
-  it('renders correctly with default value', async () => {
-
-    const pinia = createPinia()
-
+describe('TotalSavings', () => {
+  it('renders total saved amount correctly', () => {
+    const totalSaved = 1000
     const wrapper = mount(TotalSavings, {
-      global:{
-        plugins:[pinia]
+      props: {
+        totalSaved
       }
     })
 
-    // Assert that the component renders correctly
-    expect(wrapper.exists()).toBe(true)
+    const savedAmount = wrapper.find('#Saved')
 
-    // Assert that the rendered value matches the given value
-    expect(wrapper.find('#Saved').text()).toBe(`0 nok`)
+    expect(savedAmount.text()).toBe(`${totalSaved} nok`)
   })
+
 })
