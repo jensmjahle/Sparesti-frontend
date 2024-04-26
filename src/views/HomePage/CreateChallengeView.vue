@@ -12,7 +12,7 @@ import { createChallenge } from '@/utils/challengeutils'
 
 const title = ref('')
 const description = ref('')
-const end_date = ref(new Date())
+const end_date = ref(new Date(new Date().setDate(new Date().getDate() + 1)))
 const goal_sum = ref<number>()
 const titleError = ref()
 const descriptionError = ref()
@@ -27,7 +27,7 @@ const validate = () => {
   descriptionError.value = ''
   dateError.value = ''
   amountError.value = ''
-  selectError.value =  ''
+  selectError.value = ''
 
   if (!title.value.trim()) {
     titleError.value = 'Vennligst sett inn tittel til sparemål'
@@ -41,12 +41,12 @@ const validate = () => {
     dateError.value = 'Vennligst velg både start- og sluttdato'
     isValid = false
   }
-  if(isNaN(<number>goal_sum.value)) {
+  if (isNaN(<number>goal_sum.value)) {
     amountError.value = 'Vennligst bruk bare tall'
     isValid = false
   }
 
-  if(!selectedOption.value){
+  if (!selectedOption.value) {
     selectError.value = 'Venligst velg tidsramme for utfordring'
     isValid = false
   }
@@ -60,7 +60,7 @@ const challengeData = computed(() => ({
   goalSum: goal_sum.value,
   expirationDate: end_date.value ? end_date.value : null,
   recurring: selectedOption.value
-}));
+}))
 
 const saveInput = () => {
   if (validate()) {
@@ -71,13 +71,13 @@ const saveInput = () => {
   }
 }
 
-const selectedOption = ref<string | null>("")
+const selectedOption = ref<string | null>('')
 const dropdownOptions = [
-  { label: "Ingen", value: 0 },
-  { label: "Daglig", value: 86400 }, // 86400 sekunder = 1 dag
-  { label: "Ukentlig", value: 604800 }, // 604800 sekunder = 1 uke
-  { label: "Månedlig", value: 2592000 } // 2592000 sekunder = 1 måned
-];
+  { label: 'Ingen', value: 0 },
+  { label: 'Daglig', value: 86400 }, // 86400 sekunder = 1 dag
+  { label: 'Ukentlig', value: 604800 }, // 604800 sekunder = 1 uke
+  { label: 'Månedlig', value: 2592000 } // 2592000 sekunder = 1 måned
+]
 
 const handleSelectionChange = (value: string | null) => {
   selectedOption.value = value
@@ -134,9 +134,10 @@ const handleSelectionChange = (value: string | null) => {
         <label>Sett inn hvor ofte utfordringen skal forekomme</label>
         <select class="custom-dropdown" v-model="selectedOption" @change="handleSelectionChange(selectedOption)">
           <option disabled value="" selected>Velg tidsramme</option>
-          <option v-for="option in dropdownOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+          <option v-for="option in dropdownOptions" :key="option.value" :value="option.value">{{ option.label }}
+          </option>
         </select>
-        <label class="error" v-if="selectError"r>{{ selectError }}</label>
+        <label class="error" v-if="selectError" r>{{ selectError }}</label>
       </div>
       <div class="submit-button">
         <button class="save-button" @click="saveInput">

@@ -14,7 +14,7 @@ const description = ref('')
 const end_date = ref()
 const current_sum = ref<number>()
 const goal_sum = ref<number>()
-const start_date = ref()
+const start_date = ref(new Date())
 const titleError = ref()
 const descriptionError = ref()
 const dateError = ref()
@@ -132,7 +132,7 @@ const handleFileChange = (event: any) => {
             :enable-time-picker="false"
             placeholder="Velg start dato"
             v-model="start_date"
-            :max-date="end_date"
+            :min-date="start_date"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
