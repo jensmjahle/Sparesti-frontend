@@ -23,7 +23,6 @@ console.log(getActiveChallenges(useTokenStore().getJwtToken, 0, 5))
       <ActiveMilestonesList/>
     </div>
     <div class = ActiveChallenges>
-      <ActiveChallengeDisplay challenge="" />
     </div>
   </div>
 </template>
