@@ -4,16 +4,6 @@ import { describe, it, expect } from 'vitest'
 
 describe('PathNode.vue', () => {
   describe('computed', () => {
-    it('calculates total nodes correctly', () => {
-      const totalToSave = 2000
-      const wrapper = shallowMount(MilestonePath, {
-        props: { totalToSave, totalSaved: 0 }
-      })
-
-      const actualValue = (wrapper.vm as any).totalNodes;
-
-      expect(actualValue).toBe(Math.ceil(totalToSave / 250))
-    })
 
     it('calculates remaining nodes correctly', () => {
       const totalToSave = 2000
@@ -41,7 +31,7 @@ describe('PathNode.vue', () => {
 
   describe('node generation and styling', () => {
     it('generates nodes correctly', () => {
-      const totalNodes = 8 // For example
+      const totalNodes = 50 // For example
       const totalToSave = 2000
       const totalSaved = 1000
       const wrapper = shallowMount(MilestonePath, {

@@ -6,18 +6,27 @@ import { useTokenStore } from '@/stores/token'
 const token:string = useTokenStore().jwtToken;
 const emits = defineEmits(['challengeAccepted', 'challengeDeclined']);
 
+interface Challenge{
+  'challengeId':number,
+  'challengeTitle':string,
+  'challengeDescription':string,
+  'goalSum':number,
+  'expirationDate':string
+}
+
 const props = defineProps({
-  challengeId: Number,
-  challengeTitle: String,
-  challengeDescription: String
+  challenge: {
+    type: Object as () => Challenge,
+    required: true
+  }
 });
 
 const declineChallenge = async () => {
   console.log('decline-button clicked')
-  if(props.challengeId){
+  if(props.challenge.challengeId){
     try{
-      await deleteChallenge(token, props.challengeId);
-      emits('challengeDeclined', props.challengeId);
+      await deleteChallenge(token, props.challenge.challengeId);
+      emits('challengeDeclined', props.challenge.challengeId);
     } catch (error){
       alert('Noe gikk galt! Venligst prøv på nytt.')
     }
@@ -27,10 +36,10 @@ const declineChallenge = async () => {
 }
 
 const acceptChallenge = async () => {
-  if(props.challengeId){
+  if(props.challenge.challengeId){
     try{
-      await activateChallenge(token, props.challengeId);
-      emits('challengeAccepted', props.challengeId);
+      await activateChallenge(token, props.challenge.challengeId);
+      emits('challengeAccepted', props.challenge.challengeId);
     } catch (error){
       alert('Noe gikk galt! Venligst prøv på nytt.')
     }
@@ -40,8 +49,12 @@ const acceptChallenge = async () => {
 
 <template>
   <div class="potential-challenge-display">
-    <h2 class="title">{{ props.challengeTitle }}</h2>
-    <h4 class="description">{{ props.challengeDescription }}</h4>
+    <h2 class="title">{{ props.challenge.challengeTitle }}</h2>
+    <h4 class="description">{{ props.challenge.challengeDescription }}</h4>
+    <div class="info">
+      <h4>Utløpsdato: {{props.challenge.expirationDate}} |</h4>
+      <h4 class="sum"> Sparesum: {{props.challenge.goalSum}} kr,-</h4>
+    </div>
     <div class="options">
       <button class="option-button" id="decline-button" @click="declineChallenge">
         <h3 class="button-text">Avslå</h3>
@@ -69,6 +82,13 @@ const acceptChallenge = async () => {
 .description{
   text-align: center;
 }
+.info{
+  display: flex;
+  flex-direction: row;
+  place-content: center;
+  gap: 1.0%;
+}
+
 
 .options{
   display: flex;

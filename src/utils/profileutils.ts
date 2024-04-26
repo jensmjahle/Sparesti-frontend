@@ -142,8 +142,8 @@ export const getUserInfo = async (token:string): Promise<any> => {
     const result = await axios.get('http://localhost:8080/users/get', config);
     return result.data;
   } catch (error){
-    console.log('sending mock data')
-    return testDataUser;
+    console.log(error);
+    throw error;
   }
 }
 
@@ -162,7 +162,7 @@ export const updateUserInfo = async (
       'email': email,
       'profilePictureBase64': profilePictureBase64
     };
-    return await axios.post('http://localhost:8080/users/update',data,config);
+    return await axios.put('http://localhost:8080/users/update',data,config);
   } catch (error){
     console.error(error)
     throw error;
@@ -184,7 +184,7 @@ export const updatePasswordInfo = async (
       'password': currentPassword,
       'newPassword': newPassword
     };
-    return await axios.post('http://localhost:8080/userCredentials/updatePassword',data,config);
+    return await axios.put('http://localhost:8080/userCredentials/updatePassword',data,config);
   } catch (error){
     console.error(error)
     throw error;
@@ -205,7 +205,7 @@ export const updateBankAccountInfo = async (
       'currentAccount': checkingAccount,
       'savingAccount': savingAccount
     };
-    return await axios.post('http://localhost:8080/users/update',data,config);
+    return await axios.put('http://localhost:8080/users/update',data,config);
   } catch (error){
     console.error(error)
     throw error;
@@ -229,7 +229,7 @@ export const updateIncomeInfo = async (
       'monthlyFixedExpenses': monthlyFixedExpenses,
       'monthlySavings': monthlySavings
     };
-    return await axios.post('http://localhost:8080/users/update',data,config);
+    return await axios.put('http://localhost:8080/users/update',data,config);
   } catch (error){
     console.error(error)
     throw error;
