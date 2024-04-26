@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import BaseInput from '@/components/create-challenge/BaseInput.vue'
-import BaseTextArea from '@/components/create-challenge/BaseTextArea.vue'
+import BaseInput from '@/components/create-form/BaseInput.vue'
+import BaseTextArea from '@/components/create-form/BaseTextArea.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { ref, computed } from 'vue'
