@@ -1,11 +1,20 @@
 <script setup lang="ts">
 
+import { onMounted, ref } from "vue";
+import { getTotalSavings } from "@/utils/userUtils"
+
+let totalSavings = ref(0)
+
+onMounted(async () => {
+  totalSavings.value = await getTotalSavings()
+});
+
 </script>
 
 <template>
   <div id = InfoComponent>
     <h2 id = Quote><strong>Sparetips: </strong>Sett av et jevnt beløp hver måned på sparekonto eller lignende.</h2>
-    <h2 id = TotalSavings>Våre brukere har spart til sammen <strong>5000</strong> nok</h2>
+    <h2 id = TotalSavings>Våre brukere har spart til sammen <strong>{{ totalSavings }}</strong> nok</h2>
   </div>
 </template>
 
