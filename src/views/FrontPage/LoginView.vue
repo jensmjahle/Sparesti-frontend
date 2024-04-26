@@ -14,16 +14,16 @@ function navigateToNewUser() {
 
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
-  if (useTokenStore().$state.jwtToken !== '' && !useTokenStore().$state.jwtToken.includes('Request')) {
+  if (useTokenStore().jwtToken !== '' && !useTokenStore().jwtToken.includes('Request')) {
     await router.push('/homepage')
   }
-  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 401'){
+  else if (useTokenStore().jwtToken === 'Request failed with status code 401'){
     alert('Feil brukernavn eller passord')
   }
-  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 403') {
+  else if (useTokenStore().jwtToken === 'Request failed with status code 403') {
     alert('Du kommer fra et utrygt nettverk, vennligst prøv igjen senere')
   }
-  else if (useTokenStore().$state.jwtToken === 'Request failed with status code 500') {
+  else if (useTokenStore().jwtToken === 'Request failed with status code 500') {
     alert('Serveren er nede, vennligst prøv igjen senere')
   }
 }

@@ -1,7 +1,30 @@
 <script setup lang="ts">
 import TopNav from '@/components/navigation/TopNav.vue'
 import SideNav from '@/components/navigation/SideNav.vue'
+import { onMounted, ref, watch } from 'vue';
+import { useTokenStore } from '@/stores/token';
+import HomePagePopUp from './HomePage/HomePagePopUp.vue';
 
+const store = useTokenStore();
+const showPopup = ref(false);
+
+onMounted(() => {
+  showPopup.value = store.displayPopUp;
+  console.log('showPopup', store.displayPopUp);
+});
+
+watch(
+    () => store.displayPopUp,
+    (newVal) => {
+      if (newVal) {
+        showPopup.value = true;
+      }
+    }
+);
+
+const closePopup = () => {
+  showPopup.value = false;
+};
 </script>
 
 <template>
@@ -14,7 +37,10 @@ import SideNav from '@/components/navigation/SideNav.vue'
         <SideNav></SideNav>
       </div>
       <div class="view-element">
-      <router-view></router-view>
+        <div class="popup-container" v-if="showPopup">
+          <HomePagePopUp :show="showPopup" @close="closePopup" />
+        </div>
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -49,6 +75,19 @@ import SideNav from '@/components/navigation/SideNav.vue'
   width: 15%;
   padding: 2.0% 1.0% 2.0%  1.0% ;
   box-shadow: 0 2px 5px var(--color-shadow);
+}
+
+.popup-container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  align-items: center;
+  z-index: 1000;
 }
 
 .view-element{

@@ -9,6 +9,7 @@ import router from "@/router";
 export const useTokenStore = defineStore({
     id: 'token',
     state: () => ({
+        displayPopUp: false,
         timer: null as ReturnType<typeof setTimeout> | null,
         tokenTimer: null as ReturnType<typeof setTimeout> | null,
         jwtToken: "",
@@ -29,6 +30,7 @@ export const useTokenStore = defineStore({
                     const data = response.data;
                     if (data !== "" && data !== undefined) {
                         this.jwtToken = data;
+                        this.displayPopUp = false;
                         await getUserInfo(username, this.jwtToken).then(response => {
                             if (response !== undefined) {
                                 this.username = response.data.username
@@ -53,6 +55,7 @@ export const useTokenStore = defineStore({
                 const response = await refreshToken(this.jwtToken);
                 if (response !== undefined) {
                     this.jwtToken = response.data;
+                    this.displayPopUp = false;
                     this.startTimer();
                 }
             } catch (error) {
@@ -69,17 +72,13 @@ export const useTokenStore = defineStore({
 
         startTimer() {
             this.timer = setTimeout(() => {
-                if (window.confirm("Your session is about to expire. Do you want to extend it?")) {
-                    this.refreshToken().then(r => r);
-                    this.actualTokenTimer();
-                } else {
-                    this.logout();
-                }
+                    this.displayPopUp = true;
             }, 300000);
         },
 
         actualTokenTimer() {
             this.tokenTimer = setTimeout(() => {
+                this.displayPopUp = false;
                 this.logout();
             }, 3600000);
         }
