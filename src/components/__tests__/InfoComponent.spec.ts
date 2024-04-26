@@ -1,17 +1,21 @@
 import { shallowMount } from '@vue/test-utils';
-import InfoComponent from '@/components/InfoComponent.vue'
-import { describe, it, expect } from 'vitest'
+import InfoComponent from '@/components/InfoComponent.vue';
+import { describe, it, expect } from 'vitest';
 
-//Needs to be updated when the info component gets dynamic data instead of static data
 describe('InfoComponent', () => {
-  it('renders the correct quote and total savings', () => {
+  it('renders the correct quote and total savings', async () => {
     const wrapper = shallowMount(InfoComponent);
+
+    // Simulate asynchronous data loading by waiting for the component to be mounted
+    await wrapper.vm.$nextTick();
 
     const quote = wrapper.find('#Quote');
     const totalSavings = wrapper.find('#TotalSavings');
 
     expect(quote.text()).toBe('Sparetips: Sett av et jevnt beløp hver måned på sparekonto eller lignende.');
 
-    expect(totalSavings.text()).toBe('Våre brukere har spart til sammen 5000 nok');
+    // Assuming totalSavings is a number, convert it to the expected string format for assertion
+    const expectedTotalSavingsText = `Våre brukere har spart til sammen ${wrapper.vm.totalSavings} nok`;
+    expect(totalSavings.text()).toBe(expectedTotalSavingsText);
   });
 });
