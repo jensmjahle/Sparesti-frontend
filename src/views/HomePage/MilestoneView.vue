@@ -6,6 +6,7 @@ import CompletedMilestoneDisplay from '@/components/milestone/CompletedMilestone
 import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDisplay.vue'
 import {getAllMilestoneLogs, getAllMilestones} from "@/utils/MilestoneUtils";
 import {useTokenStore} from "@/stores/token";
+import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
 
 const activeMilestones = ref(<Milestone[]>[])
 const completedMilestones = ref<Milestone[]>([])
@@ -49,26 +50,7 @@ interface Milestone{
         <button class="create-milestone-button" @click="navigateTo('/homepage/create-milestone')">
           <h2 class="create-milestone-button-title">Lag nytt sparemål + </h2>
         </button>
-        <div class="active-milestones">
-          <template v-if="activeMilestones.length === 0">
-            <h4>Opps, her var det tomt.<br>Lag ditt første sparemål for å komme i gang!</h4>
-          </template>
-          <template v-else>
-          <ActiveMilestoneDisplay
-            class="active-milestone"
-            v-for="(activeMilestone, index) in activeMilestones"
-            :key="index"
-            :id="activeMilestone.milestoneId"
-            :title="activeMilestone.milestoneTitle"
-            :description="activeMilestone.milestoneDescription"
-            :goalSum="activeMilestone.milestoneGoalSum"
-            :currentSum="activeMilestone.milestoneCurrentSum"
-            :deadline="activeMilestone.deadlineDate"
-            :startDate="activeMilestone.startDate"
-            :image="activeMilestone.milestoneImage"
-          ></ActiveMilestoneDisplay>
-          </template>
-        </div>
+        <ActiveMilestonesList/>
       </div>
 
       <div class="right">
@@ -159,30 +141,6 @@ flex-direction: column;
 
 .create-milestone-button-title{
   font-weight: bold;
-}
-
-.active-milestones{
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-
-  height: 100%;
-  width: 100%;
-  gap: 2.5%;
-}
-
-.active-milestone{
-  border-radius: 20px;
-  border: 2px solid var(--color-border);
-  box-shadow: 0 4px 4px var(--color-shadow);
-
-  min-height: 30%;
-  width: 100%;
-}
-
-.active-milestone:hover{
-  transform: scale(1.02);
-  transition: 0.3s;
 }
 
 .right{
