@@ -12,8 +12,6 @@
     }
   })
 
-
-
 </script>
 
 <template>
