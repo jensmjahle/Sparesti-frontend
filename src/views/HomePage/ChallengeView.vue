@@ -33,7 +33,7 @@ const currentPage = ref<number>(0)
 const displayType = ref<boolean>(true);
 
 const displayPopUp = ref<boolean>(false);
-const completedChallenge = ref<number|null>(null)
+const completedChallenge = ref<number|any>(null)
 
 
 onMounted(async () => {
