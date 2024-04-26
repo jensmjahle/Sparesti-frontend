@@ -37,12 +37,7 @@ const activeChallengesTestData = [
 ]
 
 export const createChallenge = async (
-  token:string,
-  challengeTitle: string,
-  challengeDescription: string,
-  goalSum: number,
-  expirationData:string,
-  recurring: number ):Promise<any>=>{
+  token: string, data: any ):Promise<any>=>{
   try{
     const config = {
       headers:{
@@ -50,14 +45,8 @@ export const createChallenge = async (
         'Authorization': `Bearer ${token}`
       }
     };
-    const data = {
-      'challengeTitle': challengeTitle,
-      'challengeDescription':challengeDescription,
-      'goalSum': goalSum,
-      'expirationDate': expirationData,
-      'recurring': recurring,
-    }
-    return await axios.post(`http://localhost:8080/user/challenge/create/`,data,config);
+    console.log(data)
+    return await axios.post(`http://localhost:8080/user/challenge/create`,data,config);
   } catch (error){
     console.error(error);
   }
