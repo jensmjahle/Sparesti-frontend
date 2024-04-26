@@ -9,7 +9,6 @@ const emit = defineEmits(['close']);
 
 const continueBrowse = () => {
   useTokenStore().refreshToken();
-  useTokenStore().actualTokenTimer();
   emit('close');
 };
 
