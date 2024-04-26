@@ -15,7 +15,7 @@ describe('InfoComponent', () => {
     expect(quote.text()).toBe('Sparetips: Sett av et jevnt beløp hver måned på sparekonto eller lignende.');
 
     // Assuming totalSavings is a number, convert it to the expected string format for assertion
-    const expectedTotalSavingsText = `Våre brukere har spart til sammen ${wrapper.vm.totalSavings} nok`;
+    const expectedTotalSavingsText = `Våre brukere har spart til sammen ${(wrapper.vm as any).totalSavings} nok`;
     expect(totalSavings.text()).toBe(expectedTotalSavingsText);
   });
 });
