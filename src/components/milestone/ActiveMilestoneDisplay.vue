@@ -17,8 +17,10 @@ const imageUrl = "src/assets/pig.png"
 
 const openMilestone = () => {
   if (props.id !== undefined) {
-    useMilestoneStore().setMilestoneId(props.id)
+     useMilestoneStore().setMilestoneId(props.id)
     router.push("/homepage/path")
+
+    console.log(useMilestoneStore().$state.milestoneId)
   }
   console.log("Milestone id is not defined")
 }
@@ -29,6 +31,8 @@ const openMilestone = () => {
 <template>
 <div class="active-milestone-display"
      @click="openMilestone"
+     @keyup.enter="openMilestone"
+     tabindex="0"
      :style="{
             backgroundImage: image ? 'url(' + image + ')' : 'url(' + imageUrl + ')'
         }">
