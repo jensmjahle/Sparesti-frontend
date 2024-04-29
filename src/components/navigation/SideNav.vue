@@ -34,14 +34,17 @@ watch(currentRoute, () => {
       </button>
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/milestone' }"
+        :class="{ 'active': currentRoute.path == '/homepage/milestone'
+        || currentRoute.path == '/homepage/create-milestone'
+        || currentRoute.path == '/homepage/create-milestone'
+        || currentRoute.path == 'homepage/pathe'}"
         @click="navigateTo('/homepage/milestone')">
         <img src="/src/components/icons/navigation/piggy-bank.svg" alt="Milestone Icon" class="icon">
         <label class="button-label">Sparemål</label>
       </button>
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/challenge' }"
+        :class="{ 'active': currentRoute.path == '/homepage/challenge' || currentRoute.path == '/homepage/create-challenge'}"
         @click="navigateTo('/homepage/challenge')">
         <img src="/src/components/icons/navigation/challenge.svg" alt="Challenge Icon" class="icon">
         <label class="button-label">Utfordringer</label>

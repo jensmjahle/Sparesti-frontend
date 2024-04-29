@@ -114,14 +114,6 @@ const deleteTheChallenge = () => {
     gap: 1.0%;
   }
 
-  .expiration-date{
-    font-weight: bold;
-  }
-
-  .sum{
-    font-weight: bold;
-  }
-
   .content{
     overflow: scroll;
   }

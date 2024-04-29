@@ -94,7 +94,7 @@ const nextPage = () =>{
 
     <div class="pagination">
       <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
-      <div  v-if="pages>0" class="page-numbers">
+      <div  v-if="pages>1" class="page-numbers">
         <button
           v-for="pageNumber in pages"
           :key="pageNumber-2"

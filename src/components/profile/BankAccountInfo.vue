@@ -36,8 +36,7 @@ const fetchUserInfo = async () =>{
 
 const fetchAccountInfo = async () => {
   const response = await getUserAccountInfo(token);
-  console.log('account info')
-  console.log(response)
+  accounts.value = [];
   for(let i = 0; i < response.length; i++){
     console.log(response[i].accountNumber)
     accounts.value.push(response[i].accountNumber)

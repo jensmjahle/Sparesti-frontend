@@ -1,14 +1,7 @@
 <script setup lang="ts">
 
-import { onMounted, ref } from 'vue'
 import { useTokenStore } from '@/stores/token'
-import { getAllMilestones } from '@/utils/MilestoneUtils'
-import { completeChallenge, deleteChallenge } from '@/utils/challengeutils'
-
-interface Milestone{
-  'milestoneId': number,
-  'milestoneTitle': string
-}
+import { deleteChallenge } from '@/utils/challengeutils'
 
 const props = defineProps({
   challengeId: Number,

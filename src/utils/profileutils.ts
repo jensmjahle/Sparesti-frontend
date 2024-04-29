@@ -203,7 +203,7 @@ export const updateBankAccountInfo = async (
     };
     const data = {
       'currentAccount': checkingAccount,
-      'savingAccount': savingAccount
+      'savingsAccount': savingAccount
     };
     return await axios.put('http://localhost:8080/users/update',data,config);
   } catch (error){
