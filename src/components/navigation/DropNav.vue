@@ -14,27 +14,27 @@
 <template>
   <div class="burger-menu-component">
     <div class="button-menu">
-      <button class="menu-button" @click="navigateTo('/homepage/home')">
+      <button class="menu-button" @click="navigateTo('/homepage/home')" data-testid="home-button">
         <img src="/src/components/icons/navigation/house-chimney.svg" alt="Home Icon" class="icon">
         <label class="button-label">Hjem</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/discover')">
+      <button class="menu-button" @click="navigateTo('/homepage/discover')" data-testid="discover-button">
         <img src="/src/components/icons/navigation/lightbulb-on.svg" alt="Discover Icon" class="icon">
         <label class="button-label">Sparetips</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/milestone')">
+      <button class="menu-button" @click="navigateTo('/homepage/milestone')" data-testid="milestone-button">
         <img src="/src/components/icons/navigation/piggy-bank.svg" alt="Milestone Icon" class="icon">
         <label class="button-label">Sparemål</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/challenge')">
+      <button class="menu-button" @click="navigateTo('/homepage/challenge')" data-testid="challenge-button">
         <img src="/src/components/icons/navigation/challenge.svg" alt="Challenge Icon" class="icon">
         <label class="button-label">Utfordringer</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/economy')">
+      <button class="menu-button" @click="navigateTo('/homepage/economy')" data-testid="economy-button">
         <img src="/src/components/icons/navigation/economy.svg" alt="Economy Icon" class="icon">
         <label class="button-label">Forbruk</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/profile')">
+      <button class="menu-button" @click="navigateTo('/homepage/profile')" data-testid="profile-button">
         <img src="/src/components/icons/navigation/user.svg" alt="Profile Icon" class="icon">
         <label class="button-label">Profil</label>
       </button>
