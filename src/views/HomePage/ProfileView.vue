@@ -8,11 +8,15 @@ import BadgeInfo from '@/components/profile/BadgeInfo.vue'
 import PasswordInfo from '@/components/profile/PasswordInfo.vue'
 import { deleteUser, getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
+import DeleteChallengePopUp from '@/components/popups/DeleteChallengePopUp.vue'
+import DeleteUserPopUp from '@/components/popups/DeleteUserPopUp.vue'
 
 const token:string = useTokenStore().jwtToken;
 
 const firstName = ref<string>('Profile');
 const lastName = ref<string>('');
+
+const displayDeletePopUp = ref<boolean>(false)
 
 onMounted(async () => {
   try {
@@ -37,19 +41,21 @@ const logout = () => {
   useTokenStore().logout();
 }
 
-const deleteUserAccount = async () => {
-  try{
-    const response = await deleteUser(token);
-    console.log(response);
-    useTokenStore().logout();
-  } catch (error){
-    console.error('Error deleting user:', error);
-  }
+const handleRequestToDeleteUser = async () => {
+  displayDeletePopUp.value = true;
+}
+const closeDeletePopUp = async () => {
+  displayDeletePopUp.value = false;
 }
 
 </script>
 
 <template>
+  <div v-if="displayDeletePopUp" class="popup-container">
+    <DeleteUserPopUp
+      @closeDeletePopUp="closeDeletePopUp"
+    ></DeleteUserPopUp>
+  </div>
   <div class="profile-view">
     <div class="header">
       <h2 class="view-title">{{firstName}} {{lastName}}</h2>
@@ -78,7 +84,7 @@ const deleteUserAccount = async () => {
         <BadgeInfo title="Mynter"></BadgeInfo>
       </div>
       <div class="delete-user-button-box">
-        <button class="user-button" id="delete-user-button" @click="deleteUserAccount">
+        <button class="user-button" id="delete-user-button" @click="handleRequestToDeleteUser">
           <h3 class="user-button-title">Slett bruker</h3>
         </button>
       </div>
@@ -87,6 +93,20 @@ const deleteUserAccount = async () => {
 </template>
 
 <style scoped>
+.popup-container {
+  position: fixed; /* Change to fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(64, 64, 64, 0.5);
+
+  align-items: center;
+  z-index: 1000; /* Adjust z-index as needed */
+}
+
 
 .profile-view{
   display: flex;
