@@ -2,8 +2,6 @@ import { mount } from '@vue/test-utils';
 import InactiveChallengeDisplay from '@/components/challenge/InactiveChallengeDisplay.vue';
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { activateChallenge } from '../../utils/challengeutils'
-import eventBus from '@/components/service/eventBus.js'
 
 describe('InactiveChallengeDisplay', () => {
 
