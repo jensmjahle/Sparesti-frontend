@@ -25,6 +25,7 @@ const pages = ref<number>(1)
 const SIZE = 3
 
 onMounted( () => {
+  currentPage.value = 0;
   fetchActiveMilestones();
 })
 

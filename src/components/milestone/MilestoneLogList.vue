@@ -72,20 +72,6 @@ const nextPage = () =>{
         :start-date="completedMilestone.startDate"
         :image="completedMilestone.milestoneImage"
       ></CompletedMilestoneDisplay>
-      <CompletedMilestoneDisplay
-        class="completed-milestone"
-        v-for="(completedMilestone, index) in completedMilestones"
-        :key="index"
-        :id="completedMilestone.milestoneId"
-        :title="completedMilestone.milestoneTitle"
-        :description="completedMilestone.milestoneDescription"
-        :current-sum="completedMilestone.milestoneCurrentSum"
-        :goal-sum="completedMilestone.milestoneGoalSum"
-        :deadline="completedMilestone.deadlineDate"
-        :start-date="completedMilestone.startDate"
-        :image="completedMilestone.milestoneImage"
-      ></CompletedMilestoneDisplay>
-
       <h4 class="milestone-placeholder" v-if="completedMilestones.length == 0">
         Du har ingen fullførte sparemål
         <br>Avsluttede sparemål ender opp her sånn at du får full oversikt.
