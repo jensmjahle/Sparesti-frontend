@@ -65,6 +65,8 @@ const closeHelpPopUp = async () => {
         src="/src/components/icons/navigation/help.svg"
         alt="hjelp"
         @click="openHelpPopUp"
+        tabindex="0"
+        @keyup.enter="openHelpPopUp"
         class="help-icon">
       <div v-if="displayHelpPopUp" class="popup-container">
         <PathHelpPopUp
