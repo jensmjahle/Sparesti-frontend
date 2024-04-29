@@ -64,7 +64,7 @@ export const useTokenStore = defineStore({
             }
         },
 
-        setActive(boolean) {
+        setActive(boolean: boolean) {
             this.isActive = boolean;
         },
 
