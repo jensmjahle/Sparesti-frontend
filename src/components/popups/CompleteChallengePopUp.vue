@@ -31,8 +31,7 @@ onMounted(async () => {
 })
 const fetchAllMilestones = async () =>{
   try{
-    const result  = await getAllMilestones(token, 0,10)
-    milestones.value = result.content;
+    milestones.value  = await getAllMilestones(token)
     chosenMilestone.value = milestones.value[0].milestoneId;
 
   } catch (error){
