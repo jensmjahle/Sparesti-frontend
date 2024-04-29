@@ -29,8 +29,13 @@ describe('BaseInput', () => {
     const newValue = 'New Value'
     await input.setValue(newValue)
 
-    // Assert emitted event
-    expect(wrapper.emitted()['update:modelValue']).toBeTruthy()
-    expect(wrapper.emitted()['update:modelValue'][0][0]).toBe(newValue)
+    const emittedEvents = wrapper.emitted()
+    expect(emittedEvents).toBeTruthy()
+
+    const updateModelValueEvents = emittedEvents['update:modelValue'] as any[]
+    expect(updateModelValueEvents).toBeTruthy()
+
+    const newValueEmitted = updateModelValueEvents[0][0]
+    expect(newValueEmitted).toBe(newValue)
   })
 })

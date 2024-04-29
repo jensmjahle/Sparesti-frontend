@@ -20,16 +20,44 @@ describe('TransactionComponent', () => {
     })
 
     // title rendering
-    expect(wrapper.find('.component-title').text()).toContain(title)
+    const titleElement = wrapper.find('.component-title')
+    if (titleElement.exists()) {
+      expect(titleElement.text()).toContain(title)
+    } else {
+      throw new Error('Title element not found');
+    }
 
-    // date rendering
-    expect(wrapper.findAll('.component-right-field').at(0).text()).toContain(date)
+    // Find all component-right-field elements
+    const rightFieldElements = wrapper.findAll('.component-right-field')
 
-    // amount rendering
-    expect(wrapper.findAll('.component-right-field').at(1).text()).toContain(`${amount}kr`)
+    // Check if elements exist and have expected text content
+    if (rightFieldElements.length >= 3) {
+      // date rendering
+      const dateElement = rightFieldElements.at(0)
+      if (dateElement) {
+        expect(dateElement.text()).toContain(date)
+      } else {
+        throw new Error('Date element not found');
+      }
 
-    // category rendering
-    expect(wrapper.findAll('.component-right-field').at(2).text()).toContain(category)
+      // amount rendering
+      const amountElement = rightFieldElements.at(1)
+      if (amountElement) {
+        expect(amountElement.text()).toContain(`${amount}kr`)
+      } else {
+        throw new Error('Amount element not found');
+      }
+
+      // category rendering
+      const categoryElement = rightFieldElements.at(2)
+      if (categoryElement) {
+        expect(categoryElement.text()).toContain(category)
+      } else {
+        throw new Error('Category element not found');
+      }
+    } else {
+      throw new Error('Expected elements not found');
+    }
   })
 
 })

@@ -18,7 +18,7 @@ describe('MilestoneButton', () => {
     expect(wrapper.text()).toBe('Save')
 
     // button color
-    const buttonElement = wrapper.find('.save-button').element
-    expect(buttonElement.style.backgroundColor).toBe(buttonColor)
+    const buttonElement = wrapper.find('.save-button').element as HTMLElement
+    expect(buttonElement.style?.backgroundColor).toBe(buttonColor)
   })
 })
