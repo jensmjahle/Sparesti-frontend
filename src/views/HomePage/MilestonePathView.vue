@@ -7,10 +7,15 @@ import MilestoneDescription from '@/components/MilestonePath/MilestoneDescriptio
 import MilestonePath from '@/components/MilestonePath/MilestonePath.vue'
 import { getMilestoneDetails } from '@/utils/MilestonePathUtils'
 import { useMilestoneStore } from '@/stores/currentMilestone'
+import MilestoneButton from '@/components/MilestonePath/MilestoneButton.vue'
+import { useRouter } from 'vue-router'
 
 const pathName = ref("PathNameHere")
 const pathDescription = ref("PathDescriptionHere")
-
+const editLabel = ref("Edit")
+const deleteLabel = ref("Delete")
+const deleteColor = ref('var(--vt-c-Raspberry)')
+const editColor = ref('--vt-c-Orange')
 const totalToSave = ref(3000)
 const totalSaved = ref(0)
 
@@ -18,6 +23,8 @@ const showPath = ref(true);
 const showInfo = ref(false);
 
 const milestonePathKey = ref(0);
+
+const router = useRouter()
 
 function checkScreenWidth() {
   if(window.innerWidth >= 1000){
@@ -54,6 +61,9 @@ function updateTotalSaved(value: number) {
   totalSaved.value += value;
   milestonePathKey.value++;
 }
+
+
+
 </script>
 
 <template>
@@ -77,6 +87,10 @@ function updateTotalSaved(value: number) {
         <div id = Description>
           <MilestoneDescription :path-description="pathDescription"/>
         </div>
+        <div id = buttons>
+          <milestone-button :label="editLabel" :button-color="editColor" @click="router.push('/homepage/edit-milestone')"></milestone-button>
+          <milestone-button :label="deleteLabel" :button-color="deleteColor"></milestone-button>
+        </div>
       </div>
     </div>
   </div>
@@ -94,6 +108,7 @@ function updateTotalSaved(value: number) {
 
   #title{
     margin-left: 9%;
+    font-size: 3em;
   }
 
   #MilestonePath{
@@ -117,10 +132,17 @@ function updateTotalSaved(value: number) {
     width: 100%;
   }
 
-  #Progress, #Transfer, #Description{
+  #Progress, #Transfer{
     margin-bottom: 5%;
   }
 
+  #Description{
+    margin-bottom: 1.5%
+  }
+  #buttons{
+    display: flex;
+    flex-direction: row;
+  }
   @media only screen and (max-width: 1000px) {
     #Path{
       height: 60vh;
@@ -159,7 +181,9 @@ function updateTotalSaved(value: number) {
       min-width: 30%;
       font-size: 250%;
     }
-
+    #buttons{
+      flex-direction: column;
+    }
   }
 
   @media only screen and (min-width: 900px){

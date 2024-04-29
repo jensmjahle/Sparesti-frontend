@@ -1,0 +1,48 @@
+<script setup lang="ts">
+const props = defineProps({
+  label: String,
+  buttonColor: String
+})
+</script>
+
+<template>
+  <div class="button-box">
+    <button class="save-button" :style="{ backgroundColor: buttonColor}">{{label}}</button>
+  </div>
+</template>
+
+<style scoped>
+
+.button-box{
+  width: 100%;
+  padding: 2%;
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.save-button{
+  border-radius: 20px;
+  width: 100%;
+  padding-right: 5.0%;
+  padding-left: 5.0%;
+  color: var(--color-headerText);
+  background-color: var(--color-save-button);
+  border: none;
+  height: 20%;
+  min-height: 35px;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.save-button:hover{
+  transform: scale(1.02);
+}
+
+.save-button:active{
+  background-color: var(--color-save-button-click);
+}
+
+.save-button-title{
+  font-weight: bold;
+}
+</style>
