@@ -1,38 +1,32 @@
 <script setup lang="ts">
-
-import { getAllMilestones } from '@/utils/MilestoneUtils'
-import { useTokenStore } from '@/stores/token'
-import { getActiveChallenges } from '@/utils/challengeutils'
+import {ref} from 'vue'
+import ActiveChallengesList from '@/components/challenge/ActiveChallengesList.vue'
+import router from '@/router'
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
-import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
-import { ref } from 'vue'
 import { getUserTotalSavings } from '@/utils/HomePageUtils'
 
-console.log(getAllMilestones(useTokenStore().getJwtToken));
-console.log(getActiveChallenges(useTokenStore().getJwtToken, 0, 5))
+import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
 
-const showMilestones = ref(true)
-const showChallenges = ref(false)
+const displayType = ref<boolean>(true);
+const displayHelpPopUp = ref<boolean>(false);
 
-function checkScreenWidth() {
-  if(window.innerWidth >= 1000){
-    showMilestones.value = true;
-    showChallenges.value = true;
-  }
+const displayNewChallenges = () => {
+  displayType.value = false;
 }
 
-function showMilestonesView(){
-  showMilestones.value = true
-  showChallenges.value = false
+const displayActiveChallenges = () => {
+  displayType.value = true;
+}
+const navigateTo = (path: string) => {
+  router.push(path)
 }
 
-function showChallengesView(){
-  showChallenges.value = true
-  showMilestones.value = false
+const openHelpPopUp = () => {
+  displayHelpPopUp.value = true;
 }
-
-checkScreenWidth()
-
+const closeHelpPopUp = async () => {
+  displayHelpPopUp.value = false;
+}
 
 const saved = ref(0)
 
@@ -44,92 +38,203 @@ userSavings()
 </script>
 
 <template>
-  <div id = TopInfo>
-    <h2 id ="Welcome">Velkommen!</h2>
-    <TotalSavings id = TotalSavings :total-saved="saved"/>
-  </div>
-  <div id = MobileButtons>
-    <button class = mobileButton @click="showMilestonesView()">Sparemål</button>
-    <button class = mobileButton @click="showChallengesView()">Utfordringer</button>
-  </div>
-  <div id = HomeViewComponents>
-    <div class = ActiveMilestones v-show="showMilestones">
-      <ActiveMilestonesList/>
+  <div class="home-view">
+    <div class="header">
+      <h2 class="title">Velkommen til Sparesti!</h2>
+      <img
+        src="/src/components/icons/navigation/help.svg"
+        alt="hjelp"
+        @click="openHelpPopUp"
+        class="help-icon">
+      <div v-if="displayHelpPopUp" class="popup-container">
+        <HomeHelpPopUp
+          @closePopUp="closeHelpPopUp"
+        ></HomeHelpPopUp>
+      </div>
     </div>
-    <div class = ActiveChallenges v-show="showChallenges">
-      <h3>Placeholder</h3>
+
+    <div class="toggle-buttons">
+      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+        <h3 class="toggle-button-title">Nye utfordringer</h3>
+      </button>
+      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+        <h3 class="toggle-button-title">Aktive utfordringer</h3>
+      </button>
+    </div>
+    <div class="main">
+      <div class="left" :class="{ 'mobile-hide': !displayType }">
+        <button class="create-challenge-button" @click="navigateTo('/homepage/create-challenge')">
+          <h2 class="display-help-button">
+            Ny til Sparesti? Klikk her!
+          </h2>
+        </button>
+        <ActiveMilestonesList></ActiveMilestonesList>
+      </div>
+      <div class="right" :class="{ 'mobile-hide': displayType }">
+        <h2 class="active-challenges-title">Aktive utfordringer</h2>
+        <ActiveChallengesList></ActiveChallengesList>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.home-view{
+  display: flex;
+  flex-direction: column;
 
-  #TopInfo{
+  height: 100%;
+  width: 100%;
+
+  gap: 2.5%;
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  place-content: space-between;
+  max-height: 6.5%;
+}
+
+.help-icon:hover{
+  transform: scale(1.05);
+}
+
+.popup-container {
+  position: fixed; /* Change to fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(64, 64, 64, 0.5);
+
+  align-items: center;
+  z-index: 1000; /* Adjust z-index as needed */
+}
+
+.title{
+  color: var(--color-heading);
+}
+
+.toggle-buttons {
+  display: none;
+}
+
+.main{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 120%;
+  padding-bottom: 1.5%;
+  gap: 2.5%;
+}
+
+.left{
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  min-height: 100%;
+  gap: 2.5%;
+}
+
+.create-challenge-button{
+  border-radius: 20px;
+  background-color: var(--color-confirm-button);
+  border: 2px solid var(--color-border);
+  color: var(--color-button-text);
+  min-height: 12%;
+}
+
+.create-challenge-button:active{
+  background-color: var(--color-confirm-button-click);
+}
+
+.create-challenge-button:hover{
+  transform: scale(1.02);
+}
+
+.display-help-button{
+  font-weight: bold;
+}
+
+.right{
+  display: flex;
+  flex-direction: column;
+  place-content: space-between;
+
+  border-radius: 20px;
+  border: 2px solid var(--color-border);
+  box-shadow: 0 4px 4px var(--color-shadow);
+  background-color: var(--color-heading);
+
+  height: 100%;
+  width: 40%;
+}
+
+.active-challenges-title{
+  color: var(--color-headerText);
+  text-align: center;
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 1000px){
+  .main{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+    flex-direction: column;
 
-
-  #HomeViewComponents{
-    display: flex;
-  }
-
-  #MobileButtons{
+    min-height: 150%;
     width: 100%;
-    display: none;
-    justify-content: space-evenly;
-    height: 10%;
   }
 
-  .mobileButton{
-    width: 45%;
+  .toggle-buttons{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 7.5%;
+    place-content: space-between;
+  }
+
+  .toggle-button{
+    width: 49.5%;
+    border-radius: 20px;
+    border: none;
     background-color: var(--color-confirm-button);
-    color: var(--color-buttonText);
-    border: 0;
-    font-size: 2em;
-    border-radius: 20px;
   }
 
-  .ActiveMilestones, .ActiveChallenges{
-    margin: 2%;
-    border-radius: 20px;
+  .toggle-button:hover{
+    transform: scale(1.02);
   }
 
-  .ActiveMilestones{
-    width: 60%;
+  .toggle-button-title{
+    font-weight: bold;
+    color: var(--color-headerText);
   }
 
-  .ActiveChallenges{
-    width: 40%;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
-
+  .active-button{
+    background-color: var(--color-confirm-button-click);
   }
 
-  @media only screen and (max-width: 1000px) {
-    #TopInfo{
-      flex-direction: column;
-    }
-
-    #TotalSavings{
-      width: 100%;
-    }
-
-    #TotalSavings{
-      margin: 3%;
-    }
-
-    .ActiveMilestones{
-      width: 100%;
-    }
-
-    .ActiveChallenges{
-      width: 100%;
-    }
-
-    #MobileButtons{
-      display: flex;
-    }
+  .mobile-hide{
+    display: none;
   }
+
+  .left{
+    width: 100%;
+    height: 100%;
+  }
+
+  .right{
+    min-height: 110%;
+    width: 100%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .help-icon{
+    filter: invert(1);
+  }
+}
 
 </style>

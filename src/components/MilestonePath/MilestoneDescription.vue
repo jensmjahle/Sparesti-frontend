@@ -36,7 +36,6 @@ const props = defineProps({
 
   #Title, #Description{
     font-size: 1.5em;
-    margin-left: 5%;
   }
 
   #Title{

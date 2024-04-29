@@ -32,16 +32,16 @@ function transfer() {
 
   #Title{
     font-size: 1.5em;
-    margin-left: 5%;
     font-weight: bold;
   }
 
   #Transfer{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
   }
 
   #TransferInput{
+    width: 70%;
     font-size: 1.5em;
     border-radius: 20px;
     border-color: var(--color-border);

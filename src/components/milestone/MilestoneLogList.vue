@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
-import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDisplay.vue'
 import { onMounted, ref } from 'vue'
 import { useTokenStore } from '@/stores/token'
-import { getAllMilestones } from '@/utils/MilestoneUtils'
+import { getAllMilestoneLogs } from '@/utils/MilestoneUtils'
+import CompletedMilestoneDisplay from '@/components/milestone/CompletedMilestoneDisplay.vue'
 
 interface Milestone{
   milestoneId: number;
@@ -19,10 +19,10 @@ interface Milestone{
 
 const token = useTokenStore().jwtToken
 
-const activeMilestones = ref<Milestone[]>([])
+const completedMilestones = ref<Milestone[]>([])
 const currentPage = ref<number>(0)
 const pages = ref<number>(1)
-const SIZE = 3
+const SIZE = 4
 
 onMounted( () => {
   fetchActiveMilestones();
@@ -31,10 +31,10 @@ onMounted( () => {
 const fetchActiveMilestones = async () => {
   try{
     console.log(currentPage.value)
-    const { content, totalPages, number } = await getAllMilestones(token, currentPage.value,SIZE)
+    const { content, totalPages, number } = await getAllMilestoneLogs(token, currentPage.value,SIZE)
     pages.value = totalPages;
     currentPage.value = number;
-    activeMilestones.value = content;
+    completedMilestones.value = content;
   }catch (error){
     console.log(error)
   }
@@ -57,45 +57,59 @@ const nextPage = () =>{
 </script>
 
 <template>
-  <div class="active-milestone-component">
+  <div class="completed-milestones-component">
+    <div class="milestones">
+      <CompletedMilestoneDisplay
+        class="completed-milestone"
+        v-for="(completedMilestone, index) in completedMilestones"
+        :key="index"
+        :id="completedMilestone.milestoneId"
+        :title="completedMilestone.milestoneTitle"
+        :description="completedMilestone.milestoneDescription"
+        :current-sum="completedMilestone.milestoneCurrentSum"
+        :goal-sum="completedMilestone.milestoneGoalSum"
+        :deadline="completedMilestone.deadlineDate"
+        :start-date="completedMilestone.startDate"
+        :image="completedMilestone.milestoneImage"
+      ></CompletedMilestoneDisplay>
+      <CompletedMilestoneDisplay
+        class="completed-milestone"
+        v-for="(completedMilestone, index) in completedMilestones"
+        :key="index"
+        :id="completedMilestone.milestoneId"
+        :title="completedMilestone.milestoneTitle"
+        :description="completedMilestone.milestoneDescription"
+        :current-sum="completedMilestone.milestoneCurrentSum"
+        :goal-sum="completedMilestone.milestoneGoalSum"
+        :deadline="completedMilestone.deadlineDate"
+        :start-date="completedMilestone.startDate"
+        :image="completedMilestone.milestoneImage"
+      ></CompletedMilestoneDisplay>
+
+      <h4 class="milestone-placeholder" v-if="completedMilestones.length == 0">
+        Du har ingen fullførte sparemål
+        <br>Avsluttede sparemål ender opp her sånn at du får full oversikt.
+      </h4>
+    </div>
+
     <div class="pagination">
       <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
       <div  v-if="pages>0" class="page-numbers">
         <button
           v-for="pageNumber in pages"
           :key="pageNumber-2"
-          :class="{ chosen: pageNumber-1 === currentPage }"
           @click="goToPage(pageNumber-1)"
+          :class="{ chosen: pageNumber-1 === currentPage }"
         >{{ pageNumber}}</button>
       </div>
       <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
     </div>
-
-    <div class="milestones">
-      <ActiveMilestoneDisplay
-        class="active-milestone"
-        v-for="(activeMilestone, index) in activeMilestones"
-        :key="index"
-        :id="activeMilestone.milestoneId"
-        :title="activeMilestone.milestoneTitle"
-        :description="activeMilestone.milestoneDescription"
-        :goalSum="activeMilestone.milestoneGoalSum"
-        :currentSum="activeMilestone.milestoneCurrentSum"
-        :deadline="activeMilestone.deadlineDate"
-        :startDate="activeMilestone.startDate"
-        :image="activeMilestone.milestoneImage"
-      ></ActiveMilestoneDisplay>
-      <h4 v-if="activeMilestones.length === 0">
-        Opps, her var det tomt.<br>
-        Lag ditt første sparemål for å komme i gang!
-      </h4>
-    </div>
-
   </div>
 </template>
 
 <style scoped>
-.active-milestone-component{
+
+.completed-milestones-component{
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -103,38 +117,45 @@ const nextPage = () =>{
   height: 100%;
   width: 100%;
 
+  place-content: space-between;
+
+  padding: 5.0%;
   gap: 2.5%;
 }
 
 .milestones{
   display: flex;
   flex-direction: column;
+  gap: 2.5%;
+
   width: 100%;
   height: 100%;
-
-  gap: 2.5%;
 }
 
-.active-milestone{
+.completed-milestone{
   border-radius: 20px;
   border: 2px solid var(--color-border);
-  box-shadow: 0 4px 4px var(--color-shadow);
+  background-color: var(--color-background-white);
 
-  height: calc(100%/3);
+  min-height: calc(calc(100% - 2.5*4%)/4);
   width: 100%;
 }
 
-.active-milestone:hover{
-  transform: scale(1.02);
+.completed-milestone:hover{
+  transform: scale(1.05);
   transition: 0.3s;
 }
 
+.milestone-placeholder{
+  color:var(--color-headerText);
+}
 
 .pagination {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   width: 100%;
+  flex: 1;
 }
 
 .pagination button {
@@ -181,12 +202,6 @@ const nextPage = () =>{
 .chosen{
   color: var(--color-heading);
   font-weight: bold;
-}
-
-@media only screen and (max-width: 1000px){
-  .pagination{
-    place-content: center;
-  }
 }
 
 </style>

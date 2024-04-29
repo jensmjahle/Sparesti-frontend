@@ -6,6 +6,8 @@ import TransactionComponent from '@/components/economy/TransactionComponent.vue'
 import ToggleButton from '@/components/economy/ToggleButton.vue'
 import { getTransactions } from '@/utils/TransactionUtils'
 import { useTokenStore } from '@/stores/token'
+import MilestoneHelpPopUp from '@/components/popups/help/MilestoneHelpPopUp.vue'
+import EconomyHelpPopUp from '@/components/popups/help/EconomyHelpPopUp.vue'
 
 ChartJS.register(ArcElement,Tooltip,Legend, Colors)
 
@@ -22,9 +24,26 @@ const token:string = useTokenStore().jwtToken;
 
 const selectedOption = ref<string | null>("")
 
-//let page = 0;
-let pages = 0;
-let currentPage = 0;
+const displayHelpPopUp = ref<boolean>(false)
+
+
+
+const pages = ref<number>(0);
+const currentPage = ref<number>(0);
+
+const previousPage = () => {
+  currentPage.value --
+  fetchTransactions();
+}
+const goToPage = (pageNumber:number) => {
+  currentPage.value = pageNumber;
+  fetchTransactions();
+}
+
+const nextPage = () =>{
+  currentPage.value ++;
+  fetchTransactions();
+}
 
 const transactions = ref<Transaction[]>([])
 const fetchTransactions = async() =>  {
@@ -41,14 +60,25 @@ onMounted(()  => {
   fetchTransactions()
 })
 
+const displayType = ref<boolean>(false)
 
-
-const chartVisible = ref(false)
-
-const toggleChart = (value: boolean) => {
-  chartVisible.value = value
-  console.log(chartVisible.value)
+const displayNewChallenges = () => {
+  displayType.value = false;
+  console.log(displayType.value)
 }
+const displayActiveChallenges = () => {
+  displayType.value = true;
+  console.log(displayType.value)
+}
+
+const openHelpPopUp = () => {
+  displayHelpPopUp.value = true;
+}
+const closeHelpPopUp = () => {
+  displayHelpPopUp.value = false;
+  console.log(displayHelpPopUp);
+}
+
 const handleSelectionChange = (value: string | null) => {
   selectedOption.value = value
 }
@@ -69,7 +99,6 @@ const dropdownOptions = computed(() => {
 
 const filteredTransactions = computed(() => {
   if (selectedOption.value === 'Alle' || !selectedOption.value) {
-    console.log(transactions.value)
     return transactions.value
   } else {
     return transactions.value.filter(transaction => transaction.transactionCategory === selectedOption.value)
@@ -118,118 +147,129 @@ const getRandomColor = () => {
   return color
 }
 
-//
-// const transactions1 = ref([
-//   { id: 1,
-//     title: 'Rema 1000',
-//     date: '2022-05-10',
-//     amount: 100,
-//     category: 'Dagligvare'
-//   },
-//   { id: 2,
-//     title: 'Trondheim Kino',
-//     date: '2022-05-15',
-//     amount: 500,
-//     category: 'Underholdning'
-//   },
-//   { id: 3,
-//     title: 'SIT',
-//     date: '2022-05-15',
-//     amount: 4450,
-//     category: 'regninger'
-//   },
-//   { id: 4,
-//     title: 'Superhero Burger',
-//     date: '2022-05-15',
-//     amount: 1500,
-//     category: 'Mat & Restaurant'
-//   },
-//   { id: 6,
-//     title: 'Kiwi',
-//     date: '2022-05-20',
-//     amount: 100,
-//     category: 'Dagligvare'
-//   },
-// ])
 </script>
 
 <template>
-  <div class="economy-ui">
+  <div class="economy-view">
 
-  <h2>Ditt forbruk</h2>
-
-  <div class="container">
-    <div class="toggle-button-container">
-      <ToggleButton @toggle-chart="toggleChart" />
-      <span> Vis graf </span>
+    <div class="header">
+      <h2 class="title">Dine transaksjoner!</h2>
+      <img
+        src="/src/components/icons/navigation/help.svg"
+        alt="hjelp"
+        @click="openHelpPopUp"
+        class="help-icon">
+      <div v-if="displayHelpPopUp" class="popup-container">
+        <EconomyHelpPopUp
+          @closePopUp="closeHelpPopUp"
+        ></EconomyHelpPopUp>
+      </div>
     </div>
-    <div class="box" :class="{ 'mobile-hide': chartVisible }">
-      <div class="custom-dropdown-container">
-        <select class="custom-dropdown" v-model="selectedOption" @change="handleSelectionChange(selectedOption)">
-          <option disabled value="" selected>Velg kategori</option>
-          <option v-for="option in dropdownOptions" :key="option" :value="option">{{ option }}</option>
-        </select>
-      </div>
-      <div class="component-container" v-if="filteredTransactions">
-        <transaction-component
-        v-for="transaction in filteredTransactions"
-        :key="transaction.transactionId"
-        :title="transaction.transactionTitle"
-        :category="transaction.transactionCategory"
-        :amount="transaction.amount"
-        :date="transaction.date"
-        ></transaction-component>
-      </div>
-      <div class="pagination">
-        <button :disabled="currentPage === 0">Previous</button>
-        <div  v-if="pages>0" class="page-numbers">
-          <button
-            v-for="pageNumber in pages"
-            :key="pageNumber-2"
-            :class="{ active: pageNumber-1 === currentPage }"
-          >{{ pageNumber}}</button>
+
+    <div class="toggle-buttons">
+      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+        <h3 class="toggle-button-title">Transaksjoner</h3>
+      </button>
+      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+        <h3 class="toggle-button-title">Diagram</h3>
+      </button>
+    </div>
+
+    <div class="container">
+
+      <div class="box" :class="{'hide': displayType }">
+        <div class="custom-dropdown-container">
+          <select class="custom-dropdown" v-model="selectedOption" @change="handleSelectionChange(selectedOption)">
+            <option disabled value="" selected>Kategori</option>
+            <option v-for="option in dropdownOptions" :key="option" :value="option">{{ option }}</option>
+          </select>
         </div>
-        <button :disabled="currentPage === pages - 1 || pages === 0">Next</button>
+
+        <div class="component-container" v-if="filteredTransactions">
+          <transaction-component
+            v-for="transaction in filteredTransactions"
+            :key="transaction.transactionId"
+            :title="transaction.transactionTitle"
+            :category="transaction.transactionCategory"
+            :amount="transaction.amount"
+            :date="transaction.date"
+          ></transaction-component>
+        </div>
+
+        <div class="pagination">
+          <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
+          <div  v-if="pages>0" class="page-numbers">
+            <button
+              v-for="pageNumber in pages"
+              :key="pageNumber-2"
+              :class="{ chosen: pageNumber-1 === currentPage }"
+              @click="goToPage(pageNumber-1)"
+            >{{ pageNumber}}</button>
+          </div>
+          <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
+        </div>
       </div>
-    </div>
-      <div id="pie-box" :class="{ 'mobile-show': chartVisible }">
-          <Pie :data="chartData" :options="{ maintainAspectRatio: false }"></Pie>
+
+      <div class="pie-box" :class="{ 'hide': !displayType}">
+        <Pie :data="chartData" :options="{ maintainAspectRatio: false }"></Pie>
       </div>
+
     </div>
+
   </div>
 </template>
 
-
-
-
 <style scoped>
 
-
-.economy-ui {
+.economy-view {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
+  gap: 2.5%;
 }
 
-h2 {
-  color: #6AB40A;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  padding-bottom: 1%;
-}
-
-.custom-dropdown-container {
+.popup-container {
+  position: fixed; /* Change to fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  background-color: rgba(64, 64, 64, 0.5);
+
   align-items: center;
+  z-index: 1000; /* Adjust z-index as needed */
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  place-content: space-between;
+  max-height: 6.5%;
+}
+
+.help-icon:hover{
+  transform: scale(1.05);
+}
+
+.title{
+  color: var(--color-heading);
+}
+
+.toggle-buttons{
+  display: none;
 }
 
 .container {
   display: flex;
+  flex-direction: row;
   height: 100%;
+  width: 100%;
+  gap: 2.5%;
+  padding-bottom: 2.5%;
+  place-content: space-between;
 }
 
 .component-container {
@@ -237,58 +277,81 @@ h2 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 1.25%;
+
+  width: 100%;
+  height: 100%;
+
+  overflow-y: hidden;
+
 }
-#pie-box,
-.box {
+
+.pie-box, .box{
+  display: flex;
+  flex-direction: column;
+
   border-radius: 20px;
   border: 1px solid var(--color-border);
-  width:100%;
-  max-width: 600px; /* Limit maximum width */
-  min-height: 510px;
-  height: auto;
-  box-shadow: 0 4px 4px 0 var(--color-shadow);
-  transition: transform 0.3s ease-in-out;
-  background-color: var(--color-background);
-  margin-right: 1%;
 
+  width:50%;
+  height: 100%;
+
+  padding: 1.5%;
+
+  box-shadow: 0 4px 4px 0 var(--color-shadow);
+  background-color: var(--color-background);
+
+  transition: transform 0.3s ease-in-out;
 }
 
+.box{
+  place-content: space-between;
+  gap: 2.5%;
+}
 
+.custom-dropdown-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 8.0%;
+}
 
 .custom-dropdown {
-  width: 80%;
-  height: 7%;
+  width: 100%;
+  height: 100%;
   padding: 8px;
-  margin-top: 2%;
-  margin-bottom: 2%;
   border-radius: 20px;
 }
-
-
 
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .pagination button {
   padding: 5px 10px;
   margin: 0 5px;
-  border: 1px var(--color-border);
-  border-radius: 3px;
-  background-color: transparent;
-  cursor: pointer;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  background-color: var(--color-pageination-button);
 }
 
 .pagination button:hover {
-  background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.pagination button:active{
+  background-color: var(--color-pageination-button-click);
 }
 
 .pagination button:disabled {
-  color: #ccc;
+  color:  var(--color-inactive-button-text);
   cursor: not-allowed;
+  transform: none;
+  background-color: var(--color-pageination-button) ;
 }
 
 .page-numbers {
@@ -296,38 +359,66 @@ h2 {
 }
 
 .page-numbers button {
-  padding: 5px 10px;
-  margin: 0 2px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.page-numbers button.active {
-  background-color: #5E5CE5;
-  color: white;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  background-color: var(--color-pageination-button);
 }
 
 .page-numbers button:hover {
-  background-color: #f0f0f0;
+  transform: scale(1.05);
 }
 
-.page-numbers button:disabled {
-  color: #ccc;
-  cursor: not-allowed;
+.page-numbers button:active {
+  background-color: var(--color-pageination-button-click);
 }
 
-.toggle-button-container{
-  display: none;
+.chosen{
+  color: var(--color-heading);
+  font-weight: bold;
 }
 
+@media screen and (max-width: 1000px) {
 
-@media screen and (max-width: 1300px) {
-  .box {
+  .hide{
+    display: none;
+  }
+
+  .toggle-buttons{
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    min-height: 580px;
-    margin:10px /* Adjust margin for smaller screens */
+    min-height: 7.5%;
+    place-content: space-between;
+  }
+
+  .toggle-button{
+    width: 49.5%;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--color-confirm-button);
+  }
+
+  .toggle-button:hover{
+    transform: scale(1.02);
+  }
+
+  .toggle-button-title{
+    font-weight: bold;
+    color: var(--color-headerText);
+  }
+
+  .active-button{
+    background-color: var(--color-confirm-button-click);
+  }
+
+  .pie-box {
+    width: 100%;
+    height: 100%;
+  }
+
+  .box{
+    width: 100%;
+    height: 100%;
   }
 
   .container {
@@ -335,43 +426,6 @@ h2 {
     align-content: center;
     height: 100%;
   }
-
-  h2 {
-    font-size: 3em; /* Adjust font size for smaller screens */
-  }
-  span {
-    font-size: 1.9em;
-  }
-  .toggle-button-container {
-    display:block;
-    margin-left: 6%;
-    justify-content: center;
-  }
-
-  .custom-dropdown{
-    font-size: 1.8em;
-  }
-
-
-  #pie-box {
-    display: none; /* Show the graph container on mobile by default */
-    height: 650px;
-  }
-
-  /* Show the graph container only when chartVisible is true */
-  .mobile-show {
-    display: block !important;
-  }
-
-  /* Hide the transactions box when chartVisible is true */
-  .box.mobile-hide {
-    display: none;
-  }
-
 }
-@media (prefers-color-scheme: dark){
-  h2{
-    color: var(--vt-c-kellyGreen-Light);
-  }
-}
+
 </style>

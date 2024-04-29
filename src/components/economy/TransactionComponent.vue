@@ -47,8 +47,8 @@ const toggleExpand = () => {
   border-radius: 20px;
   border: 1px solid var(--color-border);
   box-shadow: 0 4px 4px 0 var(--color-shadow);
-  width: 80%;
-  height: 10%;
+  width: 100%;
+  height: 100%;
   margin-bottom: 2.5%;
   display:flex;
   overflow: hidden;
@@ -56,9 +56,6 @@ const toggleExpand = () => {
   background-color: var(--vt-c-Orange)
 }
 
-.component.expanded {
-  height: auto; /* Allow the component to expand */
-}
 .component-left{
   width:50%;
   height:100%;
