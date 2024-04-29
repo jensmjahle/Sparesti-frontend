@@ -15,7 +15,10 @@ const displayHelpPopUp = ref<boolean>(false)
 
 const pathName = ref("PathNameHere")
 const pathDescription = ref("PathDescriptionHere")
-
+const editLabel = ref("Edit")
+const deleteLabel = ref("Delete")
+const deleteColor = ref('var(--vt-c-Raspberry)')
+const editColor = ref('--vt-c-Orange')
 const totalToSave = ref(3000)
 const totalSaved = ref(0)
 
@@ -166,10 +169,17 @@ const closeHelpPopUp = async () => {
     width: 100%;
   }
 
-  #Progress, #Transfer, #Description{
+  #Progress, #Transfer{
     margin-bottom: 5%;
   }
 
+  #Description{
+    margin-bottom: 1.5%
+  }
+  #buttons{
+    display: flex;
+    flex-direction: row;
+  }
   @media only screen and (max-width: 1000px) {
     #Path{
       height: 100%;
