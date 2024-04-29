@@ -33,7 +33,6 @@ const displayDescription = ref(false)
     <h4>{{props.description}}</h4>
   </div>
 
-
 </div>
 </template>
 
@@ -43,6 +42,7 @@ const displayDescription = ref(false)
   flex-direction: column;
   place-content: space-between;
   padding: 1.5%;
+  color: var(--color-text-black);
 }
 .title{
   text-align: left;
