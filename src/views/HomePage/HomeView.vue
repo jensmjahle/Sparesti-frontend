@@ -28,29 +28,6 @@ const closeHelpPopUp = async () => {
   displayHelpPopUp.value = false;
 }
 
-const showMilestones = ref(true)
-const showChallenges = ref(false)
-
-function checkScreenWidth() {
-  if(window.innerWidth >= 1000){
-    showMilestones.value = true;
-    showChallenges.value = true;
-  }
-}
-
-function showMilestonesView(){
-  showMilestones.value = true
-  showChallenges.value = false
-}
-
-function showChallengesView(){
-  showChallenges.value = true
-  showMilestones.value = false
-}
-
-checkScreenWidth()
-
-
 const saved = ref(0)
 
 async function userSavings(){
