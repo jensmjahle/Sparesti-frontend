@@ -44,7 +44,7 @@ async function login() {
       </div>
     </div>
     <button id="LogInButton" @click="login" :disabled="!username || password.length < 8" :class="{ 'disabled-button': !username || password.length < 8 }">LogIn</button>
-    <h2 @click="navigateToNewUser()" id="NewUser">Ny til Sparesti? Trykk her for å lage en profil!</h2>
+    <h2 tabindex="0" @keyup.enter="navigateToNewUser()" @click="navigateToNewUser()" id="NewUser">Ny til Sparesti? Trykk her for å lage en profil!</h2>
   </div>
 </template>
 
