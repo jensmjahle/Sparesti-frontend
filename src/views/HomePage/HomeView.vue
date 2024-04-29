@@ -3,6 +3,9 @@ import {ref} from 'vue'
 import ActiveChallengesList from '@/components/challenge/ActiveChallengesList.vue'
 import router from '@/router'
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
+import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
+import { ref } from 'vue'
+import { getUserTotalSavings } from '@/utils/HomePageUtils'
 
 import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
 
@@ -27,6 +30,36 @@ const closeHelpPopUp = async () => {
   displayHelpPopUp.value = false;
 }
 
+const showMilestones = ref(true)
+const showChallenges = ref(false)
+
+function checkScreenWidth() {
+  if(window.innerWidth >= 1000){
+    showMilestones.value = true;
+    showChallenges.value = true;
+  }
+}
+
+function showMilestonesView(){
+  showMilestones.value = true
+  showChallenges.value = false
+}
+
+function showChallengesView(){
+  showChallenges.value = true
+  showMilestones.value = false
+}
+
+checkScreenWidth()
+
+
+const saved = ref(0)
+
+async function userSavings(){
+  saved.value = await getUserTotalSavings()
+}
+
+userSavings()
 </script>
 
 <template>
