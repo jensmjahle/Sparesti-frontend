@@ -1,118 +1,121 @@
 <script setup lang="ts">
-
-import {onMounted, ref} from "vue";
 import router from "@/router";
-import CompletedMilestoneDisplay from '@/components/milestone/CompletedMilestoneDisplay.vue'
-import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDisplay.vue'
-import {getAllMilestoneLogs, getAllMilestones} from "@/utils/MilestoneUtils";
-import {useTokenStore} from "@/stores/token";
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
+import MilestoneLogList from '@/components/milestone/MilestoneLogList.vue'
+import { ref } from 'vue'
+import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
+import MilestoneHelpPopUp from '@/components/popups/help/MilestoneHelpPopUp.vue'
 
-const activeMilestones = ref(<Milestone[]>[])
-const completedMilestones = ref<Milestone[]>([])
+const displayType = ref<boolean>(true)
+const displayHelpPopUp = ref<boolean>(false)
 
-onMounted(async () => {
-  const token = useTokenStore().$state.jwtToken
-  activeMilestones.value = await getAllMilestones(token);
-  completedMilestones.value = await getAllMilestoneLogs(token);
-  console.log(completedMilestones.value);
-})
+const displayNewChallenges = () => {
+  displayType.value = false;
+}
 
-const pages = ref<number>(1)
-const currentPage = ref<number>(0)
+const displayActiveChallenges = () => {
+  displayType.value = true;
+}
 const navigateTo = (path: string) => {
   router.push(path)
 }
 
-const previousPage = () => {}
-const goToPage = (pageNumber:number) => {}
-
-const nextPage = () =>{}
-
-interface Milestone{
-  milestoneId: number;
-  milestoneTitle: string;
-  milestoneDescription: string
-  milestoneGoalSum: number;
-  milestoneCurrentSum: number;
-  deadlineDate: Date;
-  startDate: Date;
-  milestoneImage: string;
-  username: string;
+const openHelpPopUp = () => {
+  displayHelpPopUp.value = true;
+}
+const closeHelpPopUp = () => {
+  displayHelpPopUp.value = false;
+  console.log(displayHelpPopUp);
 }
 </script>
 
 <template>
   <div class="milestone-view">
-    <h2 class="title">Dine Sparemål</h2>
+    <div class="header">
+      <h2 class="title">Dine sparemål!</h2>
+      <img
+        src="/src/components/icons/navigation/help.svg"
+        alt="hjelp"
+        @click="openHelpPopUp"
+        class="help-icon">
+      <div v-if="displayHelpPopUp" class="popup-container">
+        <MilestoneHelpPopUp
+          @closePopUp="closeHelpPopUp"
+        ></MilestoneHelpPopUp>
+      </div>
+    </div>
+    <div class="toggle-buttons">
+      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+        <h3 class="toggle-button-title">Aktive sparemål</h3>
+      </button>
+      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+        <h3 class="toggle-button-title">Fullførte sparemål</h3>
+      </button>
+    </div>
     <div class="main">
-      <div class="left">
+      <div class="left" :class="{ 'mobile-hide': !displayType }">
         <button class="create-milestone-button" @click="navigateTo('/homepage/create-milestone')">
           <h2 class="create-milestone-button-title">Lag nytt sparemål + </h2>
         </button>
-        <ActiveMilestonesList/>
+        <ActiveMilestonesList class="active-milestones"></ActiveMilestonesList>
       </div>
-
-      <div class="right">
-
+      <div class="right" :class="{ 'mobile-hide': displayType }">
         <h2 class="completed-milestones-title">Sparemål historikk</h2>
-        <div class="completed-milestones">
-          <template v-if="activeMilestones.length === 0">
-            <h4>Du har ingen fullførte sparemål<br>Avsluttede sparemål ender opp her sånn at du får full oversikt.</h4>
-          </template>
-          <template v-else>
-          <CompletedMilestoneDisplay
-            class="completed-milestone"
-            v-for="(completedMilestone, index) in completedMilestones"
-            :key="index"
-            :id="completedMilestone.milestoneId"
-            :title="completedMilestone.milestoneTitle"
-            :description="completedMilestone.milestoneDescription"
-            :current-sum="completedMilestone.milestoneCurrentSum"
-            :goal-sum="completedMilestone.milestoneGoalSum"
-            :deadline="completedMilestone.deadlineDate"
-            :start-date="completedMilestone.startDate"
-            :image="completedMilestone.milestoneImage"
-          ></CompletedMilestoneDisplay>
-          <div class="pagination">
-            <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
-            <div  v-if="pages>0" class="page-numbers">
-              <button
-                v-for="pageNumber in pages"
-                :key="pageNumber-2"
-                @click="goToPage(pageNumber-1)"
-                :class="{ chosen: pageNumber-1 === currentPage }"
-              >{{ pageNumber}}</button>
-            </div>
-            <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
-        </div>
-        </template>
-        </div>
-
+        <MilestoneLogList></MilestoneLogList>
+      </div>
     </div>
-</div>
-</div>
+  </div>
 </template>
 
 <style scoped>
 .milestone-view{
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
   height: 100%;
   width: 100%;
+
+  gap: 2.5%;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+  place-content: space-between;
+  max-height: 6.5%;
+}
+
+.help-icon:hover{
+  transform: scale(1.05);
+}
+
+.popup-container {
+  position: fixed; /* Change to fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(64, 64, 64, 0.5);
+
+  align-items: center;
+  z-index: 1000; /* Adjust z-index as needed */
 }
 
 .title{
   color: var(--color-heading);
 }
 
+.toggle-buttons{
+  display: none;
+}
+
 .main{
   display: flex;
   flex-direction: row;
-
-  height: 100%;
   width: 100%;
+  min-height: 120%;
+  padding-bottom: 1.5%;
   gap: 2.5%;
 }
 
@@ -120,6 +123,7 @@ flex-direction: column;
   display: flex;
   flex-direction: column;
   width: 60%;
+  min-height: 100%;
   gap: 2.5%;
 }
 
@@ -146,10 +150,13 @@ flex-direction: column;
 .right{
   display: flex;
   flex-direction: column;
-  border: 2px solid var(--color-border);
+  place-content: space-between;
+
   border-radius: 20px;
+  border: 2px solid var(--color-border);
   box-shadow: 0 4px 4px var(--color-shadow);
   background-color: var(--color-heading);
+
   height: 100%;
   width: 40%;
 }
@@ -159,86 +166,66 @@ flex-direction: column;
   text-align: center;
   font-weight: bold;
 }
+@media only screen and (max-width: 1000px){
+  .main{
+    display: flex;
+    flex-direction: column;
 
-.completed-milestones{
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  height: 100%;
-  width: 100%;
-  padding: 5.0%;
-  gap: 2.5%;
+    min-height: 150%;
+    width: 100%;
+
+    padding-top: 1.0%;
+    padding-bottom: 1.0%;
+  }
+
+  .toggle-buttons{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 7.5%;
+    place-content: space-between;
+  }
+
+  .toggle-button{
+    width: 49.5%;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--color-confirm-button);
+  }
+
+  .toggle-button:hover{
+    transform: scale(1.02);
+  }
+
+  .toggle-button-title{
+    font-weight: bold;
+    color: var(--color-headerText);
+  }
+
+  .active-button{
+    background-color: var(--color-confirm-button-click);
+  }
+
+  .mobile-hide{
+    display: none;
+  }
+
+  .left{
+    width: 100%;
+    height: 100%;
+  }
+
+  .right{
+    min-height: 110%;
+    width: 100%;
+  }
+
 }
 
-.completed-milestone{
-  border-radius: 20px;
-  border: 2px solid var(--color-border);
-  background-color: var(--color-background-white);
-
-  min-height: calc(100%/4.8);
-  width: 100%;
+@media (prefers-color-scheme: dark) {
+  .help-icon{
+    filter: invert(1);
+  }
 }
-
-.completed-milestone:hover{
-  transform: scale(1.05);
-  transition: 0.3s;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  flex: 1;
-}
-
-.pagination button {
-  padding: 5px 10px;
-  margin: 0 5px;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--color-pageination-button);
-}
-
-.pagination button:hover {
-  transition: 0.3s;
-  transform: scale(1.05);
-}
-
-.pagination button:active{
-  background-color: var(--color-pageination-button-click);
-}
-
-.pagination button:disabled {
-  color: var( --color-inactive-button-text);
-  cursor: not-allowed;
-  transform: none;
-  background-color: var(--color-pageination-button) ;
-}
-
-.page-numbers {
-  display: flex;
-}
-
-.page-numbers button {
-  border: 1px solid var(--color-border);
-  border-radius: 5px;
-  background-color: var(--color-pageination-button);
-}
-
-.page-numbers button:hover {
-  transition: 0.3s;
-  transform: scale(1.05);
-}
-
-.page-numbers button:active {
-  background-color: var(--color-pageination-button-click);
-}
-
-.chosen{
-  background-color: black;
-}
-
-
 
 </style>
