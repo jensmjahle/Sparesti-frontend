@@ -4,7 +4,6 @@ import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDispla
 import { onMounted, ref } from 'vue'
 import { useTokenStore } from '@/stores/token'
 import { getAllMilestones } from '@/utils/MilestoneUtils'
-import router from '@/router'
 
 interface Milestone{
   milestoneId: number;
@@ -18,21 +17,61 @@ interface Milestone{
   username: string;
 }
 
-const activeMilestones = ref(<Milestone[]>[])
+const token = useTokenStore().jwtToken
 
-onMounted(async () => {
-  const token = useTokenStore().$state.jwtToken
-  activeMilestones.value = await getAllMilestones(token);
+const activeMilestones = ref<Milestone[]>([])
+const currentPage = ref<number>(0)
+const pages = ref<number>(1)
+const SIZE = 3
+
+onMounted( () => {
+  fetchActiveMilestones();
 })
+
+const fetchActiveMilestones = async () => {
+  try{
+    console.log(currentPage.value)
+    const { content, totalPages, number } = await getAllMilestones(token, currentPage.value,SIZE)
+    pages.value = totalPages;
+    currentPage.value = number;
+    activeMilestones.value = content;
+  }catch (error){
+    console.log(error)
+  }
+}
+
+const previousPage = () => {
+  currentPage.value --
+  fetchActiveMilestones();
+}
+const goToPage = (pageNumber:number) => {
+  currentPage.value = pageNumber;
+  fetchActiveMilestones();
+}
+
+const nextPage = () =>{
+  currentPage.value ++;
+  fetchActiveMilestones();
+}
 
 </script>
 
 <template>
-  <div class="active-milestones">
-    <template v-if="activeMilestones.length === 0">
-      <h4>Opps, her var det tomt.<br>Lag ditt første sparemål for å komme i gang!</h4>
-    </template>
-    <template v-else>
+  <div class="active-milestone-component">
+    <div class="pagination">
+      <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
+      <div  v-if="pages>0" class="page-numbers">
+        <button
+          v-for="pageNumber in pages"
+          :key="pageNumber-2"
+          :class="{ chosen: pageNumber-1 === currentPage }"
+          @click="goToPage(pageNumber-1)"
+        >{{ pageNumber}}</button>
+      </div>
+      <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
+    </div>
+
+    <div class="milestones">
       <ActiveMilestoneDisplay
         class="active-milestone"
         v-for="(activeMilestone, index) in activeMilestones"
@@ -46,18 +85,33 @@ onMounted(async () => {
         :startDate="activeMilestone.startDate"
         :image="activeMilestone.milestoneImage"
       ></ActiveMilestoneDisplay>
-    </template>
+      <h4 v-if="activeMilestones.length === 0">
+        Opps, her var det tomt.<br>
+        Lag ditt første sparemål for å komme i gang!
+      </h4>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
-.active-milestones{
+.active-milestone-component{
   display: flex;
   flex-direction: column;
   text-align: center;
 
   height: 100%;
   width: 100%;
+
+  gap: 2.5%;
+}
+
+.milestones{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
   gap: 2.5%;
 }
 
@@ -66,13 +120,73 @@ onMounted(async () => {
   border: 2px solid var(--color-border);
   box-shadow: 0 4px 4px var(--color-shadow);
 
-  min-height: 30%;
+  height: calc(100%/3);
   width: 100%;
 }
 
 .active-milestone:hover{
   transform: scale(1.02);
   transition: 0.3s;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  background-color: var(--color-pageination-button);
+}
+
+.pagination button:hover {
+  transform: scale(1.05);
+}
+
+.pagination button:active{
+  background-color: var(--color-pageination-button-click);
+}
+
+.pagination button:disabled {
+  color:  var(--color-inactive-button-text);
+  cursor: not-allowed;
+  transform: none;
+  background-color: var(--color-pageination-button) ;
+}
+
+.page-numbers {
+  display: flex;
+}
+
+.page-numbers button {
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  background-color: var(--color-pageination-button);
+}
+
+.page-numbers button:hover {
+  transform: scale(1.05);
+}
+
+.page-numbers button:active {
+  background-color: var(--color-pageination-button-click);
+}
+
+.chosen{
+  color: var(--color-heading);
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 1000px){
+  .pagination{
+    place-content: center;
+  }
 }
 
 </style>
