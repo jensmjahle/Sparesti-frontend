@@ -11,7 +11,7 @@ import { useTokenStore } from '@/stores/token'
 
 const token:string = useTokenStore().jwtToken;
 
-const firstName = ref<string>('');
+const firstName = ref<string>('Profile');
 const lastName = ref<string>('');
 
 onMounted(async () => {
