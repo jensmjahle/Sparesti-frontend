@@ -3,8 +3,6 @@ import {ref} from 'vue'
 import ActiveChallengesList from '@/components/challenge/ActiveChallengesList.vue'
 import router from '@/router'
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
-import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
-import { ref } from 'vue'
 import { getUserTotalSavings } from '@/utils/HomePageUtils'
 
 import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
