@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TopNav from '@/components/navigation/TopNav.vue'
 import SideNav from '@/components/navigation/SideNav.vue'
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, onUnmounted } from 'vue';
 import { useTokenStore } from '@/stores/token';
 import HomePagePopUp from './HomePage/HomePagePopUp.vue';
 
@@ -11,6 +11,29 @@ const showPopup = ref(false);
 onMounted(() => {
   showPopup.value = store.displayPopUp;
   console.log('showPopup', store.displayPopUp);
+
+  setInterval(() => {
+    // After a certain interval, assume user is inactive
+    useTokenStore().setActive(false);
+  }, 10000);
+
+  const handleMouseMove = () => {
+    useTokenStore().setActive(true);
+  };
+
+  const handleKeyDown = () => {
+    useTokenStore().setActive(true);
+  };
+
+  // Add event listeners when the component is mounted
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('keydown', handleKeyDown);
+
+  // Cleanup: Remove event listeners when the component is unmounted
+  onUnmounted(() => {
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('keydown', handleKeyDown);
+  });
 });
 
 watch(
