@@ -1,8 +1,118 @@
 import { shallowMount } from '@vue/test-utils';
 import DropNav from '@/components/navigation/DropNav.vue';
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi , afterEach, beforeEach } from 'vitest'
+
+afterEach(() => {
+  vi.clearAllMocks
+})
+
+const mockRoutePush = vi.fn()
+
+beforeEach(() => {
+  vi.mock('vue-router', async () => {
+    return {
+      RouterView: {},
+      useRouter: () => {
+        return {
+          push: mockRoutePush
+        }
+      }
+    }
+  })
+})
+
 
 describe('DropNavComponent', () => {
+  it('navigates to home', async () => {
+
+    const wrapper = shallowMount(DropNav);
+
+    const button = wrapper.find('[data-testid="home-button"]');
+
+    await button.trigger('click');
+
+    await wrapper.vm.$nextTick();
+
+    expect(mockRoutePush).toHaveBeenCalled()
+    expect(mockRoutePush).toHaveBeenCalledWith('/homepage/home');
+
+  })
+
+  it('navigates to discover', async () => {
+
+    const wrapper = shallowMount(DropNav);
+
+    const button = wrapper.find('[data-testid="discover-button"]');
+
+    await button.trigger('click');
+
+    await wrapper.vm.$nextTick();
+
+    expect(mockRoutePush).toHaveBeenCalled()
+    expect(mockRoutePush).toHaveBeenCalledWith('/homepage/discover');
+
+  })
+
+  it('navigates to milestones', async () => {
+
+    const wrapper = shallowMount(DropNav);
+
+    const button = wrapper.find('[data-testid="milestone-button"]');
+
+    await button.trigger('click');
+
+    await wrapper.vm.$nextTick();
+
+    expect(mockRoutePush).toHaveBeenCalled()
+    expect(mockRoutePush).toHaveBeenCalledWith('/homepage/milestone');
+
+  })
+
+  it('navigates to challenges', async () => {
+
+    const wrapper = shallowMount(DropNav);
+
+    const button = wrapper.find('[data-testid="challenge-button"]');
+
+    await button.trigger('click');
+
+    await wrapper.vm.$nextTick();
+
+    expect(mockRoutePush).toHaveBeenCalled()
+    expect(mockRoutePush).toHaveBeenCalledWith('/homepage/challenge');
+
+  })
+
+  it('navigates to economy', async () => {
+
+    const wrapper = shallowMount(DropNav);
+
+    const button = wrapper.find('[data-testid="economy-button"]');
+
+    await button.trigger('click');
+
+    await wrapper.vm.$nextTick();
+
+    expect(mockRoutePush).toHaveBeenCalled()
+    expect(mockRoutePush).toHaveBeenCalledWith('/homepage/economy');
+
+  })
+
+  it('navigates to profile', async () => {
+
+    const wrapper = shallowMount(DropNav);
+
+    const button = wrapper.find('[data-testid="profile-button"]');
+
+    await button.trigger('click');
+
+    await wrapper.vm.$nextTick();
+
+    expect(mockRoutePush).toHaveBeenCalled()
+    expect(mockRoutePush).toHaveBeenCalledWith('/homepage/profile');
+
+  })
+
   it('renders buttons with correct labels and icons', () => {
     const wrapper = shallowMount(DropNav);
 
