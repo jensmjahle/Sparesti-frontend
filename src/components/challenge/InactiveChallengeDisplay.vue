@@ -2,9 +2,7 @@
 
 import { activateChallenge, deleteChallenge } from '@/utils/challengeutils'
 import { useTokenStore } from '@/stores/token'
-
-const token:string = useTokenStore().jwtToken;
-const emits = defineEmits(['challengeAccepted', 'challengeDeclined']);
+import eventBus from '@/components/service/eventBus.js'
 
 interface Challenge{
   'challengeId':number,
@@ -21,12 +19,21 @@ const props = defineProps({
   }
 });
 
+const token:string = useTokenStore().jwtToken;
+
+const emit = defineEmits(['challengeAccepted', 'challengeDeclined']);
+
+const expirationDate = () => {
+  return new Date(props.challenge?.expirationDate).
+  toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
 const declineChallenge = async () => {
   console.log('decline-button clicked')
   if(props.challenge.challengeId){
     try{
       await deleteChallenge(token, props.challenge.challengeId);
-      emits('challengeDeclined', props.challenge.challengeId);
+      emit('challengeDeclined', props.challenge.challengeId);
     } catch (error){
       alert('Noe gikk galt! Venligst prøv på nytt.')
     }
@@ -39,7 +46,8 @@ const acceptChallenge = async () => {
   if(props.challenge.challengeId){
     try{
       await activateChallenge(token, props.challenge.challengeId);
-      emits('challengeAccepted', props.challenge.challengeId);
+      emit('challengeAccepted', props.challenge.challengeId);
+      eventBus.emit('updateChallenges');
     } catch (error){
       alert('Noe gikk galt! Venligst prøv på nytt.')
     }
@@ -52,7 +60,7 @@ const acceptChallenge = async () => {
     <h2 class="title">{{ props.challenge.challengeTitle }}</h2>
     <h4 class="description">{{ props.challenge.challengeDescription }}</h4>
     <div class="info">
-      <h4>Utløpsdato: {{props.challenge.expirationDate}} |</h4>
+      <h4>Utløpsdato: {{expirationDate()}} |</h4>
       <h4 class="sum"> Sparesum: {{props.challenge.goalSum}} kr,-</h4>
     </div>
     <div class="options">

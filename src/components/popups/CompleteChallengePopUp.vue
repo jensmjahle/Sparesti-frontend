@@ -31,7 +31,8 @@ onMounted(async () => {
 })
 const fetchAllMilestones = async () =>{
   try{
-    milestones.value = await getAllMilestones(token)
+    const result  = await getAllMilestones(token, 0,10)
+    milestones.value = result.content;
     chosenMilestone.value = milestones.value[0].milestoneId;
 
   } catch (error){
@@ -77,7 +78,7 @@ const completeThisChallenge = async () => {
       <button class="option-button" id="cancel-button" @click="cancelCompleteThisChallenge()">
         <h2 class="option-button-title">Avbryt</h2>
       </button>
-      <button class="option-button" id="complete-button" @click="completeThisChallenge()">
+      <button class="option-button" id="delete-button" @click="completeThisChallenge()">
         <h2 class="option-button-title">Fullfør</h2>
       </button>
     </div>
@@ -151,14 +152,14 @@ const completeThisChallenge = async () => {
   background-color: var(--color-cancel-button-click);
 }
 
-#complete-button{
+#delete-button{
   background-color: var(--color-confirm-button);
 }
-#complete-button:active{
+#delete-button:active{
   background-color: var(--color-confirm-button-click);
 }
 
-#complete-button:hover, #cancel-button:hover{
+#delete-button:hover, #cancel-button:hover{
   transform: scale(1.02);
 }
 

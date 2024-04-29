@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import DicoverHelpPopUp from '@/components/popups/help/DicoverHelpPopUp.vue'
 
 type Article = {
   source: {
@@ -14,6 +15,17 @@ type Article = {
   publishedAt: string;
   content: string | null;
 };
+
+const displayHelpPopUp = ref<boolean>(false)
+
+
+const openHelpPopUp = () => {
+  displayHelpPopUp.value = true;
+}
+const closeHelpPopUp = async () => {
+  displayHelpPopUp.value = false;
+}
+
 
 const articles = ref<Article[]>([]);
 
@@ -30,22 +42,34 @@ onMounted(async () => {
 
 <template>
   <div class="discover-view">
-    <h2 id="view-title">Utforsk økonomi og sparenyheter fra E24</h2>
-    <p id="view-description">Her kan du se de nyeste artiklene fra E24 anngående
-      sparing og bank. Klikk på en artikkel som virker interessant.</p>
-    <ul class="discover-items">
-      <li v-for="(article, index) in articles" :key="index" class="article-item">
+    <div class="header">
+      <h2 id="view-title">Sparetips og økonomi fra E24!</h2>
+      <img
+        src="/src/components/icons/navigation/help.svg"
+        alt="hjelp"
+        @click="openHelpPopUp"
+        class="help-icon">
+      <div v-if="displayHelpPopUp" class="popup-container">
+        <DicoverHelpPopUp
+          @closePopUp="closeHelpPopUp"
+        ></DicoverHelpPopUp>
+      </div>
+    </div>
+
+    <div class="discover-items">
+      <div v-for="(article, index) in articles" :key="index" class="article-item">
         <a :href="article.url" target="_blank" class="article-link">
           <div class="article-content">
-            <div class="article-title">{{ article.title }}</div>
-            <div class="article-description">{{ article.description }}</div>
+            <h3 class="article-title">{{ article.title }}</h3>
+            <h4 class="article-description">{{ article.description }}</h4>
             <div class="image-div">
               <img :src="article.urlToImage" alt="Article Thumbnail" class="image">
             </div>
           </div>
         </a>
-      </li>
-    </ul>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -56,6 +80,10 @@ onMounted(async () => {
   .article-content {
     background-color: var(--vt-c-black-mute);
   }
+
+  .help-icon{
+    filter: invert(1);
+  }
 }
 
 /* Light mode media query */
@@ -65,14 +93,33 @@ onMounted(async () => {
   }
 }
 
-#view-title {
-  color: var(--color-heading);
-  padding-left: 15px;
+.header{
+  display: flex;
+  flex-direction: row;
+  place-content: space-between;
+  max-height: 6.5%;
 }
 
-#view-description {
-  color: var(--color-text);
-  padding-left: 15px;
+.help-icon:hover{
+  transform: scale(1.05);
+}
+
+.popup-container {
+  position: fixed; /* Change to fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(64, 64, 64, 0.5);
+
+  align-items: center;
+  z-index: 1000; /* Adjust z-index as needed */
+}
+
+#view-title {
+  color: var(--color-heading);
 }
 
 .discover-view {
@@ -80,74 +127,63 @@ onMounted(async () => {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  min-height: 650px;
-  gap: 2.5%;
 }
 
 .discover-items {
-  list-style-type: none;
-  padding: 0;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  width: 100%;
+  row-gap: 0.2%;
+  column-gap: 1.5%;
 }
 
 .article-item {
-  width: calc(33.33% - 10px);
-  padding: 10px;
-  height: 400px;
-  padding-top: 0;
+  width: calc(calc(100% - 2 * 1.5%) / 3);
+  height: 7.0%;
 }
 
 .article-content {
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
-  padding: 10px;
-  overflow: hidden;
+  padding: 5.0%;
+  border-radius: 20px;
   height: 100%;
-  justify-content: space-around;
-  align-content: center;
-  object-fit: contain;
+  width: 100%;
+  justify-content: space-between;
+  align-content: start;
 }
 
 .article-title {
-  font-size: 130%;
   font-weight: bold;
-  margin-bottom: 5px;
-  line-height: 20px;
-}
-
-.article-description {
-  font-size: 110%;
-  font-weight: normal;
-  line-height: initial;
 }
 
 .image {
-  margin-top: 5px;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 10px;
+  width: 100%;
+  border-radius: 20px;
 }
 
 .image-div {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: end;
   height: 50%;
+  overflow: hidden;
+  border-radius: 20px;
 }
 
-@media screen and (max-width: 1200px) {
+
+@media screen and (max-width: 900px) {
   .article-item {
-    width: calc(50% - 10px);
+    width: calc(calc(98.5%) / 2);
+    height: 5.5%;
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 600px) {
+
   .article-item {
-    width: calc(100% - 10px);
+    width: 100%;
+    aspect-ratio: 1/0.5;
   }
 }
 
@@ -155,6 +191,5 @@ onMounted(async () => {
   text-decoration: none;
   color: inherit;
   transition: none;
-  padding: 0;
 }
 </style>
