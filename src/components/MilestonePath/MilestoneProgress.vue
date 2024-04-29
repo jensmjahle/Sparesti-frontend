@@ -24,7 +24,6 @@ const props = defineProps({
 
   #TotalSavings, #Savings{
     font-size: 1.5em;
-    margin-left: 5%;
   }
 
   #TotalSavings{
@@ -36,8 +35,7 @@ const props = defineProps({
     border-radius: 20px;
     width: 100%;
     height: 30%;
-    padding-left: 1%;
-    padding-right: 1%;
+    padding: 2%;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
   }
 
