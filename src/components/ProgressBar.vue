@@ -23,14 +23,14 @@
 <style scoped>
 
   #QuestionProgress{
-    width: 90%;
-    height: 10vh;
+    width: 100%;
+    height: 100%;
   }
 
   @media only screen and (max-width: 1000px) {
 
     #QuestionProgress{
-      width: 90vw;
+      width: 100%;
     }
   }
 </style>

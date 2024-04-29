@@ -13,7 +13,6 @@ const props = defineProps({
   startDate: Date,
   image: String
 });
-const imageUrl = "src/assets/pig.png"
 
 const openMilestone = () => {
   if (props.id !== undefined) {
@@ -23,20 +22,41 @@ const openMilestone = () => {
   console.log("Milestone id is not defined")
 }
 
+const daysLeft = () => {
+  if(props.deadline){
+    const today = new Date();
+    const deadlineDate = new Date(props.deadline);
+    // Calculate the difference in milliseconds
+    const differenceMs = deadlineDate.getTime() - today.getTime();
+    // Check if deadline is in the future
+    if (differenceMs > 0) {
+      // Convert milliseconds to days
+      return Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+    } else {
+      return 0; // Deadline has passed
+    }
+  }
+  return 0; // No deadline specified
+}
+
+const isToExpire = () => {
+  return (daysLeft() <= 7)
+}
 
 </script>
 
 <template>
-<div class="active-milestone-display"
-     @click="openMilestone"
-     :style="{
-            backgroundImage: image ? 'url(' + image + ')' : 'url(' + imageUrl + ')'
-        }">
-  <h2 class="title">{{props.title}}</h2>
-  <div class="progress">
-  <h4 class="description" v-if="goalSum&&currentSum">{{props.currentSum}}kr av {{props.goalSum}}kr</h4>
-   <ProgressBar class="progress-bar" :Max="goalSum || 0" :Current="currentSum || 0"/>
+<div class="active-milestone-display" @click="openMilestone">
+  <h2 class="title" :class="{'expire': isToExpire()}">{{props.title}}</h2>
+  <div class="img"> [Bilde]</div>
+
+  <div class="progress-description">
+    <h4 class="description" v-if="goalSum&&currentSum">{{props.currentSum}}kr av {{props.goalSum}}kr</h4>
+    <h4 class="description" :class="{'expire': isToExpire()}">Dager igjen: {{daysLeft()}}</h4>
   </div>
+
+  <ProgressBar class="progress-bar" :Max="goalSum || 0" :Current="currentSum || 0"/>
+
 </div>
 </template>
 
@@ -45,20 +65,37 @@ const openMilestone = () => {
   display:flex;
   flex-direction: column;
   place-content: space-between;
+  height: 100%;
+  width: 100%;
   padding: 1.5%;
 }
 .title{
   text-align: left;
 }
+
+.img{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+  place-content: center;
+  place-items: center;
+  background-color: lightgrey;
+}
 .description{
   text-align: left;
-
 }
-.progress{
+.progress-description{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   place-content: space-between;
-  gap: 2.5%;
-  transition: 0.3s;
+}
+
+.expire{
+  color: var(--color-text-error);
+}
+
+.progress-bar{
+  width: 100%;
 }
 </style>
