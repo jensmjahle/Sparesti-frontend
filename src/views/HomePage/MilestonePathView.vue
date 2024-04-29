@@ -9,7 +9,9 @@ import { getMilestoneDetails } from '@/utils/MilestonePathUtils'
 import { useMilestoneStore } from '@/stores/currentMilestone'
 import PathHelpPopUp from '@/components/popups/help/PathHelpPopUp.vue'
 import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
-
+import MilestoneButton from '@/components/MilestonePath/MilestoneButton.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const displayType = ref<boolean>(false)
 const displayHelpPopUp = ref<boolean>(false)
 
@@ -96,6 +98,10 @@ const closeHelpPopUp = async () => {
         </div>
         <div id = Transfer>
           <DirectTransfer @transfer-value="updateTotalSaved"/>
+        </div>
+        <div id = buttons>
+          <milestone-button :label="editLabel" :button-color="editColor" @click="router.push('/homepage/edit-milestone')"></milestone-button>
+          <milestone-button :label="deleteLabel" :button-color="deleteColor"></milestone-button>
         </div>
       </div>
 
@@ -223,6 +229,9 @@ const closeHelpPopUp = async () => {
 
     .mobile-hide{
       display: none;
+    }
+    #buttons{
+      flex-direction: column;
     }
   }
 
