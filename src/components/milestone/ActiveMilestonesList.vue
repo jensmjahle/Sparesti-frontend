@@ -3,7 +3,7 @@
 import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDisplay.vue'
 import { onMounted, ref } from 'vue'
 import { useTokenStore } from '@/stores/token'
-import { getAllMilestones } from '@/utils/MilestoneUtils'
+import { getAllMilestonesPaginated } from '@/utils/MilestoneUtils'
 
 interface Milestone{
   milestoneId: number;
@@ -31,7 +31,7 @@ onMounted( () => {
 const fetchActiveMilestones = async () => {
   try{
     console.log(currentPage.value)
-    const { content, totalPages, number } = await getAllMilestones(token, currentPage.value,SIZE)
+    const { content, totalPages, number } = await getAllMilestonesPaginated(token, currentPage.value,SIZE)
     pages.value = totalPages;
     currentPage.value = number;
     activeMilestones.value = content;
@@ -60,7 +60,7 @@ const nextPage = () =>{
   <div class="active-milestone-component">
     <div class="pagination">
       <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
-      <div  v-if="pages>0" class="page-numbers">
+      <div  v-if="pages>1" class="page-numbers">
         <button
           v-for="pageNumber in pages"
           :key="pageNumber-2"
