@@ -53,8 +53,12 @@ describe('ActiveMilestoneDisplay', () => {
     })
     await wrapper.setProps({ image: '' })
 
-    const activeMilestoneDisplay = wrapper.find('.active-milestone-display').element as HTMLDivElement
-    expect(activeMilestoneDisplay.style.backgroundImage).toContain('src/assets/pig.png')
+    const imgElement = wrapper.find('img');
+
+    // Assert that the <img> element exists
+    expect(imgElement.exists()).toBe(true);
+
+    expect(imgElement.attributes('src')).toBe('/src/assets/background/img.png');
   })
 
 });
