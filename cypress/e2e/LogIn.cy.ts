@@ -14,7 +14,10 @@ describe('Login spec', () => {
 
     cy.get('[data-testid="LogInButton"]').should('be.enabled')
     cy.get('[data-testid="LogInButton"]').click()
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000)
     cy.url().should('include', '/homepage')
+
   })
 
   it('Can navigate to new user', () => {
