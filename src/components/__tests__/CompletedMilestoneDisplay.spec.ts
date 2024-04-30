@@ -21,21 +21,21 @@ describe('CompletedMilestoneDisplay', () => {
     expect(wrapper.find('.title').text()).toBe('Test Title');
 
     expect(wrapper.find('.info').exists()).toBe(true);
-    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr');
+    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr');
 
     await wrapper.trigger('mouseover');
 
     await nextTick();
 
     expect(wrapper.find('.info').exists()).toBe(true);
-    expect(wrapper.find('.info h4').text()).toBe('Test Description');
+    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr');
 
     await wrapper.trigger('mouseleave');
 
     await nextTick();
 
     expect(wrapper.find('.info').exists()).toBe(true);
-    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr');
+    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr');
   });
 
 });
