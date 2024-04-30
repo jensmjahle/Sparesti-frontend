@@ -6,8 +6,8 @@ const props = defineProps({
   description: String,
   goalSum: Number,
   currentSum: Number,
-  deadline: String,
-  startDate: String,
+  deadline: Date,
+  startDate: Date,
   image: String,
   expanded: Boolean
 });
