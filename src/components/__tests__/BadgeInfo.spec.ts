@@ -18,7 +18,7 @@ describe('Component', () => {
     const badges = wrapper.findAll('.badge');
 
     badges.forEach((badge, index) => {
-      const achievement = wrapper.vm.achievements[index];
+      const achievement = (wrapper.vm as any).achievements[index];
       const img = badge.find('.badge-img');
       const title = badge.find('.badge-title');
 
