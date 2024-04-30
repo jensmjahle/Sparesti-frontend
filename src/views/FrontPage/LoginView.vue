@@ -14,7 +14,8 @@ function navigateToNewUser() {
 
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
-  if (useTokenStore().jwtToken !== '' && !useTokenStore().jwtToken.includes('Request')) {
+  console.log(useTokenStore().jwtToken)
+  if (useTokenStore().jwtToken !== '' && !useTokenStore().jwtToken.includes('Request') && !useTokenStore().jwtToken.includes('Error')) {
     await router.push('/homepage')
   }
   else if (useTokenStore().jwtToken === 'Request failed with status code 401'){
@@ -24,6 +25,8 @@ async function login() {
     alert('Du kommer fra et utrygt nettverk, vennligst prøv igjen senere')
   }
   else if (useTokenStore().jwtToken === 'Request failed with status code 500') {
+    alert('Det oppsto en feil i serveren, vennligst prøv igjen senere')
+  } else {
     alert('Serveren er nede, vennligst prøv igjen senere')
   }
 }

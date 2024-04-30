@@ -36,6 +36,7 @@ export const signUpUser = async (username: string, email: string, password: stri
 
     } catch(error) {
         console.error("An error occurred during sign up:", error);
+        alert("An error occurred during sign up. Please try again.")
         throw error;
     }
 };
