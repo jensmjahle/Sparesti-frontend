@@ -105,6 +105,14 @@ const handleFileChange = (event: any) => {
   reader.readAsDataURL(file)
 }
 
+const fileInput = ref(null);
+
+const openFileExplorer = () => {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+};
+
 </script>
 
 <template>
@@ -179,7 +187,7 @@ const handleFileChange = (event: any) => {
     <div class="image-container">
       <label>Legg til et bilde</label>
       <div class="add-image-box">
-        <button>
+        <button @click="openFileExplorer" tabindex="0" type="button">
           <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
                  @change="handleFileChange">
           <img v-if="image" :src="image" id="literal-image" alt="Selected Image" width="150px" height="150px">
