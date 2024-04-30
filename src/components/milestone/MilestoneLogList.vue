@@ -82,6 +82,7 @@ const toggleMilestoneHeight = (id: number) => {
         :image="completedMilestone.milestoneImage"
         :expanded="expandedMileStoneId == completedMilestone.milestoneId"
         @click="toggleMilestoneHeight(completedMilestone.milestoneId)"
+        @keyup.enter="toggleMilestoneHeight(completedMilestone.milestoneId)"
       ></CompletedMilestoneDisplay>
       <h4 class="milestone-placeholder" v-if="completedMilestones.length == 0">
         Du har ingen fullførte sparemål

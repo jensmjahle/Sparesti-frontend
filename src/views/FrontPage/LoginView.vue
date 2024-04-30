@@ -43,6 +43,7 @@ async function login() {
         <input id="PasswordField" type="password" placeholder="Skriv inn dit passord" v-model="password" data-testid="PasswordInput">
       </div>
     </div>
+
     <button id="LogInButton"
             @click="login"
             :disabled="!username || password.length < 8"
@@ -50,7 +51,7 @@ async function login() {
             data-testid="LogInButton">
       LogIn
     </button>
-    <h2 @click="navigateToNewUser()" id="NewUser" data-testid="NewUserLink">Ny til Sparesti? Trykk her for å lage en profil!</h2>
+    <h2 tabindex="0" @keyup.enter="navigateToNewUser()" @click="navigateToNewUser()" id="NewUser" data-testid="NewUserLink">Ny til Sparesti? Trykk her for å lage en profil!</h2>
   </div>
 </template>
 

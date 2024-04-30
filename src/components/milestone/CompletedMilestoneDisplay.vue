@@ -15,7 +15,7 @@ const props = defineProps({
 </script>
 
 <template>
-<div class="completed-milestone-display">
+<div class="completed-milestone-display" tabindex="0">
   <h2 class="title">{{props.title}}</h2>
   <div class="center-content">
     <div class="img">
