@@ -82,14 +82,13 @@ const handleFileChange = (event: any) => {
   }
   reader.readAsDataURL(file)
 }
-const fileInput = ref(null);
+const fileInput = ref<HTMLInputElement | null>(null);
 
 const openFileExplorer = () => {
-  if (fileInput.value) {
+  if (fileInput.value instanceof HTMLInputElement) {
     fileInput.value.click();
   }
 };
-
 </script>
 
 <template>
