@@ -102,6 +102,7 @@ onMounted(async () => {
 
 .help-icon:hover{
   transform: scale(1.05);
+  cursor: pointer;
 }
 
 .popup-container {
@@ -140,6 +141,9 @@ onMounted(async () => {
 .article-item {
   width: calc(calc(100% - 2 * 1.5%) / 3);
   height: 7.0%;
+  h1:hover, h3:hover, h2:hover, h4:hover{
+    cursor: pointer;
+  }
 }
 
 .article-content {
@@ -190,6 +194,9 @@ onMounted(async () => {
 .article-link {
   text-decoration: none;
   color: inherit;
+  background: none;
   transition: none;
+  border-radius: 20px;
 }
+
 </style>

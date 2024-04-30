@@ -29,7 +29,9 @@ const activeChallenges = ref<Challenge[]>([])
 const challengeToBeCompleted = ref<number|any>(null)
 const challengeToBeDeleted = ref<number|any>(null)
 
-const SIZE = 4
+const expandedChallengeId = ref<number>(-1);
+
+const SIZE = 3
 const pages = ref<number>(1)
 const currentPage = ref<number>(0)
 
@@ -72,6 +74,7 @@ const closeDeletePopUp = async () => {
 }
 
 const handleChallengeCompleted = async () => {
+  eventBus.emit('updateMilestones');
   await closePopUp();
   await jsConfetti.addConfetti();
   await fetchActiveChallenges();
@@ -92,6 +95,14 @@ const goToPage = (pageNumber:number) => {
 const nextPage = () =>{
   currentPage.value ++;
 }
+
+const toggleMilestoneHeight = (id: number) => {
+  if(expandedChallengeId.value == id){
+    expandedChallengeId.value = -1;
+  } else {
+    expandedChallengeId.value = id;
+  }
+};
 
 eventBus.on('updateChallenges', () => {
   fetchActiveChallenges();
@@ -123,10 +134,13 @@ watch(currentPage, fetchActiveChallenges);
       <ActiveChallengeDisplay
         class="active-challenge"
         v-for="(activeChallenge, index) in activeChallenges"
+        :class="{'expanded': expandedChallengeId == activeChallenge.challengeId}"
         :key="index"
         :challenge="activeChallenge"
+        :expanded="expandedChallengeId == activeChallenge.challengeId"
         @challengeCompleted="handleRequestToCompleteChallenge(activeChallenge.challengeId)"
         @challengeDeleted ="handleRequestToDeleteChallenge(activeChallenge.challengeId)"
+        @click="toggleMilestoneHeight(activeChallenge.challengeId)"
       ></ActiveChallengeDisplay>
       <h4 class="challenge-placeholder" id="active-challenge-placeholder" v-if="activeChallenges.length == 0">
         Du har ingen aktive utfordringer.<br>
@@ -134,6 +148,7 @@ watch(currentPage, fetchActiveChallenges);
         Aktive utfordringer vil vises i denne boksen.
       </h4>
     </div>
+
     <div class="pagination">
       <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
       <div  v-if="pages>1" class="page-numbers">
@@ -169,20 +184,16 @@ watch(currentPage, fetchActiveChallenges);
 .active-challenge-component{
   display: flex;
   flex-direction: column;
-
   height: 100%;
   width: 100%;
-
   padding: 5.0%;
   gap: 2.5%;
-
-  place-content: space-between;
 }
 
 .active-challenges{
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 90%;
   width: 100%;
   gap:2.5%
 }
@@ -192,13 +203,19 @@ watch(currentPage, fetchActiveChallenges);
   border: 2px solid var(--color-border);
   background-color: var(--color-background-white);
 
-  min-height: calc(calc(100% - 2.5*4%)/4);
+  height: calc(calc(100% - 2.5*2%)/3);
   width: 100%;
 }
 
 .active-challenge:hover{
-  transform: scale(1.05);
+  transform: scale(1.02);
+  cursor: pointer;
 }
+
+.expanded{
+  height: calc(calc(calc(100% - 2.5*2%)/3)*1.5);
+}
+
 #active-challenge-placeholder{
   color: var(--color-headerText);
 }
@@ -211,6 +228,7 @@ watch(currentPage, fetchActiveChallenges);
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 10%;
   flex: 1;
 }
 

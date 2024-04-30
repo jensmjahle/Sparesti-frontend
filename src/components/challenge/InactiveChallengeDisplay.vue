@@ -97,7 +97,6 @@ const acceptChallenge = async () => {
   gap: 1.0%;
 }
 
-
 .options{
   display: flex;
   flex-direction: row;

@@ -4,6 +4,7 @@ import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDispla
 import { onMounted, ref } from 'vue'
 import { useTokenStore } from '@/stores/token'
 import { getAllMilestonesPaginated } from '@/utils/MilestoneUtils'
+import eventBus from '@/components/service/eventBus.js'
 
 interface Milestone{
   milestoneId: number;
@@ -54,6 +55,11 @@ const nextPage = () =>{
   currentPage.value ++;
   fetchActiveMilestones();
 }
+
+eventBus.on('updateMilestones', () => {
+  fetchActiveMilestones();
+});
+
 
 </script>
 
@@ -111,7 +117,7 @@ const nextPage = () =>{
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 90%;
 
   gap: 2.5%;
 }
@@ -121,21 +127,21 @@ const nextPage = () =>{
   border: 2px solid var(--color-border);
   box-shadow: 0 4px 4px var(--color-shadow);
 
-  height: calc(100%/3);
+  height: calc(95%/3);
   width: 100%;
 }
 
 .active-milestone:hover{
   transform: scale(1.02);
-  transition: 0.3s;
+  cursor: pointer;
 }
-
 
 .pagination {
   display: flex;
   justify-content: left;
   align-items: center;
   width: 100%;
+  height: 10%;
 }
 
 .pagination button {

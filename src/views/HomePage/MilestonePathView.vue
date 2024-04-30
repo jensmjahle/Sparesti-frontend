@@ -135,6 +135,7 @@ const closeHelpPopUp = async () => {
 
   .help-icon:hover{
     transform: scale(1.05);
+    cursor: pointer;
   }
 
   .popup-container {
