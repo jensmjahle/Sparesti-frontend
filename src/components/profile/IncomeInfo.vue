@@ -90,7 +90,7 @@ const checkInput = () => {
   <div class="income-info">
     <div class="header">
       <h3 class="title">Økonomiske opplysninger</h3>
-      <button class="save-button" @click="saveInput">
+      <button class="save-button" @click="saveInput" id="income-save">
         <h3 class="save-button-title">Lagre</h3>
       </button>
     </div>
@@ -110,23 +110,23 @@ const checkInput = () => {
 
       <div class="input-collection">
         <div class="input">
-          <input class="input-field" :class="{'error': monthlyIncomeError}" v-model="monthlyIncome">
+          <input class="input-field" id="monthlyIncome" :class="{'error': monthlyIncomeError}" v-model="monthlyIncome">
           <div class="alert-box">
-            <h4 v-if="monthlyIncomeError" class="error-message">{{monthlyIncomeError}}</h4>
+            <h4 v-if="monthlyIncomeError" id="incomeError" class="error-message">{{monthlyIncomeError}}</h4>
           </div>
         </div>
 
         <div class="input">
-          <input class="input-field" :class="{'error': monthlySpendingError}" v-model="monthlyFixedExpenses">
+          <input class="input-field" id="monthlySpending" :class="{'error': monthlySpendingError}" v-model="monthlyFixedExpenses">
           <div class="alert-box">
-            <h4 v-if="monthlySpendingError" class="error-message">{{monthlySpendingError}}</h4>
+            <h4 v-if="monthlySpendingError" class="error-message" id="spendingError" >{{monthlySpendingError}}</h4>
           </div>
         </div>
 
         <div class="input">
-          <input class="input-field" :class="{'error': monthlySavingError}" v-model="monthlySavings">
+          <input class="input-field" id="monthlySaving" :class="{'error': monthlySavingError}" v-model="monthlySavings">
           <div class="alert-box">
-            <h4 v-if="monthlySavingError" class="error-message">{{monthlySavingError}}</h4>
+            <h4 v-if="monthlySavingError" id="savingError" class="error-message">{{monthlySavingError}}</h4>
             <h4 v-if="incomeError" class="error-message">{{incomeError}}</h4>
           </div>
         </div>
