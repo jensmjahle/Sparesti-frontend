@@ -38,7 +38,7 @@ onMounted(async () => {
   current_sum.value = data.milestoneCurrentSum
   start_date.value = data.startDate
   end_date.value = data.deadlineDate
-  image.value = `data:image/png;base64,${data.milestoneImage}`
+  image.value = data.milestoneImage ? `data:image/png;base64,${data.milestoneImage}` : null;
   console.log(image.value)
   console.log(data.milestoneImage)
 })
@@ -80,7 +80,7 @@ const milestoneData = computed(() => ({
   milestoneDescription: description.value,
   milestoneGoalSum: goal_sum.value,
   milestoneCurrentSum: current_sum.value,
-  milestoneImage: image.value,
+  milestoneImage: image.value ? image.value : null,
   deadlineDate: end_date.value ? end_date.value : null,
   startDate: start_date.value ? start_date.value : null
 }));
@@ -90,6 +90,7 @@ const saveInput = () => {
     console.log(milestoneData.value)
     const response = updateMilestoneDetails(milestoneData.value)
     console.log(response)
+    router.push('/homepage/milestone')
   } else {
     console.log('fail')
   }
@@ -324,6 +325,7 @@ label {
 }
 #literal-image{
   height: 100%;
+  max-height: 300px;
   width: 100%;
 }
 

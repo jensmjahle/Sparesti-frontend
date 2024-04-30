@@ -3,9 +3,9 @@ import { onMounted, ref } from 'vue'
 import { getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 interface Achievement{
-  id: number,
-  title: string,
-  img: string
+  achievementId: number,
+  achievementTitle: string,
+  badge: string
 }
 
 const props = defineProps <{
@@ -28,8 +28,7 @@ onMounted(async () => {
 const fetchBadgeInfo = async ()=>{
   try {
     const response = await getUserInfo(token)
-    console.log(response)
-    achievements.value = response.achievements;
+    achievements.value = response.achievementDTOList;
   } catch (error){
     console.error('Error fetching achievements:')
   }
@@ -41,9 +40,9 @@ const fetchBadgeInfo = async ()=>{
   <div class="badge-container">
     <h3 class="title">{{title}}</h3>
     <div class="badges">
-      <div class="badge" v-for="(achievement) in achievements" :key="achievement.id">
-        <img class="badge-img" :src="achievement.img" :alt="achievement.title">
-        <h3 class="badge-title"> {{achievement.title}}</h3>
+      <div class="badge" v-for="achievement in achievements" :key="achievement.achievementId">
+        <img v-if="achievement.badge" class="badge-img" :src="achievement.badge" :alt="achievement.achievementTitle">
+        <h3 class="badge-title"> {{achievement.achievementTitle}}</h3>
       </div>
     </div>
     

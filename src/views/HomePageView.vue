@@ -91,7 +91,7 @@ const closePopup = () => {
   flex-direction: row;
   height: 88%;
   width: 100%;
-  min-height: 650px;
+  min-height: 700px;
 }
 
 .side-nav{

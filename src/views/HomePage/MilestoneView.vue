@@ -88,6 +88,7 @@ const closeHelpPopUp = () => {
 
 .help-icon:hover{
   transform: scale(1.05);
+  cursor: pointer;
 }
 
 .popup-container {
@@ -134,7 +135,7 @@ const closeHelpPopUp = () => {
   background-color: var(--color-confirm-button);
   border: 2px solid var(--color-border);
   color: var(--color-button-text);
-  min-height: 12%;
+  min-height: 10%;
 }
 
 .create-milestone-button:active{
@@ -149,6 +150,10 @@ const closeHelpPopUp = () => {
   font-weight: bold;
 }
 
+.active-milestones{
+  height: 90%;
+}
+
 .right{
   display: flex;
   flex-direction: column;
@@ -159,7 +164,7 @@ const closeHelpPopUp = () => {
   box-shadow: 0 4px 4px var(--color-shadow);
   background-color: var(--color-heading);
 
-  height: 100%;
+  min-height: 100%;
   width: 40%;
 }
 

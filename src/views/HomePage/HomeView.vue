@@ -70,7 +70,7 @@ userSavings()
             Ny til Sparesti? Klikk her!
           </h2>
         </button>
-        <ActiveMilestonesList></ActiveMilestonesList>
+        <ActiveMilestonesList class="active-challenges"></ActiveMilestonesList>
       </div>
       <div class="right" :class="{ 'mobile-hide': displayType }">
         <h2 class="active-challenges-title">Aktive utfordringer</h2>
@@ -100,6 +100,7 @@ userSavings()
 
 .help-icon:hover{
   transform: scale(1.05);
+  cursor: pointer;
 }
 
 .popup-container {
@@ -146,7 +147,7 @@ userSavings()
   background-color: var(--color-confirm-button);
   border: 2px solid var(--color-border);
   color: var(--color-button-text);
-  min-height: 12%;
+  min-height: 10%;
 }
 
 .create-challenge-button:active{
@@ -155,6 +156,10 @@ userSavings()
 
 .create-challenge-button:hover{
   transform: scale(1.02);
+}
+
+.active-challenges{
+  height: 90%;
 }
 
 .display-help-button{
