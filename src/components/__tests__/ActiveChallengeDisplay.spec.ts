@@ -63,6 +63,6 @@ describe('ActiveChallengeDisplay', () => {
     expect(wrapper.text()).toContain(challenge.challengeTitle);
     expect(wrapper.text()).toContain(challenge.challengeDescription);
     expect(wrapper.text()).toContain('Utløpsdato: 01/05/2024');
-    expect(wrapper.text()).toContain('Sparesum: 100 kr,-');
+    expect(wrapper.text()).toContain('Sparesum: 100kr');
   });
 });
