@@ -87,6 +87,7 @@ const closeHelpPopUp = async () => {
 
 .help-icon:hover{
   transform: scale(1.05);
+  cursor: pointer;
 }
 
 .popup-container {
@@ -115,7 +116,7 @@ const closeHelpPopUp = async () => {
   display: flex;
   flex-direction: row;
   width: 100%;
-  min-height: 115%;
+  min-height: 120%;
   padding-bottom: 1.5%;
   gap: 2.5%;
 }
@@ -133,7 +134,7 @@ const closeHelpPopUp = async () => {
   background-color: var(--color-confirm-button);
   border: 2px solid var(--color-border);
   color: var(--color-button-text);
-  min-height: 12%;
+  min-height: 10%;
 }
 
 .create-challenge-button:active{
@@ -158,7 +159,7 @@ const closeHelpPopUp = async () => {
   box-shadow: 0 4px 4px var(--color-shadow);
   background-color: var(--color-heading);
 
-  height: 100%;
+  min-height: 100%;
   width: 40%;
 }
 

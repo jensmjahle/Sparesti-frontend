@@ -18,11 +18,11 @@ interface Milestone{
 }
 
 const token = useTokenStore().jwtToken
-
+const expandedMileStoneId = ref<number>(-1);
 const completedMilestones = ref<Milestone[]>([])
 const currentPage = ref<number>(0)
 const pages = ref<number>(1)
-const SIZE = 4
+const SIZE = 3
 
 onMounted( () => {
   fetchActiveMilestones();
@@ -54,14 +54,23 @@ const nextPage = () =>{
   fetchActiveMilestones();
 }
 
+const toggleMilestoneHeight = (id: number) => {
+  if(expandedMileStoneId.value == id){
+    expandedMileStoneId.value = -1;
+  } else {
+    expandedMileStoneId.value = id;
+  }
+};
+
 </script>
 
 <template>
   <div class="completed-milestones-component">
     <div class="milestones">
       <CompletedMilestoneDisplay
-        class="completed-milestone"
         v-for="(completedMilestone, index) in completedMilestones"
+        class="completed-milestone"
+        :class="{'expanded': expandedMileStoneId == completedMilestone.milestoneId}"
         :key="index"
         :id="completedMilestone.milestoneId"
         :title="completedMilestone.milestoneTitle"
@@ -71,6 +80,8 @@ const nextPage = () =>{
         :deadline="completedMilestone.deadlineDate"
         :start-date="completedMilestone.startDate"
         :image="completedMilestone.milestoneImage"
+        :expanded="expandedMileStoneId == completedMilestone.milestoneId"
+        @click="toggleMilestoneHeight(completedMilestone.milestoneId)"
       ></CompletedMilestoneDisplay>
       <h4 class="milestone-placeholder" v-if="completedMilestones.length == 0">
         Du har ingen fullførte sparemål
@@ -103,8 +114,6 @@ const nextPage = () =>{
   height: 100%;
   width: 100%;
 
-  place-content: space-between;
-
   padding: 5.0%;
   gap: 2.5%;
 }
@@ -113,9 +122,8 @@ const nextPage = () =>{
   display: flex;
   flex-direction: column;
   gap: 2.5%;
-
   width: 100%;
-  height: 100%;
+  height: 90%;
 }
 
 .completed-milestone{
@@ -123,13 +131,18 @@ const nextPage = () =>{
   border: 2px solid var(--color-border);
   background-color: var(--color-background-white);
 
-  min-height: calc(calc(100% - 2.5*4%)/4);
+  height: calc(calc(100% - 2.5*2%)/3);
   width: 100%;
 }
 
 .completed-milestone:hover{
-  transform: scale(1.05);
-  transition: 0.3s;
+  transform: scale(1.02);
+  cursor: pointer;
+  transition: none;
+}
+
+.expanded{
+  height: calc(calc(calc(100% - 2.5*2%)/3)*1.5);
 }
 
 .milestone-placeholder{
@@ -141,6 +154,7 @@ const nextPage = () =>{
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 10%;
   flex: 1;
 }
 

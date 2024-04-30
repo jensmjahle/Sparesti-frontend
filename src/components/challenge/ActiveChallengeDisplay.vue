@@ -14,8 +14,10 @@ const props = defineProps({
   challenge: {
     type: Object as () => Challenge,
     required: true
-  }
+  },
+  expanded: Boolean
 });
+
 const expirationDate = () => {
   return new Date(props.challenge?.expirationDate).
   toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -41,14 +43,21 @@ const deleteTheChallenge = () => {
       src="/src/components/icons/navigation/close.svg"
       alt="delete-button"
       @click="deleteTheChallenge()">
+    <h3 class="title">{{ props.challenge.challengeTitle }}</h3>
+
     <div class="content">
-      <h3 class="title">{{ props.challenge.challengeTitle }}</h3>
-      <h4 class="description">{{ props.challenge.challengeDescription }}</h4>
+      <div class="description-container">
+        <h4 class="description-title">Beskrivelse</h4>
+        <img src="/src/components/icons/navigation/info.svg" alt="show-more" class="show-more-icon">
+        <div class="description" :class="{'expanded':expanded}">
+          <h4 class="description-info" >{{ props.challenge.challengeDescription}}</h4>
+        </div>
+      </div>
       <div class="extra-info">
-        <h4 class="expiration-date">Utløpsdato: {{expirationDate()}} |</h4>
-        <h4 class="sum"> Sparesum: {{props.challenge.goalSum}} kr,-</h4>
+        <h4 class="expiration-date">Utløpsdato: {{expirationDate()}} | Sparesum: {{props.challenge.goalSum}}kr</h4>
       </div>
     </div>
+
     <div class="button-container">
       <button class="complete-button" @click="completeTheChallenge()">
         <h3 class="complete-button-text">Fullfør</h3>
@@ -63,17 +72,15 @@ const deleteTheChallenge = () => {
   display: flex;
   flex-direction: column;
   place-items: end;
-  place-content: space-between;
+  height: 100%;
+  width: 100%;
   padding: 1.5%;
-  gap: 1.0%;
 }
 
-.content{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 65%;
+h1:hover, h3:hover, h2:hover, h4:hover{
+  cursor: pointer;
 }
+
 .close-img{
   width: 5.0%;
 }
@@ -83,58 +90,72 @@ const deleteTheChallenge = () => {
 }
 
 .title{
+  width: 100%;
   text-align: center;
-
   color: var(--color-text-black);
 }
 
-.description{
+.content{
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  place-content: space-between;
+  width: 100%;
+  height: 75%;
+}
+
+.description-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.description-title{
+  text-decoration: underline;
   text-align: center;
-  color: var(--color-text-black);
-  overflow: hidden;
+}
+
+.show-more-icon{
+  height: 1.5vh;
 }
 
 .extra-info{
-  display: none;
+  display: flex;
+  flex-direction: row;
+  place-content: center;
+  gap: 1.0%;
 }
 
 .expiration-date{
   color: var(--color-text-black);
 }
 
-.sum{
+.description{
+  display: none;
+  place-content: center;
   color: var(--color-text-black);
 }
 
-.potential-challenge-display:hover{
-  .extra-info{
-    display: flex;
-    flex-direction: row;
-    place-content: center;
-    gap: 1.0%;
-  }
+.expanded{
+  display: flex;
+  place-content: center;
+}
 
-  .content{
-    overflow: scroll;
-  }
-
-  .description{
-    overflow: visible;
-  }
-
+.description-info{
+  text-align: center;
+  color: var(--color-text-black);
 }
 
 .button-container{
+  margin-top: 1.5%;
   display: flex;
   width: 100%;
-  height: 25%;
   place-content: center;
 }
 
 .complete-button{
   border-radius: 20px;
   width: 50%;
-  height: 100%;
   border: none;
   background-color: var(--color-save-button);
 }
@@ -151,31 +172,5 @@ const deleteTheChallenge = () => {
   color: var(--color-headerText);
   font-weight: bold;
 }
-
-@media only screen and (max-width: 1000px){
-  .extra-info{
-    display: flex;
-    flex-direction: row;
-    place-content: center;
-    gap: 1.0%;
-  }
-  .potential-challenge-display:hover{
-    .description{
-      text-align: center;
-      color: var(--color-text-black);
-    }
-  }
-
-  .potential-challenge-display:hover{
-    .extra-info{
-      display: flex;
-      flex-direction: row;
-      place-content: center;
-      gap: 1.0%;
-    }
-  }
-}
-
-
 
 </style>

@@ -48,7 +48,9 @@ const isToExpire = () => {
 <template>
 <div class="active-milestone-display" @click="openMilestone">
   <h2 class="title" :class="{'expire': isToExpire()}">{{props.title}}</h2>
-  <div class="img"> [Bilde]</div>
+  <div class="img">
+    <img src="/src/assets/background/img.png" alt="milestone-img" class="milestone-img">
+  </div>
 
   <div class="progress-description">
     <h4 class="description" v-if="goalSum&&currentSum">{{props.currentSum}}kr av {{props.goalSum}}kr</h4>
@@ -69,6 +71,11 @@ const isToExpire = () => {
   width: 100%;
   padding: 1.5%;
 }
+
+h1:hover, h3:hover, h2:hover, h4:hover{
+  cursor: pointer;
+}
+
 .title{
   text-align: left;
 }
@@ -81,7 +88,14 @@ const isToExpire = () => {
   place-content: center;
   place-items: center;
   background-color: lightgrey;
+  overflow: hidden;
 }
+
+.milestone-img{
+  display: flex;
+  width: 100%;
+}
+
 .description{
   text-align: left;
 }
