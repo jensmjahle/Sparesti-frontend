@@ -34,6 +34,21 @@ const deleteTheChallenge = () => {
     emits('challengeDeleted', props.challenge.challengeId)
   }
 }
+
+const isToExpire = () => {
+  if (props.challenge.expirationDate) {
+    const today = new Date();
+    const deadlineDate = new Date(props.challenge.expirationDate);
+    return (
+      today.getFullYear() === deadlineDate.getFullYear() &&
+      today.getMonth() === deadlineDate.getMonth() &&
+      today.getDate() === deadlineDate.getDate()
+    );
+  }
+  return false;
+}
+
+
 </script>
 
 <template>
@@ -45,7 +60,7 @@ const deleteTheChallenge = () => {
       src="/src/components/icons/navigation/close.svg"
       alt="delete-button"
       @click="deleteTheChallenge()">
-    <h3 class="title">{{ props.challenge.challengeTitle }}</h3>
+    <h3 class="title" :class="{'expire': isToExpire()}">{{ props.challenge.challengeTitle }}</h3>
 
     <div class="content">
       <div class="description-container">
@@ -56,7 +71,8 @@ const deleteTheChallenge = () => {
         </div>
       </div>
       <div class="extra-info">
-        <h4 class="expiration-date">Utløpsdato: {{expirationDate()}} | Sparesum: {{props.challenge.goalSum}}kr</h4>
+        <h4 class="expiration-date" :class="{'expire': isToExpire()}">Utløpsdato: {{expirationDate()}}</h4>
+        <h4 class="sum" :class="{'expire': isToExpire()}"> | Sparesum: {{props.challenge.goalSum}}kr</h4>
       </div>
     </div>
 
@@ -125,11 +141,15 @@ h1:hover, h3:hover, h2:hover, h4:hover{
   display: flex;
   flex-direction: row;
   place-content: center;
-  gap: 1.0%;
+  gap: 0.5rem;
 }
 
 .expiration-date{
   color: var(--color-text-black);
+}
+
+.expire{
+  color: var(--color-text-error);
 }
 
 .description{

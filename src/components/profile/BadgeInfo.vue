@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { getUserInfo } from '@/utils/profileutils'
+import { getLockedAchievements, getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 interface Achievement{
   achievementId: number,
   achievementTitle: string,
+  achievementDescription:string,
   badge: string
 }
 
@@ -16,21 +17,31 @@ const token:string = useTokenStore().jwtToken;
 
 const title = ref<string>(props.title)
 const achievements = ref<Achievement[]>([])
+const achievementsLocked = ref<Achievement[]>([])
 
 onMounted(async () => {
   try {
-    await fetchBadgeInfo()
+    await fetchBadgeInfo();
+    await fetchLockedAchievements();
   } catch (error) {
     console.error('Error fetching achievements:', error);
   }
 })
 
-const fetchBadgeInfo = async ()=>{
+const fetchBadgeInfo = async () => {
   try {
     const response = await getUserInfo(token)
     achievements.value = response.achievementDTOList;
   } catch (error){
-    console.error('Error fetching achievements:')
+    console.error('Error fetching achievements:' + error)
+  }
+}
+
+const fetchLockedAchievements = async () => {
+  try{
+    achievementsLocked.value = await getLockedAchievements(token);
+  } catch (error){
+    console.log('Error fetching locked achievements:' + error)
   }
 }
 
@@ -41,20 +52,25 @@ const fetchBadgeInfo = async ()=>{
     <h3 class="title">{{title}}</h3>
     <div class="badges">
       <div class="badge" v-for="achievement in achievements" :key="achievement.achievementId">
-        <img v-if="achievement.badge" class="badge-img" :src="achievement.badge" :alt="achievement.achievementTitle">
-        <h3 class="badge-title"> {{achievement.achievementTitle}}</h3>
+      <img class="badge-img" src="/src/assets/png/gold-coin.png" :alt="achievement.achievementTitle">
+      <h3 class="badge-title"> {{achievement.achievementTitle}}</h3>
+      </div>
+      <div class="badge" v-for="achievementLocked in achievementsLocked" :key="achievementLocked.achievementId">
+        <img class="locked-badge-img" src="/src/assets/png/gold-coin.png" :alt="achievementLocked.achievementTitle">
+        <h3 class="badge-title"> {{achievementLocked.achievementTitle}}</h3>
       </div>
     </div>
-    
   </div>
-
 </template>
 
 <style scoped>
 .badge-container{
   display: flex;
   flex-direction: column;
-  width: 100%;
+  min-width: 100%;
+  height: 100%;
+
+  overflow-x: scroll;
 }
 .title{
   font-weight: bold;
@@ -63,30 +79,43 @@ const fetchBadgeInfo = async ()=>{
 .badges{
   display: flex;
   flex-direction: row;
-  overflow-x: scroll;
+  align-items: center;
   width: 100%;
+  height: 100%;
   gap: 2.0%;
 }
 
 .badge{
   display: flex;
   flex-direction: column;
-
-  min-width: 10%;
-  aspect-ratio: 1/1;
+  width: 15%;
+  min-width: 150px;
 }
-
 .badge-img{
   width: 100%;
+}
+
+.locked-badge-img:hover{
+  transform: rotateZ(180deg);
+}
+
+.badge-img:hover{
+  transform: rotateZ(180deg);
+}
+
+.locked-badge-img{
+  width: 100%;
+  filter: grayscale(100%);
 }
 
 .badge-title{
   text-align: center;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 750px) {
  .badge{
-   min-width: 16.5%;
+   width: 20%;
  }
 }
+
 </style>

@@ -109,8 +109,6 @@ eventBus.on('updateMilestones', () => {
 
   height: 100%;
   width: 100%;
-
-  gap: 2.5%;
 }
 
 .milestones{
