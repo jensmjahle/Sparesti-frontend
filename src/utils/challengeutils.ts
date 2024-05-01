@@ -1,7 +1,9 @@
 import axios from "axios";
 import { BASE_URL } from "@/config/config";
+import {useToast} from "vue-toast-notification";
+import 'vue-toast-notification/dist/theme-sugar.css';
 
-
+const toast = useToast();
 
 const challengeRecomendationsTestData = [
   {
@@ -51,6 +53,7 @@ export const createChallenge = async (
     return await axios.post(`${BASE_URL}/user/challenge/create`,data,config);
   } catch (error){
     console.error(error);
+    toast.error('Kunne ikke opprette utfordringen. Prøv igjen senere.');
   }
 }
 
