@@ -16,7 +16,7 @@ describe('BaseTextArea', () => {
       }
     })
 
-    expect(wrapper.find('label').text()).toBe(label)
+    expect(wrapper.find('h3').text()).toBe(label)
 
     const textarea = wrapper.find('textarea')
     expect(textarea.attributes('placeholder')).toBe(placeHolder)
