@@ -49,10 +49,6 @@ To run this program you need:
 - Node.js
 - npm
 
-> **Note:** Before running the frontend, make sure that the BASE_URL in the config.ts file at src/config/config.ts is set to the correct URL of the backend API.
-> The default value is http://localhost:8080 which is the default URL for the backend API when running it locally.
-
-
 ### Installation
 
 1. Clone the repository using Git:
@@ -64,6 +60,10 @@ To run this program you need:
     https://gitlab.stud.idi.ntnu.no/scrum_team_3/idatt2106_2024_03_frontend/-/archive/master/idatt2106_2024_03_frontend-master.zip
 
 ### Running the repository
+
+> **Note:** Before running the frontend, make sure that the BASE_URL in the config.ts file at src/config/config.ts is set to the correct URL of the backend API.
+> The default value is http://localhost:8080 which is the default URL for the backend API when running it locally.
+
 
 1. Navigate to the root folder of the project
 2. Run the following command to install the necessary dependencies:
