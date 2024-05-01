@@ -11,16 +11,18 @@ const props = defineProps({
     placeHolder: {
       type: String,
       default: ''
-    }
+    },
+  error: Boolean
   }
 )
 </script>
 
 <template>
-  <label>{{ label }}</label>
+  <h3>{{ label }}</h3>
   <textarea
     :placeholder=placeHolder
     class="field"
+    :class="{'error':error}"
     :value="modelValue"
     @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement)?.value)"
   />
@@ -28,17 +30,18 @@ const props = defineProps({
 
 <style scoped>
 textarea {
-  height: 18vh;
+  height: 100%;
   width: 100%;
   border-radius: 20px;
+  padding: 1.0%;
   resize: none;
-  padding: 12px 20px;
   margin: 8px 0;
+  border: 2px solid var(--color-border);
   box-sizing: border-box;
 }
 
-label{
-  font-size: 1.5em;
+.error{
+  border-color: var(--color-border-error);
 }
 
 @media screen and (max-width: 1200px){

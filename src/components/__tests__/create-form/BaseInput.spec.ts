@@ -18,7 +18,7 @@ describe('BaseInput', () => {
       }
     })
 
-    expect(wrapper.find('label').text()).toBe(label)
+    expect(wrapper.find('h3').text()).toBe(label)
 
     const input = wrapper.find('input')
     expect(input.attributes('placeholder')).toBe(placeHolder)
