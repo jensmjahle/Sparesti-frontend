@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {useTokenStore} from '@/stores/token'
+import {BASE_URL} from "@/config/config";
 
 export async function getMilestoneDetails(id: number){
 
@@ -12,7 +13,7 @@ export async function getMilestoneDetails(id: number){
     }
   }
 
-  return await axios.get("http://Localhost:8080/milestone/" + id, config);
+  return await axios.get(`${BASE_URL}/milestone/` + id, config);
 }
 
 export async function updateMilestoneDetails(data:any){
@@ -22,5 +23,5 @@ export async function updateMilestoneDetails(data:any){
       'Authorization': 'Bearer ' + useTokenStore().getJwtToken
     }
   }
-  return await axios.put("http://localhost:8080/milestone/edit", data, config)
+  return await axios.put(`${BASE_URL}/milestone/edit`, data, config)
 }

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {useTokenStore} from '@/stores/token'
+import {BASE_URL} from "@/config/config";
 
 export async function getUserTotalSavings(){
 
@@ -10,7 +11,7 @@ export async function getUserTotalSavings(){
     }
   }
 
-  const response = await axios.get("http://Localhost:8080/users/get/savings", config);
+  const response = await axios.get(`${BASE_URL}/users/get/savings`, config);
   const result = response.data
 
   return result

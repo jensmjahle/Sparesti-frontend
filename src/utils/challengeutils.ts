@@ -1,4 +1,7 @@
 import axios from "axios";
+import { BASE_URL } from "@/config/config";
+
+
 
 const challengeRecomendationsTestData = [
   {
@@ -45,8 +48,7 @@ export const createChallenge = async (
         'Authorization': `Bearer ${token}`
       }
     };
-    console.log(data)
-    return await axios.post(`http://localhost:8080/user/challenge/create`,data,config);
+    return await axios.post(`${BASE_URL}/user/challenge/create`,data,config);
   } catch (error){
     console.error(error);
   }
@@ -60,7 +62,7 @@ export const deleteChallenge = async (token:string, challengeId: number):Promise
         'Authorization': `Bearer ${token}`
       }
     };
-    return await axios.delete(`http://localhost:8080/user/challenge/delete/${challengeId}`,config);
+    return await axios.delete(`${BASE_URL}/user/challenge/delete/${challengeId}`,config);
   } catch (error){
     console.error(error);
     throw error;
@@ -80,7 +82,7 @@ export const completeChallenge= async (token:string, challengeId:number, milesto
       }
     };
     console.log(config)
-    return await axios.post(`http://localhost:8080/user/challenge/complete`,{},config);
+    return await axios.post(`${BASE_URL}/user/challenge/complete`,{},config);
   } catch (error){
     console.error(error);
     throw error;
@@ -97,7 +99,7 @@ export const activateChallenge= async (token:string, challengeId: number):Promis
         'Authorization': `Bearer ${token}`
       }
     };
-    return await axios.post(`http://localhost:8080/user/challenge/activate/${challengeId}`,{},config);
+    return await axios.post(`${BASE_URL}/user/challenge/activate/${challengeId}`,{},config);
   } catch (error){
     console.error(error);
     throw error;
@@ -112,7 +114,7 @@ export const getChallenge = async (token:string, challengeId: number):Promise<an
         'Authorization': `Bearer ${token}`
       }
     };
-    return await axios.get(`http://localhost:8080/user/challenge/${challengeId}`,config);
+    return await axios.get(`${BASE_URL}/user/challenge/${challengeId}`,config);
   } catch (error){
     console.error(error);
   }
@@ -133,7 +135,7 @@ export const getActiveChallenges = async (token:string, page:number, size:number
       }
 
     };
-    const result = await axios.get('http://localhost:8080/user/challenge/paginated/active',config);
+    const result = await axios.get(`${BASE_URL}/user/challenge/paginated/active`,config);
     console.log('result')
     console.log(result)
     return result.data;
@@ -155,7 +157,7 @@ export const getInactiveChallenges  = async (token:string):Promise<any>=>{
         'size': 10
       }
     };
-    const result = await axios.get('http://localhost:8080/user/challenge/paginated/inactive',config);
+    const result = await axios.get(`${BASE_URL}/user/challenge/paginated/inactive`,config);
     console.log('interactive')
     console.log(result);
     return result.data;
