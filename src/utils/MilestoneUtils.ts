@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {BASE_URL} from "@/config/config";
+import {useToast} from "vue-toast-notification";
 
+const toast = useToast();
 export const getAllMilestonesPaginated = async(token: string, page:number, size:number) => {
   const config = {
     headers: {
@@ -17,6 +19,7 @@ export const getAllMilestonesPaginated = async(token: string, page:number, size:
     return response.data;
   } catch (error) {
     console.log(error)
+    toast.error('En uventet feil oppsto. Kunne ikke hente sparestier. Prøv igjen senere.')
   }
 }
 
@@ -32,6 +35,7 @@ export const getAllMilestones = async(token: string) => {
     return response.data;
   } catch (error) {
     console.log(error)
+    toast.error('En uventet feil oppsto. Kunne ikke hente sparestier. Prøv igjen senere.')
   }
 }
 
@@ -51,5 +55,6 @@ export const getAllMilestoneLogs = async(token: string, page:number, size:number
     return response.data
   } catch (error) {
     console.log(error)
+    toast.error('En uventet feil oppsto. Kunne ikke hente fullførte sparestier. Prøv igjen senere.')
   }
 }

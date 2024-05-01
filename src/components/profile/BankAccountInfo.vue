@@ -3,8 +3,10 @@
 import { onMounted, ref } from 'vue'
 import { getUserAccountInfo, getUserInfo, updateBankAccountInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
+import {useToast} from "vue-toast-notification";
 
 const token:string = useTokenStore().jwtToken;
+const toast = useToast();
 
 const savingAccount = ref<number>(0);
 const checkingAccount= ref<number>(0);
@@ -60,6 +62,7 @@ const saveAccountInfo = async ()=> {
       await fetchAccountInfo();
       await fetchUserInfo();
     } catch (error){
+      toast.success('Noe gikk galt! Venligst prøv på nytt.')
       accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
   }

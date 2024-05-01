@@ -33,16 +33,20 @@ onMounted(async () => {
   const milestoneId = useMilestoneStore().milestoneId;
   console.log(milestoneId)
   const response = await getMilestoneDetails(milestoneStore.milestoneId)
-  const data = response.data
-  title.value = data.milestoneTitle
-  description.value = data.milestoneDescription
-  goal_sum.value = data.milestoneGoalSum
-  current_sum.value = data.milestoneCurrentSum
-  start_date.value = data.startDate
-  end_date.value = data.deadlineDate
-  image.value = data.milestoneImage ? `data:image/png;base64,${data.milestoneImage}` : null;
-  console.log(image.value)
-  console.log(data.milestoneImage)
+  if (response === null) {
+    await router.push('/homepage/milestone')
+  } else {
+    const data = response.data
+    title.value = data.milestoneTitle
+    description.value = data.milestoneDescription
+    goal_sum.value = data.milestoneGoalSum
+    current_sum.value = data.milestoneCurrentSum
+    start_date.value = data.startDate
+    end_date.value = data.deadlineDate
+    image.value = data.milestoneImage ? `data:image/png;base64,${data.milestoneImage}` : null;
+    console.log(image.value)
+    console.log(data.milestoneImage)
+  }
 })
 const validate = () => {
   let isValid = true

@@ -1,6 +1,8 @@
 import axios from "axios";
 import {BASE_URL} from "@/config/config";
+import {useToast} from "vue-toast-notification";
 
+const toast = useToast();
 export const getUserBankAccounts = async(token: string):Promise<any> => {
     const config = {
         headers: {
@@ -13,6 +15,7 @@ export const getUserBankAccounts = async(token: string):Promise<any> => {
         return response.data
     } catch (error) {
         console.log(error)
+        toast.error('Kunne ikke hente brukerkontoer. Prøv igjen senere.')
     }
 }
 
@@ -30,5 +33,6 @@ export const updateUserAccount = async(user: Record<string, any>, token: string)
         return response.data
     } catch (error) {
         console.log(error)
+        toast.error('Kunne ikke oppdatere brukerkonto. Prøv igjen senere.')
     }
 }

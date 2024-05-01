@@ -9,6 +9,8 @@ import { createMilestone } from '@/utils/createMilestoneUtils'
 import { useTokenStore } from '@/stores/token'
 import { useRouter } from 'vue-router'
 import { createChallenge } from '@/utils/challengeutils'
+import {useToast} from "vue-toast-notification";
+const toast = useToast();
 
 const title = ref('')
 const description = ref('')
@@ -59,8 +61,10 @@ const saveInput = () => {
   if (validate()) {
     createChallenge(tokenStore.jwtToken, challengeData.value)
     router.push('/homepage/challenge')
+    toast.success('Utfordringen ble lagret!')
   } else {
     console.log('fail')
+    toast.error('Vi klarte ikke lagre! Venligst prøv på nytt.')
   }
 }
 </script>
