@@ -46,12 +46,12 @@ const validate = () => {
     dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>current_sum.value) || current_sum.value == '') {
+  if (isNaN(<number>current_sum.value) || current_sum.value == '' || <number>current_sum.value<=0 ) {
     amountErrorStart.value = 'Fyll inn et gyldig beløp!'
     isValid = false;
   }
 
-  if(isNaN(<number>goal_sum.value) || goal_sum.value == ''){
+  if(isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value<=0){
     amountErrorGoal.value = 'Fyll inn et gyldig beløp!'
     isValid = false;
   }
@@ -139,18 +139,19 @@ const openFileExplorer = () => {
                v-if="titleError">{{ titleError }}</label>
       </div>
 
-      <div class="input-large">
+      <div class="input-large" id="description-area">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
           place-holder="Beskriv sparemålet"
           :error="descriptionError !== ''"
+
         ></BaseTextArea>
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
 
       <div class="smaller-inputs">
-        <div class="input">
+        <div class="input" id="goal-input">
           <base-input
             v-model="goal_sum"
             label="Hvor mye vil du spare?"
@@ -160,7 +161,7 @@ const openFileExplorer = () => {
           ></base-input>
           <label class="error" v-if="amountErrorGoal">{{ amountErrorGoal }}</label>
         </div>
-        <div class="input">
+        <div class="input" id="current-input">
           <base-input
             v-model="current_sum"
             place-holder="Sett inn hvor mye du har nå"
@@ -182,13 +183,14 @@ const openFileExplorer = () => {
             :disabled="true"
           ></VueDatePicker>
         </div>
-        <div class="input">
+        <div class="input" id="end-date">
           <h3>Slutt dato</h3>
           <VueDatePicker
             :enable-time-picker="false"
             placeholder="Velg slutt dato"
             v-model="end_date"
             :min-date="start_date"
+            auto-apply
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
