@@ -13,7 +13,6 @@ const jsConfetti = new JSConfetti()
 async function confirm(){
   emit('confirmTransfer')
   await jsConfetti.addConfetti();
-  await fetchActiveChallenges();
 }
 
 function cancel(){

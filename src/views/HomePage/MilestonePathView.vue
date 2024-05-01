@@ -141,7 +141,6 @@ async function deleteAMilestone(milestoneId:number){
       <div id = Info :class="{'mobile-hide': !displayType}">
         <div id = Progress>
           <MilestoneProgress :total-to-save="totalToSave" :total-saved="totalSaved"/>
-          <ProgressBar current="10" max="50"></ProgressBar>
         </div>
         <div id = Description>
           <MilestoneDescription :path-description="pathDescription"/>
