@@ -19,6 +19,7 @@ try {
 } catch (error) {
   console.log(error)
   toast.error('Kunne ikke hente sparesti. Prøv igjen senere.')
+  return null;
 }
 }
 
@@ -34,5 +35,6 @@ export async function updateMilestoneDetails(data:any){
   } catch (error) {
     console.log(error)
     toast.error('Kunne ikke oppdatere sparesti. Prøv igjen senere.')
+    return null;
   }
 }
