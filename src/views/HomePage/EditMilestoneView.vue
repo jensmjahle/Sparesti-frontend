@@ -173,7 +173,7 @@ const openFileExplorer = () => {
         <div class="input">
           <base-input
             v-model="goal_sum"
-            label="Hvor mye vil du spare?"
+            label="Hvor mye vil du spare (nok)?"
             place-holder="Sett inn hvor mye du vil spare"
             id="test"
             :error="amountErrorGoal !== ''"
@@ -184,7 +184,7 @@ const openFileExplorer = () => {
           <base-input
             v-model="current_sum"
             place-holder="Sett inn hvor mye du har nå"
-            label="Hvor mye har du nå?"
+            label="Hvor mye har du nå (nok)?"
             :error="amountErrorStart !== ''"
           ></base-input>
           <label class="error" v-if="amountErrorStart">{{ amountErrorStart }}</label>
