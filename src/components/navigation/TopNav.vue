@@ -1,10 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import DropDownMenu from '@/components/navigation/DropNav.vue'
 import { useRouter } from 'vue-router'
+import { getUserInfo } from '@/utils/profileutils'
+import { useTokenStore } from '@/stores/token'
 
 const router = useRouter();
 const isBurgerMenuOpen = ref(false);
+const profilePictureBase64 = ref<any>()
+const tokenStore = useTokenStore()
+
+const fetchProfilePicture = async () =>{
+  try{
+    const response = await getUserInfo(tokenStore.jwtToken)
+    profilePictureBase64.value = response.profilePictureBase64 ?
+      `data:image/png;base64,${response.profilePictureBase64}` : null
+  } catch (error){
+    console.error('Error fetching user info:', error);
+  }
+}
+onMounted(async () => {
+  try {
+    await fetchProfilePicture();
+  } catch (error) {
+    console.error('Error fetching user picture:', error);
+  }
+})
+
 
 const openBurgerMenu = () => {
   if(isBurgerMenuOpen.value) {
@@ -34,7 +56,8 @@ const navigate = (path: string) => {
       <img src="/src/components/icons/navigation/menu-burger.svg" v-if="!isBurgerMenuOpen" alt="Menu Options" class="burger-menu" @click="openBurgerMenu">
       <img src="/src/components/icons/navigation/cross.svg" v-if="isBurgerMenuOpen" alt="Exit Options" class="exit-burger-menu" @click="openBurgerMenu">
       <button class="profile-button" @click="navigate('/homepage/profile')">
-        <img src="/src/components/icons/navigation/user.svg" alt="Home Icon" class="profile-icon">
+        <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-icon">
+        <img v-else src="/src/components/icons/navigation/user.svg" alt="Home Icon" class="profile-icon">
       </button>
     </div>
   </div>

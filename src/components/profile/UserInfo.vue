@@ -12,7 +12,7 @@ const inputError = ref<null|string>(null)
 
 const username = ref<string>('');
 const email = ref<string>('');
-const profilePictureBase64 = ref<string>('')
+const profilePictureBase64 = ref<any>()
 
 onMounted(async () => {
   try {
@@ -26,7 +26,8 @@ const fetchUserInfo = async () =>{
     const response = await getUserInfo(token)
     username.value = response.username;
     email.value = response.email;
-    profilePictureBase64.value = response.profilePictureBase64;
+    profilePictureBase64.value = response.profilePictureBase64 ?
+      `data:image/png;base64,${response.profilePictureBase64}` : null
   } catch (error){
     console.error('Error fetching user info:', error);
   }
@@ -63,6 +64,30 @@ const saveUserInfo = async () => {
   }
 }
 
+
+const handleFileChange = (event: any) => {
+  const file = event.target.files[0]
+  if (file) {
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      imgError.value = 'Invalid image format. Please upload a JPEG or PNG file.'
+      return
+    }
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      profilePictureBase64.value = e.target?.result
+      imgError.value = null
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+const fileInput = ref<HTMLInputElement | null>(null);
+
+const openFileExplorer = () => {
+  if (fileInput.value instanceof HTMLInputElement) {
+    fileInput.value.click();
+  }
+};
 watch(email, checkInput);
 
 </script>
@@ -77,9 +102,12 @@ watch(email, checkInput);
     </div>
     <div class="input-fields">
       <div class="img-input">
-        <button class="profile-picture-button">
-          <img src=/src/components/icons/navigation/user.svg alt="profile-picture" class="profile-picture">
-        </button>
+        <label for="profile-picture-input" class="profile-picture-button" @click="openFileExplorer">
+          <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
+                 @change="handleFileChange">
+          <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
+          <img v-else src=/src/components/icons/navigation/user.svg alt="profile-picture" class="profile-picture">
+        </label>
       </div>
       <div class="text-input">
         <div class="input-collection">
