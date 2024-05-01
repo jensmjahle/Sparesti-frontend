@@ -50,7 +50,8 @@ const isToExpire = () => {
      tabindex="0">
   <h2 class="title" :class="{'expire': isToExpire()}">{{props.title}}</h2>
   <div class="img">
-    <img src="/src/assets/background/img.png" alt="milestone-img" class="milestone-img">
+    <img class="milestone-img" v-if="props.image" :src="`data:image/png;base64,${props.image}` " id="literal-image" alt="milestone-img">
+    <img class="milestone-img" v-else src="/src/assets/background/img.png" alt="Add Image">
   </div>
 
   <div class="progress-description">

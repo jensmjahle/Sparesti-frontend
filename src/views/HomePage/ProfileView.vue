@@ -168,7 +168,7 @@ const closeDeletePopUp = async () => {
 }
 
 #bottom{
-  height: fit-content;
+  height: 50%;
   min-height: 40%;
 }
 .component{
@@ -191,7 +191,7 @@ const closeDeletePopUp = async () => {
 
 #badges{
   width: 100%;
-  min-height: 80%;
+  height: 100%;
 }
 
 .delete-user-button-box{

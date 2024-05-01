@@ -236,16 +236,19 @@ export const updateIncomeInfo = async (
   }
 }
 
-export const deleteAccount = async (token: string) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token
-    }
-  };
-  try {
-    await axios.delete("http://localhost:8080/users/delete", config)
-  } catch (error) {
+export const getLockedAchievements =  async (token:string):Promise<any> =>{
+  try{
+    const config = {
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    };
+    const result = await axios.get('http://localhost:8080/achievement/locked', config);
+    return result.data;
+  } catch (error){
     console.log(error)
+    throw error;
   }
 }
+

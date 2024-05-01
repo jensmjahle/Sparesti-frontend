@@ -15,17 +15,19 @@ const props = defineProps({
     type: {
       type: String,
       default: ''
-    }
+    },
+  error: Boolean
   }
 )
 
 </script>
 
 <template>
-  <label>{{ label }}</label>
+  <h3>{{ props.label }}</h3>
   <input
-    :placeholder="placeHolder"
+    :placeholder="props.placeHolder"
     class="field"
+    :class="{'error': error}"
     :value="modelValue"
     @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement)?.value)"
     :type="type"
@@ -39,10 +41,11 @@ input {
   margin: 8px 0;
   box-sizing: border-box;
   border-radius: 20px;
+  border: 2px solid var(--color-border);
 }
 
-label {
-  font-size: 1.5em;
+.error{
+  border-color: var(--color-border-error);
 }
 
 @media screen and (max-width: 1200px){
