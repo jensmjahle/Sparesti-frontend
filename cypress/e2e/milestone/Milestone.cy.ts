@@ -40,6 +40,7 @@ describe('Milestone View', () => {
   });
 
   it('should display completed milestone items and expand when clicked', () => {
+    cy.viewport(1100, 700);
 
     cy.get('.completed-milestone').should('have.length.greaterThan', 0);
 
