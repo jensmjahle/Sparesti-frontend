@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {BASE_URL} from "@/config/config";
+import {useToast} from "vue-toast-notification";
 
 const testDataUserAccounts:{}[] = [
   {
@@ -102,6 +103,7 @@ const testDataUser = {
   ],
 }
 
+const toast = useToast();
 export const deleteUser = async (token:string):Promise<any>=>{
   try{
     const config = {
@@ -113,6 +115,7 @@ export const deleteUser = async (token:string):Promise<any>=>{
     return await axios.delete(`${BASE_URL}/users/delete`,config);
   } catch (error){
     console.error(error);
+    toast.error('Kunne ikke slette brukeren. Prøv igjen senere.');
     throw error;
   }
 }
@@ -128,8 +131,9 @@ export const getUserAccountInfo = async (token:string):Promise<any> => {
     const result = await axios.get(`${BASE_URL}/user/account`, config);
     return result.data;
   } catch (error){
-    console.log('sending mock data')
-    return testDataUserAccounts;
+    console.log(error);
+    toast.error('Kunne ikke hente brukerkontoer. Prøv igjen senere.');
+
   }
 }
 export const getUserInfo = async (token:string): Promise<any> => {
@@ -144,6 +148,7 @@ export const getUserInfo = async (token:string): Promise<any> => {
     return result.data;
   } catch (error){
     console.log(error);
+    toast.error('Kunne ikke hente brukerinfo. Prøv igjen senere.');
     throw error;
   }
 }
@@ -166,6 +171,7 @@ export const updateUserInfo = async (
     return await axios.put(`${BASE_URL}/users/update`,data,config);
   } catch (error){
     console.error(error)
+    toast.error('Kunne ikke oppdatere brukerinfo. Prøv igjen senere.');
     throw error;
   }
 }

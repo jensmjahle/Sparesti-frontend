@@ -68,7 +68,7 @@ export const deleteChallenge = async (token:string, challengeId: number):Promise
     return await axios.delete(`${BASE_URL}/user/challenge/delete/${challengeId}`,config);
   } catch (error){
     console.error(error);
-    throw error;
+    toast.error('Kunne ikke slette utfordringen. Prøv igjen senere.');
   }
 }
 
@@ -88,7 +88,7 @@ export const completeChallenge= async (token:string, challengeId:number, milesto
     return await axios.post(`${BASE_URL}/user/challenge/complete`,{},config);
   } catch (error){
     console.error(error);
-throw error;
+    toast.error('Kunne ikke fullføre utfordringen. Prøv igjen senere.');
   }
 }
 
@@ -105,7 +105,7 @@ export const activateChallenge= async (token:string, challengeId: number):Promis
     return await axios.post(`${BASE_URL}/user/challenge/activate/${challengeId}`,{},config);
   } catch (error){
     console.error(error);
-    throw error;
+    toast.error('Kunne ikke aktivere utfordringen. Prøv igjen senere.');
   }
 }
 
@@ -120,6 +120,7 @@ export const getChallenge = async (token:string, challengeId: number):Promise<an
     return await axios.get(`${BASE_URL}/user/challenge/${challengeId}`,config);
   } catch (error){
     console.error(error);
+    toast.error('Kunne ikke hente utfordringen. Prøv igjen senere.');
   }
 }
 
@@ -144,7 +145,7 @@ export const getActiveChallenges = async (token:string, page:number, size:number
     return result.data;
   } catch (error){
     console.error(error);
-    return activeChallengesTestData
+    toast.error('Kunne ikke hente aktive utfordringer. Prøv igjen senere.');
   }
 }
 
@@ -166,7 +167,7 @@ export const getInactiveChallenges  = async (token:string):Promise<any>=>{
     return result.data;
   } catch (error){
     console.error(error);
-    return challengeRecomendationsTestData
+    toast.error('Kunne ikke hente forespurte utfordringer. Prøv igjen senere.');
   }
 }
 

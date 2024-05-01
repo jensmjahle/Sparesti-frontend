@@ -1,7 +1,6 @@
 import axios from 'axios'
 import {useTokenStore} from '@/stores/token'
 import {BASE_URL} from "@/config/config";
-
 export async function getUserTotalSavings(){
 
   const config = {

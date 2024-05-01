@@ -2,6 +2,9 @@ import axios from "axios";
 import { useTokenStore } from '../stores/token';
 import router from "@/router";
 import { BASE_URL } from "@/config/config";
+import {useToast} from "vue-toast-notification";
+
+const toast = useToast();
 
 export const getJwtToken = async (username: string, password: string) => {
     const config = {
@@ -17,6 +20,7 @@ export const getJwtToken = async (username: string, password: string) => {
         );
     } catch (error) {
         console.log("Error getting JWT token: ", error);
+        toast.error("En feil oppstod under innloggingen. Vennligst prøv igjen.")
     }
 }
 
@@ -37,7 +41,7 @@ export const signUpUser = async (username: string, email: string, password: stri
 
     } catch(error) {
         console.error("An error occurred during sign up:", error);
-        alert("An error occurred during sign up. Please try again.")
+        toast.error("En feil oppstod under registreringen. Vennligst prøv igjen.")
         throw error;
     }
 };
@@ -53,6 +57,7 @@ export const getUserInfo = async(username: string, token: string) => {
         return await axios.get(`${BASE_URL}/users/get`, config)
     } catch (error) {
         console.log(error)
+        toast.error("En feil oppstod under henting av brukerinformasjon. Vennligst prøv igjen.")
     }
 }
 
@@ -67,10 +72,13 @@ export const refreshToken = async (token: string) => {
         return await axios.get(`${BASE_URL}/auth/refresh`, config)
     } catch (error) {
         console.log(error)
+        toast.error("En uventet feil oppstod. Vennligst logg inn på nytt.")
+
     }
 }
 
 export const logout = async () => {
     useTokenStore().logout();
     router.push("/login").then(r => r);
+    toast.info("Du er nå logget ut.")
 }
