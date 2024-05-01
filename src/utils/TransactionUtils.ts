@@ -82,9 +82,6 @@ export const getTransactions = async (token:string, pageNumber: Number, pageSize
     }
   }
   try {
-    console.log(token)
-    console.log('trying to get transactions')
-    console.log(config)
     const result = await axios.get(`${BASE_URL}/user/transaction/latest/expense`, config)
 
     console.log(result.data);

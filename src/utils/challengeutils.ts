@@ -85,7 +85,7 @@ export const completeChallenge= async (token:string, challengeId:number, milesto
     return await axios.post(`${BASE_URL}/user/challenge/complete`,{},config);
   } catch (error){
     console.error(error);
-    throw error;
+throw error;
   }
 }
 

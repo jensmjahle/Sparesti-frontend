@@ -10,9 +10,10 @@ export async function getUserTotalSavings(){
       'Authorization': 'Bearer ' + useTokenStore().getJwtToken
     }
   }
-
-  const response = await axios.get(`${BASE_URL}/users/get/savings`, config);
-  const result = response.data
-
-  return result
+try {
+  const response = await axios.get(`${BASE_URL}/users/get/savings`, config)
+  return response.data
+} catch (error) {
+  console.log(error)
+}
 }

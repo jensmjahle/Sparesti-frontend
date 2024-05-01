@@ -12,8 +12,11 @@ export async function getMilestoneDetails(id: number){
       'Authorization': 'Bearer ' + useTokenStore().getJwtToken
     }
   }
-
+try {
   return await axios.get(`${BASE_URL}/milestone/` + id, config);
+} catch (error) {
+  console.log(error)
+}
 }
 
 export async function updateMilestoneDetails(data:any){
@@ -23,5 +26,9 @@ export async function updateMilestoneDetails(data:any){
       'Authorization': 'Bearer ' + useTokenStore().getJwtToken
     }
   }
-  return await axios.put(`${BASE_URL}/milestone/edit`, data, config)
+  try {
+    return await axios.put(`${BASE_URL}/milestone/edit`, data, config)
+  } catch (error) {
+    console.log(error)
+  }
 }
