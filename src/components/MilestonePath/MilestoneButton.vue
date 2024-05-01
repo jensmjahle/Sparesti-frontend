@@ -1,13 +1,24 @@
 <script setup lang="ts">
+import { defineEmits } from 'vue'
+
 const props = defineProps({
   label: String,
   buttonColor: String
 })
+const emits = defineEmits(['delete']);
+
+function deleteMilestone() {
+  if(props.label === 'Slett'){
+    emits('delete');
+  }
+}
+
+
 </script>
 
 <template>
   <div class="button-box">
-    <button class="save-button" :style="{ backgroundColor: buttonColor}">{{label}}</button>
+    <button class="save-button" :style="{ backgroundColor: buttonColor}" @click="deleteMilestone()">{{label}}</button>
   </div>
 </template>
 

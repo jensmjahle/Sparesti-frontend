@@ -7,6 +7,7 @@ const emits = defineEmits(['transfer-value']);
 
 function transfer() {
   emits('transfer-value', transferValue.value);
+  transferValue.value = 0;
 }
 
 </script>

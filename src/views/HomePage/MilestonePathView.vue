@@ -5,20 +5,23 @@ import { onMounted, ref } from 'vue'
 import DirectTransfer from '@/components/MilestonePath/DirectTransfer.vue'
 import MilestoneDescription from '@/components/MilestonePath/MilestoneDescription.vue'
 import MilestonePath from '@/components/MilestonePath/MilestonePath.vue'
-import { getMilestoneDetails } from '@/utils/MilestonePathUtils'
+import { deleteMilestone, directTransfer, getMilestoneDetails } from '@/utils/MilestonePathUtils'
 import { useMilestoneStore } from '@/stores/currentMilestone'
 import PathHelpPopUp from '@/components/popups/help/PathHelpPopUp.vue'
-import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
 import MilestoneButton from '@/components/MilestonePath/MilestoneButton.vue'
 import { useRouter } from 'vue-router'
+import ProgressBar from '@/components/ProgressBar.vue'
+import ConfirmTransferPopUp from '@/components/popups/ConfirmTransferPopUp.vue'
+import DeleteMilestonePopUp from '@/components/popups/DeleteMilestonePopUp.vue'
+
 const router = useRouter()
 const displayType = ref<boolean>(false)
 const displayHelpPopUp = ref<boolean>(false)
 
 const pathName = ref("PathNameHere")
 const pathDescription = ref("PathDescriptionHere")
-const editLabel = ref("Edit")
-const deleteLabel = ref("Delete")
+const editLabel = ref("Rediger")
+const deleteLabel = ref("Slett")
 const deleteColor = ref('var(--vt-c-Raspberry)')
 const editColor = ref('--vt-c-Orange')
 const totalToSave = ref(3000)
@@ -47,8 +50,10 @@ onMounted( async () =>{
 
 
 function updateTotalSaved(value: number) {
+  directTransfer(value, useMilestoneStore().milestoneId)
   totalSaved.value += value;
   milestonePathKey.value++;
+  displayTransferPopUp.value = false;
 }
 
 const openHelpPopUp = () => {
@@ -57,9 +62,51 @@ const openHelpPopUp = () => {
 const closeHelpPopUp = async () => {
   displayHelpPopUp.value = false;
 }
+
+const displayTransferPopUp = ref<boolean>(false)
+const refTransferAmount = ref(0)
+
+const openTransferConfirmationPopUp = (value:number) => {
+  refTransferAmount.value = value;
+  displayTransferPopUp.value = true;
+}
+
+const closeTransferConfirmationPopUp = () => {
+  displayTransferPopUp.value = false;
+}
+
+const displayDeleteMilestonePopUp = ref<boolean>(false)
+
+const openDeleteMilestonePopUp = () => {
+  displayDeleteMilestonePopUp.value = true
+}
+
+const closeDeleteMilestonePopUp = () => {
+  displayDeleteMilestonePopUp.value = false
+}
+
+async function deleteAMilestone(milestoneId:number){
+  console.log("Delete method called")
+  await deleteMilestone(milestoneId)
+  closeDeleteMilestonePopUp()
+  await router.push("/homepage/milestone")
+}
 </script>
 
 <template>
+  <div v-if="displayTransferPopUp" class="popup-container">
+    <ConfirmTransferPopUp
+      @closePopUp="closeTransferConfirmationPopUp"
+      @confirmTransfer="updateTotalSaved(refTransferAmount)"
+      :transfer-amount="refTransferAmount"
+    ></ConfirmTransferPopUp>
+  </div>
+  <div v-if = "displayDeleteMilestonePopUp" class="popup-container">
+    <DeleteMilestonePopUp
+    @closeDeletePopUp="closeDeleteMilestonePopUp"
+    @milestoneDeleted="deleteAMilestone(useMilestoneStore().milestoneId)"
+    ></DeleteMilestonePopUp>
+  </div>
   <div id = milestonePathView>
     <div class="header">
       <h2 class="title">Sparemål: {{pathName}}</h2>
@@ -94,16 +141,17 @@ const closeHelpPopUp = async () => {
       <div id = Info :class="{'mobile-hide': !displayType}">
         <div id = Progress>
           <MilestoneProgress :total-to-save="totalToSave" :total-saved="totalSaved"/>
+          <ProgressBar current="10" max="50"></ProgressBar>
         </div>
         <div id = Description>
           <MilestoneDescription :path-description="pathDescription"/>
         </div>
         <div id = Transfer>
-          <DirectTransfer @transfer-value="updateTotalSaved"/>
+          <DirectTransfer @transfer-value="openTransferConfirmationPopUp"/>
         </div>
         <div id = buttons>
           <milestone-button :label="editLabel" :button-color="editColor" @click="router.push('/homepage/edit-milestone')"></milestone-button>
-          <milestone-button :label="deleteLabel" :button-color="deleteColor"></milestone-button>
+          <milestone-button :label="deleteLabel" :button-color="deleteColor" @delete="openDeleteMilestonePopUp"></milestone-button>
         </div>
       </div>
 
@@ -176,6 +224,7 @@ const closeHelpPopUp = async () => {
 
   #Progress{
     width: 100%;
+    height: 20%;
   }
 
   #Progress, #Transfer{
