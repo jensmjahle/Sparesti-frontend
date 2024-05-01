@@ -247,21 +247,24 @@ export const deleteAccount = async (token: string) => {
   try {
     await axios.delete(`${BASE_URL}/users/delete`, config)
   } catch (error) {
+    console.log(error)
+  }
+}
 
-export const getLockedAchievements =  async (token:string):Promise<any> =>{
-  try{
+export const getLockedAchievements =  async (token:string):Promise<any> => {
+  try {
     const config = {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
     };
-    const result = await axios.get(`${BASE_URL/achievement/locked`, config);
+    const result = await axios.get(`${BASE_URL}/achievement/locked`, config);
     return result.data;
-  } catch (error){
-
+  } catch (error) {
     console.log(error)
     throw error;
   }
+
 }
 
