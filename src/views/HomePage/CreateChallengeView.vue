@@ -9,16 +9,18 @@ import { createMilestone } from '@/utils/createMilestoneUtils'
 import { useTokenStore } from '@/stores/token'
 import { useRouter } from 'vue-router'
 import { createChallenge } from '@/utils/challengeutils'
+import {useToast} from "vue-toast-notification";
+const toast = useToast();
 
 const title = ref('')
 const description = ref('')
-const end_date = ref(new Date(new Date().setDate(new Date().getDate() + 1)))
-const goal_sum = ref<number>()
-const titleError = ref()
-const descriptionError = ref()
-const dateError = ref()
-const amountError = ref()
-const selectError = ref()
+const start_date = ref(new Date())
+const end_date = ref()
+const goal_sum = ref<number|string>('')
+const titleError = ref('')
+const descriptionError = ref('')
+const dateError = ref('')
+const amountError = ref('')
 const tokenStore = useTokenStore()
 const router = useRouter()
 const validate = () => {
@@ -27,27 +29,21 @@ const validate = () => {
   descriptionError.value = ''
   dateError.value = ''
   amountError.value = ''
-  selectError.value = ''
 
   if (!title.value.trim()) {
-    titleError.value = 'Vennligst sett inn tittel til sparemål'
+    titleError.value = 'Mangler tittel på utfordringen!'
     isValid = false
   }
   if (!description.value.trim()) {
-    descriptionError.value = 'Vennligst skriv hva du ønsker å spare til'
+    descriptionError.value = 'Mangler beskrivelse på utfordringen!'
     isValid = false
   }
   if (!end_date.value) {
-    dateError.value = 'Vennligst velg både start- og sluttdato'
+    dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>goal_sum.value)) {
-    amountError.value = 'Vennligst bruk bare tall'
-    isValid = false
-  }
-
-  if (!selectedOption.value) {
-    selectError.value = 'Venligst velg tidsramme for utfordring'
+  if (isNaN(<number>goal_sum.value) || goal_sum.value == '') {
+    amountError.value = 'Fyll inn et gyldig sparebeløp!'
     isValid = false
   }
 
@@ -59,112 +55,144 @@ const challengeData = computed(() => ({
   challengeDescription: description.value,
   goalSum: goal_sum.value,
   expirationDate: end_date.value ? end_date.value : null,
-  recurring: selectedOption.value
 }))
 
 const saveInput = () => {
   if (validate()) {
     createChallenge(tokenStore.jwtToken, challengeData.value)
     router.push('/homepage/challenge')
+    toast.success('Utfordringen ble lagret!')
   } else {
     console.log('fail')
+    toast.error('Vi klarte ikke lagre! Venligst prøv på nytt.')
   }
 }
-
-const selectedOption = ref<string | null>('')
-const dropdownOptions = [
-  { label: 'Ingen', value: 0 },
-  { label: 'Daglig', value: 86400 }, // 86400 sekunder = 1 dag
-  { label: 'Ukentlig', value: 604800 }, // 604800 sekunder = 1 uke
-  { label: 'Månedlig', value: 2592000 } // 2592000 sekunder = 1 måned
-]
-
-const handleSelectionChange = (value: string | null) => {
-  selectedOption.value = value
-}
-
 </script>
 
 <template>
-  <div id="createContainer">
+  <div class="create-challenge-view">
+    <div class="header">
+      <h2 class="title">Ny utfordring!</h2>
+
+      <button class="save-button" id="top-button" @click="saveInput">
+        <h3 class="save-button-title">Opprett</h3>
+      </button>
+    </div>
+
     <div class="input-container">
-      <div class="input">
+      <div class="input" id="title-input">
         <BaseInput
           v-model="title"
-          label="Tittel på utfordring"
-          place-holder="Navnet på utfordring"
+          label="Tittel"
+          place-holder="Navn på utfordringen"
           type="email"
+          :error="titleError !== ''"
         ></BaseInput>
         <label class="error"
                v-if="titleError">{{ titleError }}</label>
       </div>
-      <div class="input">
+
+      <div class="input-large">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
-          place-holder="Vennligst beskriv utfordringen">
-        </BaseTextArea>
+          place-holder="Beskriv utfordringen"
+          :error="descriptionError !== ''"
+        ></BaseTextArea>
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
-      <div class="smaller-inputs">
-        <div class="input">
-          <base-input
-            v-model="goal_sum"
-            label="Hvor mye vil du spare?"
-            place-holder="Sett inn hvor mye som skal for å utføre utfordringen"
-            id="test">
-          </base-input>
-          <label class="error" v-if="amountError">{{ amountError }}</label>
-        </div>
+
+      <div class="input">
+        <base-input
+          v-model="goal_sum"
+          place-holder="Hvor mye sparer du av utfordringen?"
+          label="Sparesum (nok)"
+          :error="amountError !== ''"
+        ></base-input>
+        <label class="error" v-if="amountError">{{ amountError }}</label>
       </div>
+
       <div class="smaller-inputs">
-        <div class="input">
-          <label>Sett slutt dato</label>
+        <div class="input" id="nested">
+          <h3>Start dato</h3>
+          <VueDatePicker
+            :enable-time-picker="false"
+            placeholder="Velg start dato"
+            v-model="start_date"
+            :min-date="start_date"
+            :disabled="true"
+          ></VueDatePicker>
+        </div>
+        <div class="input" id="nested">
+          <h3>Slutt dato</h3>
           <VueDatePicker
             :enable-time-picker="false"
             placeholder="Velg slutt dato"
             v-model="end_date"
-            auto-apply
-            :min-date="end_date"
+            :min-date="start_date"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
       </div>
-      <div class="input">
-        <label>Sett inn hvor ofte utfordringen skal forekomme</label>
-        <select class="custom-dropdown" v-model="selectedOption" @change="handleSelectionChange(selectedOption)">
-          <option disabled value="" selected>Velg tidsramme</option>
-          <option v-for="option in dropdownOptions" :key="option.value" :value="option.value">{{ option.label }}
-          </option>
-        </select>
-        <label class="error" v-if="selectError" r>{{ selectError }}</label>
-      </div>
-      <div class="submit-button">
-        <button class="save-button" @click="saveInput">
-          <h3 class="save-button-title">Lagre</h3>
-        </button>
-      </div>
+    </div>
+    <div class="submit-button">
+      <button class="save-button" @click="saveInput">
+        <h3 class="save-button-title">Opprett</h3>
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
 
+.create-challenge-view{
+  display: flex;
+  flex-direction: column;
+  min-height: fit-content;
+  place-content: space-between;
+  height: 110%;
+  width: 100%;
+  gap: 2.5%;
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  place-content: space-between;
+  height: 6.0%;
+}
+
+.title{
+  color: var(--color-header)
+}
+
+#top-button{
+  height: 100%;
+  width: 30%;
+}
+
 .input-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  place-content: space-between;
   text-align: left;
-  width: 75%;
-  height: 100%;
+  width: 100%;
+  height: 85%;
+  gap: 1.0%;
 }
 
 .smaller-inputs {
   display: flex;
   flex-direction: row;
-  gap: 2%;
-  height: 100%;
+  height: 20%;
   width: 100%;
+  gap: 2%;
+}
+
+.input-large{
+  display: flex;
+  flex-direction: column;
+  height: 60%;
 }
 
 .input {
@@ -173,45 +201,24 @@ const handleSelectionChange = (value: string | null) => {
   align-items: flex-start;
   text-align: left;
   width: 100%;
-  height: 100%;
-}
-
-#createContainer {
-  display: flex;
-  align-content: center;
-  justify-content: center;
+  height: 20%;
 }
 
 label {
   font-size: 1.5em;
 }
-
-.custom-dropdown {
+.submit-button{
   width: 100%;
-  height: 7%;
-  padding: 8px;
-  margin-top: 1%;
-  border-radius: 20px;
+  height: 10%;
 }
 
 .save-button {
   border-radius: 20px;
-  padding-right: 5.0%;
-  padding-left: 5.0%;
-  margin-top: 5%;
   color: var(--color-headerText);
   background-color: var(--color-save-button);
-  border-color: var(--color-border);
+  border: none;
   width: 100%;
-  height: 20%;
-  min-height: 100px;
-}
-
-.submit-button-mobile,
-.submit-button {
   height: 100%;
-  width: 100%;
-  display: flex;
 }
 
 .save-button:hover {
@@ -226,30 +233,33 @@ label {
   font-weight: bold;
 }
 
-
 .error {
-  color: rgb(189, 0, 0);
+  color: var(--color-text-error);
   font-size: 15px;
 }
 
-@media screen and (max-width: 1200px) {
-  .input-container {
-    width: 90%;
-    margin: 0 auto;
+@media screen and (max-width: 1000px) {
+  .input-container{
+    gap: 1.0%;
   }
-
-  .smaller-inputs {
+  .smaller-inputs{
+    display: flex;
     flex-direction: column;
+    place-content: space-evenly;
+    height: 40%;
+  }
+  .input{
+    height: 20%
   }
 
-  #createContainer {
-    flex-direction: column;
+  #nested{
+    height: 50%;
   }
 
 
-  label {
-    font-size: 1.2em;
+  #title-input{
+    height: 20%
   }
-
 }
 </style>
+

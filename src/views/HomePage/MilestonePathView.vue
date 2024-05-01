@@ -38,11 +38,15 @@ onMounted( async () =>{
   const milestoneId = useMilestoneStore().milestoneId;
   console.log(milestoneId)
   const response = await getMilestoneDetails(milestoneId)
+  if (response === null) {
+    await router.push('/homepage/milestone')
+  } else {
   pathName.value = response.data.milestoneTitle
   pathDescription.value = response.data.milestoneDescription
   totalToSave.value = response.data.milestoneGoalSum
   totalSaved.value = response.data.milestoneCurrentSum
   milestonePathKey.value++;
+  }
 })
 
 
@@ -235,6 +239,11 @@ const closeHelpPopUp = async () => {
     }
     #buttons{
       flex-direction: column;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    .help-icon{
+      filter: invert(1);
     }
   }
 

@@ -21,8 +21,11 @@ const props = defineProps({
 
 <style scoped>
 #TotalSavings{
+  width: 100%;
   margin-right: 5%;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
+  align-items: center;
+
+  box-shadow: 0 4px 4px var(--color-shadow);
   border-radius: 20px;
   padding: 1% 3% 1% 3%;
   display: flex;
@@ -36,7 +39,7 @@ const props = defineProps({
 
 #SavingsText{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 #SavedInfo{

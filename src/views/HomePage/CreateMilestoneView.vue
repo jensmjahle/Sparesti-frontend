@@ -104,7 +104,7 @@ const openFileExplorer = () => {
 </script>
 
 <template>
-  <div class="create-milestone-view">
+  <div class="create-challenge-view">
     <div class="header">
       <h2 class="title">Nytt sparemål!</h2>
 
@@ -154,7 +154,7 @@ const openFileExplorer = () => {
         <div class="input" id="goal-input">
           <base-input
             v-model="goal_sum"
-            label="Hvor mye vil du spare?"
+            label="Hvor mye vil du spare (nok)?"
             place-holder="Sett inn hvor mye du vil spare"
             id="test"
             :error="amountErrorGoal !== ''"
@@ -165,7 +165,7 @@ const openFileExplorer = () => {
           <base-input
             v-model="current_sum"
             place-holder="Sett inn hvor mye du har nå"
-            label="Hvor mye har du nå?"
+            label="Hvor mye har du nå (nok)?"
             :error="amountErrorStart !== ''"
           ></base-input>
           <label class="error" v-if="amountErrorStart">{{ amountErrorStart }}</label>
@@ -206,7 +206,7 @@ const openFileExplorer = () => {
 
 <style scoped>
 
-.create-milestone-view{
+.create-challenge-view{
   display: flex;
   flex-direction: column;
   min-height: fit-content;
@@ -357,7 +357,7 @@ label {
 
 @media screen and (max-width: 1000px) {
 
-  .create-milestone-view{
+  .create-challenge-view{
     height: 150%;
   }
 

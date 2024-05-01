@@ -1,5 +1,8 @@
 import axios from 'axios';
+import {BASE_URL} from "@/config/config";
+import {useToast} from "vue-toast-notification";
 
+const toast = useToast();
 export const getAllMilestonesPaginated = async(token: string, page:number, size:number) => {
   const config = {
     headers: {
@@ -12,10 +15,11 @@ export const getAllMilestonesPaginated = async(token: string, page:number, size:
     }
   };
   try {
-    const response = await axios.get("http://localhost:8080/milestone/user/paginated", config)
+    const response = await axios.get(`${BASE_URL}/milestone/user/paginated`, config)
     return response.data;
   } catch (error) {
     console.log(error)
+    toast.error('En uventet feil oppsto. Kunne ikke hente sparestier. Prøv igjen senere.')
   }
 }
 
@@ -27,10 +31,11 @@ export const getAllMilestones = async(token: string) => {
     },
   };
   try {
-    const response = await axios.get("http://localhost:8080/milestone/user", config)
+    const response = await axios.get(`${BASE_URL}/milestone/user`, config)
     return response.data;
   } catch (error) {
     console.log(error)
+    toast.error('En uventet feil oppsto. Kunne ikke hente sparestier. Prøv igjen senere.')
   }
 }
 
@@ -46,9 +51,10 @@ export const getAllMilestoneLogs = async(token: string, page:number, size:number
     }
   };
   try {
-    const response = await axios.get("http://localhost:8080/milestoneLog/user", config)
+    const response = await axios.get(`${BASE_URL}/milestoneLog/user`, config)
     return response.data
   } catch (error) {
     console.log(error)
+    toast.error('En uventet feil oppsto. Kunne ikke hente fullførte sparestier. Prøv igjen senere.')
   }
 }
