@@ -61,6 +61,10 @@ To run this program you need:
 
 ### Running the repository
 
+> **Note:** Before running the frontend, make sure that the BASE_URL in the config.ts file at src/config/config.ts is set to the correct URL of the backend API.
+> The default value is http://localhost:8080 which is the default URL for the backend API when running it locally.
+
+
 1. Navigate to the root folder of the project
 2. Run the following command to install the necessary dependencies:
    ```sh
@@ -71,6 +75,8 @@ To run this program you need:
     npm run dev
     ```
 4. The frontend should now be running on http://localhost:5173
+
+
 
 ## Usage
 

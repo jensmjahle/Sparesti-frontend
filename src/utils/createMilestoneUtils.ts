@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {BASE_URL} from "@/config/config";
 export const createMilestone = async (milestoneData: any, token: string) => {
   const config = {
     headers: {
@@ -7,7 +8,7 @@ export const createMilestone = async (milestoneData: any, token: string) => {
     }
   }
   try{
-    return await axios.post('http://localhost:8080/milestone/create', milestoneData, config)
+    return await axios.post(`${BASE_URL}/milestone/create`, milestoneData, config)
   } catch (e) {
     console.log(e)
   }

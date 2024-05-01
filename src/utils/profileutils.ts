@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {BASE_URL} from "@/config/config";
 
 const testDataUserAccounts:{}[] = [
   {
@@ -109,7 +110,7 @@ export const deleteUser = async (token:string):Promise<any>=>{
         'Authorization': `Bearer ${token}`
       }
     };
-    return await axios.delete('http://localhost:8080/users/delete',config);
+    return await axios.delete(`${BASE_URL}/users/delete`,config);
   } catch (error){
     console.error(error);
     throw error;
@@ -124,7 +125,7 @@ export const getUserAccountInfo = async (token:string):Promise<any> => {
         'Authorization': `Bearer ${token}`
       },
     };
-    const result = await axios.get('http://localhost:8080/user/account', config);
+    const result = await axios.get(`${BASE_URL}/user/account`, config);
     return result.data;
   } catch (error){
     console.log('sending mock data')
@@ -139,7 +140,7 @@ export const getUserInfo = async (token:string): Promise<any> => {
         'Authorization': `Bearer ${token}`
       },
     };
-    const result = await axios.get('http://localhost:8080/users/get', config);
+    const result = await axios.get(`${BASE_URL}/users/get`, config);
     return result.data;
   } catch (error){
     console.log(error);
@@ -162,7 +163,7 @@ export const updateUserInfo = async (
       'email': email,
       'profilePictureBase64': profilePictureBase64
     };
-    return await axios.put('http://localhost:8080/users/update',data,config);
+    return await axios.put(`${BASE_URL}/users/update`,data,config);
   } catch (error){
     console.error(error)
     throw error;
@@ -184,7 +185,7 @@ export const updatePasswordInfo = async (
       'password': currentPassword,
       'newPassword': newPassword
     };
-    return await axios.put('http://localhost:8080/userCredentials/updatePassword',data,config);
+    return await axios.put(`${BASE_URL}/userCredentials/updatePassword`,data,config);
   } catch (error){
     console.error(error)
     throw error;
@@ -205,7 +206,7 @@ export const updateBankAccountInfo = async (
       'currentAccount': checkingAccount,
       'savingsAccount': savingAccount
     };
-    return await axios.put('http://localhost:8080/users/update',data,config);
+    return await axios.put(`${BASE_URL}/users/update`,data,config);
   } catch (error){
     console.error(error)
     throw error;
@@ -229,26 +230,41 @@ export const updateIncomeInfo = async (
       'monthlyFixedExpenses': monthlyFixedExpenses,
       'monthlySavings': monthlySavings
     };
-    return await axios.put('http://localhost:8080/users/update',data,config);
+    return await axios.put(`${BASE_URL}/users/update`,data,config);
   } catch (error){
     console.error(error)
     throw error;
   }
 }
 
-export const getLockedAchievements =  async (token:string):Promise<any> =>{
-  try{
+export const deleteAccount = async (token: string) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token
+    }
+  };
+  try {
+    await axios.delete(`${BASE_URL}/users/delete`, config)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getLockedAchievements =  async (token:string):Promise<any> => {
+  try {
     const config = {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
     };
-    const result = await axios.get('http://localhost:8080/achievement/locked', config);
+    const result = await axios.get(`${BASE_URL}/achievement/locked`, config);
     return result.data;
-  } catch (error){
+  } catch (error) {
     console.log(error)
     throw error;
   }
+
 }
 

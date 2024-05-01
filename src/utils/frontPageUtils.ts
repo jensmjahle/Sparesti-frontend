@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useTokenStore } from '../stores/token';
 import router from "@/router";
+import { BASE_URL } from "@/config/config";
 
 export const getJwtToken = async (username: string, password: string) => {
     const config = {
@@ -10,7 +11,7 @@ export const getJwtToken = async (username: string, password: string) => {
     };
     try {
         return axios.post(
-            "http://localhost:8080/auth/login",
+            `${BASE_URL}/auth/login`,
             { username, password },
             config
         );
@@ -28,7 +29,7 @@ export const signUpUser = async (username: string, email: string, password: stri
     try {
         await axios
             .post(
-                "http://localhost:8080/userCredentials/create",
+                `${BASE_URL}/userCredentials/create`,
                 {username, email, password}, // Pass object directly, no need for JSON.stringify()
                 config
             );
@@ -49,7 +50,7 @@ export const getUserInfo = async(username: string, token: string) => {
         }
     };
     try {
-        return await axios.get("http://localhost:8080/users/get", config)
+        return await axios.get(`${BASE_URL}/users/get`, config)
     } catch (error) {
         console.log(error)
     }
@@ -63,7 +64,7 @@ export const refreshToken = async (token: string) => {
         }
     };
     try {
-        return await axios.get("http://localhost:8080/auth/refresh", config)
+        return await axios.get(`${BASE_URL}/auth/refresh`, config)
     } catch (error) {
         console.log(error)
     }
