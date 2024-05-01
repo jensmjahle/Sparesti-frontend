@@ -125,7 +125,6 @@ const closeHelpPopUp = () => {
   flex-direction: column;
   width: 60%;
   min-height: 100%;
-  gap: 2.5%;
 }
 
 .create-milestone-button{
