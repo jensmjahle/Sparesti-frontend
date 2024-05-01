@@ -219,25 +219,6 @@ const openFileExplorer = () => {
       <button class="save-button" @click="saveInput">
         <h3 class="save-button-title">Lagre</h3>
       </button>
-    <div class="image-container">
-      <label>Legg til et bilde</label>
-      <div class="add-image-box">
-        <button @click="openFileExplorer" tabindex="0" type="button">
-          <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
-                 @change="handleFileChange">
-          <img v-if="image" :src="image" id="literal-image" alt="Selected Image" width="150px" height="150px">
-          <img v-else src="../../components/icons/image/AddImage.png" alt="Add Image" width="50px" height="50px">
-        </button>
-      </div>
-      <!--        <div class="existing-pictures">-->
-      <!--          <div class="existing-image-box"></div>-->
-      <!--          <div class="existing-image-box"></div>-->
-      <!--        </div>-->
-      <div class="submit-button-mobile">
-        <button class="save-button" @click="saveInput">
-          <h3 class="save-button-title">Lagre</h3>
-        </button>
-      </div>
     </div>
   </div>
 </template>
