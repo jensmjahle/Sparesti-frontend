@@ -55,30 +55,48 @@ async function submit() {
     <div id = "EntryFields">
       <div id = userDiv :class="{ 'invalid-input': fieldTouched.name && !validateName(name) }">
         <h2>Brukernavn</h2>
-        <input v-model="name" @blur="fieldTouched.name = true">
-        <span data-testid="UsernameError" v-if="fieldTouched.name && !validateName(name)" class="error-message">Brukernavn kreves</span>
+        <input v-model="name"
+               @blur="fieldTouched.name = true"
+               data-testid="NameInput">
+        <span data-testid="UsernameError"
+              v-if="fieldTouched.name && !validateName(name)"
+              class="error-message">Brukernavn kreves</span>
       </div>
       <div id = emailDiv :class="{ 'invalid-input': fieldTouched.email && !validateEmail(email) }">
         <h2>E-post</h2>
-        <input v-model="email" @blur="fieldTouched.email = true">
-        <span data-testid="EmailError" v-if="fieldTouched.email && !validateEmail(email)" class="error-message">E-posten er ikke gyldig</span>
+        <input v-model="email"
+               @blur="fieldTouched.email = true"
+               data-testid="EmailInput">
+        <span data-testid="EmailError"
+              v-if="fieldTouched.email && !validateEmail(email)"
+              class="error-message">E-posten er ikke gyldig</span>
       </div>
       <div id = passwordDiv :class="{ 'invalid-input': fieldTouched.password && !validatePassword(password) }">
         <h2>Passord</h2>
-        <input type = "password" v-model="password" @blur="fieldTouched.password = true">
-        <span data-testid="PasswordError" v-if="fieldTouched.password && !validatePassword(password)" class="error-message">Passordet må være minst 8 tegn langt</span>
+        <input type = "password"
+               v-model="password"
+               @blur="fieldTouched.password = true"
+               data-testid="PasswordInput">
+        <span data-testid="PasswordError"
+              v-if="fieldTouched.password && !validatePassword(password)"
+              class="error-message">Passordet må være minst 8 tegn langt</span>
       </div>
       <div id = confirmPasswordDiv :class="{ 'invalid-input': fieldTouched.confirmePassword && !validateConfirmPassword(password, confirmePassword) }">
         <h2>Bekreft passord</h2>
-        <input type = "password" v-model="confirmePassword" @blur="fieldTouched.confirmePassword = true">
-        <span data-testid="PasswordConfirmError" v-if="fieldTouched.confirmePassword && !validateConfirmPassword(password, confirmePassword)" class="error-message">Passordene er ikke like</span>
+        <input type = "password"
+               v-model="confirmePassword"
+               @blur="fieldTouched.confirmePassword = true"
+               data-testid = "ConfirmPasswordInput">
+        <span data-testid="PasswordConfirmError"
+              v-if="fieldTouched.confirmePassword && !validateConfirmPassword(password, confirmePassword)"
+              class="error-message">Passordene er ikke like</span>
       </div>
     </div>
     <button id = "CreateButton" @click="submit()"
             :disabled="!registerUserValid(name, email, password, confirmePassword)"
             :class="{ 'Submit': registerUserValid(name, email, password, confirmePassword),
              'InactiveSubmit': !registerUserValid(name, email, password, confirmePassword) }"
-    >Opprett</button>
+            data-testid = "SignupButton">Opprett</button>
   </div>
 </template>
 

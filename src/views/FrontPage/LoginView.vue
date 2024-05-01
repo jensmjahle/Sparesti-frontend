@@ -14,7 +14,8 @@ function navigateToNewUser() {
 
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
-  if (useTokenStore().jwtToken !== '' && !useTokenStore().jwtToken.includes('Request')) {
+  console.log(useTokenStore().jwtToken)
+  if (useTokenStore().jwtToken !== '' && !useTokenStore().jwtToken.includes('Request') && !useTokenStore().jwtToken.includes('Error')) {
     await router.push('/homepage')
   }
   else if (useTokenStore().jwtToken === 'Request failed with status code 401'){
@@ -24,6 +25,8 @@ async function login() {
     alert('Du kommer fra et utrygt nettverk, vennligst prøv igjen senere')
   }
   else if (useTokenStore().jwtToken === 'Request failed with status code 500') {
+    alert('Det oppsto en feil i serveren, vennligst prøv igjen senere')
+  } else {
     alert('Serveren er nede, vennligst prøv igjen senere')
   }
 }
@@ -36,15 +39,22 @@ async function login() {
     <div id="LoginFields">
       <div id="UserDiv">
         <h2 id="Username">Brukernavn</h2>
-        <input id="NameField" placeholder="Skriv inn dit brukernavn" v-model="username">
+        <input id="NameField" placeholder="Skriv inn dit brukernavn" v-model="username" data-testid="NameInput">
       </div>
       <div id="PasswordDiv">
         <h2 id="Password">Passord</h2>
-        <input id="PasswordField" type="password" placeholder="Skriv inn dit passord" v-model="password">
+        <input id="PasswordField" type="password" placeholder="Skriv inn dit passord" v-model="password" data-testid="PasswordInput">
       </div>
     </div>
-    <button id="LogInButton" @click="login" :disabled="!username || password.length < 8" :class="{ 'disabled-button': !username || password.length < 8 }">LogIn</button>
-    <h2 @click="navigateToNewUser()" id="NewUser">Ny til Sparesti? Trykk her for å lage en profil!</h2>
+
+    <button id="LogInButton"
+            @click="login"
+            :disabled="!username || password.length < 8"
+            :class="{ 'disabled-button': !username || password.length < 8 }"
+            data-testid="LogInButton">
+      LogIn
+    </button>
+    <h2 tabindex="0" @keyup.enter="navigateToNewUser()" @click="navigateToNewUser()" id="NewUser" data-testid="NewUserLink">Ny til Sparesti? Trykk her for å lage en profil!</h2>
   </div>
 </template>
 

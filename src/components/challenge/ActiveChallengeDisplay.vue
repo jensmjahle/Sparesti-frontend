@@ -55,6 +55,8 @@ const isToExpire = () => {
   <div class="potential-challenge-display">
     <img
       class="close-img"
+      tabindex="0"
+      @keyup.enter="deleteTheChallenge()"
       src="/src/components/icons/navigation/close.svg"
       alt="delete-button"
       @click="deleteTheChallenge()">

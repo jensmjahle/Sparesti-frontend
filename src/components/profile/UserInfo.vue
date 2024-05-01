@@ -88,7 +88,7 @@ watch(email, checkInput);
         </div>
         <div class="input-collection">
           <H4>E-post: </H4>
-          <input class="input" :class="{'error': emailError}" v-model="email">
+          <input class="input" id="email-input" :class="{'error': emailError}" v-model="email">
           <div class="alert-box">
             <h4 v-if="emailError" class="error-message">{{emailError}}</h4>
             <h4 v-if="inputError" class="error-message">{{inputError}}</h4>

@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AccountInfo.vue > renders correctly 1`] = `
+"<div data-v-d2243dda="" class="account-info">
+  <div data-v-d2243dda="" class="header">
+    <h3 data-v-d2243dda="" class="title">Konto opplysninger</h3><button data-v-d2243dda="" class="save-button">
+      <h3 data-v-d2243dda="" class="save-button-title">Lagre</h3>
+    </button>
+  </div>
+  <div data-v-d2243dda="" class="input-fields">
+    <div data-v-d2243dda="" class="input-collection">
+      <h4 data-v-d2243dda="">Forbrukskonto: </h4><select data-v-d2243dda="" class="accounts"></select>
+    </div>
+    <div data-v-d2243dda="" class="input-collection">
+      <h4 data-v-d2243dda="">Sparekonto: </h4><select data-v-d2243dda="" class="accounts"></select>
+    </div>
+    <div data-v-d2243dda="" class="alert-box">
+      <!--v-if-->
+      <!--v-if-->
+    </div>
+  </div>
+</div>"
+`;

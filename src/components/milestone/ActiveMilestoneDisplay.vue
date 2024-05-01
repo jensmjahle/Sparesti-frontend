@@ -46,7 +46,8 @@ const isToExpire = () => {
 </script>
 
 <template>
-<div class="active-milestone-display" @click="openMilestone">
+<div class="active-milestone-display" @click="openMilestone"  @keyup.enter="openMilestone"
+     tabindex="0">
   <h2 class="title" :class="{'expire': isToExpire()}">{{props.title}}</h2>
   <div class="img">
     <img class="milestone-img" v-if="props.image" :src="`data:image/png;base64,${props.image}` " id="literal-image" alt="milestone-img">

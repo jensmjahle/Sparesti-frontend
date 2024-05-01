@@ -73,7 +73,8 @@ const clearInput = () => {
         <input class="input"
                :class="{'error': currentPasswordError}"
                type="password"
-               v-model="currentPassword">
+               v-model="currentPassword"
+               data-testid="current-password-input">
         <div class="alert-box">
           <h4 v-if="currentPasswordError" class="error-message">{{currentPasswordError}}</h4>
         </div>
@@ -84,7 +85,8 @@ const clearInput = () => {
         <input class="input"
                :class="{'error': newPasswordError}"
                type="password"
-               v-model="newPassword">
+               v-model="newPassword"
+               data-testid="new-password-input">
         <div class="alert-box">
           <h4 v-if="newPasswordError" class="error-message">{{newPasswordError}}</h4>
           <h4 v-if="passwordError" class="error-message">{{passwordError}}</h4>

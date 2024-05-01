@@ -19,7 +19,7 @@ function navigateToLogin(){
       <InfoComponent/>
     </div>
     <div id = LogIn>
-      <button id = LogInButton @click="navigateToLogin()">LogIn / Registrer bruker</button>
+      <button id = LogInButton @click="navigateToLogin()" data-testid="LogInButton">LogIn / Registrer bruker</button>
     </div>
   </div>
 </template>

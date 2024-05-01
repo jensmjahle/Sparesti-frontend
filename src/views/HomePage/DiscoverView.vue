@@ -48,6 +48,8 @@ onMounted(async () => {
         src="/src/components/icons/navigation/help.svg"
         alt="hjelp"
         @click="openHelpPopUp"
+        tabindex="0"
+        @keyup.enter="openHelpPopUp"
         class="help-icon">
       <div v-if="displayHelpPopUp" class="popup-container">
         <DicoverHelpPopUp
@@ -57,7 +59,7 @@ onMounted(async () => {
     </div>
 
     <div class="discover-items">
-      <div v-for="(article, index) in articles" :key="index" class="article-item">
+      <div v-for="(article, index) in articles" :key="index" class="article-item" data-testid="Articles">
         <a :href="article.url" target="_blank" class="article-link">
           <div class="article-content">
             <h3 class="article-title">{{ article.title }}</h3>
