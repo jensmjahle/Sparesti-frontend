@@ -237,5 +237,10 @@ const closeHelpPopUp = async () => {
       flex-direction: column;
     }
   }
+  @media (prefers-color-scheme: dark) {
+    .help-icon{
+      filter: invert(1);
+    }
+  }
 
 </style>

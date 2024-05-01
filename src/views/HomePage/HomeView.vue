@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import ActiveChallengesList from '@/components/challenge/ActiveChallengesList.vue'
-import router from '@/router'
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
 import { getUserTotalSavings } from '@/utils/HomePageUtils'
 
 import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
+import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
 
 const displayType = ref<boolean>(true);
 const displayHelpPopUp = ref<boolean>(false);
@@ -16,9 +16,6 @@ const displayNewChallenges = () => {
 
 const displayActiveChallenges = () => {
   displayType.value = true;
-}
-const navigateTo = (path: string) => {
-  router.push(path)
 }
 
 const openHelpPopUp = () => {
@@ -65,11 +62,7 @@ userSavings()
     </div>
     <div class="main">
       <div class="left" :class="{ 'mobile-hide': !displayType }">
-        <button class="create-challenge-button" @click="navigateTo('/homepage/create-challenge')">
-          <h2 class="display-help-button">
-            Ny til Sparesti? Klikk her!
-          </h2>
-        </button>
+        <TotalSavings class="create-challenge-button"></TotalSavings>
         <ActiveMilestonesList class="active-challenges"></ActiveMilestonesList>
       </div>
       <div class="right" :class="{ 'mobile-hide': displayType }">
@@ -143,27 +136,14 @@ userSavings()
 
 .create-challenge-button{
   border-radius: 20px;
-  background-color: var(--color-confirm-button);
   border: 2px solid var(--color-border);
-  color: var(--color-button-text);
   min-height: 10%;
-}
-
-.create-challenge-button:active{
-  background-color: var(--color-confirm-button-click);
-}
-
-.create-challenge-button:hover{
-  transform: scale(1.02);
 }
 
 .active-challenges{
   height: 90%;
 }
 
-.display-help-button{
-  font-weight: bold;
-}
 
 .right{
   display: flex;

@@ -381,11 +381,9 @@ const getRandomColor = () => {
 }
 
 @media screen and (max-width: 1000px) {
-
   .hide{
     display: none;
   }
-
   .toggle-buttons{
     display: flex;
     flex-direction: row;
@@ -428,6 +426,12 @@ const getRandomColor = () => {
     flex-direction: column; /* Change flex direction for smaller screens */
     align-content: center;
     height: 100%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .help-icon{
+    filter: invert(1);
   }
 }
 
