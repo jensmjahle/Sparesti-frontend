@@ -4,6 +4,7 @@ import SideNav from '@/components/navigation/SideNav.vue'
 import { onMounted, ref, watch, onUnmounted } from 'vue';
 import { useTokenStore } from '@/stores/token';
 import HomePagePopUp from './HomePage/HomePagePopUp.vue';
+import router from "@/router";
 
 const store = useTokenStore();
 const showPopup = ref(false);
@@ -34,6 +35,11 @@ onMounted(() => {
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('keydown', handleKeyDown);
   });
+  
+  // check if token store has a token and it is not expired
+  if (store.jwtToken === "" || store.jwtToken.includes('Request') || store.jwtToken.includes('Error')) {
+    router.push('/login');
+  }
 });
 
 watch(
