@@ -27,7 +27,7 @@ export const updateUserAccount = async(user: Record<string, any>, token: string)
         }
     };
     try {
-        const response = await axios.post(`${BASE_URL}/users/update`,
+        const response = await axios.put(`${BASE_URL}/users/update`,
             JSON.stringify(user),
             config)
         return response.data

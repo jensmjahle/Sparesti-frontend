@@ -8,8 +8,14 @@ import router from "@/router";
 
 const store = useTokenStore();
 const showPopup = ref(false);
+const isMounted = ref<boolean>(false)
 
-onMounted(() => {
+onMounted(async() => {
+  if (store.jwtToken === '' || store.jwtToken.includes('Request') ||
+    !store.isConnectedToBank || store.jwtToken.includes('Error')) {
+    await router.push('/login');
+  }
+
   showPopup.value = store.displayPopUp;
   console.log('showPopup', store.displayPopUp);
 
@@ -18,29 +24,25 @@ onMounted(() => {
     useTokenStore().setActive(false);
   }, 10000);
 
-  const handleMouseMove = () => {
-    useTokenStore().setActive(true);
-  };
-
-  const handleKeyDown = () => {
-    useTokenStore().setActive(true);
-  };
-
   // Add event listeners when the component is mounted
   document.addEventListener('mousemove', handleMouseMove);
   document.addEventListener('keydown', handleKeyDown);
 
-  // Cleanup: Remove event listeners when the component is unmounted
-  onUnmounted(() => {
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('keydown', handleKeyDown);
-  });
-  
-  // check if token store has a token and it is not expired
-  if (store.jwtToken === "" || store.jwtToken.includes('Request') || store.jwtToken.includes('Error')) {
-    router.push('/login');
-  }
+  isMounted.value = true;
 });
+
+onUnmounted(async () => {
+  document.removeEventListener('mousemove', handleMouseMove);
+  document.removeEventListener('keydown', handleKeyDown);
+});
+
+const handleMouseMove = () => {
+  useTokenStore().setActive(true);
+};
+
+const handleKeyDown = () => {
+  useTokenStore().setActive(true);
+};
 
 watch(
     () => store.displayPopUp,
@@ -57,7 +59,7 @@ const closePopup = () => {
 </script>
 
 <template>
-  <div class="home-page">
+  <div class="home-page" v-if="isMounted">
     <div class="top">
       <TopNav></TopNav>
     </div>

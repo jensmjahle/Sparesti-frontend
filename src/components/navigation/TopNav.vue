@@ -4,6 +4,7 @@ import DropDownMenu from '@/components/navigation/DropNav.vue'
 import { useRouter } from 'vue-router'
 import { getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
+import eventBus from '@/components/service/eventBus.js'
 
 const router = useRouter();
 const isBurgerMenuOpen = ref(false);
@@ -44,20 +45,26 @@ const navigate = (path: string) => {
   router.push(path)
 }
 
+eventBus.on('updateProfilePicture', () => {
+  fetchProfilePicture();
+});
+
 </script>
 
 <template>
   <div class="top-nav">
     <div class="title-box">
-    <h2 class="title" @click="navigate('/homepage/home')">Sparesti</h2>
+    <h2 class="title" @click="navigate('/homepage/home')">Sparesti<img src="/src/assets/png/pig_394778.png" alt = "logo" id = "logo"></h2>
     </div>
     <div class="button-menu">
       <img src="/src/components/icons/navigation/menu-burger.svg" v-if="!isBurgerMenuOpen" alt="Menu Options" class="burger-menu" @click="openBurgerMenu">
       <img src="/src/components/icons/navigation/cross.svg" v-if="isBurgerMenuOpen" alt="Exit Options" class="exit-burger-menu" @click="openBurgerMenu">
-      <button class="profile-button" @click="navigate('/homepage/profile')">
-        <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-icon">
-        <img v-else src="/src/components/icons/navigation/user.svg" alt="Home Icon" class="profile-icon">
-      </button>
+      <div class="img-input">
+        <label for="profile-picture-input" class="profile-picture-button" @click="navigate('/homepage/profile')">
+          <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
+          <img v-else src=/src/components/icons/navigation/user.svg alt="profile-picture" class="profile-picture">
+        </label>
+      </div>
     </div>
   </div>
   <DropDownMenu class="burger" v-if="isBurgerMenuOpen" @route-pushed="handleRoutePushed"></DropDownMenu>
@@ -76,6 +83,11 @@ const navigate = (path: string) => {
   box-shadow: 0 4px 6px var(--color-shadow);
 }
 
+#logo{
+  max-width: 7vh;
+  max-height: 7vh;
+}
+
 .title-box{
   display: flex;
   flex-direction: row;
@@ -87,7 +99,11 @@ const navigate = (path: string) => {
 }
 
 .title{
-  color: var(--color-headerText);
+  color: var(--color-buttonText);
+  padding: 2vh;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
 }
 
 .title:hover{
@@ -107,21 +123,39 @@ const navigate = (path: string) => {
   gap: 8.0%;
 }
 
-.profile-button{
+.img-input{
   height: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  border: 0;
+  justify-content: center; /* Center horizontally */
+  align-items: center;
+  place-content: center;
   background-color: var(--color-headerText);
 }
 
-.profile-button:hover{
+.img-input:hover{
   transform: scale(1.05);
 }
 
-.profile-icon{
-  height: 100%;
+.profile-picture-button{
+  display: flex;
+  flex-direction: column;
+  place-content: center;
   width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--color-headerText);
+  border: 2px solid var(--color-border);
+}
+
+.profile-picture-button:hover{
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.profile-picture{
+  width: 100%;
+  aspect-ratio: 1/1 ;
   border-radius: 50%;
 }
 

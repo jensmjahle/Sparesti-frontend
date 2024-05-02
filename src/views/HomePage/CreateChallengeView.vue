@@ -23,6 +23,9 @@ const dateError = ref('')
 const amountError = ref('')
 const tokenStore = useTokenStore()
 const router = useRouter()
+
+const tomorrow = new Date(start_date.value)
+tomorrow.setDate(tomorrow.getDate() + 1)
 const validate = () => {
   let isValid = true
   titleError.value = ''
@@ -57,10 +60,10 @@ const challengeData = computed(() => ({
   expirationDate: end_date.value ? end_date.value : null,
 }))
 
-const saveInput = () => {
+const saveInput = async() => {
   if (validate()) {
-    createChallenge(tokenStore.jwtToken, challengeData.value)
-    router.push('/homepage/challenge')
+    await createChallenge(tokenStore.jwtToken, challengeData.value)
+    await router.push('/homepage/challenge')
     toast.success('Utfordringen ble lagret!')
   } else {
     console.log('fail')
@@ -129,7 +132,7 @@ const saveInput = () => {
             :enable-time-picker="false"
             placeholder="Velg slutt dato"
             v-model="end_date"
-            :min-date="start_date"
+            :min-date="tomorrow"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
