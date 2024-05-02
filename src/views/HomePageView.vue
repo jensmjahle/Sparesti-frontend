@@ -24,14 +24,6 @@ onMounted(async() => {
     useTokenStore().setActive(false);
   }, 10000);
 
-  const handleMouseMove = () => {
-    useTokenStore().setActive(true);
-  };
-
-  const handleKeyDown = () => {
-    useTokenStore().setActive(true);
-  };
-
   // Add event listeners when the component is mounted
   document.addEventListener('mousemove', handleMouseMove);
   document.addEventListener('keydown', handleKeyDown);
@@ -43,6 +35,14 @@ onUnmounted(async () => {
   document.removeEventListener('mousemove', handleMouseMove);
   document.removeEventListener('keydown', handleKeyDown);
 });
+
+const handleMouseMove = () => {
+  useTokenStore().setActive(true);
+};
+
+const handleKeyDown = () => {
+  useTokenStore().setActive(true);
+};
 
 watch(
     () => store.displayPopUp,
