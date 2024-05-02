@@ -26,6 +26,7 @@ async function login() {
 
   if (existingUser() && useTokenStore().isConnectedToBank) {
 
+  await router.push('/homepage')
   }
   else if (existingUser() && !useTokenStore().isConnectedToBank) {
     await router.push('/register')
