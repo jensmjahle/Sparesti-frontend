@@ -44,7 +44,7 @@ const fetchBadgeInfo = async () => {
   try {
     const response = await getUserInfo(token);
     achievements.value = response.achievementDTOList.filter(
-        (ach) => !newAchievements.value.find((newAch) => newAch.achievementId === ach.achievementId)
+        (ach: Achievement) => !newAchievements.value.find((newAch) => newAch.achievementId === ach.achievementId)
     );
   } catch (error){
     console.error('Error fetching achievements:' + error)
