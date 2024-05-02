@@ -35,10 +35,20 @@ const checkInput = () => {
     newPasswordError.value = null;
   }
 
+  if(!validatePassword(newPassword.value.trim())){
+    newPasswordError.value = "Nytt passord må være minst 8 tegn langt"
+  }
+
   if(currentPassword.value == newPassword.value && newPassword.value.trim() && currentPassword.value.trim()){
     newPasswordError.value = 'Nytt passordet er likt nåværende passord!'
   }
+
+
   passwordError.value = null;
+}
+
+function validatePassword(passwordToCheck:string){
+  return passwordToCheck.trim().length >= 8;
 }
 
 const saveInfo = async () => {
