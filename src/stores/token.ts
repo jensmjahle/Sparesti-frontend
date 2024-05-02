@@ -74,7 +74,7 @@ export const useTokenStore = defineStore({
             this.isConnectedToBank = null;
             this.displayPopUp = false;
             this.timerClear();
-            router.push("/login").then(r => r);
+            router.push("/login");
         },
 
         timerClear() {
@@ -84,17 +84,17 @@ export const useTokenStore = defineStore({
         },
 
         startTimer() {
-            // Clear the existing timer if it's already set
             this.timerClear()
 
-            // Set a new timer for displayPopUp after 10 seconds (10000 ms)
-            this.timer = setTimeout(() => {
+            this.timer = setTimeout(async () => {
                 console.log(this.isActive)
-                if (this.isActive) this.refreshToken()
-                else this.displayPopUp = true;
+                if (this.isActive) {
+                    this.timerClear();
+                    await this.refreshToken();
+
+                } else this.displayPopUp = true;
             }, 300000);
 
-            // Set a new timer for logout after 15 seconds (15000 ms)
             this.tokenTimer = setTimeout(() => {
                 this.logout();
             }, 360000);
