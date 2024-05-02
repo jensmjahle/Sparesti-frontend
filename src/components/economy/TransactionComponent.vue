@@ -14,6 +14,13 @@ const toggleExpand = () => {
   console.log(isExpanded.value)
 }
 
+const expirationDate = () => {
+  if(props.date){
+    return new Date(props.date).
+    toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  }
+}
+
 </script>
 
 <template>
@@ -25,7 +32,7 @@ const toggleExpand = () => {
     </div>
     <div class="component-right">
       <div class="component-right-field">
-        <span> Dato: {{date}}</span>
+        <span> Dato: {{expirationDate()}}</span>
       </div>
       <div class="component-right-field">
         <span>
@@ -88,39 +95,5 @@ const toggleExpand = () => {
   justify-content: right;
   font-size: 1em;
   color: white;
-}
-
-
-@media screen and (max-width: 1300px) {
-  .component {
-    width: 90% ;
-    height: 10%;
-  }
-
-  .component-title {
-    font-size: 2em; /* Adjust font size for smaller screens */
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding-left: 20px;
-  }
-
-
-  .component-right-field {
-    display: flex;
-    height: 95%;
-    width: 95%;
-    justify-content: right;
-    font-size: 1.5em; /* Adjust font size for smaller screens */
-  }
-
-
-}
-@media (prefers-color-scheme: dark) {
-  .component{
-    background-color: var(--vt-c-Orange-Dark);
-  }
-
 }
 </style>

@@ -63,6 +63,9 @@
   --color-pieChartRed: var(--vt-c-Raspberry);
   --color-pieChartGreen: var(--vt-c-kellyGreen);
   --color-pieChartOrange: var(--vt-c-Orange);
+  --color-pieChartPurple: var(--vt-c-Grape);
+  --color-pieChartGrey: var(--vt-c-Grey);
+
 
   --color-header: var(--vt-c-kellyGreen);
   --color-heading: var(--vt-c-kellyGreen);

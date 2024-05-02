@@ -68,24 +68,19 @@ const transactionsList = [
   }
 ];
 
-export const getTransactions = async (token:string, pageNumber: Number, pageSize: Number): Promise<any> => {
+export const getTransactions = async (token:string): Promise<any> => {
 
   const config = {
     headers: {
       "Content-type": "application/json",
       'Authorization': `Bearer ${token}`
     },
-    params:{
-      "page": pageNumber,
-      "size": pageSize
-    }
   }
   try {
     console.log(token)
     console.log('trying to get transactions')
     console.log(config)
-    const result = await axios.get("http://localhost:8080/user/transaction/latest/expense", config)
-
+    const result = await axios.get("http://localhost:8080/user/transaction/30-day-expenses", config)
     console.log(result.data);
     return result.data;
   } catch (e: any) {

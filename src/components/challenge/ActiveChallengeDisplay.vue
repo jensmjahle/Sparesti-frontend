@@ -144,7 +144,7 @@ h1:hover, h3:hover, h2:hover, h4:hover{
   gap: 0.5rem;
 }
 
-.expiration-date, sum{
+.expiration-date, .sum{
   color: var(--color-text-black);
 }
 
