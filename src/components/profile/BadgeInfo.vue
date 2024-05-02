@@ -68,15 +68,18 @@ const fetchLockedAchievements = async () => {
     <div class="badges">
       <div class="badge" v-for="newAchievement in newAchievements" :key="newAchievement.achievementId">
         <h3 class="new-badge-title">Ny mynt!</h3>
-        <img class="badge-img" src="/src/assets/png/gold-coin.png" :alt="newAchievement.achievementTitle">
+        <img class="badge-img" src="/src/assets/png/gold-coin.png" :alt="newAchievement.achievementTitle"
+             v-tooltip :title="newAchievement.achievementDescription">
         <h3 class="badge-title"> {{newAchievement.achievementTitle}}</h3>
       </div>
       <div class="badge" v-for="achievement in achievements" :key="achievement.achievementId">
-        <img class="badge-img" src="/src/assets/png/gold-coin.png" :alt="achievement.achievementTitle">
+        <img class="badge-img" src="/src/assets/png/gold-coin.png" :alt="achievement.achievementTitle"
+             v-tooltip :title="achievement.achievementDescription">
         <h3 class="badge-title"> {{achievement.achievementTitle}}</h3>
       </div>
       <div class="badge" v-for="achievementLocked in achievementsLocked" :key="achievementLocked.achievementId">
-        <img class="locked-badge-img" src="/src/assets/png/gold-coin.png" :alt="achievementLocked.achievementTitle">
+        <img class="locked-badge-img" src="/src/assets/png/gold-coin.png" :alt="achievementLocked.achievementTitle"
+             v-tooltip :title="achievementLocked.achievementDescription">
         <h3 class="badge-title"> {{achievementLocked.achievementTitle}}</h3>
       </div>
     </div>
