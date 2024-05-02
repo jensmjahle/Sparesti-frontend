@@ -42,7 +42,7 @@ const validate = () => {
     dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>goal_sum.value) || goal_sum.value == '') {
+  if (isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value<=0) {
     amountError.value = 'Fyll inn et gyldig sparebeløp!'
     isValid = false
   }
@@ -92,7 +92,7 @@ const saveInput = () => {
                v-if="titleError">{{ titleError }}</label>
       </div>
 
-      <div class="input-large">
+      <div class="input-large" id="description-area">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
@@ -102,7 +102,7 @@ const saveInput = () => {
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
 
-      <div class="input">
+      <div class="input" id="goal-input">
         <base-input
           v-model="goal_sum"
           place-holder="Hvor mye sparer du av utfordringen?"
@@ -120,6 +120,7 @@ const saveInput = () => {
             placeholder="Velg start dato"
             v-model="start_date"
             :min-date="start_date"
+            auto-apply="true"
             :disabled="true"
           ></VueDatePicker>
         </div>
@@ -129,6 +130,7 @@ const saveInput = () => {
             :enable-time-picker="false"
             placeholder="Velg slutt dato"
             v-model="end_date"
+            auto-apply="true"
             :min-date="start_date"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
