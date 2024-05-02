@@ -74,7 +74,7 @@ export const useTokenStore = defineStore({
             this.isConnectedToBank = null;
             this.displayPopUp = false;
             this.timerClear();
-            router.push("/login");
+            await router.push("/login");
         },
 
         timerClear() {
@@ -83,7 +83,7 @@ export const useTokenStore = defineStore({
 
         },
 
-        startTimer() {
+        startTimer: function () {
             this.timerClear()
 
             this.timer = setTimeout(async () => {
