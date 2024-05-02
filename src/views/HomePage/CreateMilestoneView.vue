@@ -58,7 +58,7 @@ const validate = () => {
     isValid = false;
   }
 
-  if (parseInt(goal_sum.value) <= parseInt(current_sum.value) && amountErrorStart.value == '') {
+  if (parseInt(<string>goal_sum.value) <= parseInt(<string>current_sum.value) && amountErrorStart.value == '') {
     amountErrorStart.value = 'Nåværende beløp kan ikke være lik eller større enn sparebeløpet!';
     isValid = false;
   }
