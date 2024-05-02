@@ -3,7 +3,7 @@ describe('Discover View Tests', () => {
     cy.login('JohnSmith12', 'password')
     cy.visit('/homepage/discover')
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1500)
+    cy.wait(4000)
   })
 
   it('displays articles', () => {

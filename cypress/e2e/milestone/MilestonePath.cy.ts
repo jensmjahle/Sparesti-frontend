@@ -2,6 +2,7 @@ describe('Milestone-Path View', () => {
   beforeEach(() => {
     cy.login('JohnSmith12', 'password')
     cy.visit('/homepage/milestone')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(2000);
     cy.get('.active-milestone').should('have.length.greaterThan', 0);
     cy.get('.active-milestone').first().click()

@@ -25,6 +25,13 @@ describe('Create milestone View', () => {
     cy.get('.save-button').last().click();
     // Check if the form is submitted
     cy.url().should('include', '/homepage/milestone');
+
+    cy.get('.active-milestone').first().click()
+    cy.viewport(1100, 700);
+    cy.contains('button', 'Slett').click()
+    cy.get('.option-buttons').get('#delete-button').click()
+    cy.url().should('include', '/homepage/milestone');
+
   });
 
   it('validates input fields correctly for negative values', () => {
