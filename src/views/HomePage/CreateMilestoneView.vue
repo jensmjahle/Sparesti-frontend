@@ -76,7 +76,7 @@ const milestoneData = computed(() => ({
 const saveInput = async () => {
   if (validate()) {
     await createMilestone(milestoneData.value, tokenStore.jwtToken);
-    await router.push('/homepage/home');
+    await router.push('/homepage/milestone');
   } else {
     console.log('fail')
   }
@@ -190,7 +190,7 @@ const openFileExplorer = () => {
             placeholder="Velg slutt dato"
             v-model="end_date"
             :min-date="start_date"
-            auto-apply
+            auto-apply="true"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
