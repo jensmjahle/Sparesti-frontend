@@ -4,6 +4,9 @@ import { onMounted, ref, watch } from 'vue'
 import { getUserInfo, updateUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import eventBus from '@/components/service/eventBus.js'
+import {useToast} from "vue-toast-notification";
+
+const toast = useToast()
 
 const token:string = useTokenStore().jwtToken;
 
@@ -60,6 +63,7 @@ const saveUserInfo = async () => {
     try{
       await updateUserInfo( token,email.value, profilePictureBase64.value);
       eventBus.emit('updateProfilePicture');
+      toast.success("E-post oppdatert")
     } catch (error) {
       inputError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
