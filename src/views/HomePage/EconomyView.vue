@@ -3,10 +3,8 @@ import { computed, onMounted, ref } from 'vue'
 import { Pie } from 'vue-chartjs'
 import { ArcElement, Chart as ChartJS, Colors, Legend, Tooltip } from 'chart.js'
 import TransactionComponent from '@/components/economy/TransactionComponent.vue'
-import ToggleButton from '@/components/economy/ToggleButton.vue'
 import { getTransactions } from '@/utils/TransactionUtils'
 import { useTokenStore } from '@/stores/token'
-import MilestoneHelpPopUp from '@/components/popups/help/MilestoneHelpPopUp.vue'
 import EconomyHelpPopUp from '@/components/popups/help/EconomyHelpPopUp.vue'
 import {useToast} from "vue-toast-notification";
 
@@ -17,50 +15,45 @@ interface Transaction {
   "transactionTitle": string,
   "amount": number,
   "transactionId": number,
-  "date": string,
-
+  "time": string,
 }
 
 const token:string = useTokenStore().jwtToken;
 const toast = useToast();
 
-const selectedOption = ref<string | null>("")
+const selectedOption = ref<string | null>('')
 
 const displayHelpPopUp = ref<boolean>(false)
 
-
-
 const pages = ref<number>(0);
 const currentPage = ref<number>(0);
+const transactionsPerPage = 5; // Assuming 5 transactions per page
 
 const previousPage = () => {
   currentPage.value --
-  fetchTransactions();
 }
 const goToPage = (pageNumber:number) => {
   currentPage.value = pageNumber;
-  fetchTransactions();
 }
 
 const nextPage = () =>{
   currentPage.value ++;
-  fetchTransactions();
 }
 
 const transactions = ref<Transaction[]>([])
 const fetchTransactions = async() =>  {
   try{
-    const response = await getTransactions(token,0,6)
+    const response = await getTransactions(token)
     transactions.value = response
     console.log(transactions.value)
   } catch (e) {
     console.log(e)
     toast.error('Vi klarte ikke hente dine transaksjoner! Venligst prøv på nytt.')
   }
-
 }
-onMounted(()  => {
-  fetchTransactions()
+onMounted(async ()  => {
+  await fetchTransactions();
+  handleSelectionChange('Alle');
 })
 
 const displayType = ref<boolean>(false)
@@ -83,7 +76,9 @@ const closeHelpPopUp = () => {
 }
 
 const handleSelectionChange = (value: string | null) => {
-  selectedOption.value = value
+  selectedOption.value = value;
+  currentPage.value = 0;
+  calculateNumberOfPages();
 }
 
 const distinctCategories = computed(() => {
@@ -108,6 +103,14 @@ const filteredTransactions = computed(() => {
   }
 })
 
+const transactionsToDisplay = computed(() => {
+  return filteredTransactions.value.slice(currentPage.value * transactionsPerPage, (currentPage.value * transactionsPerPage) + transactionsPerPage);
+});
+
+const calculateNumberOfPages = () => {
+  pages.value = Math.ceil(filteredTransactions.value.length / transactionsPerPage);
+}
+
 const chartData = computed(() => {
   const data: { labels: string[], datasets: { data: number[], label:string ,backgroundColor: string[] }[] } = {
     labels: [],
@@ -119,6 +122,7 @@ const chartData = computed(() => {
   }
 
   const categoryAmounts: { [key: string]: number } = {};
+  const usedColors = new Set();
 
   transactions.value.forEach(transaction => {
     const { transactionCategory, amount } = transaction;
@@ -129,8 +133,13 @@ const chartData = computed(() => {
     } else {
       categoryAmounts[category] = amount;
       data.labels.push(category);
-      console.log(data.datasets)
-      data.datasets[0].backgroundColor.push(getRandomColor());
+      let color = getRandomColor();
+      // Ensure the color hasn't been used yet
+      while (usedColors.has(color)) {
+        color = getRandomColor();
+      }
+      usedColors.add(color);
+      data.datasets[0].backgroundColor.push(color);
     }
   });
 
@@ -142,12 +151,25 @@ const chartData = computed(() => {
 
 // Function to generate random color
 const getRandomColor = () => {
-  const letters = '0123456789ABCDEF'
-  let color = '#'
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)]
-  }
-  return color
+  const computedStyle = getComputedStyle(document.documentElement);
+
+  const colorVariables = [
+    '--color-pieChartBlue',
+    '--color-pieChartRed',
+    '--color-pieChartGreen',
+    '--color-pieChartOrange',
+    '--color-pieChartPurple',
+    '--color-pieChartGrey'
+  ];
+
+  const randomIndex = Math.floor(Math.random() * colorVariables.length);
+
+  const randomColorVariable = colorVariables[randomIndex];
+  const randomColor = computedStyle.getPropertyValue(randomColorVariable);
+  console.log('color')
+  console.log(randomColorVariable)
+
+  return randomColor;
 }
 
 </script>
@@ -192,18 +214,19 @@ const getRandomColor = () => {
 
         <div class="component-container" v-if="filteredTransactions">
           <transaction-component
-            v-for="transaction in filteredTransactions"
+            class="transaction"
+            v-for="transaction in transactionsToDisplay"
             :key="transaction.transactionId"
             :title="transaction.transactionTitle"
             :category="transaction.transactionCategory"
             :amount="transaction.amount"
-            :date="transaction.date"
+            :date="transaction.time"
           ></transaction-component>
         </div>
 
         <div class="pagination">
           <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
-          <div  v-if="pages>0" class="page-numbers">
+          <div  v-if="pages>1" class="page-numbers">
             <button
               v-for="pageNumber in pages"
               :key="pageNumber-2"
@@ -271,24 +294,24 @@ const getRandomColor = () => {
 .container {
   display: flex;
   flex-direction: row;
-  height: 100%;
+  height: 93.5%;
   width: 100%;
   gap: 2.5%;
-  padding-bottom: 2.5%;
   place-content: space-between;
 }
 
 .component-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 
   width: 100%;
   height: 100%;
+}
 
-  overflow-y: hidden;
-
+.transaction{
+  height: calc(100%/5);
 }
 
 .pie-box, .box{
@@ -330,11 +353,16 @@ const getRandomColor = () => {
   border-radius: 20px;
 }
 
+.custom-dropdown:hover{
+  transform: scale(1.02);
+}
+
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 5.0%;
 }
 
 .pagination button {
@@ -384,6 +412,11 @@ const getRandomColor = () => {
 }
 
 @media screen and (max-width: 1000px) {
+
+  .economy-view{
+    height: 120%;
+  }
+
   .hide{
     display: none;
   }

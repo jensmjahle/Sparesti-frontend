@@ -62,7 +62,7 @@ userSavings()
     </div>
     <div class="main">
       <div class="left" :class="{ 'mobile-hide': !displayType }">
-        <TotalSavings class="create-challenge-button"></TotalSavings>
+        <TotalSavings class="create-challenge-button" :total-saved="saved"></TotalSavings>
         <ActiveMilestonesList class="active-challenges"></ActiveMilestonesList>
       </div>
       <div class="right" :class="{ 'mobile-hide': displayType }">

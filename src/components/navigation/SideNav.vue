@@ -64,7 +64,7 @@ watch(currentRoute, () => {
         <label class="button-label">Profil</label>
       </button>
     </div>
-    <img src="/src/assets/pig.png" alt="Pig Logo" class="logo">
+    <img src="/src/assets/happy-pig.png" alt="Pig Logo" class="logo">
   </div>
 </template>
 
@@ -143,7 +143,6 @@ watch(currentRoute, () => {
 
 .logo{
   height: 35%;
-  max-width: 100%;
   padding-top: 5.0%;
 }
 
