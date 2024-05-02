@@ -102,12 +102,12 @@ watch(email, checkInput);
     </div>
     <div class="input-fields">
       <div class="img-input">
-        <label for="profile-picture-input" class="profile-picture-button" @click="openFileExplorer">
+        <button tabindex="0" type="button" for="profile-picture-input" class="profile-picture-button" @click="openFileExplorer">
           <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
                  @change="handleFileChange">
           <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
           <img v-else src=/src/components/icons/navigation/user.svg alt="profile-picture" class="profile-picture">
-        </label>
+        </button>
       </div>
       <div class="text-input">
         <div class="input-collection">
