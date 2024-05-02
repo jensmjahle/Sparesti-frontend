@@ -67,7 +67,7 @@ const fetchLockedAchievements = async () => {
     <h3 class="title">{{title}}</h3>
     <div class="badges">
       <div class="badge" v-for="newAchievement in newAchievements" :key="newAchievement.achievementId">
-        <h3 class="new-badge-title">New!</h3>
+        <h3 class="new-badge-title">Ny mynt!</h3>
         <img class="badge-img" src="/src/assets/png/gold-coin.png" :alt="newAchievement.achievementTitle">
         <h3 class="badge-title"> {{newAchievement.achievementTitle}}</h3>
       </div>

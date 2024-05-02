@@ -7,7 +7,7 @@ import HomePagePopUp from './HomePage/HomePagePopUp.vue';
 import router from "@/router";
 
 const store = useTokenStore();
-const showPopup = ref(false);
+const showPopup = ref(store.displayPopUp);
 const isMounted = ref<boolean>(false)
 
 onMounted(async() => {
@@ -16,13 +16,12 @@ onMounted(async() => {
     await router.push('/login');
   }
 
-  showPopup.value = store.displayPopUp;
   console.log('showPopup', store.displayPopUp);
 
   setInterval(() => {
     // After a certain interval, assume user is inactive
     useTokenStore().setActive(false);
-  }, 10000);
+  }, 60000);
 
   // Add event listeners when the component is mounted
   document.addEventListener('mousemove', handleMouseMove);
