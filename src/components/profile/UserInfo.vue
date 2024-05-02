@@ -3,6 +3,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { getUserInfo, updateUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
+import eventBus from '@/components/service/eventBus.js'
 
 const token:string = useTokenStore().jwtToken;
 
@@ -58,6 +59,7 @@ const saveUserInfo = async () => {
   if(validInput()){
     try{
       await updateUserInfo( token,email.value, profilePictureBase64.value);
+      eventBus.emit('updateProfilePicture');
     } catch (error) {
       inputError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
@@ -254,6 +256,7 @@ watch(email, checkInput);
 
 .profile-picture-button:hover{
   transform: scale(1.05);
+  cursor: pointer;
 }
 
 .profile-picture{
