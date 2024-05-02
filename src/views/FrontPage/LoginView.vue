@@ -23,9 +23,9 @@ const existingUser = () => {
 
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
-  console.log(useTokenStore().jwtToken)
+
   if (existingUser() && useTokenStore().isConnectedToBank) {
-    await router.push('/homepage')
+
   }
   else if (existingUser() && !useTokenStore().isConnectedToBank) {
     await router.push('/register')

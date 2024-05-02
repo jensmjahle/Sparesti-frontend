@@ -28,7 +28,6 @@ onMounted(async () => {
 const fetchUserInfo = async () =>{
   try{
     const response = await getUserInfo(token)
-    console.log(response)
     firstName.value = response.firstName;
     lastName.value = response.lastName;
 

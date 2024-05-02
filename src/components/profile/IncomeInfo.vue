@@ -28,7 +28,6 @@ onMounted(async () => {
 const fetchIncomeInfo = async () =>{
   try{
     const response = await getUserInfo(token);
-    console.log(response);
     monthlyIncome.value = response.monthlyIncome;
     monthlyFixedExpenses.value = response.monthlyFixedExpenses;
     monthlySavings.value = response.monthlySavings;
