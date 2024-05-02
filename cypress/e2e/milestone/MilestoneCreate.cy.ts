@@ -1,4 +1,4 @@
-describe('Milestone View', () => {
+describe('Create milestone View', () => {
   beforeEach(() => {
     cy.login('JohnSmith12', 'password')
     cy.visit('/homepage/milestone')
@@ -16,8 +16,8 @@ describe('Milestone View', () => {
     cy.get('.error').should('contain.text', 'Fyll inn et gyldig beløp!');
 
     // Fill in valid data
-    cy.get('#title-input').type('Test Milestone Title');
-    cy.get('#description-area').type('Test Milestone Description');
+    cy.get('#title-input').type('Test Milestone Tittel');
+    cy.get('#description-area').type('Test Milestone Beskrivelse');
     cy.get('#goal-input').type('5000');
     cy.get('#current-input').type('2000');
     cy.get('#end-date').click(); // Assume you have a date picker
@@ -29,8 +29,8 @@ describe('Milestone View', () => {
 
   it('validates input fields correctly for negative values', () => {
     // Fill in valid data
-    cy.get('#title-input').type('Test Milestone Title');
-    cy.get('#description-area').type('Test Milestone Description');
+    cy.get('#title-input').type('Test Milestone Tittel');
+    cy.get('#description-area').type('Test Milestone Beskrivelse');
 
     // Negative value for goal sum
     cy.get('#goal-input').type('-5000');
@@ -46,8 +46,8 @@ describe('Milestone View', () => {
 
   it('validates input fields correctly for non-numeric characters', () => {
     // Fill in valid data
-    cy.get('#title-input').type('Test Milestone Title');
-    cy.get('#description-area').type('Test Milestone Description');
+    cy.get('#title-input').type('Test Milestone Tittel');
+    cy.get('#description-area').type('Test Milestone Beskrivelse');
 
     // Non-numeric characters for goal sum
     cy.get('#goal-input').clear().type('abc');
