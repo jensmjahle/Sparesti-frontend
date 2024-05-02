@@ -55,7 +55,7 @@ eventBus.on('updateProfilePicture', () => {
 <template>
   <div class="top-nav">
     <div class="title-box">
-    <h2 class="title" @click="navigate('/homepage/home')">Sparesti</h2>
+    <h2 class="title" @click="navigate('/homepage/home')">Sparesti<img src="/src/assets/png/pig_394778.png" alt = "logo" id = "logo"></h2>
     </div>
     <div class="button-menu">
       <img src="/src/components/icons/navigation/menu-burger.svg" v-if="!isBurgerMenuOpen" alt="Menu Options" class="burger-menu" @click="openBurgerMenu">
@@ -84,6 +84,11 @@ eventBus.on('updateProfilePicture', () => {
   box-shadow: 0 4px 6px var(--color-shadow);
 }
 
+#logo{
+  max-width: 7vh;
+  max-height: 7vh;
+}
+
 .title-box{
   display: flex;
   flex-direction: row;
@@ -95,7 +100,11 @@ eventBus.on('updateProfilePicture', () => {
 }
 
 .title{
-  color: var(--color-headerText);
+  color: var(--color-buttonText);
+  padding: 2vh;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
 }
 
 .title:hover{

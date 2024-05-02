@@ -10,7 +10,9 @@ function navigateToStartingPage(){
 
 <template>
   <div id = TopBanner>
-    <h2 id = "AppName">Sparesti<img src="../assets/png/pig_394778.png" alt = "logo" id = "logo" @click="navigateToStartingPage()"></h2>
+    <div id="banner-item">
+      <h2 id = "AppName" @click="navigateToStartingPage">Sparesti<img src="../assets/png/pig_394778.png" alt = "logo" id = "logo"></h2>
+    </div>
   </div>
 </template>
 
@@ -21,12 +23,21 @@ function navigateToStartingPage(){
   min-width: 100%;
 }
 
+#banner-item{
+  width: fit-content;
+  height: fit-content;
+}
+
 #AppName{
   color: var(--color-buttonText);
   padding: 2vh;
   align-items: center;
   display: flex;
   cursor: pointer;
+}
+
+#AppName:hover{
+  transform: scale(1.05);
 }
 
 #logo{
