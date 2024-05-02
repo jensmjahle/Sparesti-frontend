@@ -25,6 +25,8 @@ const dateError = ref('')
 const amountErrorGoal = ref('')
 const amountErrorStart = ref('')
 const image = ref()
+const tomorrow = new Date(start_date.value)
+tomorrow.setDate(tomorrow.getDate() + 1)
 
 const validate = () => {
   let isValid = true
@@ -117,7 +119,7 @@ const openFileExplorer = () => {
 
       <div class="image-container">
         <div class="add-image-box">
-          <button @click="openFileExplorer" tabindex="0" type="button">
+          <button @click="openFileExplorer" tabindex="0" type="button" class="image-button">
             <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
                    @change="handleFileChange">
             <img v-if="image" :src="image" id="image" alt="Selected Image">
@@ -189,8 +191,8 @@ const openFileExplorer = () => {
             :enable-time-picker="false"
             placeholder="Velg slutt dato"
             v-model="end_date"
-            :min-date="start_date"
             auto-apply
+            :min-date="tomorrow"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
@@ -297,6 +299,11 @@ label {
 #image{
   width: 100%;
   cursor: pointer;
+}
+
+.image-button{
+  background: none;
+  border: none;
 }
 
 #placeholder-img:hover{

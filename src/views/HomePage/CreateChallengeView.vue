@@ -23,6 +23,9 @@ const dateError = ref('')
 const amountError = ref('')
 const tokenStore = useTokenStore()
 const router = useRouter()
+
+const tomorrow = new Date(start_date.value)
+tomorrow.setDate(tomorrow.getDate() + 1)
 const validate = () => {
   let isValid = true
   titleError.value = ''
@@ -131,7 +134,7 @@ const saveInput = async() => {
             placeholder="Velg slutt dato"
             v-model="end_date"
             auto-apply
-            :min-date="start_date"
+            :min-date="tomorrow"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
