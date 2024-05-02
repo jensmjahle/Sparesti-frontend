@@ -1,4 +1,6 @@
 import axios from "axios";
+import {BASE_URL} from "@/config/config";
+
 
 export const getTotalSavings = async():Promise<any> => {
     const config = {
@@ -7,7 +9,7 @@ export const getTotalSavings = async():Promise<any> => {
         }
     };
     try {
-        const response = await axios.get("http://localhost:8080/users/get/totalSavings", config)
+        const response = await axios.get(`${BASE_URL}/users/get/totalSavings`, config)
         return response.data
     } catch (error) {
         console.log(error)

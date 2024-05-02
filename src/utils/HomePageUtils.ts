@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {useTokenStore} from '@/stores/token'
-
+import {BASE_URL} from "@/config/config";
 export async function getUserTotalSavings(){
 
   const config = {
@@ -9,9 +9,10 @@ export async function getUserTotalSavings(){
       'Authorization': 'Bearer ' + useTokenStore().getJwtToken
     }
   }
-
-  const response = await axios.get("http://Localhost:8080/users/get/savings", config);
-  const result = response.data
-
-  return result
+try {
+  const response = await axios.get(`${BASE_URL}/users/get/savings`, config)
+  return response.data
+} catch (error) {
+  console.log(error)
+}
 }

@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import TopBanner from '@/components/TopBanner.vue'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import { useTokenStore } from "@/stores/token";
+import {useToast} from "vue-toast-notification";
+import 'vue-toast-notification/dist/theme-sugar.css';
 
 const router = useRouter();
 const username = ref('');
 const password = ref('');
+const toast = useToast();
 
 function navigateToNewUser() {
   router.push('/signup')
@@ -19,17 +22,21 @@ async function login() {
     await router.push('/homepage')
   }
   else if (useTokenStore().jwtToken === 'Request failed with status code 401'){
-    alert('Feil brukernavn eller passord')
+    toast.error('Feil brukernavn eller passord');
   }
   else if (useTokenStore().jwtToken === 'Request failed with status code 403') {
-    alert('Du kommer fra et utrygt nettverk, vennligst prøv igjen senere')
+    toast.error('Du kommer fra et utrygt nettverk, vennligst prøv igjen senere')
   }
   else if (useTokenStore().jwtToken === 'Request failed with status code 500') {
-    alert('Det oppsto en feil i serveren, vennligst prøv igjen senere')
+    toast.error('Det oppsto en feil i serveren, vennligst prøv igjen senere')
   } else {
-    alert('Serveren er nede, vennligst prøv igjen senere')
+    toast.error('Serveren er nede, vennligst prøv igjen senere')
   }
 }
+onMounted(() => {
+
+});
+
 </script>
 
 <template>

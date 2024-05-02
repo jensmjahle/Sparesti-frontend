@@ -31,7 +31,7 @@ describe('PathNode.vue', () => {
 
   describe('node generation and styling', () => {
     it('generates nodes correctly', () => {
-      const totalNodes = 50 // For example
+      const totalNodes = 30 // For example
       const totalToSave = 2000
       const totalSaved = 1000
       const wrapper = shallowMount(MilestonePath, {

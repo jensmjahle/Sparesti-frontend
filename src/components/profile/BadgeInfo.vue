@@ -42,6 +42,7 @@ const fetchLockedAchievements = async () => {
     achievementsLocked.value = await getLockedAchievements(token);
   } catch (error){
     console.log('Error fetching locked achievements:' + error)
+
   }
 }
 

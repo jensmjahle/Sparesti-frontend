@@ -6,6 +6,7 @@ import TransactionComponent from '@/components/economy/TransactionComponent.vue'
 import { getTransactions } from '@/utils/TransactionUtils'
 import { useTokenStore } from '@/stores/token'
 import EconomyHelpPopUp from '@/components/popups/help/EconomyHelpPopUp.vue'
+import {useToast} from "vue-toast-notification";
 
 ChartJS.register(ArcElement,Tooltip,Legend, Colors)
 
@@ -18,6 +19,7 @@ interface Transaction {
 }
 
 const token:string = useTokenStore().jwtToken;
+const toast = useToast();
 
 const selectedOption = ref<string | null>('')
 
@@ -46,6 +48,7 @@ const fetchTransactions = async() =>  {
     console.log(transactions.value)
   } catch (e) {
     console.log(e)
+    toast.error('Vi klarte ikke hente dine transaksjoner! Venligst prøv på nytt.')
   }
 }
 onMounted(async ()  => {

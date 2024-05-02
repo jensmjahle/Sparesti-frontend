@@ -3,8 +3,10 @@
 import { onMounted, ref } from 'vue'
 import { getUserInfo, updateIncomeInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
+import {useToast} from "vue-toast-notification";
 
 const token:string = useTokenStore().jwtToken;
+const toast = useToast();
 
 const monthlyIncome = ref<number>(0);
 const monthlyFixedExpenses = ref<number>(0);
@@ -44,8 +46,10 @@ const saveInput = async () => {
         monthlyFixedExpenses.value,
         monthlySavings.value)
         await fetchIncomeInfo();
+        toast.success('Inntektsinformasjonen ble oppdatert!')
     } catch (error){
       console.error('Error updating income info: ', error);
+      toast.error('Noe gikk galt! Venligst prøv på nytt.')
       incomeError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
   }

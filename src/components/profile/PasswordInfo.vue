@@ -3,8 +3,10 @@
 import { ref} from 'vue'
 import { updatePasswordInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
+import {useToast} from "vue-toast-notification";
 
 const token:string = useTokenStore().jwtToken;
+const toast = useToast();
 
 const currentPassword = ref<string>('');
 const newPassword = ref<string>('')
@@ -44,8 +46,10 @@ const saveInfo = async () => {
   if(validInput()){
     try{
       await updatePasswordInfo( token, currentPassword.value,newPassword.value)
+      toast.success('Passordet ble oppdatert!')
       clearInput()
     } catch (error) {
+      toast.error('Noe gikk galt! Venligst prøv på nytt.')
       passwordError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
   }
