@@ -24,7 +24,7 @@ describe('Create milestone View', () => {
     cy.get('#2024-05-25').first().click(); // Select tomorrow's date
     cy.get('.save-button').last().click();
     // Check if the form is submitted
-    cy.url().should('include', '/homepage/home');
+    cy.url().should('include', '/homepage/milestone');
   });
 
   it('validates input fields correctly for negative values', () => {
