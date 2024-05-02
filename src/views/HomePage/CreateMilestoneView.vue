@@ -129,7 +129,7 @@ const openFileExplorer = () => {
         </div>
       </div>
 
-      <div class="input" id="title-input">
+      <div class="input" id="title-input" @keyup.enter="saveInput">
         <BaseInput
           v-model="title"
           label="Tittel"
@@ -141,7 +141,7 @@ const openFileExplorer = () => {
                v-if="titleError">{{ titleError }}</label>
       </div>
 
-      <div class="input-large">
+      <div class="input-large" @keyup.enter="saveInput">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
@@ -151,7 +151,7 @@ const openFileExplorer = () => {
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
 
-      <div class="smaller-inputs">
+      <div class="smaller-inputs" @keyup.enter="saveInput">
         <div class="input">
           <base-input
             v-model="goal_sum"
@@ -162,7 +162,7 @@ const openFileExplorer = () => {
           ></base-input>
           <label class="error" v-if="amountErrorGoal">{{ amountErrorGoal }}</label>
         </div>
-        <div class="input">
+        <div class="input" @keyup.enter="saveInput">
           <base-input
             v-model="current_sum"
             place-holder="Sett inn hvor mye du har nå"

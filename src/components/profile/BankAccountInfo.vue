@@ -78,7 +78,7 @@ const saveAccountInfo = async ()=> {
       </button>
     </div>
 
-    <div class="input-fields">
+    <div class="input-fields" @keyup.enter="saveAccountInfo">
 
       <div class="input-collection">
         <h4>Forbrukskonto: </h4>

@@ -48,16 +48,16 @@ async function login() {
 
 <template>
   <div id="LoginView">
-    <TopBanner />
+      <TopBanner />
     <h1 id="Title">Login</h1>
     <div id="LoginFields">
       <div id="UserDiv">
         <h2 id="Username">Brukernavn</h2>
-        <input id="NameField" placeholder="Skriv inn dit brukernavn" v-model="username" data-testid="NameInput">
+        <input id="NameField" placeholder="Skriv inn dit brukernavn" v-model="username" data-testid="NameInput"  @keyup.enter="login">
       </div>
       <div id="PasswordDiv">
         <h2 id="Password">Passord</h2>
-        <input id="PasswordField" type="password" placeholder="Skriv inn dit passord" v-model="password" data-testid="PasswordInput">
+        <input id="PasswordField" type="password" placeholder="Skriv inn dit passord" v-model="password" data-testid="PasswordInput"  @keyup.enter="login">
       </div>
     </div>
 
@@ -68,6 +68,7 @@ async function login() {
             data-testid="LogInButton">
       Login
     </button>
+
     <h2 tabindex="0" @keyup.enter="navigateToNewUser()" @click="navigateToNewUser()" id="NewUser" data-testid="NewUserLink">Ny til Sparesti? Trykk her for å lage en profil!</h2>
   </div>
 </template>

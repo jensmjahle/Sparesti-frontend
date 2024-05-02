@@ -111,10 +111,10 @@ watch(email, checkInput);
           <img v-else src=/src/components/icons/navigation/user.svg alt="profile-picture" class="profile-picture">
         </button>
       </div>
-      <div class="text-input">
+      <div class="text-input"  @keyup.enter="saveUserInfo">
         <div class="input-collection">
           <H4>Brukernavn: </H4>
-          <input class="input" id="username-input" v-model="username" readonly disabled>
+          <input class="input" id="username-input" v-model="username" readonly disabled >
         </div>
         <div class="input-collection">
           <H4>E-post: </H4>
