@@ -68,7 +68,7 @@ export const useTokenStore = defineStore({
             this.isActive = boolean;
         },
 
-        logout() {
+        async logout() {
             this.jwtToken = "";
             this.username = null;
             this.isConnectedToBank = null;
@@ -99,7 +99,6 @@ export const useTokenStore = defineStore({
                 this.logout();
             }, 360000);
         },
-
     },
 
     getters: {
@@ -114,5 +113,5 @@ export const useTokenStore = defineStore({
         getUsername: (state) => {
             return state.username;
         }
-    }
+    },
 });

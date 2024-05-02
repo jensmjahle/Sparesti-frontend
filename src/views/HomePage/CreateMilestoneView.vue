@@ -117,13 +117,13 @@ const openFileExplorer = () => {
 
       <div class="image-container">
         <div class="add-image-box">
-          <label>
+          <button @click="openFileExplorer" tabindex="0" type="button">
             <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
                    @change="handleFileChange">
             <img v-if="image" :src="image" id="image" alt="Selected Image">
             <button v-if="image" class="remove-image-button" @click="removeImage">Fjern bilde</button>
             <img v-else src="../../components/icons/image/AddImage.png" alt="add image" id="placeholder-img" width="50px" height="50px">
-          </label>
+          </button>
         </div>
       </div>
 

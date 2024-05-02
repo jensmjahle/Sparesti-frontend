@@ -57,10 +57,10 @@ const challengeData = computed(() => ({
   expirationDate: end_date.value ? end_date.value : null,
 }))
 
-const saveInput = () => {
+const saveInput = async() => {
   if (validate()) {
-    createChallenge(tokenStore.jwtToken, challengeData.value)
-    router.push('/homepage/challenge')
+    await createChallenge(tokenStore.jwtToken, challengeData.value)
+    await router.push('/homepage/challenge')
     toast.success('Utfordringen ble lagret!')
   } else {
     console.log('fail')

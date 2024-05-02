@@ -30,7 +30,7 @@ interface Account {
   currency: string;
 }
 
-const accounts = ref(<Account[]>[])
+const accounts = ref<Account[]>([])
 
 let index = 0;
 let currentQuestion = ref(questions[index])
@@ -41,7 +41,9 @@ let currentQuestionType = ref(questionType[index])
 const answer = ref(FirstTimeAnswersStore().userResponses[index]);
 
 const answerIsEmpty = computed(() => {
-  return !answer.value;
+  console.log(selectedOption.value)
+  return !(answer.value || selectedOption.value !== -1);
+
 });
 
 const showInput = ref(true);
@@ -68,7 +70,7 @@ async function nextQuestion(){
     currentQuestionType.value = questionType[index]
     await new Promise(resolve => setTimeout(resolve, 50));
     answer.value= FirstTimeAnswersStore().userResponses[index]
-    if(currentQuestionType.value === "selection"){
+    if(currentQuestionType.value === "selection" && accounts.value.length !== 0){
       selectedOption.value = accounts.value.indexOf(FirstTimeAnswersStore().userResponses[index]);
       showInput.value = false;
       showSelect.value = true;
@@ -77,6 +79,7 @@ async function nextQuestion(){
       showSelect.value = false;
     }
   } else {
+    console.log("Registration test happens")
     await updateUserAccount(convertToJsonObject(FirstTimeAnswersStore().userResponses), useTokenStore().getJwtToken)
     router.push("/homepage/home")
   }
@@ -95,7 +98,7 @@ async function prevQuestion(){
     currentQuestionType.value = questionType[index]
     await new Promise(resolve => setTimeout(resolve, 50));
     answer.value= FirstTimeAnswersStore().userResponses[index]
-    if(currentQuestionType.value === "selection"){
+    if(currentQuestionType.value === "selection" && accounts.value.length !== 0){
       selectedOption.value = accounts.value.indexOf(FirstTimeAnswersStore().userResponses[index]);
       showInput.value = false;
       showSelect.value = true;
@@ -132,7 +135,7 @@ function updateSelectedOption() {
 <template>
   <div id = RegisterPage>
     <TopBanner/>
-    <ProgressBar :Max="questions.length" :Current="index"/>
+    <ProgressBar :Max="questions.length" :Current="index" id = Progress />
     <div id = QuestionArea>
       <h2>{{currentQuestion}}</h2>
       <input id = answerField :type=currentQuestionType v-model="answer" v-show="showInput">
@@ -156,6 +159,11 @@ function updateSelectedOption() {
     align-items: center;
     width: 100%;
     height: 100%;
+  }
+
+  #Progress{
+    width: 80%;
+    height: 15%;
   }
 
   #answerField, #selectField{
