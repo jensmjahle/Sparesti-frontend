@@ -45,6 +45,10 @@ async function submit() {
   await signUpUser(name.value, email.value, password.value)
   await router.push("/register")
 }
+
+function navigateToLogin() {
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -97,6 +101,7 @@ async function submit() {
             :class="{ 'Submit': registerUserValid(name, email, password, confirmePassword),
              'InactiveSubmit': !registerUserValid(name, email, password, confirmePassword) }"
             data-testid = "SignupButton">Opprett</button>
+    <h2 tabindex="0" @keyup.enter="navigateToLogin()" @click="navigateToLogin()" id="NewUser" data-testid="NewUserLink">Har du allerede en konto? Trykk her for å logge inn!</h2>
   </div>
 </template>
 
@@ -168,6 +173,16 @@ async function submit() {
     border-color: var(--color-border);
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
     font-size: 250%;
+  }
+
+  #NewUser {
+    text-align: center;
+    color: var(--color-heading);
+    margin: 1%;
+  }
+
+  #NewUser:hover {
+    cursor: pointer;
   }
 
   @media only screen and (max-width: 1000px) {

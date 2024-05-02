@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TopBanner from '@/components/TopBanner.vue'
 import { useRouter } from 'vue-router'
-import {onMounted, ref} from 'vue'
+import {ref} from 'vue'
 import { useTokenStore } from "@/stores/token";
 import {useToast} from "vue-toast-notification";
 import 'vue-toast-notification/dist/theme-sugar.css';
@@ -15,11 +15,20 @@ function navigateToNewUser() {
   router.push('/signup')
 }
 
+const existingUser = () => {
+  return (useTokenStore().jwtToken !== ''
+    && !useTokenStore().jwtToken.includes('Request')
+    && !useTokenStore().jwtToken.includes('Error'))
+}
+
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
   console.log(useTokenStore().jwtToken)
-  if (useTokenStore().jwtToken !== '' && !useTokenStore().jwtToken.includes('Request') && !useTokenStore().jwtToken.includes('Error')) {
+  if (existingUser() && useTokenStore().isConnectedToBank) {
     await router.push('/homepage')
+  }
+  else if (existingUser() && !useTokenStore().isConnectedToBank) {
+    await router.push('/register')
   }
   else if (useTokenStore().jwtToken === 'Request failed with status code 401'){
     toast.error('Feil brukernavn eller passord');
@@ -33,16 +42,13 @@ async function login() {
     toast.error('Serveren er nede, vennligst prøv igjen senere')
   }
 }
-onMounted(() => {
-
-});
 
 </script>
 
 <template>
   <div id="LoginView">
     <TopBanner />
-    <h1 id="Title">LogIn</h1>
+    <h1 id="Title">Login</h1>
     <div id="LoginFields">
       <div id="UserDiv">
         <h2 id="Username">Brukernavn</h2>
@@ -59,7 +65,7 @@ onMounted(() => {
             :disabled="!username || password.length < 8"
             :class="{ 'disabled-button': !username || password.length < 8 }"
             data-testid="LogInButton">
-      LogIn
+      Login
     </button>
     <h2 tabindex="0" @keyup.enter="navigateToNewUser()" @click="navigateToNewUser()" id="NewUser" data-testid="NewUserLink">Ny til Sparesti? Trykk her for å lage en profil!</h2>
   </div>
