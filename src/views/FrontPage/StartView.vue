@@ -13,7 +13,7 @@ function navigateToLogin(){
 <template>
   <div id = StartPage>
     <div id = "heading">
-      <h1 id = "title">Sparesti<img src="../../assets/png/pig_394778.png" alt ="logo" id = "logo"></h1>
+      <h1 id = "title">Sparesti<img src="../../assets/logo.png" alt ="logo" id = "logo"></h1>
     </div>
     <div id = Info>
       <InfoComponent/>
