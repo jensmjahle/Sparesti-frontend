@@ -101,13 +101,13 @@ const checkInput = () => {
 
       <div class="description-collection">
         <div class="description-box">
-          <h4 class="description">Månedlig inntekt (nok): </h4>
+          <h4 class="description">Månedlig inntekt (NOK): </h4>
         </div>
         <div class="description-box">
-          <h4 class="description">Faste utgifter (nok):   </h4>
+          <h4 class="description">Faste utgifter (NOK):   </h4>
         </div>
         <div class="description-box">
-          <h4 class="description">Ønsket sparebeløp (nok): </h4>
+          <h4 class="description">Ønsket sparebeløp (NOK): </h4>
         </div>
       </div>
 

@@ -109,7 +109,7 @@ const saveInput = async() => {
         <base-input
           v-model="goal_sum"
           place-holder="Hvor mye sparer du av utfordringen?"
-          label="Sparesum (nok)"
+          label="Sparesum (NOK)"
           :error="amountError !== ''"
         ></base-input>
         <label class="error" v-if="amountError">{{ amountError }}</label>
