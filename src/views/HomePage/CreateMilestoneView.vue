@@ -190,7 +190,7 @@ const openFileExplorer = () => {
             placeholder="Velg slutt dato"
             v-model="end_date"
             :min-date="start_date"
-            auto-apply="true"
+            auto-apply
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>

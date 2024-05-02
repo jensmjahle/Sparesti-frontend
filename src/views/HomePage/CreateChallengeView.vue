@@ -120,7 +120,7 @@ const saveInput = () => {
             placeholder="Velg start dato"
             v-model="start_date"
             :min-date="start_date"
-            auto-apply="true"
+            auto-apply
             :disabled="true"
           ></VueDatePicker>
         </div>
@@ -130,7 +130,7 @@ const saveInput = () => {
             :enable-time-picker="false"
             placeholder="Velg slutt dato"
             v-model="end_date"
-            auto-apply="true"
+            auto-apply
             :min-date="start_date"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
