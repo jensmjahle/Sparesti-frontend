@@ -53,7 +53,7 @@ eventBus.on('updateProfilePicture', () => {
 
 <template>
   <div class="top-nav">
-    <div class="title-box">
+    <div class="title-box" tabindex="0" @keyup.enter="navigate('/homepage/home')">
     <h2 class="title" @click="navigate('/homepage/home')">Sparesti<img src="/src/assets/png/pig_394778.png" alt = "logo" id = "logo"></h2>
     </div>
     <div class="button-menu">
