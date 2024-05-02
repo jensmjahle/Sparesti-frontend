@@ -44,6 +44,7 @@
   --color-save-button-click: var(--vt-c-Orange-Dark);
   --color-buttonText: var(--vt-c-white);
   --color-button-text: var(--vt-c-white);
+  --text-color-orange: var(--vt-c-Orange);
 
   --color-inactive-button: var(--vt-c-borderGrey);
   --color-inactive-button-text: var(--vt-c-borderGreyDark);
