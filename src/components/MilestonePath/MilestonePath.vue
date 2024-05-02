@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PathNode from '@/components/MilestonePath/PathNode.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { defineProps } from 'vue';
 
 
@@ -9,7 +9,7 @@ const props = defineProps({
   totalSaved: Number
 });
 
-const totalNodes = ref(50)
+const totalNodes = ref(30)
 const remainingNodes = ref(
   totalNodes.value && props.totalSaved && props.totalToSave
     ? Math.ceil(totalNodes.value - (totalNodes.value * (props.totalSaved / props.totalToSave)))
@@ -33,6 +33,22 @@ const nodeBackgroundColors = ref(['#A4A4A6', '#6AB40A', '#FFA600'])
 console.log("Total to Save: " + props.totalToSave)
 console.log("Total saved: " + props.totalSaved)
 
+const scrollToPercentage = (percentage:number) => {
+  const learningPath = document.querySelector('.learning-path');
+  if (learningPath) {
+    const scrollTo = (percentage) * learningPath.scrollHeight;
+    learningPath.scrollTo({
+      top: scrollTo,
+      behavior: 'smooth',
+    });
+  }
+}
+
+onMounted(() => {
+  console.log(remainingNodes.value / totalNodes.value)
+  scrollToPercentage((remainingNodes.value / totalNodes.value) - 0.10);
+});
+
 </script>
 
 <template>
@@ -40,7 +56,8 @@ console.log("Total saved: " + props.totalSaved)
     <PathNode v-for="(node, index) in nodes" :key="index" :style="{ marginLeft: node.offset }"
               :node-background-color="nodeBackgroundColors[node.colorIndex]"
               :top-background-color="nodeForegroundColors[node.colorIndex]"
-              :bottom-background-color="nodeBackgroundColors[node.colorIndex]"/>
+              :bottom-background-color="nodeBackgroundColors[node.colorIndex]"
+              :node-nr="totalNodes - (index)"/>
   </div>
 </template>
 

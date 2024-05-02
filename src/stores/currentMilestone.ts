@@ -10,4 +10,8 @@ export const useMilestoneStore = defineStore('milestoneId', () => {
   }
 
   return { milestoneId, setMilestoneId}
+}, {
+  persist: {
+    storage: sessionStorage,
+  },
 })

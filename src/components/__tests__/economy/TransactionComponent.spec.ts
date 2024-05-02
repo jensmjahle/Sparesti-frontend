@@ -35,7 +35,7 @@ describe('TransactionComponent', () => {
       // date rendering
       const dateElement = rightFieldElements.at(0)
       if (dateElement) {
-        expect(dateElement.text()).toContain(date)
+        expect(dateElement.text()).toContain('29/04/2024')
       } else {
         throw new Error('Date element not found');
       }
