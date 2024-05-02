@@ -38,7 +38,6 @@ const openBurgerMenu = () => {
 
 const handleRoutePushed = (value: boolean) => {
   isBurgerMenuOpen.value = value;
-  console.log('Menu Closed!');
 }
 
 const navigate = (path: string) => {

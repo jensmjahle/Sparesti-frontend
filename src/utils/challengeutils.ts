@@ -84,7 +84,6 @@ export const completeChallenge= async (token:string, challengeId:number, milesto
         milestoneId: milestoneId
       }
     };
-    console.log(config)
     return await axios.post(`${BASE_URL}/user/challenge/complete`,{},config);
   } catch (error){
     console.error(error);
@@ -94,7 +93,6 @@ export const completeChallenge= async (token:string, challengeId:number, milesto
 
 export const activateChallenge= async (token:string, challengeId: number):Promise<any>=>{
   console.log(challengeId)
-  console.log(token)
   try{
     const config = {
       headers:{
@@ -126,7 +124,6 @@ export const getChallenge = async (token:string, challengeId: number):Promise<an
 
 
 export const getActiveChallenges = async (token:string, page:number, size:number):Promise<any>=>{
-  console.log(token)
   try{
     const config = {
       headers:{

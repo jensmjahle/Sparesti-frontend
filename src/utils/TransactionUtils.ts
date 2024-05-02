@@ -78,9 +78,7 @@ export const getTransactions = async (token:string): Promise<any> => {
     },
   }
   try {
-    console.log(token)
     console.log('trying to get transactions')
-    console.log(config)
     const result = await axios.get(`${BASE_URL}/user/transaction/30-day-expenses`, config)
     console.log(result.data);
     return result.data;

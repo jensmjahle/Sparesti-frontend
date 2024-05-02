@@ -17,7 +17,6 @@ function navigateToNewUser() {
 
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
-  console.log(useTokenStore().jwtToken)
   if (useTokenStore().jwtToken !== '' && !useTokenStore().jwtToken.includes('Request') && !useTokenStore().jwtToken.includes('Error')) {
     await router.push('/homepage')
   }
