@@ -60,8 +60,9 @@ const saveAccountInfo = async ()=> {
       await updateBankAccountInfo(token,checkingAccount.value, savingAccount.value)
       await fetchAccountInfo();
       await fetchUserInfo();
+      toast.success('Konto opplysninger ble oppdatert!')
     } catch (error){
-      toast.success('Noe gikk galt! Venligst prøv på nytt.')
+      toast.error('Noe gikk galt! Venligst prøv på nytt.')
       accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
   }

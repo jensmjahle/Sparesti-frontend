@@ -4,8 +4,10 @@ import { onMounted, ref, watch } from 'vue'
 import { getUserInfo, updateUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import eventBus from '@/components/service/eventBus.js'
+import {useToast} from "vue-toast-notification";
 
 const token:string = useTokenStore().jwtToken;
+const toast = useToast();
 
 const emailError = ref<null|string>(null);
 const imgError = ref<null|string>(null);
@@ -60,6 +62,7 @@ const saveUserInfo = async () => {
     try{
       await updateUserInfo( token,email.value, profilePictureBase64.value);
       eventBus.emit('updateProfilePicture');
+      toast.success('Bruker opplysninger ble lagret!')
     } catch (error) {
       inputError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
@@ -118,7 +121,7 @@ watch(email, checkInput);
         </div>
         <div class="input-collection">
           <H4>E-post: </H4>
-          <input class="input" id="email-input" :class="{'error': emailError}" v-model="email">
+          <input class="input" id="email-input" :class="{'error': emailError}" v-model="email"  >
           <div class="alert-box">
             <h4 v-if="emailError" class="error-message">{{emailError}}</h4>
             <h4 v-if="inputError" class="error-message">{{inputError}}</h4>
