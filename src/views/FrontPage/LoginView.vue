@@ -53,11 +53,11 @@ async function login() {
     <div id="LoginFields">
       <div id="UserDiv">
         <h2 id="Username">Brukernavn</h2>
-        <input id="NameField" placeholder="Skriv inn dit brukernavn" v-model="username" data-testid="NameInput"  @keyup.enter="login">
+        <input id="NameField" placeholder="Skriv inn ditt brukernavn" v-model="username" data-testid="NameInput"  @keyup.enter="login">
       </div>
       <div id="PasswordDiv">
         <h2 id="Password">Passord</h2>
-        <input id="PasswordField" type="password" placeholder="Skriv inn dit passord" v-model="password" data-testid="PasswordInput"  @keyup.enter="login">
+        <input id="PasswordField" type="password" placeholder="Skriv inn ditt passord" v-model="password" data-testid="PasswordInput"  @keyup.enter="login">
       </div>
     </div>
 
