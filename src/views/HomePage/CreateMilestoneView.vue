@@ -175,20 +175,20 @@ const openFileExplorer = () => {
 
       <div class="smaller-inputs">
         <div class="input">
-          <h3>Start dato</h3>
+          <h3>Startdato</h3>
           <VueDatePicker
             :enable-time-picker="false"
-            placeholder="Velg start dato"
+            placeholder="Velg startdato"
             v-model="start_date"
             :min-date="start_date"
             :disabled="true"
           ></VueDatePicker>
         </div>
         <div class="input">
-          <h3>Slutt dato</h3>
+          <h3>Sluttdato</h3>
           <VueDatePicker
             :enable-time-picker="false"
-            placeholder="Velg slutt dato"
+            placeholder="Velg sluttdato"
             v-model="end_date"
             :min-date="tomorrow"
           ></VueDatePicker>
