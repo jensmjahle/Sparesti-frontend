@@ -17,7 +17,7 @@ const props = defineProps({
     <img src="../../assets/png/pig_394778.png" alt = "logo" id = "logo"/>
     <div id = SavingsText>
       <h3 id = SavedInfo>Du har spart totalt: </h3>
-      <h3 id = Saved>{{ props.totalSaved }} nok</h3>
+      <h3 id = Saved>{{ props.totalSaved }} NOK</h3>
     </div>
   </div>
 </template>

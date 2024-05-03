@@ -14,9 +14,9 @@ import {useTokenStore} from "@/stores/token";
 const questions = ["Hva er fødselsdatoen din?",
   "Hva er ditt fornavn?",
   "Hva er ditt etternavn?",
-  "Hvor stor intekt har du hver måned?",
-  "Hvor mye har du i faste utgifter hver måned?",
-  "Hvor mye har du lyst stil å spare hver måned?",
+  "Hvor stor inntekt har du hver måned? (NOK)",
+  "Hvor mye har du i faste utgifter hver måned? (NOK)",
+  "Hvor mye har du lyst stil å spare hver måned? (NOK)",
   "Velg din brukskonto",
   "Velg din sparekonto",
 ]
