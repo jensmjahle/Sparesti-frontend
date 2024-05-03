@@ -1,5 +1,10 @@
 <script setup lang="ts">
 
+import router from "@/router";
+
+const start = () => {
+  router.push('/homepage/create-milestone')
+}
 </script>
 
 <template>
@@ -30,36 +35,37 @@
     <div class="component">
       <h2> Hva er en utfordring?</h2>
       <h3> En utfordring er en oppgave som må fullføres for å komme nærmere sparingmålet ditt. Dette kan være alt fra å redusere transportkostnader til å kutte ut unødvendige kjøp. Vi tilpasser utfordringene til ditt forbruk og hjelper deg med å spare på en morsom og personlig måte.</h3>
-      <h3> Vi lager utfordringer så fort vi kan, så hvis du går tom for utfordringer så kan du lade din egen utfordring eller vente litt så kommer det flere.</h3>
+      <h3> Vi lager utfordringer så fort vi kan, så hvis du går tom for utfordringer så kan du lage din egen utfordring eller vente litt så kommer det flere.</h3>
       <h3> Hvis vi foreslår utfordringer du ikke liker så er det bare å avslå, dette hjelper oss å gi det relevante utfordringer du liker.</h3>
   </div>
     <div class="component">
       <h2> Hva er sparetips?</h2>
-      <h3> Sparetips er tips og triks for å spare penger. Dette kan være alt fra å lage matpakke til jobb til å kjøpe klær på salg. Vi gir deg tips og triks for å spare penger i hverdagen.
-        Dette gjør at du kan spare mer penger og nå sparemålet ditt raskere.</h3>
+      <h3> Sparetips er tips og triks for å spare penger som vi har henter fra E24. Trykk deg inn på en artikken for å lære noe nytt!</h3>
   </div>
   </div>
+  <button @click="start" class="button">Kom i gang!</button>
   <div class="tutorial">
     <h1> Ofte stilte spørsmål</h1>
     <div class="component">
       <h2> Hvorfor skal jeg bruke sparesti?</h2>
-      <h3> Sparesti er en morsom og motiverende måte å spare penger på. Vi gir deg personlige utfordringer og sparetips for å hjelpe deg å spare penger.
-        Dette gjør at du kan nå sparemålet ditt raskere og på en morsom måte.</h3>
+      <h3> Sparesti tilbyr en morsom og motiverende måte å spare penger på. Vi skreddersyr utfordringer og sparetips basert på ditt forbruk, slik at du kan nå sparingmålet ditt på en engasjerende måte.</h3>
     </div>
     <div class="component">
       <h2> Hvorfor er sparesti bedre enn andre spareapplikasjoner?</h2>
-      <h3> Sparesti er bedre enn andre spareapplikasjoner fordi vi gir deg personlige utfordringer og sparetips basert på ditt faktiske forbruk.
-        Dette gjør at du får relevante utfordringer og sparetips som hjelper deg å spare penger. Vi gjør sparing gøy og motiverende.</h3>
+      <h3> Sparesti skiller seg fra andre spareapplikasjoner ved å tilby personlig tilpassede utfordringer og sparetips basert på ditt faktiske forbruk. Dette gjør sparingen mer relevant og givende, samtidig som det gjør det enklere å nå sparemålet ditt.</h3>
     </div>
     <div class="component">
       <h2> Hvorfor er sparesti gratis?</h2>
-      <h3> Sparesti er gratis fordi vi ønsker å hjelpe deg å spare penger. Vi ønsker at alle skal kunne spare penger og nå sparemålet sitt.
-        Derfor er sparesti gratis for alle å bruke.</h3>
+      <h3> Sparesti er gratis fordi vi ønsker å gjøre sparing tilgjengelig for alle. Vi mener at alle burde ha muligheten til å spare penger og nå sparingmålet sitt, uavhengig av økonomisk situasjon.</h3>
     </div>
     <div class="component">
       <h2> Hvordan kan jeg kontakte sparesti?</h2>
-      <h3> Du kan kontakte sparesti ved å sende en e-post til torbjørn</h3>
+      <h3> Du kan kontakte sparesti ved å sende en e-post til sparesti@gmail.com Vi ser frem til å høre fra deg!</h3>
      </div>
+    <div class="component">
+      <h2> Hva skjer om jeg ikke fullfører en utfordring innen tidsfristen?</h2>
+      <h3> Hvis du ikke fullfører en utfordring innen tidsfristen, vil vi ikke overføre penger til sparestien din og utfordringen blir fjernet.</h3>
+    </div>
   </div>
 </template>
 
