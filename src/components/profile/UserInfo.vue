@@ -7,11 +7,6 @@ import eventBus from '@/components/service/eventBus.js'
 import {useToast} from "vue-toast-notification";
 
 /**
- * Holds the users jwt token
- */
-const token:string = useTokenStore().jwtToken;
-
-/**
  * Initiates toast for error messages
  */
 const toast = useToast();
@@ -62,7 +57,7 @@ onMounted(async () => {
  */
 const fetchUserInfo = async () =>{
   try{
-    const response = await getUserInfo(token)
+    const response = await getUserInfo(useTokenStore().jwtToken)
     username.value = response.username;
     email.value = response.email;
     profilePictureBase64.value = response.profilePictureBase64 ?
@@ -103,7 +98,7 @@ const saveUserInfo = async () => {
   checkInput();
   if(validInput()){
     try{
-      await updateUserInfo( token,email.value, profilePictureBase64.value);
+      await updateUserInfo( useTokenStore().jwtToken,email.value, profilePictureBase64.value);
       eventBus.emit('updateProfilePicture');
       toast.success('Bruker opplysninger ble lagret!')
     } catch (error) {

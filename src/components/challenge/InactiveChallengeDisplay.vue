@@ -32,10 +32,6 @@ const props = defineProps({
   }
 });
 
-/**
- * Gets the users token from the token store and stores it in the token variable
- */
-const token:string = useTokenStore().jwtToken;
 
 /**
  * Defines the emits for this component.
@@ -61,7 +57,7 @@ const expirationDate = () => {
 const declineChallenge = async () => {
   if(props.challenge.challengeId){
     try{
-      await deleteChallenge(token, props.challenge.challengeId);
+      await deleteChallenge(useTokenStore().jwtToken, props.challenge.challengeId);
       emit('challengeDeclined', props.challenge.challengeId);
     } catch (error){
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
@@ -80,7 +76,7 @@ const declineChallenge = async () => {
 const acceptChallenge = async () => {
   if(props.challenge.challengeId){
     try{
-      await activateChallenge(token, props.challenge.challengeId);
+      await activateChallenge(useTokenStore().jwtToken, props.challenge.challengeId);
       emit('challengeAccepted', props.challenge.challengeId);
       eventBus.emit('updateChallenges');
     } catch (error){

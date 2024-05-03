@@ -22,11 +22,6 @@ const props = defineProps <{
 }>();
 
 /**
- * Holds the user jwt token
- */
-const token:string = useTokenStore().jwtToken;
-
-/**
  * Holds the title of the achievement
  */
 const title = ref<string>(props.title)
@@ -76,7 +71,7 @@ const fetchNewAchievements = async () => {
  */
 const fetchBadgeInfo = async () => {
   try {
-    const response = await getUserInfo(token);
+    const response = await getUserInfo(useTokenStore().jwtToken);
     achievements.value = response.achievementDTOList.filter(
         (ach: Achievement) => !newAchievements.value.find((newAch) => newAch.achievementId === ach.achievementId)
     );
@@ -90,7 +85,7 @@ const fetchBadgeInfo = async () => {
  */
 const fetchLockedAchievements = async () => {
   try{
-    achievementsLocked.value = await getLockedAchievements(token);
+    achievementsLocked.value = await getLockedAchievements(useTokenStore().jwtToken);
   } catch (error){
     console.log('Error fetching locked achievements:' + error)
 

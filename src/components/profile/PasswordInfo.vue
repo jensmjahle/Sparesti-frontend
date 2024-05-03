@@ -5,10 +5,6 @@ import { updatePasswordInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import {useToast} from "vue-toast-notification";
 
-/**
- * Holds the users jwt token
- */
-const token:string = useTokenStore().jwtToken;
 
 /**
  * Initiates toast for error messages
@@ -93,7 +89,7 @@ const saveInfo = async () => {
   checkInput();
   if(validInput()){
     try{
-      await updatePasswordInfo( token, currentPassword.value,newPassword.value)
+      await updatePasswordInfo( useTokenStore().jwtToken, currentPassword.value,newPassword.value)
       toast.success('Passordet ble oppdatert!')
       clearInput()
     } catch (error) {

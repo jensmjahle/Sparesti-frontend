@@ -11,11 +11,6 @@ const props = defineProps({
 });
 
 /**
- * Holds the users jwt token
- */
-const token:string = useTokenStore().jwtToken;
-
-/**
  * Define the emits for this component
  */
 const emit = defineEmits(['closeDeletePopUp', 'challengeDeleted']);
@@ -34,7 +29,7 @@ const cancelCompleteThisChallenge = () => {
 const deleteThisChallenge = async () => {
   if(props.challengeId){
     try{
-      await deleteChallenge(token, props.challengeId);
+      await deleteChallenge(useTokenStore().jwtToken, props.challengeId);
       emit('challengeDeleted');
 
     }catch (error){

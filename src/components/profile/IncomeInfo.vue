@@ -5,10 +5,6 @@ import { getUserInfo, updateIncomeInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import {useToast} from "vue-toast-notification";
 
-/**
- * Holds the users jwt token
- */
-const token:string = useTokenStore().jwtToken;
 
 /**
  * Initiates toast for error messaging
@@ -67,7 +63,7 @@ onMounted(async () => {
  */
 const fetchIncomeInfo = async () =>{
   try{
-    const response = await getUserInfo(token);
+    const response = await getUserInfo(useTokenStore().jwtToken);
     monthlyIncome.value = response.monthlyIncome;
     monthlyFixedExpenses.value = response.monthlyFixedExpenses;
     monthlySavings.value = response.monthlySavings;
@@ -85,7 +81,7 @@ const saveInput = async () => {
   if(validInput()){
     try {
       await updateIncomeInfo(
-        token,
+        useTokenStore().jwtToken,
         monthlyIncome.value,
         monthlyFixedExpenses.value,
         monthlySavings.value)

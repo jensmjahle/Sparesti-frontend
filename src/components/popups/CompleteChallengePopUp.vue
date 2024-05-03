@@ -20,10 +20,6 @@ const props = defineProps({
   challengeId: Number,
 });
 
-/**
- * Hold the users jwt token
- */
-const token:string = useTokenStore().jwtToken;
 
 /**
  * Defines the emits for this component
@@ -61,7 +57,7 @@ onMounted(async () => {
  */
 const fetchAllMilestones = async () =>{
   try{
-    milestones.value  = await getAllMilestones(token)
+    milestones.value  = await getAllMilestones(useTokenStore().jwtToken)
     chosenMilestone.value = milestones.value[0].milestoneId;
 
   } catch (error){
@@ -85,7 +81,7 @@ const completeThisChallenge = async () => {
   try{
     console.log(props.challengeId)
     console.log(chosenMilestone.value)
-    await completeChallenge(token, props.challengeId, chosenMilestone.value);
+    await completeChallenge(useTokenStore().jwtToken, props.challengeId, chosenMilestone.value);
     emit('challengeCompleted');
 
   }catch (error){

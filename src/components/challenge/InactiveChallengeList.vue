@@ -19,7 +19,6 @@ interface Challenge{
 /**
  * Gets the users token from the token store and stores it in the token variable
  */
-const token:string = useTokenStore().jwtToken;
 
 /**
  * Holds a list of inactive challenges
@@ -42,7 +41,7 @@ onMounted(async () => {
  */
 const fetchInactiveChallenges = async () => {
   try {
-    const { content}  = await getInactiveChallenges(token)
+    const { content}  = await getInactiveChallenges(useTokenStore().jwtToken)
     inactiveChallenges.value = content;
   } catch (error) {
     console.error('Error fetching active challenges:', error);
