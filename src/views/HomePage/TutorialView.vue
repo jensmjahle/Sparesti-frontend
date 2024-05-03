@@ -15,22 +15,20 @@ const start = () => {
       <h2> Hvordan fungerer sparesti?</h2>
       <h3> Sparesti er en unik applikasjon som lar deg sette opp mål for sparing, enten det er til en ferie, en ny sykkel eller noe annet. Du bestemmer selv hvor mye du vil spare og hvor lenge du vil spare. Vi støtter deg gjennom hele prosessen ved å gi deg oversikt over sparingen din og tilbyr nyttige tips og triks for å nå målene dine.</h3>
       <h3>Ved å koble deg til bankkontoen din, får vi innsikt i dine transaksjoner. Dette lar oss skreddersy utfordringer som er relevante for ditt forbruk. Med Sparesti får du skreddersydde målsettinger som gjør det enklere å spare.</h3>
-      <img src="@/assets/happy-pig.png" alt="hjem" class="image">
     </div>
     <div class="component">
       <h2> Hvordan kommer jeg i gang?</h2>
       <h3> For å komme i gang med Sparesti, begynner du med å opprette en "Sparesti". Dette gjør du ved å navigere til siden for sparing og klikke på "Opprett ny sparesti".</h3>
-      <img src="@/assets/tutorialImages/homepage.png" alt="hjem" class="image">
-      <img src="@/assets/tutorialImages/milestones1.png" alt="sparestier" class="image">
+      <img src="@/assets/tutorialImages/1.png" alt="hjem" class="image">
+      <img src="@/assets/tutorialImages/2.png" alt="sparestier" class="image">
       <h3> Fyll inn nødvendig informasjon, som hvor mye du vil spare, navnet på sparemålet, når det skal være fullført og en kort beskrivelse. Klikk deretter på "Lagre".</h3>
-      <img src="@/assets/tutorialImages/sparesti.png" alt="sparestier" class="image">
       <h3> Nå har du opprettet en sparesti! Du kan nå se sparestien din og begynne å spare penger. Besøk sparestien din for å overføre penger direkte eller vent til du mottar en utfordring for å begynne å spare.</h3>
   </div>
     <div class="component">
       <h2> Hva er en sparesti?</h2>
       <h3> En sparesti representerer din reise mot sparingmålet ditt. For hvert utfordring du fullfører, kommer du ett steg nærmere målet ditt. Målet er å nå slutten av stien og fullføre sparingen.</h3>
       <h3> Du kan se fremgangen din ved å besøke sparestien din. Her kan du se hvor mye du har spart, hvor mye du har igjen og hvor langt du har igjen til målet ditt.</h3>
-      <img src="@/assets/tutorialImages/sparesti.png" alt="sparesti" class="image">
+      <img src="@/assets/tutorialImages/3.png" alt="sparesti" class="image">
     </div>
     <div class="component">
       <h2> Hva er en utfordring?</h2>
@@ -87,6 +85,19 @@ const start = () => {
 .image {
   width: 100%;
   height: auto;
+}
+.button {
+  padding: 20px 0;
+  margin: 20px 0;
+  font-size: 2em;
+  background-color: var(--color-confirm-button);
+  width: 49.5%;
+  border-radius: 20px;
+  border: none;
+  color: var(--color-button-text);
+}
+.button:hover {
+  transform: scale(1.02);
 }
 
 @media (min-width: 1024px) {

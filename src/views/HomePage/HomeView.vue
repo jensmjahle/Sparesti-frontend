@@ -117,6 +117,20 @@ userSavings()
   z-index: 1000; /* Adjust z-index as needed */
 }
 
+.tutorial-button {
+  padding: 20px 0;
+  margin: 20px 0;
+  font-size: 2em;
+  background-color: var(--color-confirm-button);
+  width: 100%;
+  border-radius: 20px;
+  border: none;
+  color: var(--color-button-text);
+}
+.tutorial-button:hover {
+  transform: scale(1.02);
+}
+
 .title{
   color: var(--color-heading);
 }
