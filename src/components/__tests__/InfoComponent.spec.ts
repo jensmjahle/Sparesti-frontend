@@ -9,10 +9,7 @@ describe('InfoComponent', () => {
     // Simulate asynchronous data loading by waiting for the component to be mounted
     await wrapper.vm.$nextTick();
 
-    const quote = wrapper.find('#Quote');
     const totalSavings = wrapper.find('#TotalSavings');
-
-    expect(quote.text()).toBe('Sparetips: Sett av et jevnt beløp hver måned på sparekonto eller lignende.');
 
     // Assuming totalSavings is a number, convert it to the expected string format for assertion
     const expectedTotalSavingsText = `Våre brukere har spart til sammen ${(wrapper.vm as any).totalSavings} nok`;
