@@ -21,6 +21,7 @@ describe('Create challenge View', () => {
     cy.get('.dp__input_wrap').last().click(); // Assume you have a date picker
     cy.get('#2024-05-27').first().click();
     cy.get('.save-button').last().click();
+    cy.wait(2500);
     cy.url().should('include', '/homepage/challenge');
 
   });

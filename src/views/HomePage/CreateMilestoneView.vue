@@ -53,12 +53,12 @@ const validate = () => {
     dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>current_sum.value) || current_sum.value == '') {
+  if (isNaN(<number>current_sum.value) || current_sum.value == '' || <number>current_sum.value<=0) {
     amountErrorStart.value = 'Fyll inn et gyldig beløp!'
     isValid = false;
   }
 
-  if(isNaN(<number>goal_sum.value) || goal_sum.value == ''){
+  if(isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value<=0){
     amountErrorGoal.value = 'Fyll inn et gyldig beløp!'
     isValid = false;
   }
@@ -97,7 +97,7 @@ const milestoneData = computed(() => ({
 const saveInput = async () => {
   if (validate()) {
     await createMilestone(milestoneData.value, tokenStore.jwtToken);
-    await router.push('/homepage/home');
+    await router.push('/homepage/milestone');
   } else {
     console.log('fail')
   }
@@ -176,7 +176,7 @@ const openFileExplorer = () => {
                v-if="titleError">{{ titleError }}</label>
       </div>
 
-      <div class="input-large" @keyup.enter="saveInput">
+      <div class="input-large" @keyup.enter="saveInput" id="description-area">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
@@ -187,7 +187,7 @@ const openFileExplorer = () => {
       </div>
 
       <div class="smaller-inputs" @keyup.enter="saveInput">
-        <div class="input">
+        <div class="input" id="goal-input">
           <base-input
             v-model="goal_sum"
             label="Hvor mye vil du spare (NOK)?"
@@ -197,7 +197,7 @@ const openFileExplorer = () => {
           ></base-input>
           <label class="error" v-if="amountErrorGoal">{{ amountErrorGoal }}</label>
         </div>
-        <div class="input" @keyup.enter="saveInput">
+        <div class="input" @keyup.enter="saveInput" id="current-input">
           <base-input
             v-model="current_sum"
             place-holder="Sett inn hvor mye du har nå"
@@ -226,6 +226,7 @@ const openFileExplorer = () => {
             placeholder="Velg sluttdato"
             v-model="end_date"
             :min-date="tomorrow"
+            auto-apply
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
