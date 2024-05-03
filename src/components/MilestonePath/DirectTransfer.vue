@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
+import {useToast} from "vue-toast-notification";
 
 /**
  * Holds the amount to transfer
  */
 const transferValue = ref<number>(0)
+const toast = useToast();
 
 /**
  * Initiates emits for component
@@ -16,6 +18,11 @@ const emits = defineEmits(['transfer-value'])
  * updates the transferValue to 0
  */
 function transfer() {
+  if (transferValue.value <= 0) {
+    toast.info('Beløpet må være større enn 0');
+    transferValue.value = 0
+    return
+  }
   emits('transfer-value', transferValue.value)
   transferValue.value = 0
 }
