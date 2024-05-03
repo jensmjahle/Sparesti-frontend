@@ -1,15 +1,27 @@
 <script setup lang="ts">
 
+/**
+ * Defines the props necessary for this component
+ */
 const props = defineProps({
   challengeId: Number,
 });
 
+/**
+ * Define the emits for this component
+ */
 const emit = defineEmits(['closeDeletePopUp', 'milestoneDeleted']);
 
+/**
+ * Emits a closeDeletePopUp to the parent
+ */
 const cancelCompleteThisMilestone = () => {
   emit('closeDeletePopUp');
 }
 
+/**
+ * Emits a milestoneDeleted to the parent
+ */
 const deleteThisMilestone = async () => {
   emit('milestoneDeleted');
 }

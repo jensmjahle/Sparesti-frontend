@@ -1,6 +1,9 @@
 <script setup lang="ts">
   import { defineProps } from 'vue'
 
+  /**
+   * Defines the props for this component
+   */
   const props = defineProps({
     Max: {
       type: Number,

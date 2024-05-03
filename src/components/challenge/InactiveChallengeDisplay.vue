@@ -3,7 +3,16 @@
 import { activateChallenge, deleteChallenge } from '@/utils/challengeutils'
 import { useTokenStore } from '@/stores/token'
 import eventBus from '@/components/service/eventBus.js'
+import { useToast } from 'vue-toast-notification'
 
+/**
+ * Initiates toast alerts
+ */
+const toast = useToast()
+
+/**
+ * Initiates object type challenge with all necessary fields for a challenge
+ */
 interface Challenge{
   'challengeId':number,
   'challengeTitle':string,
@@ -12,6 +21,10 @@ interface Challenge{
   'expirationDate':string
 }
 
+/**
+ * Defines the props that the components requires from the parent.
+ * In this instance a challenge object
+ */
 const props = defineProps({
   challenge: {
     type: Object as () => Challenge,
@@ -19,29 +32,51 @@ const props = defineProps({
   }
 });
 
+/**
+ * Gets the users token from the token store and stores it in the token variable
+ */
 const token:string = useTokenStore().jwtToken;
 
+/**
+ * Defines the emits for this component.
+ * Defines a challenge accepted emit and a challenge declined emit
+ */
 const emit = defineEmits(['challengeAccepted', 'challengeDeclined']);
 
+/**
+ * Calculates the expiration date for the challenge
+ */
 const expirationDate = () => {
   return new Date(props.challenge?.expirationDate).
   toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
+/**
+ * Allows the user to decline a suggested challenge.
+ * First calls to delete the challenge from the list,
+ * then emits a challenge declined event to the parent.
+ * In the event of an error displays an error PopUp
+ * to the user
+ */
 const declineChallenge = async () => {
-  console.log('decline-button clicked')
   if(props.challenge.challengeId){
     try{
       await deleteChallenge(token, props.challenge.challengeId);
       emit('challengeDeclined', props.challenge.challengeId);
     } catch (error){
-      alert('Noe gikk galt! Venligst prøv på nytt.')
+      toast.error('Noe gikk galt! Venligst prøv på nytt.')
     }
   } else {
-    alert('challengeId not defined')
+    toast.error('challengeId not defined')
   }
 }
 
+/**
+ * Allows the user to accept a suggested challenge.
+ * First calls to activate the challenge, then emits
+ * a challenge accepted event to the parent.
+ * In the event of an error displays an error PopUp to the user
+ */
 const acceptChallenge = async () => {
   if(props.challenge.challengeId){
     try{
@@ -49,7 +84,7 @@ const acceptChallenge = async () => {
       emit('challengeAccepted', props.challenge.challengeId);
       eventBus.emit('updateChallenges');
     } catch (error){
-      alert('Noe gikk galt! Venligst prøv på nytt.')
+      toast.error('Noe gikk galt! Venligst prøv på nytt.')
     }
   }
 }

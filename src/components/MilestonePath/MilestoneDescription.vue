@@ -2,6 +2,9 @@
 
 import { defineProps } from 'vue'
 
+/**
+ * Defines the props necessary for this component
+ */
 const props = defineProps({
   pathDescription: String
 });

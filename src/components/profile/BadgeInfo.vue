@@ -4,6 +4,9 @@ import { getLockedAchievements, getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import { getUserNewAchievements } from "@/utils/userUtils";
 
+/**
+ * Defines achievement object type
+ */
 interface Achievement{
   achievementId: number,
   achievementTitle: string,
@@ -11,17 +14,42 @@ interface Achievement{
   badge: string
 }
 
+/**
+ * Defines the props necessary for this component
+ */
 const props = defineProps <{
   title: string
 }>();
 
+/**
+ * Holds the user jwt token
+ */
 const token:string = useTokenStore().jwtToken;
 
+/**
+ * Holds the title of the achievement
+ */
 const title = ref<string>(props.title)
+
+/**
+ * Holds a list of achievements
+ */
 const achievements = ref<Achievement[]>([])
+
+/**
+ * Holds a list of new achievements
+ */
 const newAchievements = ref<Achievement[]>([])
+
+/**
+ * Holds a list of locked achievements
+ */
 const achievementsLocked = ref<Achievement[]>([])
 
+
+/**
+ * Code to execute on component mount
+ */
 onMounted(async () => {
   try {
     await fetchNewAchievements();
@@ -32,6 +60,9 @@ onMounted(async () => {
   }
 })
 
+/**
+ * Gets the new achievements for the user
+ */
 const fetchNewAchievements = async () => {
   try {
     newAchievements.value = await getUserNewAchievements()
@@ -40,6 +71,9 @@ const fetchNewAchievements = async () => {
   }
 }
 
+/**
+ * Fetches the info for a given badge
+ */
 const fetchBadgeInfo = async () => {
   try {
     const response = await getUserInfo(token);
@@ -51,6 +85,9 @@ const fetchBadgeInfo = async () => {
   }
 }
 
+/**
+ * Fetches the locked achievements for a user
+ */
 const fetchLockedAchievements = async () => {
   try{
     achievementsLocked.value = await getLockedAchievements(token);

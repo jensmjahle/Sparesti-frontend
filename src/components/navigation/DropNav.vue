@@ -1,10 +1,22 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router'
   import { defineEmits } from 'vue'
+
+  /**
+   * Defines the emits for this component
+   */
   const emit = defineEmits(['route-pushed']);
 
-
+  /**
+   * Initiates the router
+   */
   const router = useRouter();
+
+  /**
+   * Navigates to the given path, then emits
+   * a route-pushed event
+   * @param path path to navigate to
+   */
   const navigateTo = (path: string) => {
     router.push(path);
     emit('route-pushed', false);

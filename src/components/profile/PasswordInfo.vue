@@ -5,22 +5,53 @@ import { updatePasswordInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import {useToast} from "vue-toast-notification";
 
+/**
+ * Holds the users jwt token
+ */
 const token:string = useTokenStore().jwtToken;
+
+/**
+ * Initiates toast for error messages
+ */
 const toast = useToast();
 
+/**
+ * Holds the current password
+ */
 const currentPassword = ref<string>('');
+
+/**
+ * Holds the new password
+ */
 const newPassword = ref<string>('')
 
+/**
+ * Holds the new password error
+ */
 const newPasswordError = ref<string|null>(null)
+
+/**
+ * Holds the current password error
+ */
 const currentPasswordError = ref<string | null>(null)
+
+/**
+ * Holds the password error
+ */
 const passwordError = ref<string | null>(null)
 
-
+/**
+ * Validates the password inputs
+ */
 const validInput = () => {
   checkInput();
   return(newPasswordError.value == null && currentPasswordError.value == null);
 }
 
+/**
+ * Checks the password inputs and updates error messages to
+ * relevant errors
+ */
 const checkInput = () => {
 
   if(currentPassword.value.trim() == ''){
@@ -46,10 +77,18 @@ const checkInput = () => {
   passwordError.value = null;
 }
 
+/**
+ * Checks that a users password is at least 8 characters long
+ * @param passwordToCheck the password to check
+ */
 function validatePassword(passwordToCheck:string){
   return passwordToCheck.trim().length >= 8;
 }
 
+/**
+ * Saves the users new password and gives the user confirmation on successful job.
+ * Shows an error message if task fails
+ */
 const saveInfo = async () => {
   checkInput();
   if(validInput()){
@@ -64,6 +103,9 @@ const saveInfo = async () => {
   }
 }
 
+/**
+ * Clears the password inputs
+ */
 const clearInput = () => {
   currentPassword.value = '';
   newPassword.value = '';
