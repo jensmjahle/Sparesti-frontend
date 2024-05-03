@@ -130,11 +130,11 @@ export const useTokenStore = defineStore({
                     await this.refreshToken();
 
                 } else this.displayPopUp = true;
-            }, 1000);
+            }, 300000);
 
             this.tokenTimer = setTimeout(() => {
                 this.logout();
-            }, 120000);
+            }, 360000);
         },
     },
 
