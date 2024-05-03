@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 
-
+/**
+ * Defines the necessary props for this component
+ */
 const props = defineProps({
   nodeBackgroundColor: String,
   topBackgroundColor: String,

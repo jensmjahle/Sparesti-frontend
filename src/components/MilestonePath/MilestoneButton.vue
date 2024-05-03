@@ -1,12 +1,22 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue'
 
+/**
+ * Defines the props necessary for this component
+ */
 const props = defineProps({
   label: String,
   buttonColor: String
 })
+
+/**
+ * Defines emits for this component
+ */
 const emits = defineEmits(['delete']);
 
+/**
+ * emits a delete event to the parent
+ */
 function deleteMilestone() {
   if(props.label === 'Slett'){
     emits('delete');

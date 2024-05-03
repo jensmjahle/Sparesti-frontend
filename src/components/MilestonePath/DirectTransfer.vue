@@ -2,9 +2,20 @@
 
 import { ref, defineEmits } from 'vue';
 
+/**
+ * Holds the amount to transfer
+ */
 const transferValue = ref<number>(0);
+
+/**
+ * Initiates emits for component
+ */
 const emits = defineEmits(['transfer-value']);
 
+/**
+ * Emits a transfer value event to the parent and
+ * updates the transferValue to 0
+ */
 function transfer() {
   emits('transfer-value', transferValue.value);
   transferValue.value = 0;
