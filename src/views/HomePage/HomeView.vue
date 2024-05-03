@@ -81,7 +81,7 @@ userSavings()
 
     <div class="toggle-buttons">
       <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
-        <h3 class="toggle-button-title">Nye utfordringer</h3>
+        <h3 class="toggle-button-title">Aktive sparemål</h3>
       </button>
       <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
         <h3 class="toggle-button-title">Aktive utfordringer</h3>
