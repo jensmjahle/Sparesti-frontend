@@ -3,7 +3,6 @@ import router from "@/router";
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
 import MilestoneLogList from '@/components/milestone/MilestoneLogList.vue'
 import { ref } from 'vue'
-import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
 import MilestoneHelpPopUp from '@/components/popups/help/MilestoneHelpPopUp.vue'
 
 const displayType = ref<boolean>(true)

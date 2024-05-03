@@ -13,13 +13,13 @@ function navigateToLogin(){
 <template>
   <div id = StartPage>
     <div id = "heading">
-      <h1 id = "title">Sparesti<img src="../../assets/logo.png" alt ="logo" id = "logo"></h1>
+      <h1 id = "title">Sparesti<img src="../../assets/png/pig_394778.png" alt ="logo" id = "logo"></h1>
     </div>
     <div id = Info>
       <InfoComponent/>
     </div>
     <div id = LogIn>
-      <button id = LogInButton @click="navigateToLogin()" data-testid="LogInButton"><h2>LogIn / Registrer bruker</h2></button>
+      <button id = LogInButton @click="navigateToLogin()" data-testid="LogInButton">LogIn / Registrer bruker</button>
     </div>
   </div>
 </template>
@@ -40,9 +40,8 @@ function navigateToLogin(){
 }
 
 #heading{
-  margin-top: 1%;
   text-align: center;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255,255,255,0.8);
   border-radius: 20px;
   border: 2px solid var(--color-border);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
@@ -67,12 +66,9 @@ function navigateToLogin(){
 
 #Info{
   margin: 1%;
-  width: 80%;
-  background-color: rgba(255,255,255,0.9);
+  min-width: 80%;
+  background-color: rgba(255,255,255,0.8);
   border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 #LogIn{

@@ -1,8 +1,6 @@
 describe('Signup spec', () => {
   it('Can signup', () => {
     cy.visit('/signup')
-
-    cy.get('[data-testid="NewUserLink"]').click()
     cy.get('[data-testid="SignupButton"]').should('be.disabled')
 
     cy.get('[data-testid="NameInput"]').type("TestingUser")

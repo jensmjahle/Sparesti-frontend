@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TopNav from '@/components/navigation/TopNav.vue'
 import SideNav from '@/components/navigation/SideNav.vue'
-import {onMounted, ref, watch, onUnmounted } from 'vue';
+import { onMounted, ref, watch, onUnmounted } from 'vue';
 import { useTokenStore } from '@/stores/token';
 import HomePagePopUp from './HomePage/HomePagePopUp.vue';
 import router from "@/router";
@@ -9,7 +9,6 @@ import router from "@/router";
 const store = useTokenStore();
 const showPopup = ref(store.displayPopUp);
 const isMounted = ref<boolean>(false)
-let timer = null as ReturnType<typeof setTimeout> | null
 
 onMounted(async() => {
   if (store.jwtToken === '' || store.jwtToken.includes('Request') ||
@@ -19,9 +18,7 @@ onMounted(async() => {
 
   console.log('showPopup', store.displayPopUp);
 
-  if (timer) clearTimeout(timer)
-
-  timer = setInterval(() => {
+  setInterval(() => {
     // After a certain interval, assume user is inactive
     useTokenStore().setActive(false);
   }, 60000);
