@@ -4,8 +4,10 @@ import PotentialChallengeDisplay from '@/components/challenge/InactiveChallengeD
 import { onMounted, ref } from 'vue'
 import { getInactiveChallenges } from '@/utils/challengeutils'
 import { useTokenStore } from '@/stores/token'
-import router from '@/router'
 
+/**
+ * Initiates object type challenge with all necessary fields for a challenge
+ */
 interface Challenge{
   challengeId: number,
   challengeTitle: string,
@@ -14,10 +16,19 @@ interface Challenge{
   expirationDate:string
 }
 
+/**
+ * Gets the users token from the token store and stores it in the token variable
+ */
 const token:string = useTokenStore().jwtToken;
 
+/**
+ * Holds a list of inactive challenges
+ */
 const inactiveChallenges = ref<Challenge[]>([])
 
+/**
+ * Functionality to be triggered on component mount
+ */
 onMounted(async () => {
   try {
     await fetchInactiveChallenges();
@@ -26,6 +37,9 @@ onMounted(async () => {
   }
 })
 
+/**
+ * Fetches inactive challenges for the given user
+ */
 const fetchInactiveChallenges = async () => {
   try {
     const { content}  = await getInactiveChallenges(token)
@@ -35,12 +49,16 @@ const fetchInactiveChallenges = async () => {
   }
 }
 
-// Function to handle the emitted challengeAccepted event
+/**
+ * Function to handle the emitted challengeAccepted event
+ */
 const handleChallengeAccepted = async () => {
   await fetchInactiveChallenges();
 }
 
-// Function to handle the emitted challengeDeclined event
+/**
+ * Function to handle the emitted challengeDeclined event
+ */
 const handleChallengeDeclined = async () => {
   await fetchInactiveChallenges();
 }

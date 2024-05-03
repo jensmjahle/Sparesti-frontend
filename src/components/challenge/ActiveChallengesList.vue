@@ -9,6 +9,9 @@ import CompleteChallengePopUp from '@/components/popups/CompleteChallengePopUp.v
 import DeleteChallengePopUp from '@/components/popups/DeleteChallengePopUp.vue'
 import eventBus from '@/components/service/eventBus.js'; // Import the event bus instance
 
+/**
+ * Initiates object type challenge with all necessary fields for a challenge
+ */
 interface Challenge{
   challengeId: number,
   challengeTitle: string,
@@ -17,24 +20,64 @@ interface Challenge{
   expirationDate:string
 }
 
+/**
+ * Gets the users token from the token store and stores it in the token variable
+ */
 const token:string = useTokenStore().jwtToken;
 
+/**
+ * Initiates the jsConfetti
+ */
 const jsConfetti = new JSConfetti()
 
+/**
+ * Setts if the displayPopUp is visible, initially false
+ */
 const displayPopUp = ref<boolean>(false);
+
+/**
+ * Setts if the displayDeletePopUp is visible, initially false
+ */
 const displayDeletePopUp = ref<boolean>(false);
 
+/**
+ * Holds a list of all active challenges
+ */
 const activeChallenges = ref<Challenge[]>([])
 
+/**
+ * Holds the id of the challenge that is to be completed
+ */
 const challengeToBeCompleted = ref<number|any>(null)
+
+/**
+ * Holds the id of the challenge that is to be deleted
+ */
 const challengeToBeDeleted = ref<number|any>(null)
 
+/**
+ * Holds the id of the challenge who has its contents expanded
+ */
 const expandedChallengeId = ref<number>(-1);
 
+/**
+ * The amount of challenges per page
+ */
 const SIZE = 3
+
+/**
+ * The amount of pages
+ */
 const pages = ref<number>(1)
+
+/**
+ * The current page
+ */
 const currentPage = ref<number>(0)
 
+/**
+ * Functionality to be called upon component mount
+ */
 onMounted(async () => {
   try {
     await fetchActiveChallenges();
@@ -43,6 +86,11 @@ onMounted(async () => {
   }
 })
 
+/**
+ * Fetches active challenges for the given user.
+ * Updates the amount of total pages, the current page
+ * and the active challenge id
+ */
 const fetchActiveChallenges = async () => {
   try{
     const { content, totalPages, number } = await getActiveChallenges(token, currentPage.value,SIZE)
@@ -56,23 +104,46 @@ const fetchActiveChallenges = async () => {
   }
 }
 
+/**
+ * Handle the request to complete the given challenge
+ * Displays a PopUp where the user can complete a challenge
+ * @param challengeId the challenge to be completed
+ */
 const handleRequestToCompleteChallenge = (challengeId: number) => {
   challengeToBeCompleted.value = challengeId;
   displayPopUp.value = true;
 }
 
+/**
+ * Handle the request to delete the given challenge
+ * Displays a PopUp where the user cna delete a challenge
+ * @param challengeId the challenge to be deleted
+ */
 const handleRequestToDeleteChallenge = async (challengeId: number) => {
   challengeToBeDeleted.value = challengeId;
   displayDeletePopUp.value = true;
 }
+
+/**
+ * Hides the display PopUp
+ */
 const closePopUp = async () => {
   displayPopUp.value = false;
 }
 
+/**
+ * Hides the display delete PopUp
+ */
 const closeDeletePopUp = async () => {
   displayDeletePopUp.value = false;
 }
 
+/**
+ * Handles the events when a user completes a challenge
+ * through the display PopUp. Emits an event to the parent to update the
+ * milestones, then closes the PopUp shoots confetti and updates the
+ * active challenges
+ */
 const handleChallengeCompleted = async () => {
   eventBus.emit('updateMilestones');
   await closePopUp();
@@ -80,23 +151,43 @@ const handleChallengeCompleted = async () => {
   await fetchActiveChallenges();
 }
 
+/**
+ * Handles the events when a user deletes a challenge
+ * through the display delete PopUp. Closes the delete PopUp
+ * and updates the active challenges
+ */
 const handleChallengeDeleted = async () => {
   await closeDeletePopUp();
   await fetchActiveChallenges();
 }
 
+/**
+ * Navigates the user to the previous page
+ */
 const previousPage = () => {
   currentPage.value --
 }
+
+/**
+ * Navigates the user to the given page
+ * @param pageNumber page to navigate too
+ */
 const goToPage = (pageNumber:number) => {
   currentPage.value = pageNumber;
 }
 
+/**
+ * Navigates the user to the next page
+ */
 const nextPage = () =>{
   currentPage.value ++;
 }
 
-const toggleMilestoneHeight = (id: number) => {
+/**
+ * Toggles the size of the challenge div for the given challenge
+ * @param id the challenge id of the given challenge
+ */
+const toggleChallengeHeight = (id: number) => {
   if(expandedChallengeId.value == id){
     expandedChallengeId.value = -1;
   } else {
@@ -104,6 +195,9 @@ const toggleMilestoneHeight = (id: number) => {
   }
 };
 
+/**
+ * Tels the eventbus to fetch active challenges on updates to challenges
+ */
 eventBus.on('updateChallenges', () => {
   fetchActiveChallenges();
 });
@@ -140,7 +234,7 @@ watch(currentPage, fetchActiveChallenges);
         :expanded="expandedChallengeId == activeChallenge.challengeId"
         @challengeCompleted="handleRequestToCompleteChallenge(activeChallenge.challengeId)"
         @challengeDeleted ="handleRequestToDeleteChallenge(activeChallenge.challengeId)"
-        @click="toggleMilestoneHeight(activeChallenge.challengeId)"
+        @click="toggleChallengeHeight(activeChallenge.challengeId)"
       ></ActiveChallengeDisplay>
       <h4 class="challenge-placeholder" id="active-challenge-placeholder" v-if="activeChallenges.length == 0">
         Du har ingen aktive utfordringer.<br>
