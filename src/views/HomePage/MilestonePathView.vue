@@ -29,14 +29,25 @@ const totalSaved = ref(0)
 
 const milestonePathKey = ref(0);
 
+/**
+ * Sets the display type to show new challenges.
+ */
 const displayNewChallenges = () => {
   displayType.value = false;
-}
+};
 
+/**
+ * Sets the display type to show active challenges.
+ */
 const displayActiveChallenges = () => {
   displayType.value = true;
-}
+};
 
+/**
+ * Lifecycle hook that runs when the component is mounted.
+ * Fetches milestone details and updates related values accordingly.
+ * Redirects to '/homepage/milestone' if milestone details are not found.
+ */
 onMounted( async () =>{
   const milestoneId = useMilestoneStore().milestoneId;
   console.log(milestoneId)
@@ -53,42 +64,80 @@ onMounted( async () =>{
 })
 
 
-function updateTotalSaved(value: number) {
-  directTransfer(value, useMilestoneStore().milestoneId)
+/**
+ * Updates the total saved amount by performing a direct transfer and updating related values.
+ * @param {number} value - The amount to be added to the total saved.
+ */
+function updateTotalSaved(value) {
+  directTransfer(value, useMilestoneStore().milestoneId);
   totalSaved.value += value;
   milestonePathKey.value++;
   displayTransferPopUp.value = false;
 }
 
+/**
+ * Opens the help pop-up by setting its display state to true.
+ */
 const openHelpPopUp = () => {
   displayHelpPopUp.value = true;
-}
+};
+
+/**
+ * Closes the help pop-up asynchronously by setting its display state to false.
+ * This function can be awaited if needed.
+ */
 const closeHelpPopUp = async () => {
   displayHelpPopUp.value = false;
-}
+};
+
 
 const displayTransferPopUp = ref<boolean>(false)
 const refTransferAmount = ref(0)
 
-const openTransferConfirmationPopUp = (value:number) => {
+/**
+ * Opens the transfer confirmation pop-up with the specified value.
+ * @param {number} value - The amount to transfer.
+ */
+const openTransferConfirmationPopUp = (value) => {
   refTransferAmount.value = value;
   displayTransferPopUp.value = true;
-}
+};
 
+/**
+ * Closes the transfer confirmation pop-up.
+ */
 const closeTransferConfirmationPopUp = () => {
   displayTransferPopUp.value = false;
-}
+};
 
-const displayDeleteMilestonePopUp = ref<boolean>(false)
+/**
+ * Reactive reference for displaying the delete-milestone pop-up.
+ * @type {Ref<boolean>}
+ */
+const displayDeleteMilestonePopUp = ref<boolean>(false);
 
+/**
+ * Opens the delete-milestone pop-up.
+ */
 const openDeleteMilestonePopUp = () => {
-  displayDeleteMilestonePopUp.value = true
-}
+  displayDeleteMilestonePopUp.value = true;
+};
 
+/**
+ * Closes the delete milestone pop-up.
+ */
 const closeDeleteMilestonePopUp = () => {
-  displayDeleteMilestonePopUp.value = false
-}
+  displayDeleteMilestonePopUp.value = false;
+};
 
+/**
+ * Asynchronously deletes a milestone with the specified ID.
+ * Logs a message indicating the delete method is called.
+ * After successful deletion:
+ * - Closes the delete milestone pop-up.
+ * - Redirects to '/homepage/milestone'.
+ * @param {number} milestoneId - The ID of the milestone to be deleted.
+ */
 async function deleteAMilestone(milestoneId:number){
   console.log("Delete method called")
   await deleteMilestone(milestoneId)
