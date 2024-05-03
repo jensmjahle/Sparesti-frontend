@@ -21,9 +21,12 @@ unit_test:
   before_script:
     - npm ci
   script:
-    - npm run test:unit
+    - npm run test:unit -- --coverage
   dependencies:
     - build
+  artifacts:
+    paths:
+      - coverage/
 
 
 #e2e_tests:
