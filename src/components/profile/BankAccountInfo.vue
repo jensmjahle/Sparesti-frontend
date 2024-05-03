@@ -92,7 +92,7 @@ const saveAccountInfo = async () => {
 
       await fetchAccounts();
       await fetchUserInfo();
-      toast.success('Konto opplysninger ble oppdatert!')
+      toast.success('Konto-opplysninger ble oppdatert!')
     } catch (error){
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
       accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
@@ -118,14 +118,14 @@ const saveAccountInfo = async () => {
       <div class="input-collection">
         <h4>Forbrukskonto: </h4>
         <select class="accounts" v-model="checkingAccount">
-          <option v-for="(option, index) in accounts" :key="'check' + index" :value="index">{{ option.accountNumber + ": " + option.type }}</option>
+          <option v-for="(option, index) in accounts" :key="'check' + index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
         </select>
       </div>
 
       <div class="input-collection">
         <h4>Sparekonto: </h4>
         <select class="accounts" :class="{'error': savingAccountError}" v-model="savingAccount">
-          <option v-for="(option, index) in accounts" :key="'saving' + index" :value="index">{{ option.accountNumber + ": " + option.type }}</option>
+          <option v-for="(option, index) in accounts" :key="'saving' + index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
         </select>
       </div>
 

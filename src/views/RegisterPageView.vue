@@ -167,7 +167,7 @@ function updateSelectedOption() {
       <input id = answerField :type=currentQuestionType v-model="answer" v-show="showInput">
       <select id = selectField v-show="showSelect" @change="updateSelectedOption" v-model="selectedOption">
         <option value="" disabled selected>Velg konto</option>
-        <option v-for="(option, index) in accounts" :key="index" :value="index">{{ option.accountNumber + ": " + option.type }}</option>
+        <option v-for="(option, index) in accounts" :key="index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
       </select>
     </div>
     <div id = buttons>
