@@ -26,6 +26,12 @@ const router = useRouter()
 
 const tomorrow = new Date(start_date.value)
 tomorrow.setDate(tomorrow.getDate() + 1)
+
+/**
+ * Validates the input values for a challenge form.
+ * Updates error messages for title, description, dates, and amount based on input validation.
+ * @returns {boolean} Indicates whether the input values are valid (`true`) or not (`false`).
+ */
 const validate = () => {
   let isValid = true
   titleError.value = ''
@@ -53,6 +59,11 @@ const validate = () => {
   return isValid
 }
 
+/**
+ * Computed property that generates an object containing challenge data from reactive values.
+ * Retrieves and encapsulates challenge title, description, goal sum, and expiration date.
+ * @returns {Object} An object containing challenge data extracted from reactive values.
+ */
 const challengeData = computed(() => ({
   challengeTitle: title.value,
   challengeDescription: description.value,
@@ -60,6 +71,13 @@ const challengeData = computed(() => ({
   expirationDate: end_date.value ? end_date.value : null,
 }))
 
+/**
+ * Asynchronously saves challenge input data to the backend.
+ * Validates the input data using the `validate` function.
+ * If the input data is valid, creates a new challenge with the provided data and navigates to the challenge page upon successful creation.
+ * Displays success or error toast messages based on the operation outcome.
+ * @returns {Promise<void>} A promise that resolves after attempting to save and create the challenge.
+ */
 const saveInput = async() => {
   if (validate()) {
     await createChallenge(tokenStore.jwtToken, challengeData.value)

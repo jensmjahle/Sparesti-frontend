@@ -9,21 +9,43 @@ import ChallengeHelpPopUp from '@/components/popups/help/ChallengeHelpPopUp.vue'
 const displayType = ref<boolean>(true);
 const displayHelpPopUp = ref<boolean>(false)
 
-
+/**
+ * Sets the display type to show new challenges by setting `displayType.value` to false.
+ * @returns {void} This function does not return a value.
+ */
 const displayNewChallenges = () => {
   displayType.value = false;
 }
 
+/**
+ * Sets the display type to show active challenges by setting `displayType.value` to true.
+ * @returns {void} This function does not return a value.
+ */
 const displayActiveChallenges = () => {
   displayType.value = true;
 }
+
+/**
+ * Navigates to the specified path using Vue Router.
+ * @param {string} path - The path to navigate to.
+ * @returns {void} This function does not return a value.
+ */
 const navigateTo = (path: string) => {
   router.push(path)
 }
 
+/**
+ * Opens the help pop-up by setting the `displayHelpPopUp.value` to true.
+ * @returns {void} This function does not return a value.
+ */
 const openHelpPopUp = () => {
   displayHelpPopUp.value = true;
 }
+
+/**
+ * Closes the help pop-up by setting the `displayHelpPopUp.value` to false.
+ * @returns {Promise<void>} A promise that resolves after closing the help pop-up.
+ */
 const closeHelpPopUp = async () => {
   displayHelpPopUp.value = false;
 }

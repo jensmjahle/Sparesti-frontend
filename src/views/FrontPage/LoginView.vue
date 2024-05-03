@@ -11,16 +11,29 @@ const username = ref('');
 const password = ref('');
 const toast = useToast();
 
+/**
+ * Navigates the user to the sign-up page using Vue Router.
+ * @returns This function does not return a value.
+ */
 function navigateToNewUser() {
   router.push('/signup')
 }
 
+/**
+ * Checks if the user is an existing user based on token state and conditions.
+ * @returns True if the user is considered an existing user, false otherwise.
+ */
 const existingUser = () => {
   return (useTokenStore().jwtToken !== ''
     && !useTokenStore().jwtToken.includes('Request')
     && !useTokenStore().jwtToken.includes('Error'))
 }
 
+/**
+ * Attempts to log in a user by retrieving a token and performing navigation based on login status.
+ * Shows appropriate toast messages based on different login outcomes.
+ * @returns A promise that resolves after login attempt and navigation are completed.
+ */
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
 
