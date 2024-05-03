@@ -1,7 +1,13 @@
 <script setup lang="ts">
 
+/**
+ * Defines the emits for this component
+ */
 const emit = defineEmits(['closePopUp']);
 
+/**
+ * Emits a closePopUp event to the parent
+ */
 const closePopUp = () => {
   emit('closePopUp');
 }

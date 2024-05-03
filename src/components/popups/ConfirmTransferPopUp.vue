@@ -3,18 +3,34 @@
 import { defineProps } from 'vue';
 import JSConfetti from 'js-confetti'
 
+/**
+ * Defines the props necessary for this component
+ */
 const props = defineProps({
   transferAmount: Number,
 });
 
+/**
+ * Define the emits for this component
+ */
 const emit = defineEmits(['closePopUp', 'confirmTransfer'])
 
+/**
+ * Initialize jsConfetti
+ */
 const jsConfetti = new JSConfetti()
+
+/**
+ * Passes a confirm transfer emit to the parent and shoots confetti
+ */
 async function confirm(){
   emit('confirmTransfer')
   await jsConfetti.addConfetti();
 }
 
+/**
+ * Emits a closePopUp signal to the parent
+ */
 function cancel(){
   emit('closePopUp')
 }
