@@ -3,6 +3,9 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import {useMilestoneStore} from "@/stores/currentMilestone";
 import router from "@/router";
 
+/**
+ * Defines the necessary props for this component
+ */
 const props = defineProps({
   id: Number,
   title: String,
@@ -14,6 +17,9 @@ const props = defineProps({
   image: String
 });
 
+/**
+ * Opens the path for the selected milestone
+ */
 const openMilestone = () => {
   if (props.id !== undefined) {
     useMilestoneStore().setMilestoneId(props.id)
@@ -22,6 +28,9 @@ const openMilestone = () => {
   console.log("Milestone id is not defined")
 }
 
+/**
+ * Calculates how close the given milestone is to the deadline date
+ */
 const daysLeft = () => {
   if(props.deadline){
     const today = new Date();
@@ -39,6 +48,9 @@ const daysLeft = () => {
   return 0; // No deadline specified
 }
 
+/**
+ * Checks if a milestone is close to expiring
+ */
 const isToExpire = () => {
   return (daysLeft() <= 7)
 }

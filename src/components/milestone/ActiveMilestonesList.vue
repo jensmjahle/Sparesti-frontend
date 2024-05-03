@@ -6,6 +6,9 @@ import { useTokenStore } from '@/stores/token'
 import { getAllMilestonesPaginated } from '@/utils/MilestoneUtils'
 import eventBus from '@/components/service/eventBus.js'
 
+/**
+ * Defines the necessary props for this component
+ */
 interface Milestone{
   milestoneId: number;
   milestoneTitle: string;
@@ -18,21 +21,44 @@ interface Milestone{
   username: string;
 }
 
+/**
+ * Stores the users jwt token
+ */
 const token = useTokenStore().jwtToken
 
+/**
+ * Hold a list of active milestones
+ */
 const activeMilestones = ref<Milestone[]>([])
+
+/**
+ * Hold the current page
+ */
 const currentPage = ref<number>(0)
+
+/**
+ * Hold the amount of pages
+ */
 const pages = ref<number>(1)
+
+/**
+ * Specifies the amount of element per page
+ */
 const SIZE = 3
 
+/**
+ * Logic to be ran on component mount
+ */
 onMounted( () => {
   currentPage.value = 0;
   fetchActiveMilestones();
 })
 
+/**
+ * Fetches active milestones with pagination
+ */
 const fetchActiveMilestones = async () => {
   try{
-    console.log(currentPage.value)
     const { content, totalPages, number } = await getAllMilestonesPaginated(token, currentPage.value,SIZE)
     pages.value = totalPages;
     currentPage.value = number;
@@ -42,15 +68,29 @@ const fetchActiveMilestones = async () => {
   }
 }
 
+/**
+ * Navigates the user to the previous page and updates
+ * the active milestones to show
+ */
 const previousPage = () => {
   currentPage.value --
   fetchActiveMilestones();
 }
+
+/**
+ * Navigates the user to the specified page and updates
+ * the active milestones to show
+ * @param pageNumber page to navigate to
+ */
 const goToPage = (pageNumber:number) => {
   currentPage.value = pageNumber;
   fetchActiveMilestones();
 }
 
+/**
+ * Navigates the user to the next page and updates
+ * the active milestones to show
+ */
 const nextPage = () =>{
   currentPage.value ++;
   fetchActiveMilestones();

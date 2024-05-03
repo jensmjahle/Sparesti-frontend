@@ -5,6 +5,9 @@ import { useTokenStore } from '@/stores/token'
 import { getAllMilestoneLogs } from '@/utils/MilestoneUtils'
 import CompletedMilestoneDisplay from '@/components/milestone/CompletedMilestoneDisplay.vue'
 
+/**
+ * Defines the props necessary for this component
+ */
 interface Milestone{
   milestoneId: number;
   milestoneTitle: string;
@@ -17,18 +20,47 @@ interface Milestone{
   username: string;
 }
 
+/**
+ * Holds the users jwt token
+ */
 const token = useTokenStore().jwtToken
+
+/**
+ * Hold the id of the milestone that is expanded
+ */
 const expandedMileStoneId = ref<number>(-1);
+
+/**
+ * Holds a list of completed milestones
+ */
 const completedMilestones = ref<Milestone[]>([])
+
+/**
+ * Hold the current page number
+ */
 const currentPage = ref<number>(0)
+
+/**
+ * Hold the total amount of pages
+ */
 const pages = ref<number>(1)
+
+/**
+ * Hold the amount of elements per page
+ */
 const SIZE = 3
 
+/**
+ * Logic to run on mount
+ */
 onMounted( () => {
-  fetchActiveMilestones();
+  fetchMilestoneLogs();
 })
 
-const fetchActiveMilestones = async () => {
+/**
+ * Gets active milestones for the given user paginated
+ */
+const fetchMilestoneLogs = async () => {
   try{
     console.log(currentPage.value)
     const { content, totalPages, number } = await getAllMilestoneLogs(token, currentPage.value,SIZE)
@@ -40,20 +72,38 @@ const fetchActiveMilestones = async () => {
   }
 }
 
+/**
+ * Navigates to the previous page and updates the
+ * milestone logs
+ */
 const previousPage = () => {
   currentPage.value --
-  fetchActiveMilestones();
+  fetchMilestoneLogs();
 }
+
+/**
+ * Navigates to the given page and updates
+ * the milestone logs
+ * @param pageNumber page to navigate to
+ */
 const goToPage = (pageNumber:number) => {
   currentPage.value = pageNumber;
-  fetchActiveMilestones();
+  fetchMilestoneLogs();
 }
 
+/**
+ * Navigates to the next page and
+ * updates the milestone logs
+ */
 const nextPage = () =>{
   currentPage.value ++;
-  fetchActiveMilestones();
+  fetchMilestoneLogs();
 }
 
+/**
+ * Toggle which milestone should have its div expanded
+ * @param id milestone to expand
+ */
 const toggleMilestoneHeight = (id: number) => {
   if(expandedMileStoneId.value == id){
     expandedMileStoneId.value = -1;
