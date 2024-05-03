@@ -3,8 +3,14 @@
 import { onMounted, ref } from "vue";
 import { getTotalSavings } from "@/utils/userUtils"
 
+/**
+ * Holds the users total savings
+ */
 let totalSavings = ref(0)
 
+/**
+ * Functionality to be run on component mount
+ */
 onMounted(async () => {
   totalSavings.value = await getTotalSavings()
 });

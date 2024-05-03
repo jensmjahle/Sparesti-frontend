@@ -5,8 +5,6 @@ import { getUserAccountInfo, getUserInfo, updateBankAccountInfo } from '@/utils/
 import { useTokenStore } from '@/stores/token'
 import {useToast} from "vue-toast-notification";
 
-
-
 interface Account {
   accountNumber: number;
   username: string;
@@ -16,20 +14,41 @@ interface Account {
   currency: string;
 }
 
-
-
+/**
+ * Holds the user jwt token
+ */
 const token:string = useTokenStore().jwtToken;
+
+/**
+ * Initiates toast for error messages
+ */
 const toast = useToast();
 
+
+/**
+ * Holds the index of the selected savings account
+ */
 const savingAccount   = ref<number>(0);
+
+/**
+ * Hold the index of the selected checking account
+ */
 const checkingAccount = ref<number>(0);
 
+/**
+ * Holds a list accounts
+ */
 const accounts = ref<Account[]>([])
 
+/**
+ * Holds the saving account error
+ */
 const savingAccountError = ref<string | null>(null);
+
+/**
+ * Holds the accountError
+ */
 const accountError = ref<string | null>(null);
-
-
 
 onMounted(async () => {
   try {
@@ -40,8 +59,10 @@ onMounted(async () => {
   }
 })
 
-
-
+/**
+ * Fetches the users info an updates the checking account and savings
+ * account values to what is saved for the user
+ */
 const fetchUserInfo = async () =>{
   try {
     // Retrieve chosen accounts
@@ -61,14 +82,20 @@ const fetchUserInfo = async () =>{
   }
 }
 
-
-
+/**
+ * Fetches account info and updates the accounts array with
+ * the users available accounts
+ */
 const fetchAccounts = async () => {
   accounts.value = await getUserAccountInfo(useTokenStore().jwtToken)
 }
 
 
 
+/**
+ * Checks if the two accounts are the same and presents the user
+ * with an error if they are
+ */
 const checkInput = () => {
   if (savingAccount.value == checkingAccount.value)
     savingAccountError.value = 'Sparekonto er lik brukskonto!'
@@ -79,7 +106,10 @@ const checkInput = () => {
 }
 
 
-
+/**
+ * Updates the users account info with the new selected accounts.
+ * Shows an error if something goes wrong
+ */
 const saveAccountInfo = async () => {
   checkInput()
   if (savingAccountError.value == null) {
@@ -92,7 +122,7 @@ const saveAccountInfo = async () => {
 
       await fetchAccounts();
       await fetchUserInfo();
-      toast.success('Konto opplysninger ble oppdatert!')
+      toast.success('Konto-opplysninger ble oppdatert!')
     } catch (error){
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
       accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
@@ -118,14 +148,14 @@ const saveAccountInfo = async () => {
       <div class="input-collection">
         <h4>Forbrukskonto: </h4>
         <select class="accounts" v-model="checkingAccount">
-          <option v-for="(option, index) in accounts" :key="'check' + index" :value="index">{{ option.accountNumber + ": " + option.type }}</option>
+          <option v-for="(option, index) in accounts" :key="'check' + index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
         </select>
       </div>
 
       <div class="input-collection">
         <h4>Sparekonto: </h4>
         <select class="accounts" :class="{'error': savingAccountError}" v-model="savingAccount">
-          <option v-for="(option, index) in accounts" :key="'saving' + index" :value="index">{{ option.accountNumber + ": " + option.type }}</option>
+          <option v-for="(option, index) in accounts" :key="'saving' + index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
         </select>
       </div>
 

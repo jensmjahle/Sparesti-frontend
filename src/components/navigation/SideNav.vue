@@ -2,9 +2,25 @@
 import { useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
 
+/**
+ * Initializes the router
+ */
 const router = useRouter();
+
+/**
+ * Holds the current route
+ */
 const currentRoute = router.currentRoute;
+
+/**
+ * Holds the selected path
+ */
 const selectedPath = ref(currentRoute.value.path)
+
+/**
+ * Navigates the user to the given path
+ * @param path path to navigate to
+ */
 const navigateTo = (path: string) => {
   router.push(path)
 }

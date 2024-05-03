@@ -3,17 +3,34 @@
 import { useTokenStore } from '@/stores/token'
 import { deleteChallenge } from '@/utils/challengeutils'
 
+/**
+ * Define the props needed for this component
+ */
 const props = defineProps({
   challengeId: Number,
 });
 
+/**
+ * Holds the users jwt token
+ */
 const token:string = useTokenStore().jwtToken;
+
+/**
+ * Define the emits for this component
+ */
 const emit = defineEmits(['closeDeletePopUp', 'challengeDeleted']);
 
+/**
+ * Emits a closeDeletePopUp to the parent
+ */
 const cancelCompleteThisChallenge = () => {
   emit('closeDeletePopUp');
 }
 
+/**
+ * deletes the challenge and passes a challengeDeleted emit
+ * to the parent
+ */
 const deleteThisChallenge = async () => {
   if(props.challengeId){
     try{

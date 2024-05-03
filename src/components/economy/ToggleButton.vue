@@ -4,6 +4,10 @@ const chartVisible = ref(false)
 const emit = defineEmits(['toggle-chart'])
 const isChecked = ref(false)
 
+/**
+ * Toggles the visibility of the pie chart of all expenses
+ * emits a toggle-char event to the parent
+ */
 const toggleChart = () => {
   chartVisible.value = !isChecked.value
   emit('toggle-chart', isChecked.value)

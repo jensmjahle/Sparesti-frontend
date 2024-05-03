@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import {ref} from 'vue'
+
+/**
+ * Defines the required props for the component
+ */
 const props = defineProps({
   title: String,
   date: String,
@@ -7,14 +11,22 @@ const props = defineProps({
   category: String
 })
 
+/**
+ * Keeps track of expansion
+ */
 const isExpanded = ref(false)
 
+/**
+ * Toggles expansion on or off
+ */
 const toggleExpand = () => {
   isExpanded.value = !isExpanded.value
-  console.log(isExpanded.value)
 }
 
-const expirationDate = () => {
+/**
+ * Calculates the date
+ */
+const calculateDate = () => {
   if(props.date){
     return new Date(props.date).
     toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -32,7 +44,7 @@ const expirationDate = () => {
     </div>
     <div class="component-right">
       <div class="component-right-field">
-        <span> Dato: {{expirationDate()}}</span>
+        <span> Dato: {{calculateDate()}}</span>
       </div>
       <div class="component-right-field">
         <span>

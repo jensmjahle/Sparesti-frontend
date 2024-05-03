@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+/**
+ * Defines the props necessary for this component
+ */
 const props = defineProps({
   id: Number,
   title: String,

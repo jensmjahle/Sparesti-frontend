@@ -5,23 +5,49 @@ import { useTokenStore } from '@/stores/token'
 import { getAllMilestones } from '@/utils/MilestoneUtils'
 import { completeChallenge } from '@/utils/challengeutils'
 
+/**
+ * Initiates milestone object type
+ */
 interface Milestone{
   'milestoneId': number,
   'milestoneTitle': string
 }
 
+/**
+ * Defines the props for this component
+ */
 const props = defineProps({
   challengeId: Number,
 });
 
+/**
+ * Hold the users jwt token
+ */
 const token:string = useTokenStore().jwtToken;
+
+/**
+ * Defines the emits for this component
+ */
 const emit = defineEmits(['closePopUp', 'challengeCompleted']);
 
+/**
+ * Hold a list of milestones
+ */
 const milestones = ref<Milestone[]>([]);
+
+/**
+ * holds the id of the chosen milestone
+ */
 const chosenMilestone = ref<number|null>(null);
+
+/**
+ * holds the chosen milestone error
+ */
 const chosenMileStoneError = ref<string|null>(null)
 
-
+/**
+ * Logic to execute on component mount
+ */
 onMounted(async () => {
   try {
     await fetchAllMilestones();
@@ -29,6 +55,10 @@ onMounted(async () => {
     console.error('Error fetching user info:', error);
   }
 })
+
+/**
+ * fetches all milestones for a given user
+ */
 const fetchAllMilestones = async () =>{
   try{
     milestones.value  = await getAllMilestones(token)
@@ -39,10 +69,17 @@ const fetchAllMilestones = async () =>{
   }
 }
 
+/**
+ * emits a closePopUp event to the parent
+ */
 const cancelCompleteThisChallenge = () => {
   emit('closePopUp');
 }
 
+/**
+ * Completes the chosen milestone and emit a challenge completed
+ * event to the parent
+ */
 const completeThisChallenge = async () => {
   if(chosenMilestone.value && props.challengeId)
   try{
@@ -61,7 +98,6 @@ const completeThisChallenge = async () => {
 
 <template>
   <div class="popup-content">
-    <!-- Pop-up content goes here -->
     <h2>Venligst velg et sparemål!</h2>
     <h3>Velg sparemålet som skal motta sparebeløpet fra utforderingen 🎉</h3>
 

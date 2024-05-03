@@ -1,7 +1,14 @@
 <script setup lang="ts">
 
+/**
+ * Defines the emits for this component.
+ * Defines a challenge completed emit and a challenge deleted emit
+ */
 const emits = defineEmits(['challengeCompleted', 'challengeDeleted']);
 
+/**
+ * Initiates object type challenge with all necessary fields for a challenge
+ */
 interface Challenge{
   'challengeId':number,
   'challengeTitle':string,
@@ -10,6 +17,10 @@ interface Challenge{
   'expirationDate':string
 }
 
+/**
+ * Defines the props that the components requires from the parent.
+ * In this instance a challenge object
+ */
 const props = defineProps({
   challenge: {
     type: Object as () => Challenge,
@@ -18,23 +29,39 @@ const props = defineProps({
   expanded: Boolean
 });
 
+/**
+ * Calculates the expiration date for the challenge
+ */
 const expirationDate = () => {
   return new Date(props.challenge?.expirationDate).
   toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
+/**
+ * Calls the challenge completed emit and passes along the challenge id
+ * of the completed challenge
+ */
 const completeTheChallenge = () => {
   if(props.challenge.challengeId){
     emits('challengeCompleted', props.challenge.challengeId);
   }
 }
 
+/**
+ * Calls the delete challenge emit and passes along the challenge id
+ * of the challenge to be deleted
+ */
 const deleteTheChallenge = () => {
   if(props.challenge.challengeId){
     emits('challengeDeleted', props.challenge.challengeId)
   }
 }
 
+/**
+ * Checks if a challenge is about to expire
+ * Returns true if challenge is about to expire and
+ * false if not
+ */
 const isToExpire = () => {
   if (props.challenge.expirationDate) {
     const today = new Date();

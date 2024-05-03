@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * Defines the props for the base input
+ */
 const props = defineProps({
     label: {
       type: String,

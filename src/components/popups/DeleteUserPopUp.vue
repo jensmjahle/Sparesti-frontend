@@ -3,13 +3,26 @@
 import { useTokenStore } from '@/stores/token'
 import { deleteUser } from '@/utils/profileutils'
 
+/**
+ * Holds the jwt token for the user
+ */
 const token:string = useTokenStore().jwtToken;
+
+/**
+ * Defines the emits for this component
+ */
 const emit = defineEmits(['closeDeletePopUp', 'challengeDeleted']);
 
+/**
+ * Emits a closeDeletePopUp signal to the parent
+ */
 const cancelCompleteThisChallenge = () => {
   emit('closeDeletePopUp');
 }
 
+/**
+ * Deletes the active user and logs them out
+ */
 const deleteThisUser = async () => {
   try{
     await deleteUser(token);

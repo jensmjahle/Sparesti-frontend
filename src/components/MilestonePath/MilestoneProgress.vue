@@ -4,6 +4,9 @@ import ProgressBar from '@/components/ProgressBar.vue'
 
 import { defineProps } from 'vue';
 
+/**
+ * Defines the necessary props for this component
+ */
 const props = defineProps({
   totalToSave: Number,
   totalSaved: Number
