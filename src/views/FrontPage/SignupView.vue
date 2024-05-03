@@ -106,7 +106,7 @@ function navigateToLogin() {
     <div id="EntryFields">
       <div id="userDiv" :class="{ 'invalid-input': fieldTouched.name && !validateName(name) }">
         <h2>Brukernavn</h2>
-        <input v-model="name" @blur="fieldTouched.name = true" data-testid="NameInput" />
+        <input v-model="name" @blur="fieldTouched.name = true" data-testid="NameInput" tabindex="0"/>
         <span
           data-testid="UsernameError"
           v-if="fieldTouched.name && !validateName(name)"
@@ -116,7 +116,7 @@ function navigateToLogin() {
       </div>
       <div id="emailDiv" :class="{ 'invalid-input': fieldTouched.email && !validateEmail(email) }">
         <h2>E-post</h2>
-        <input v-model="email" @blur="fieldTouched.email = true" data-testid="EmailInput" />
+        <input v-model="email" @blur="fieldTouched.email = true" data-testid="EmailInput" tabindex="0"/>
         <span
           data-testid="EmailError"
           v-if="fieldTouched.email && !validateEmail(email)"
@@ -134,6 +134,7 @@ function navigateToLogin() {
           v-model="password"
           @blur="fieldTouched.password = true"
           data-testid="PasswordInput"
+          tabindex="0"
         />
         <span
           data-testid="PasswordError"
@@ -155,6 +156,7 @@ function navigateToLogin() {
           v-model="confirmePassword"
           @blur="fieldTouched.confirmePassword = true"
           data-testid="ConfirmPasswordInput"
+          tabindex="0"
         />
         <span
           data-testid="PasswordConfirmError"
