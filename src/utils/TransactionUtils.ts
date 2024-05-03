@@ -1,6 +1,12 @@
+/**
+ * This file contains functions related to user transactions, such as retrieving transaction data.
+ */
 import axios from 'axios'
 import {BASE_URL} from "@/config/config";
 
+/**
+ * List of sample transactions for testing purposes.
+ */
 const transactionsList = [
   {
     transactionId: 1,
@@ -68,7 +74,11 @@ const transactionsList = [
     }
   }
 ];
-
+/**
+ * Retrieves user's transactions.
+ * @param token User token for authentication.
+ * @returns Promise with the response data with user's transaction.
+ */
 export const getTransactions = async (token:string): Promise<any> => {
 
   const config = {

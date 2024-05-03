@@ -5,7 +5,17 @@ import {
     refreshToken
 } from "@/utils/frontPageUtils";
 import router from "@/router";
-
+/**
+ * Store for managing authentication token and user information.
+ * @type {Object} TokenStore
+ * @type {boolean} displayPopUp - Flag indicating whether to display a popup.
+ * @type {ReturnType<typeof setTimeout> | null} timer - Timer used for token refresh.
+ * @type {ReturnType<typeof setTimeout> | null} tokenTimer - Timer used for token expiration.
+ * @type {string} jwtToken - JWT token for authentication.
+ * @type {string | null} username - Username of the authenticated user.
+ * @type {boolean | null} isConnectedToBank - Flag indicating whether the user is connected to a bank.
+ * @type {boolean} isActive - Flag indicating whether the user's session is active.
+ */
 export const useTokenStore = defineStore({
     id: 'token',
     state: () => ({
@@ -23,10 +33,18 @@ export const useTokenStore = defineStore({
     },
 
     actions: {
+        /**
+         * When page is refreshed, the store will execute refreshToken()
+         */
         async reHydrate() {
             // Restart timers when the store is rehydrated
             await this.refreshToken();
         },
+                /**
+         * Retrieves the JWT token and saves it in the store.
+         * @param username - The username for authentication.
+         * @param password - The password for authentication.
+         */
         async getTokenAndSaveInStore(username: string, password: string) {
             let response;
             try {
@@ -54,7 +72,9 @@ export const useTokenStore = defineStore({
                 }
             }
         },
-
+        /**
+         * Refreshes the JWT token.
+         */
         async refreshToken () {
             try {
                 const response = await refreshToken(this.jwtToken);
@@ -68,26 +88,39 @@ export const useTokenStore = defineStore({
                 await this.logout();
             }
         },
-
+        /**
+         * Sets the active state of the token.
+         * @param {boolean} boolean - The boolean value to set as active.
+         */
         setActive(boolean: boolean) {
             this.isActive = boolean;
         },
-
+        /**
+         * Logs out the user and resets the state of the store.
+         */
         async logout() {
             this.cleanStore();
             await router.push("/login");
         },
-
+        
+        /**
+         * Clears the store
+         */
         cleanStore()  {
             this.$reset();
         },
 
+        /**
+         * Clears the timers.
+         */
         timerClear() {
             if (this.timer) clearTimeout(this.timer)
             if (this.tokenTimer) clearTimeout(this.tokenTimer)
 
         },
-
+        /**
+         * Starts the timers for token refresh and expiration.
+         */
         startTimer: function () {
             this.timerClear()
 
@@ -106,14 +139,27 @@ export const useTokenStore = defineStore({
     },
 
     getters: {
+        /**
+         * Getter for the JWT token.
+         * @param state - The JWT store.
+         * @returns The JWT token.
+         */
         getJwtToken: (state) => {
             return state.jwtToken;
         },
-
+        /**
+         * Getter for the user role.
+         * @param  state - The JWT store.
+         * @returns Whether the user is connected to a bank.
+         */
         getUserRole: (state) => {
             return state.isConnectedToBank;
         },
-
+        /**
+         * Getter for the user role.
+         * @param  state - The JWT store.
+         * @returns The username of the user from token.
+         */
         getUsername: (state) => {
             return state.username;
         }

@@ -1,7 +1,13 @@
+/**
+ * This file contains functions related to user management, such as retrieving user information,
+ * updating user profile, and deleting user account via API calls.
+ */
 import axios from 'axios';
 import {BASE_URL} from "@/config/config";
 import {useToast} from "vue-toast-notification";
-
+/**
+ * Test data for user accounts
+ */
 const testDataUserAccounts:{}[] = [
   {
     'accountNumber': 123456789,
@@ -37,7 +43,9 @@ const testDataUserAccounts:{}[] = [
   },
 
 ]
-
+/**
+ * Test data for user
+ */
 const testDataUser = {
   'username': 'brukernavn',
   'email': 'brukernavn@email.com',
@@ -104,6 +112,11 @@ const testDataUser = {
 }
 
 const toast = useToast();
+/**
+ * Deletes the user account.
+ * @param token User token for authentication.
+ * @returns Promise with the response data.
+ */
 export const deleteUser = async (token:string):Promise<any>=>{
   try{
     const config = {
@@ -119,7 +132,11 @@ export const deleteUser = async (token:string):Promise<any>=>{
     throw error;
   }
 }
-
+/**
+ * Retrieves user's account information.
+ * @param token User token for authentication.
+ * @returns Promise with the response data of the user's bank accounts.
+ */
 export const getUserAccountInfo = async (token:string):Promise<any> => {
   try{
     const config = {
@@ -136,6 +153,11 @@ export const getUserAccountInfo = async (token:string):Promise<any> => {
 
   }
 }
+/**
+ * Retrieves user information.
+ * @param token User token for authentication.
+ * @returns Promise with the response data of the user's info.
+ */
 export const getUserInfo = async (token:string): Promise<any> => {
   try{
     const config = {
@@ -152,7 +174,13 @@ export const getUserInfo = async (token:string): Promise<any> => {
     throw error;
   }
 }
-
+/**
+ * Updates user information.
+ * @param token User token for authentication.
+ * @param email User's email to update.
+ * @param profilePictureBase64 User's profile picture to update.
+ * @returns Promise with the response data.
+ */
 export const updateUserInfo = async (
   token:string,
   email: string,
@@ -175,7 +203,13 @@ export const updateUserInfo = async (
     throw error;
   }
 }
-
+/**
+ * Updates user's password information.
+ * @param token User token for authentication.
+ * @param currentPassword Current password of the user.
+ * @param newPassword New password to update.
+ * @returns Promise with the response data if it went well or not.
+ */
 export const updatePasswordInfo = async (
   token:string,
   currentPassword: string,
@@ -197,6 +231,13 @@ export const updatePasswordInfo = async (
     throw error;
   }
 }
+/**
+ * Updates user's bank account information.
+ * @param token User token for authentication.
+ * @param checkingAccount Checking account number to update.
+ * @param savingAccount Saving account number to update.
+ * @returns Promise with the response data.
+ */
 export const updateBankAccountInfo = async (
   token:string,
   checkingAccount: number,
@@ -218,7 +259,14 @@ export const updateBankAccountInfo = async (
     throw error;
   }
 }
-
+/**
+ * Updates user's income information.
+ * @param token User token for authentication.
+ * @param monthlyIncome Monthly income to update.
+ * @param monthlyFixedExpenses Monthly fixed expenses to update.
+ * @param monthlySavings Monthly savings to update.
+ * @returns Promise with the response data.
+ */
 export const updateIncomeInfo = async (
   token:string,
   monthlyIncome:number,
@@ -243,20 +291,11 @@ export const updateIncomeInfo = async (
   }
 }
 
-export const deleteAccount = async (token: string) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token
-    }
-  };
-  try {
-    await axios.delete(`${BASE_URL}/users/delete`, config)
-  } catch (error) {
-    console.log(error)
-  }
-}
-
+/**
+ * Retrieves achievements that hasn't been completed by the user.
+ * @param token User token for authentication.
+ * @returns Promise with the response data of the uncompleted achievements
+ */
 export const getLockedAchievements =  async (token:string):Promise<any> => {
   try {
     const config = {
