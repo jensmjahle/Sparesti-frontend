@@ -28,6 +28,11 @@ const image = ref()
 const tomorrow = new Date(start_date.value)
 tomorrow.setDate(tomorrow.getDate() + 1)
 
+/**
+ * Validates the input values for a milestone form.
+ * Updates error messages for title, description, dates, and amount based on input validation.
+ * @returns {boolean} Indicates whether the input values are valid (`true`) or not (`false`).
+ */
 const validate = () => {
   let isValid = true
   titleError.value = ''
@@ -65,6 +70,13 @@ const validate = () => {
   return isValid
 }
 
+/**
+ * Computed property that returns an object representing milestone data based on reactive values.
+ * Retrieve values from reactive refs (`title`, `description`, `goal_sum`, `current_sum`, `image`, `end_date`, `start_date`)
+ * and constructs an object with milestone details including title, description, goal sum, current sum, image,
+ * deadline date (if available), and start date (if available).
+ * @returns {Object} An object representing milestone data with the following properties:
+*/
 const milestoneData = computed(() => ({
   milestoneTitle: title.value,
   milestoneDescription: description.value,
@@ -75,6 +87,13 @@ const milestoneData = computed(() => ({
   startDate: start_date.value ? start_date.value : null
 }));
 
+/**
+ * Validates milestone data and saves the input if validation passes.
+ * If validation succeeds, creates a milestone using the provided data and JWT token,
+ * then navigates to the specified route upon success.
+ * Logs 'fail' to the console if validation fails.
+ * @returns {Promise<void>} A promise that resolves after the milestone is created and navigation is completed.
+ */
 const saveInput = async () => {
   if (validate()) {
     await createMilestone(milestoneData.value, tokenStore.jwtToken);
@@ -84,6 +103,12 @@ const saveInput = async () => {
   }
 }
 
+/**
+ * Handles file change event by reading the selected file and updating the image value.
+ * Uses a FileReader to read the file contents as a data URL and assigns it to the `image.value`.
+ * @param {Event} event - The file change event containing the selected file.
+ * @returns {void} This function does not return a value.
+ */
 const handleFileChange = (event: any) => {
   const file = event.target.files[0]
   const reader = new FileReader()
@@ -92,12 +117,22 @@ const handleFileChange = (event: any) => {
   }
   reader.readAsDataURL(file)
 }
+
 const fileInput = ref<HTMLInputElement | null>(null);
 
+/**
+ * Removes the image value by setting it to null.
+ * @returns {void} This function does not return a value.
+ */
 const removeImage = () => {
   image.value = null;
 }
 
+/**
+ * Opens the file explorer dialog by programmatically clicking on a hidden file input element.
+ * Checks if the `fileInput` value is an instance of `HTMLInputElement` before triggering the click action.
+ * @returns {void} This function does not return a value.
+ */
 const openFileExplorer = () => {
   if (fileInput.value instanceof HTMLInputElement) {
     fileInput.value.click();
