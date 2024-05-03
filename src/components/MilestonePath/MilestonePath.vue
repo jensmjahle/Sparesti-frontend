@@ -79,7 +79,7 @@ onMounted(() => {
               :top-background-color="nodeForegroundColors[node.colorIndex]"
               :bottom-background-color="nodeBackgroundColors[node.colorIndex]"
               :node-nr="totalNodes - (index)"
-              :sum="Math.ceil((totalToSave / (totalNodes)) * (totalNodes - index-1))"
+              :sum="Math.ceil((totalToSave / (totalNodes)) * (totalNodes - index))"
     />
   </div>
 </template>
