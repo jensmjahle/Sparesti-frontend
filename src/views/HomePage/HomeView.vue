@@ -10,23 +10,44 @@ import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
 const displayType = ref<boolean>(true);
 const displayHelpPopUp = ref<boolean>(false);
 
+/**
+ * Sets the display type to show new challenges.
+ * @returns {void} This function does not return a value.
+ */
 const displayNewChallenges = () => {
   displayType.value = false;
-}
+};
 
+/**
+ * Sets the display type to show active challenges.
+ * @returns {void} This function does not return a value.
+ */
 const displayActiveChallenges = () => {
   displayType.value = true;
-}
+};
 
+/**
+ * Opens the help pop-up by setting its display state to true.
+ * @returns {void} This function does not return a value.
+ */
 const openHelpPopUp = () => {
   displayHelpPopUp.value = true;
-}
+};
+
+/**
+ * Closes the help pop-up asynchronously by setting its display state to false.
+ * @returns {Promise<void>} A promise that resolves when the help pop-up is successfully closed.
+ */
 const closeHelpPopUp = async () => {
   displayHelpPopUp.value = false;
-}
+};
 
 const saved = ref(0)
 
+/**
+ * Asynchronously updates the `saved` value with the user's total savings.
+ * Fetches the user's total savings using `getUserTotalSavings` and updates the `saved` value accordingly.
+ */
 async function userSavings(){
   saved.value = await getUserTotalSavings()
 }

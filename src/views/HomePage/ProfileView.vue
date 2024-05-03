@@ -6,9 +6,8 @@ import BankAccountInfo from '@/components/profile/BankAccountInfo.vue'
 import IncomeInfo from '@/components/profile/IncomeInfo.vue'
 import BadgeInfo from '@/components/profile/BadgeInfo.vue'
 import PasswordInfo from '@/components/profile/PasswordInfo.vue'
-import { deleteUser, getUserInfo } from '@/utils/profileutils'
+import { getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
-import DeleteChallengePopUp from '@/components/popups/DeleteChallengePopUp.vue'
 import DeleteUserPopUp from '@/components/popups/DeleteUserPopUp.vue'
 
 const token:string = useTokenStore().jwtToken;
@@ -18,6 +17,10 @@ const lastName = ref<string>('');
 
 const displayDeletePopUp = ref<boolean>(false)
 
+/**
+ * Handles logic needed before the view can be used.
+ * @returns {void}
+ */
 onMounted(async () => {
   try {
     await fetchUserInfo();
@@ -25,6 +28,11 @@ onMounted(async () => {
     console.error('Error fetching user info:', error);
   }
 })
+
+/**
+ * Handles fetching info connected to a user and stores the data in variables.
+ * @returns {void}
+ */
 const fetchUserInfo = async () =>{
   try{
     const response = await getUserInfo(token)
@@ -36,13 +44,26 @@ const fetchUserInfo = async () =>{
   }
 }
 
+/**
+ * Calls the function that handles logging out a user.
+ * @returns {void}
+ */
 const logout = () => {
   useTokenStore().logout();
 }
 
+/**
+ * Sets boolean that controls delete user popup.
+ * @returns {void}
+ */
 const handleRequestToDeleteUser = async () => {
   displayDeletePopUp.value = true;
 }
+
+/**
+ * Sets boolean that controls delete user popup.
+ * @returns {void}
+ */
 const closeDeletePopUp = async () => {
   displayDeletePopUp.value = false;
 }
