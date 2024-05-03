@@ -54,16 +54,6 @@ watch(
       }
     }
 );
-
-watch(
-  () => store.tokenTimer,
-  (newVal) => {
-    if (newVal === 0) {
-      store.logout();
-    }
-  }
-)
-
 const closePopup = () => {
   showPopup.value = false;
 };
