@@ -126,9 +126,11 @@ h1:hover, h3:hover, h2:hover, h4:hover{
   display: flex;
   flex-direction: column;
   width: 100%;
+  flex: 1;
 }
 
 .description-title{
+  color: var(--color-text-black);
   text-decoration: underline;
   text-align: center;
 }
@@ -153,8 +155,10 @@ h1:hover, h3:hover, h2:hover, h4:hover{
 }
 
 .description{
+  height: 100%;
   display: none;
   place-content: center;
+  align-content: center;
   color: var(--color-text-black);
 }
 
