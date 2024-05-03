@@ -3,30 +3,49 @@ import router from "@/router";
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
 import MilestoneLogList from '@/components/milestone/MilestoneLogList.vue'
 import { ref } from 'vue'
-import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
 import MilestoneHelpPopUp from '@/components/popups/help/MilestoneHelpPopUp.vue'
 
 const displayType = ref<boolean>(true)
 const displayHelpPopUp = ref<boolean>(false)
 
+/**
+ * Sets the display type to show new challenges.
+ */
 const displayNewChallenges = () => {
   displayType.value = false;
-}
+};
 
+/**
+ * Sets the display type to show active challenges.
+ */
 const displayActiveChallenges = () => {
   displayType.value = true;
-}
-const navigateTo = (path: string) => {
-  router.push(path)
-}
+};
 
+/**
+ * Navigates to the specified path using the router.
+ * @param {string} path - The path to navigate to.
+ */
+const navigateTo = (path: string) => {
+  router.push(path);
+};
+
+/**
+ * Opens the help pop-up by setting its display state to true.
+ */
 const openHelpPopUp = () => {
   displayHelpPopUp.value = true;
-}
+};
+
+/**
+ * Closes the help pop-up by setting its display state to false.
+ * Also logs the current display state of the help pop-up.
+ */
 const closeHelpPopUp = () => {
   displayHelpPopUp.value = false;
   console.log(displayHelpPopUp);
-}
+};
+
 </script>
 
 <template>

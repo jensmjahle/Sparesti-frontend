@@ -20,32 +20,71 @@ const fieldTouched = ref({
   confirmePassword: false
 });
 
+/**
+ * Validates whether a name is not empty (after trimming whitespace).
+ * @param {string} nameToCheck - The name to validate.
+ * @returns {boolean} True if the name is not empty after trimming whitespace, false otherwise.
+ */
 function validateName(nameToCheck:string){
   return nameToCheck.trim() !== '';
 }
 
+/**
+ * Validates whether an email address matches a valid email format.
+ * @param {string} emailToCheck - The email address to validate.
+ * @returns {boolean} True if the email address matches a valid format, false otherwise.
+ */
 function validateEmail(emailToCheck:string){
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(emailToCheck);
 }
 
+/**
+ * Validates whether a password meets the minimum length requirement.
+ * @param {string} passwordToCheck - The password to validate.
+ * @returns {boolean} True if the password length is at least 8 characters, false otherwise.
+ */
 function validatePassword(passwordToCheck:string){
   return passwordToCheck.trim().length >= 8;
 }
 
+
+/**
+ * Validates whether a password matches a confirmation password.
+ * @param {string} passwordToCheck - The password to check.
+ * @param {string} passwordConfirmation - The confirmation password to compare against.
+ * @returns {boolean} True if the passwords match after trimming whitespace, false otherwise.
+ */
 function validateConfirmPassword(passwordToCheck: string, passwordConfirmation: string){
   return passwordToCheck.trim() === passwordConfirmation.trim();
 }
 
+
+/**
+ * Validates user registration input by checking name, email, password, and password confirmation.
+ * @param {string} nameToCheck - The name to validate.
+ * @param {string} emailToCheck - The email address to validate.
+ * @param {string} passwordToCheck - The password to validate.
+ * @param {string} passwordConfirmation - The confirmation password to validate against.
+ * @returns {boolean} True if all inputs are valid, false otherwise.
+ */
 function registerUserValid (nameToCheck:string, emailToCheck:string, passwordToCheck:string, passwordConfirmation:string){
   return validateName(nameToCheck) && validateEmail(emailToCheck) && validatePassword(passwordToCheck) && validateConfirmPassword(passwordToCheck, passwordConfirmation);
 }
 
+/**
+ * Submits user registration by calling the signUpUser function and then navigating to the register page.
+ * @returns {Promise<void>} A promise that resolves after user registration is processed and navigation is complete.
+ */
 async function submit() {
   await signUpUser(name.value, email.value, password.value)
   await router.push("/register")
 }
 
+/**
+ * Navigates the user to the login page using Vue Router.
+ * @returns {void} This function does not return a value.
+ */
 function navigateToLogin() {
   router.push('/login')
 }

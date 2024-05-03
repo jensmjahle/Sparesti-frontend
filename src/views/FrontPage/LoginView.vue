@@ -11,16 +11,29 @@ const username = ref('');
 const password = ref('');
 const toast = useToast();
 
+/**
+ * Navigates the user to the sign-up page using Vue Router.
+ * @returns This function does not return a value.
+ */
 function navigateToNewUser() {
   router.push('/signup')
 }
 
+/**
+ * Checks if the user is an existing user based on token state and conditions.
+ * @returns True if the user is considered an existing user, false otherwise.
+ */
 const existingUser = () => {
   return (useTokenStore().jwtToken !== ''
     && !useTokenStore().jwtToken.includes('Request')
     && !useTokenStore().jwtToken.includes('Error'))
 }
 
+/**
+ * Attempts to log in a user by retrieving a token and performing navigation based on login status.
+ * Shows appropriate toast messages based on different login outcomes.
+ * @returns A promise that resolves after login attempt and navigation are completed.
+ */
 async function login() {
   await useTokenStore().getTokenAndSaveInStore(username.value, password.value);
 
@@ -48,16 +61,16 @@ async function login() {
 
 <template>
   <div id="LoginView">
-    <TopBanner />
+      <TopBanner />
     <h1 id="Title">Login</h1>
     <div id="LoginFields">
       <div id="UserDiv">
         <h2 id="Username">Brukernavn</h2>
-        <input id="NameField" placeholder="Skriv inn dit brukernavn" v-model="username" data-testid="NameInput">
+        <input id="NameField" placeholder="Skriv inn ditt brukernavn" v-model="username" data-testid="NameInput"  @keyup.enter="login">
       </div>
       <div id="PasswordDiv">
         <h2 id="Password">Passord</h2>
-        <input id="PasswordField" type="password" placeholder="Skriv inn dit passord" v-model="password" data-testid="PasswordInput">
+        <input id="PasswordField" type="password" placeholder="Skriv inn ditt passord" v-model="password" data-testid="PasswordInput"  @keyup.enter="login">
       </div>
     </div>
 
@@ -68,6 +81,7 @@ async function login() {
             data-testid="LogInButton">
       Login
     </button>
+
     <h2 tabindex="0" @keyup.enter="navigateToNewUser()" @click="navigateToNewUser()" id="NewUser" data-testid="NewUserLink">Ny til Sparesti? Trykk her for å lage en profil!</h2>
   </div>
 </template>

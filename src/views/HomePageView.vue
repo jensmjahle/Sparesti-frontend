@@ -1,25 +1,29 @@
 <script setup lang="ts">
 import TopNav from '@/components/navigation/TopNav.vue'
 import SideNav from '@/components/navigation/SideNav.vue'
-import {onMounted, ref, watch, onUnmounted } from 'vue';
+import { onMounted, ref, watch, onUnmounted } from 'vue';
 import { useTokenStore } from '@/stores/token';
 import HomePagePopUp from './HomePage/HomePagePopUp.vue';
 import router from "@/router";
 
 const store = useTokenStore();
-const showPopup = ref(store.displayPopUp);
+const showPopup = ref();
 const isMounted = ref<boolean>(false)
 let timer = null as ReturnType<typeof setTimeout> | null
 
+/**
+ * Handles logic that is needed on the view and executes when the view is mounted.
+ * @returns {void}
+ */
 onMounted(async() => {
   if (store.jwtToken === '' || store.jwtToken.includes('Request') ||
     !store.isConnectedToBank || store.jwtToken.includes('Error')) {
     await router.push('/login');
   }
 
-  console.log('showPopup', store.displayPopUp);
+  await store.reHydrate();
 
-  if (timer) clearTimeout(timer)
+  showPopup.value = store.displayPopUp;
 
   timer = setInterval(() => {
     // After a certain interval, assume user is inactive
@@ -33,19 +37,35 @@ onMounted(async() => {
   isMounted.value = true;
 });
 
+/**
+ * Handles logic that needs to be reset when the view is unmounted.
+ * @returns {void}
+ */
 onUnmounted(async () => {
   document.removeEventListener('mousemove', handleMouseMove);
   document.removeEventListener('keydown', handleKeyDown);
 });
 
+/**
+ * Handles mouseMove action.
+ * @returns {void}
+ */
 const handleMouseMove = () => {
   useTokenStore().setActive(true);
 };
 
+/**
+ * Handles keyDown action.
+ * @returns {void}
+ */
 const handleKeyDown = () => {
   useTokenStore().setActive(true);
 };
 
+/**
+ * Listens to changes in the store.displayPopUp value.
+ * Updates showPopUp in case of change.
+ */
 watch(
     () => store.displayPopUp,
     (newVal) => {
@@ -55,6 +75,10 @@ watch(
     }
 );
 
+/**
+ * Sets showPopUp to false.
+ * @returns {void}
+ */
 const closePopup = () => {
   showPopup.value = false;
 };

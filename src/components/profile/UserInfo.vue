@@ -7,14 +7,14 @@ import eventBus from '@/components/service/eventBus.js'
 import {useToast} from "vue-toast-notification";
 
 /**
- * Initiates toast for error messages
- */
-const toast = useToast()
-
-/**
  * Holds the users jwt token
  */
 const token:string = useTokenStore().jwtToken;
+
+/**
+ * Initiates toast for error messages
+ */
+const toast = useToast();
 
 /**
  * Holds the email error
@@ -105,7 +105,7 @@ const saveUserInfo = async () => {
     try{
       await updateUserInfo( token,email.value, profilePictureBase64.value);
       eventBus.emit('updateProfilePicture');
-      toast.success("E-post oppdatert")
+      toast.success('Bruker opplysninger ble lagret!')
     } catch (error) {
       inputError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
@@ -159,18 +159,21 @@ watch(email, checkInput);
         <button tabindex="0" type="button" for="profile-picture-input" class="profile-picture-button" @click="openFileExplorer">
           <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
                  @change="handleFileChange">
-          <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
-          <img v-else src=/src/components/icons/navigation/user.svg alt="profile-picture" class="profile-picture">
+          <div class="profile-picture-container">
+            <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
+            <img v-else src="/src/components/icons/navigation/user.svg" alt="profile-picture" class="profile-picture">
+            <img src="/src/components/icons/image/pencil-edit.svg" alt="edit-icon" class="edit-icon">
+          </div>
         </button>
       </div>
-      <div class="text-input">
+      <div class="text-input"  @keyup.enter="saveUserInfo">
         <div class="input-collection">
           <H4>Brukernavn: </H4>
-          <input class="input" id="username-input" v-model="username" readonly disabled>
+          <input class="input" id="username-input" v-model="username" readonly disabled >
         </div>
         <div class="input-collection">
           <H4>E-post: </H4>
-          <input class="input" id="email-input" :class="{'error': emailError}" v-model="email">
+          <input class="input" id="email-input" :class="{'error': emailError}" v-model="email"  >
           <div class="alert-box">
             <h4 v-if="emailError" class="error-message">{{emailError}}</h4>
             <h4 v-if="inputError" class="error-message">{{inputError}}</h4>
@@ -266,6 +269,20 @@ watch(email, checkInput);
   height: 100%;
   width: 20%;
   justify-content: center;
+}
+
+.profile-picture-container {
+  position: relative; /* Make the container relative */
+}
+
+.edit-icon {
+  position: absolute;
+  top: 0;
+  left: -0.5vw;
+  width: 2vw;
+  height: 2vw;
+  z-index: 1;
+  transform: scaleX(-1);
 }
 
 .input-collection{

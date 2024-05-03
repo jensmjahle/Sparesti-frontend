@@ -28,6 +28,11 @@ const image = ref()
 const tomorrow = new Date(start_date.value)
 tomorrow.setDate(tomorrow.getDate() + 1)
 
+/**
+ * Validates the input values for a milestone form.
+ * Updates error messages for title, description, dates, and amount based on input validation.
+ * @returns {boolean} Indicates whether the input values are valid (`true`) or not (`false`).
+ */
 const validate = () => {
   let isValid = true
   titleError.value = ''
@@ -48,12 +53,12 @@ const validate = () => {
     dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>current_sum.value) || current_sum.value == '' || <number>current_sum.value<=0 ) {
+  if (isNaN(<number>current_sum.value) || current_sum.value == '') {
     amountErrorStart.value = 'Fyll inn et gyldig beløp!'
     isValid = false;
   }
 
-  if(isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value<=0){
+  if(isNaN(<number>goal_sum.value) || goal_sum.value == ''){
     amountErrorGoal.value = 'Fyll inn et gyldig beløp!'
     isValid = false;
   }
@@ -65,6 +70,13 @@ const validate = () => {
   return isValid
 }
 
+/**
+ * Computed property that returns an object representing milestone data based on reactive values.
+ * Retrieve values from reactive refs (`title`, `description`, `goal_sum`, `current_sum`, `image`, `end_date`, `start_date`)
+ * and constructs an object with milestone details including title, description, goal sum, current sum, image,
+ * deadline date (if available), and start date (if available).
+ * @returns {Object} An object representing milestone data with the following properties:
+*/
 const milestoneData = computed(() => ({
   milestoneTitle: title.value,
   milestoneDescription: description.value,
@@ -75,15 +87,28 @@ const milestoneData = computed(() => ({
   startDate: start_date.value ? start_date.value : null
 }));
 
+/**
+ * Validates milestone data and saves the input if validation passes.
+ * If validation succeeds, creates a milestone using the provided data and JWT token,
+ * then navigates to the specified route upon success.
+ * Logs 'fail' to the console if validation fails.
+ * @returns {Promise<void>} A promise that resolves after the milestone is created and navigation is completed.
+ */
 const saveInput = async () => {
   if (validate()) {
     await createMilestone(milestoneData.value, tokenStore.jwtToken);
-    await router.push('/homepage/milestone');
+    await router.push('/homepage/home');
   } else {
     console.log('fail')
   }
 }
 
+/**
+ * Handles file change event by reading the selected file and updating the image value.
+ * Uses a FileReader to read the file contents as a data URL and assigns it to the `image.value`.
+ * @param {Event} event - The file change event containing the selected file.
+ * @returns {void} This function does not return a value.
+ */
 const handleFileChange = (event: any) => {
   const file = event.target.files[0]
   const reader = new FileReader()
@@ -92,12 +117,22 @@ const handleFileChange = (event: any) => {
   }
   reader.readAsDataURL(file)
 }
+
 const fileInput = ref<HTMLInputElement | null>(null);
 
+/**
+ * Removes the image value by setting it to null.
+ * @returns {void} This function does not return a value.
+ */
 const removeImage = () => {
   image.value = null;
 }
 
+/**
+ * Opens the file explorer dialog by programmatically clicking on a hidden file input element.
+ * Checks if the `fileInput` value is an instance of `HTMLInputElement` before triggering the click action.
+ * @returns {void} This function does not return a value.
+ */
 const openFileExplorer = () => {
   if (fileInput.value instanceof HTMLInputElement) {
     fileInput.value.click();
@@ -129,7 +164,7 @@ const openFileExplorer = () => {
         </div>
       </div>
 
-      <div class="input" id="title-input">
+      <div class="input" id="title-input" @keyup.enter="saveInput">
         <BaseInput
           v-model="title"
           label="Tittel"
@@ -141,19 +176,18 @@ const openFileExplorer = () => {
                v-if="titleError">{{ titleError }}</label>
       </div>
 
-      <div class="input-large" id="description-area">
+      <div class="input-large" @keyup.enter="saveInput">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
           place-holder="Beskriv sparemålet"
           :error="descriptionError !== ''"
-
         ></BaseTextArea>
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
 
-      <div class="smaller-inputs">
-        <div class="input" id="goal-input">
+      <div class="smaller-inputs" @keyup.enter="saveInput">
+        <div class="input">
           <base-input
             v-model="goal_sum"
             label="Hvor mye vil du spare (nok)?"
@@ -163,7 +197,7 @@ const openFileExplorer = () => {
           ></base-input>
           <label class="error" v-if="amountErrorGoal">{{ amountErrorGoal }}</label>
         </div>
-        <div class="input" id="current-input">
+        <div class="input" @keyup.enter="saveInput">
           <base-input
             v-model="current_sum"
             place-holder="Sett inn hvor mye du har nå"
@@ -176,22 +210,21 @@ const openFileExplorer = () => {
 
       <div class="smaller-inputs">
         <div class="input">
-          <h3>Start dato</h3>
+          <h3>Startdato</h3>
           <VueDatePicker
             :enable-time-picker="false"
-            placeholder="Velg start dato"
+            placeholder="Velg startdato"
             v-model="start_date"
             :min-date="start_date"
             :disabled="true"
           ></VueDatePicker>
         </div>
-        <div class="input" id="end-date">
-          <h3>Slutt dato</h3>
+        <div class="input">
+          <h3>Sluttdato</h3>
           <VueDatePicker
             :enable-time-picker="false"
-            placeholder="Velg slutt dato"
+            placeholder="Velg sluttdato"
             v-model="end_date"
-            auto-apply
             :min-date="tomorrow"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>

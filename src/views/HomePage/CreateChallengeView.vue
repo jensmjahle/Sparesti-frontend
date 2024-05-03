@@ -26,6 +26,12 @@ const router = useRouter()
 
 const tomorrow = new Date(start_date.value)
 tomorrow.setDate(tomorrow.getDate() + 1)
+
+/**
+ * Validates the input values for a challenge form.
+ * Updates error messages for title, description, dates, and amount based on input validation.
+ * @returns {boolean} Indicates whether the input values are valid (`true`) or not (`false`).
+ */
 const validate = () => {
   let isValid = true
   titleError.value = ''
@@ -45,7 +51,7 @@ const validate = () => {
     dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value<=0) {
+  if (isNaN(<number>goal_sum.value) || goal_sum.value == '') {
     amountError.value = 'Fyll inn et gyldig sparebeløp!'
     isValid = false
   }
@@ -53,6 +59,11 @@ const validate = () => {
   return isValid
 }
 
+/**
+ * Computed property that generates an object containing challenge data from reactive values.
+ * Retrieves and encapsulates challenge title, description, goal sum, and expiration date.
+ * @returns {Object} An object containing challenge data extracted from reactive values.
+ */
 const challengeData = computed(() => ({
   challengeTitle: title.value,
   challengeDescription: description.value,
@@ -60,6 +71,13 @@ const challengeData = computed(() => ({
   expirationDate: end_date.value ? end_date.value : null,
 }))
 
+/**
+ * Asynchronously saves challenge input data to the backend.
+ * Validates the input data using the `validate` function.
+ * If the input data is valid, creates a new challenge with the provided data and navigates to the challenge page upon successful creation.
+ * Displays success or error toast messages based on the operation outcome.
+ * @returns {Promise<void>} A promise that resolves after attempting to save and create the challenge.
+ */
 const saveInput = async() => {
   if (validate()) {
     await createChallenge(tokenStore.jwtToken, challengeData.value)
@@ -83,7 +101,7 @@ const saveInput = async() => {
     </div>
 
     <div class="input-container">
-      <div class="input" id="title-input">
+      <div class="input" id="title-input" @keyup.enter="saveInput">
         <BaseInput
           v-model="title"
           label="Tittel"
@@ -95,7 +113,7 @@ const saveInput = async() => {
                v-if="titleError">{{ titleError }}</label>
       </div>
 
-      <div class="input-large" id="description-area">
+      <div class="input-large" @keyup.enter="saveInput">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
@@ -105,7 +123,7 @@ const saveInput = async() => {
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
 
-      <div class="input" id="goal-input">
+      <div class="input" @keyup.enter="saveInput">
         <base-input
           v-model="goal_sum"
           place-holder="Hvor mye sparer du av utfordringen?"
@@ -117,23 +135,21 @@ const saveInput = async() => {
 
       <div class="smaller-inputs">
         <div class="input" id="nested">
-          <h3>Start dato</h3>
+          <h3>Startdato</h3>
           <VueDatePicker
             :enable-time-picker="false"
-            placeholder="Velg start dato"
+            placeholder="Velg startdato"
             v-model="start_date"
             :min-date="start_date"
-            auto-apply
             :disabled="true"
           ></VueDatePicker>
         </div>
         <div class="input" id="nested">
-          <h3>Slutt dato</h3>
+          <h3>Sluttdato</h3>
           <VueDatePicker
             :enable-time-picker="false"
-            placeholder="Velg slutt dato"
+            placeholder="Velg sluttdato"
             v-model="end_date"
-            auto-apply
             :min-date="tomorrow"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>

@@ -39,7 +39,7 @@ function cancel(){
 
 <template>
   <div id = confirmation>
-    <h2>Er du sikker på at du vill gjennomføre en direkte overføring på <span style="font-weight: bold;">{{props.transferAmount}}</span> nok</h2>
+    <h2>Er du sikker på at du vil gjennomføre en direkte overføring på <span style="font-weight: bold;">{{props.transferAmount}}</span> NOK</h2>
     <div id = buttons>
       <button @click ="cancel" id="cancelButton"><h2>Avbryt</h2></button>
       <button @click="confirm()" id="confirmButton"><h2>Bekreft</h2></button>

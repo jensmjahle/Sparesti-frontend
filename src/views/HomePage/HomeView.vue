@@ -6,29 +6,56 @@ import { getUserTotalSavings } from '@/utils/HomePageUtils'
 
 import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
 import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
+import router from "@/router";
+import TutorialView from "@/views/HomePage/TutorialView.vue";
 
 const displayType = ref<boolean>(true);
 const displayHelpPopUp = ref<boolean>(false);
 
+/**
+ * Sets the display type to show new challenges.
+ * @returns {void} This function does not return a value.
+ */
 const displayNewChallenges = () => {
   displayType.value = false;
-}
+};
 
+/**
+ * Sets the display type to show active challenges.
+ * @returns {void} This function does not return a value.
+ */
 const displayActiveChallenges = () => {
   displayType.value = true;
-}
+};
 
+/**
+ * Opens the help pop-up by setting its display state to true.
+ * @returns {void} This function does not return a value.
+ */
 const openHelpPopUp = () => {
   displayHelpPopUp.value = true;
-}
+};
+
+/**
+ * Closes the help pop-up asynchronously by setting its display state to false.
+ * @returns {Promise<void>} A promise that resolves when the help pop-up is successfully closed.
+ */
 const closeHelpPopUp = async () => {
   displayHelpPopUp.value = false;
-}
+};
 
 const saved = ref(0)
 
+/**
+ * Asynchronously updates the `saved` value with the user's total savings.
+ * Fetches the user's total savings using `getUserTotalSavings` and updates the `saved` value accordingly.
+ */
 async function userSavings(){
   saved.value = await getUserTotalSavings()
+}
+
+const DisplayTutorial = () =>{
+   router.push('/homepage/tutorial')
 }
 
 userSavings()
@@ -63,6 +90,7 @@ userSavings()
     <div class="main">
       <div class="left" :class="{ 'mobile-hide': !displayType }">
         <TotalSavings class="create-challenge-button" :total-saved="saved"></TotalSavings>
+        <button class="tutorial-button" @click="DisplayTutorial">Ny til Sparesti? Trykk her!</button>
         <ActiveMilestonesList class="active-challenges"></ActiveMilestonesList>
       </div>
       <div class="right" :class="{ 'mobile-hide': displayType }">
@@ -108,6 +136,20 @@ userSavings()
 
   align-items: center;
   z-index: 1000; /* Adjust z-index as needed */
+}
+
+.tutorial-button {
+  padding: 20px 0;
+  margin: 20px 0;
+  font-size: 2em;
+  background-color: var(--color-confirm-button);
+  width: 100%;
+  border-radius: 20px;
+  border: none;
+  color: var(--color-button-text);
+}
+.tutorial-button:hover {
+  transform: scale(1.02);
 }
 
 .title{

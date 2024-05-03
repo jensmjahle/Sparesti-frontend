@@ -149,7 +149,7 @@ const checkInput = () => {
         <h3 class="save-button-title">Lagre</h3>
       </button>
     </div>
-    <div class="input-fields">
+    <div class="input-fields" @keyup.enter="saveInput">
 
       <div class="description-collection">
         <div class="description-box">

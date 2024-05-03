@@ -73,12 +73,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="learning-path">
+  <div class="learning-path" v-if="totalToSave">
     <PathNode v-for="(node, index) in nodes" :key="index" :style="{ marginLeft: node.offset }"
               :node-background-color="nodeBackgroundColors[node.colorIndex]"
               :top-background-color="nodeForegroundColors[node.colorIndex]"
               :bottom-background-color="nodeBackgroundColors[node.colorIndex]"
-              :node-nr="totalNodes - (index)"/>
+              :node-nr="totalNodes - (index)"
+              :sum="Math.ceil((totalToSave / (totalNodes)) * (totalNodes - index-1))"
+    />
   </div>
 </template>
 

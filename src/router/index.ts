@@ -17,6 +17,7 @@ import MilestonePathView from '@/views/HomePage/MilestonePathView.vue'
 import CreateChallengeView from '@/views/HomePage/CreateChallengeView.vue'
 import CreateMilestoneView from '@/views/HomePage/CreateMilestoneView.vue'
 import EditMilestoneView from '@/views/HomePage/EditMilestoneView.vue'
+import TutorialView from "@/views/HomePage/TutorialView.vue";
 
 
 const router = createRouter({
@@ -94,6 +95,10 @@ const router = createRouter({
         {
           path: 'edit-milestone',
           component: EditMilestoneView
+        },
+        {
+          path: 'tutorial',
+          component: TutorialView
         }
       ]
     }

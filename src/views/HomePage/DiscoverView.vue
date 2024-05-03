@@ -18,17 +18,32 @@ type Article = {
 
 const displayHelpPopUp = ref<boolean>(false)
 
-
+/**
+ * Opens the help pop-up by setting its display state to true.
+ * @returns {void} This function does not return a value.
+ */
 const openHelpPopUp = () => {
   displayHelpPopUp.value = true;
 }
+
+/**
+ * Closes the help pop-up by setting its display state to false asynchronously.
+ * @returns {Promise<void>} A promise that resolves after the help pop-up is closed.
+ */
 const closeHelpPopUp = async () => {
   displayHelpPopUp.value = false;
 }
 
-
 const articles = ref<Article[]>([]);
 
+/**
+ * Vue composition API hook to fetch news articles related to finance topics upon component mounting.
+ * Articles are fetched from the News API with specific query parameters.
+ * Updates the reactive `articles` variable with the fetched article data.
+ * Logs any errors encountered during the fetch operation.
+ * @param {string} apiKey - The News API key used for authentication.
+ * @returns {void} This function does not return a value directly.
+ */
 onMounted(async () => {
   try {
     const response = await fetch('https://newsapi.org/v2/everything?q="spare"OR"sparing"OR"bank"OR"rente"&domains=e24.no&apiKey=b01f36ab840346f3b28c7c0a30cad606');

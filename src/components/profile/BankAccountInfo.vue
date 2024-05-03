@@ -5,6 +5,15 @@ import { getUserAccountInfo, getUserInfo, updateBankAccountInfo } from '@/utils/
 import { useTokenStore } from '@/stores/token'
 import {useToast} from "vue-toast-notification";
 
+interface Account {
+  accountNumber: number;
+  username: string;
+  balance: number;
+  name: string;
+  type: string;
+  currency: string;
+}
+
 /**
  * Holds the user jwt token
  */
@@ -15,15 +24,21 @@ const token:string = useTokenStore().jwtToken;
  */
 const toast = useToast();
 
-/**
- * Holds the account number for the savings account
- */
-const savingAccount = ref<number>(0);
 
 /**
- * Hold the account number for the checking account
+ * Holds the index of the selected savings account
  */
-const checkingAccount= ref<number>(0);
+const savingAccount   = ref<number>(0);
+
+/**
+ * Hold the index of the selected checking account
+ */
+const checkingAccount = ref<number>(0);
+
+/**
+ * Holds a list accounts
+ */
+const accounts = ref<Account[]>([])
 
 /**
  * Holds the saving account error
@@ -35,15 +50,10 @@ const savingAccountError = ref<string | null>(null);
  */
 const accountError = ref<string | null>(null);
 
-/**
- * Holds a list accounts
- */
-const accounts = ref<number[]>([])
-
 onMounted(async () => {
   try {
+    await fetchAccounts();
     await fetchUserInfo();
-    await fetchAccountInfo();
   } catch (error) {
     console.error('Error fetching user info:', error);
   }
@@ -54,11 +64,18 @@ onMounted(async () => {
  * account values to what is saved for the user
  */
 const fetchUserInfo = async () =>{
-  try{
+  try {
+    // Retrieve chosen accounts
     const response = await getUserInfo(token);
 
-    checkingAccount.value = response.currentAccount;
-    savingAccount.value = response.savingsAccount;
+    // Update current selection indices based on a match between account numbers
+    for (let i = 0; i < accounts.value.length; i++) {
+      if (accounts.value[i].accountNumber == response.savingsAccount)
+        savingAccount.value = i;
+
+      if (accounts.value[i].accountNumber == response.currentAccount)
+        checkingAccount.value = i;
+    }
 
   } catch (error){
     console.error('Error fetching user info:', error);
@@ -69,39 +86,43 @@ const fetchUserInfo = async () =>{
  * Fetches account info and updates the accounts array with
  * the users available accounts
  */
-const fetchAccountInfo = async () => {
-  const response = await getUserAccountInfo(token);
-  accounts.value = [];
-  for(let i = 0; i < response.length; i++){
-    accounts.value.push(response[i].accountNumber)
-  }
+const fetchAccounts = async () => {
+  accounts.value = await getUserAccountInfo(useTokenStore().jwtToken)
 }
+
+
 
 /**
  * Checks if the two accounts are the same and presents the user
  * with an error if they are
  */
 const checkInput = () => {
-  if(savingAccount.value == checkingAccount.value){
+  if (savingAccount.value == checkingAccount.value)
     savingAccountError.value = 'Sparekonto er lik brukskonto!'
-  } else{
+  else
     savingAccountError.value = null;
-  }
+
   accountError.value = null;
 }
+
 
 /**
  * Updates the users account info with the new selected accounts.
  * Shows an error if something goes wrong
  */
-const saveAccountInfo = async ()=> {
+const saveAccountInfo = async () => {
   checkInput()
-  if(savingAccountError.value == null){
-    try{
-      await updateBankAccountInfo(token,checkingAccount.value, savingAccount.value)
-      await fetchAccountInfo();
+  if (savingAccountError.value == null) {
+    try {
+      await updateBankAccountInfo(
+          token,
+          accounts.value[checkingAccount.value].accountNumber,
+          accounts.value[  savingAccount.value].accountNumber
+      )
+
+      await fetchAccounts();
       await fetchUserInfo();
-      toast.success("Konto info oppdatert")
+      toast.success('Konto-opplysninger ble oppdatert!')
     } catch (error){
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
       accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
@@ -110,6 +131,8 @@ const saveAccountInfo = async ()=> {
 }
 
 </script>
+
+
 
 <template>
   <div class="account-info">
@@ -120,19 +143,19 @@ const saveAccountInfo = async ()=> {
       </button>
     </div>
 
-    <div class="input-fields">
+    <div class="input-fields" @keyup.enter="saveAccountInfo">
 
       <div class="input-collection">
         <h4>Forbrukskonto: </h4>
         <select class="accounts" v-model="checkingAccount">
-          <option v-for="(account, index) in accounts" :key="'check' + index" :value="account">{{ account }}</option>
+          <option v-for="(option, index) in accounts" :key="'check' + index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
         </select>
       </div>
 
       <div class="input-collection">
         <h4>Sparekonto: </h4>
         <select class="accounts" :class="{'error': savingAccountError}" v-model="savingAccount">
-          <option v-for="(account, index) in accounts"  :key="'saving' + index" :value="account">{{ account }}</option>
+          <option v-for="(option, index) in accounts" :key="'saving' + index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
         </select>
       </div>
 

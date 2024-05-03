@@ -20,8 +20,8 @@ const closePopUp = () => {
       <h2>Transaksjoner</h2>
     </div>
     <h3>
-      Hei! Du befinner deg for øyeblikket på transaksjon-siden til sparesti.
-      På denne siden finner du en oversikt over dine nyligste transaksjoner, samt hva pengene har gått til
+      Hei! Du befinner deg for øyeblikket på transaksjon-siden til Sparesti.
+      På denne siden finner du en oversikt over dine nyligste transaksjoner.
     </h3>
 
     <div class="option-buttons">
