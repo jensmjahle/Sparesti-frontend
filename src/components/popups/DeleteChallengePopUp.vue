@@ -48,7 +48,7 @@ const deleteThisChallenge = async () => {
 <template>
   <div class="popup-content">
     <!-- Pop-up content goes here -->
-    <h2>Er du sikker på at du vil slette utfordringen?</h2>
+    <h2>Er du sikker på at du vil gi opp denne utfordringen?</h2>
 
     <div class="content">
       <img class="sad-pig-img" src="/src/assets/png/sad-pig.png" alt="sad-pig" >
@@ -61,7 +61,7 @@ const deleteThisChallenge = async () => {
         <h2 class="option-button-title">Avbryt</h2>
       </button>
       <button class="option-button" id="delete-button" @click="deleteThisChallenge()">
-        <h2 class="option-button-title">Slett</h2>
+        <h2 class="option-button-title">Gi opp</h2>
       </button>
     </div>
   </div>

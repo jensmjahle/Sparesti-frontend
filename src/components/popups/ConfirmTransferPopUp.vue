@@ -60,7 +60,7 @@ function cancel(){
     flex-direction: column;
 
     width: 50%;
-    height: 50%;
+    height: 60%;
     background-color: var(--color-background);
 
     padding: 20px;
@@ -115,6 +115,13 @@ function cancel(){
 
   #cancelButton:active{
     background-color: var(--color-cancel-button-click);
+  }
+
+  @media only screen and (max-width: 1000px){
+    #confirmation {
+      width: 90%;
+      height: 60%;
+    }
   }
 
 </style>

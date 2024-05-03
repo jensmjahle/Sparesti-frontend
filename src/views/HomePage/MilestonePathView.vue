@@ -176,11 +176,11 @@ async function deleteAMilestone(milestoneId:number){
     </div>
 
     <div class="toggle-buttons">
-      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
-        <h3 class="toggle-button-title">Informasjon</h3>
-      </button>
       <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
         <h3 class="toggle-button-title">Sparesti</h3>
+      </button>
+      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+        <h3 class="toggle-button-title">Informasjon</h3>
       </button>
     </div>
     <div id = MilestonePath>
