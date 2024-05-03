@@ -24,7 +24,7 @@ export const getUserBankAccounts = async(token: string):Promise<any> => {
         return response.data
     } catch (error) {
         console.log(error)
-        toast.error('Kunne ikke hente brukerkontoer. Prøv igjen senere.')
+        throw error;
     }
 }
 /**
