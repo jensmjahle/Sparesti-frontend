@@ -52,8 +52,8 @@ watch(currentRoute, () => {
         class="menu-button"
         :class="{ 'active': currentRoute.path == '/homepage/milestone'
         || currentRoute.path == '/homepage/create-milestone'
-        || currentRoute.path == '/homepage/create-milestone'
-        || currentRoute.path == 'homepage/pathe'}"
+        || currentRoute.path == '/homepage/edit-milestone'
+        || currentRoute.path == 'homepage/path'}"
         @click="navigateTo('/homepage/milestone')">
         <img src="/src/components/icons/navigation/piggy-bank.svg" alt="Milestone Icon" class="icon">
         <label class="button-label">Sparemål</label>

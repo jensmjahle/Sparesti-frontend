@@ -39,7 +39,13 @@ function cancel(){
 
 <template>
   <div id = confirmation>
-    <h2>Er du sikker på at du vil gjennomføre en direkte overføring på <span style="font-weight: bold;">{{props.transferAmount}}</span> NOK</h2>
+    <h2>Er du klar for til å ta et steg videre på sparestien med å overføre <span style="font-weight: bold;">{{props.transferAmount}}</span> NOK?</h2>
+    <div class="content">
+      <img class="sad-pig-img" src="/src/assets/png/satisfied-pig.png" alt="sad-pig" >
+      <h3> Husk! Dagens små sparinger kan føre til morgendagens store drømmer.</h3>
+
+    </div>
+
     <div id = buttons>
       <button @click ="cancel" id="cancelButton"><h2>Avbryt</h2></button>
       <button @click="confirm()" id="confirmButton"><h2>Bekreft</h2></button>
@@ -62,6 +68,16 @@ function cancel(){
     border: 2px solid var(--color-border);
 
     place-content: space-between;
+  }
+
+  .content{
+    display: flex;
+    flex-direction: row;
+    place-items: center;
+  }
+
+  .sad-pig-img{
+    width:30%;
   }
 
   #buttons{

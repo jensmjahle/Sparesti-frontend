@@ -65,6 +65,7 @@ export const useTokenStore = defineStore({
                 }
             } catch (error) {
                 console.error(error);
+                await this.logout();
             }
         },
 

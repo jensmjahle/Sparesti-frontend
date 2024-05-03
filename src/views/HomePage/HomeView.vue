@@ -212,7 +212,7 @@ userSavings()
     display: flex;
     flex-direction: column;
 
-    min-height: 150%;
+    min-height: 115%;
     width: 100%;
   }
 

@@ -151,7 +151,7 @@ const fetchLockedAchievements = async () => {
 .badge{
   display: flex;
   flex-direction: column;
-  width: 15%;
+  width: calc(100%/5);
   min-width: 150px;
 }
 .badge-img{
