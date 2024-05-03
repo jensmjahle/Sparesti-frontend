@@ -224,7 +224,7 @@ watch(currentPage, fetchActiveChallenges);
   </div>
 
   <div class="active-challenge-component">
-    <div class="active-challenges">
+    <div class="active-milestones">
       <ActiveChallengeDisplay
         class="active-challenge"
         v-for="(activeChallenge, index) in activeChallenges"
@@ -284,7 +284,7 @@ watch(currentPage, fetchActiveChallenges);
   gap: 2.5%;
 }
 
-.active-challenges{
+.active-milestones{
   display: flex;
   flex-direction: column;
   height: 90%;
