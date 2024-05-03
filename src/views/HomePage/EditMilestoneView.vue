@@ -5,13 +5,11 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { ref, computed, onMounted } from 'vue'
 
-import { useTokenStore } from '@/stores/token'
 import { useMilestoneStore } from '@/stores/currentMilestone'
 import { getMilestoneDetails, updateMilestoneDetails } from '@/utils/MilestonePathUtils'
 import { useRouter } from 'vue-router'
 import BaseTextArea from '@/components/create-form/BaseTextArea.vue'
 import BaseInput from '@/components/create-form/BaseInput.vue'
-import eventBus from '@/components/service/eventBus.js'
 const title = ref('')
 const description = ref('')
 const end_date = ref()
@@ -32,62 +30,89 @@ const tomorrow = new Date(start_date.value)
 tomorrow.setDate(tomorrow.getDate() + 1)
 
 
+/**
+ * Lifecycle hook that runs when the component is mounted.
+ * Retrieves milestone details based on the current milestone ID and populates reactive values with the fetched data.
+ * Redirects to '/homepage/milestone' if milestone details are not found.
+ * @returns {Promise<void>} A promise that resolves when milestone details are fetched and reactive values are updated.
+ */
 onMounted(async () => {
   const milestoneId = useMilestoneStore().milestoneId;
-  console.log(milestoneId)
-  const response = await getMilestoneDetails(milestoneStore.milestoneId)
+  console.log(milestoneId);
+
+  const response = await getMilestoneDetails(milestoneId);
   if (response === null) {
-    await router.push('/homepage/milestone')
+    await router.push('/homepage/milestone');
   } else {
-    const data = response.data
-    title.value = data.milestoneTitle
-    description.value = data.milestoneDescription
-    goal_sum.value = data.milestoneGoalSum
-    current_sum.value = data.milestoneCurrentSum
-    start_date.value = data.startDate
-    end_date.value = data.deadlineDate
+    const data = response.data;
+    title.value = data.milestoneTitle;
+    description.value = data.milestoneDescription;
+    goal_sum.value = data.milestoneGoalSum;
+    current_sum.value = data.milestoneCurrentSum;
+    start_date.value = data.startDate;
+    end_date.value = data.deadlineDate;
     image.value = data.milestoneImage ? `data:image/png;base64,${data.milestoneImage}` : null;
-    console.log(image.value)
-    console.log(data.milestoneImage)
+    console.log(image.value);
+    console.log(data.milestoneImage);
   }
-})
+});
+
+/**
+ * Validates the input fields for the milestone form.
+ * Updates error messages for invalid fields and checks various conditions for validity.
+ * @returns {boolean} A boolean indicating whether the input fields are valid (true) or not (false).
+ */
 const validate = () => {
-  let isValid = true
-  titleError.value = ''
-  descriptionError.value = ''
-  dateError.value = ''
-  amountErrorGoal.value = ''
-  amountErrorStart.value = ''
+  let isValid = true;
+  titleError.value = '';
+  descriptionError.value = '';
+  dateError.value = '';
+  amountErrorGoal.value = '';
+  amountErrorStart.value = '';
 
   if (!title.value.trim()) {
-    titleError.value = 'Mangler tittel på sparemålet!'
-    isValid = false
+    titleError.value = 'Mangler tittel på sparemålet!';
+    isValid = false;
   }
   if (!description.value.trim()) {
-    descriptionError.value = 'Mangler beskrivelse på sparemålet!'
-    isValid = false
+    descriptionError.value = 'Mangler beskrivelse på sparemålet!';
+    isValid = false;
   }
   if (!start_date.value || !end_date.value) {
-    dateError.value = 'Oppgi sluttdato!'
-    isValid = false
+    dateError.value = 'Oppgi sluttdato!';
+    isValid = false;
   }
-  if (isNaN(<number>current_sum.value) || current_sum.value == '') {
-    amountErrorStart.value = 'Fyll inn et gyldig beløp!'
+  if (isNaN(Number(current_sum.value)) || current_sum.value === '') {
+    amountErrorStart.value = 'Fyll inn et gyldig beløp!';
     isValid = false;
   }
 
-  if(isNaN(<number>goal_sum.value) || goal_sum.value == ''){
-    amountErrorGoal.value = 'Fyll inn et gyldig beløp!'
+  if (isNaN(Number(goal_sum.value)) || goal_sum.value === '') {
+    amountErrorGoal.value = 'Fyll inn et gyldig beløp!';
     isValid = false;
   }
 
-  if (parseInt(<string>goal_sum.value) <= parseInt(<string>current_sum.value) && amountErrorStart.value == '') {
+  if (parseInt(goal_sum.value) <= parseInt(current_sum.value) && amountErrorStart.value === '') {
     amountErrorStart.value = 'Nåværende beløp kan ikke være lik eller større enn sparebeløpet!';
     isValid = false;
   }
-  return isValid
-}
 
+  return isValid;
+};
+
+
+/**
+ * Computed property that represents milestone data derived from reactive values.
+ * @returns {Object} An object containing milestone data based on current reactive values.
+ * @property {number} milestoneId - The ID of the milestone.
+ * @property {string} milestoneTitle - The title of the milestone.
+ * @property {string} milestoneDescription - The description of the milestone.
+ * @property {number} milestoneGoalSum - The goal sum of the milestone.
+ * @property {number} milestoneCurrentSum - The current sum achieved for the milestone.
+ * @property {string} milestoneImage - The image URL of the milestone (or an empty string if not set).
+ * @property {Date|null} deadlineDate - The deadline date of the milestone (or null if not set).
+ * @property {Date|null} startDate - The start date of the milestone (or null if not set).
+ */
 const milestoneData = computed(() => ({
   milestoneId: milestoneStore.milestoneId,
   milestoneTitle: title.value,
@@ -99,35 +124,45 @@ const milestoneData = computed(() => ({
   startDate: start_date.value ? start_date.value : null
 }));
 
+/**
+ * Saves input by updating milestone details and navigating to the milestone page if input is valid.
+ * Logs 'fail' to console if input validation fails.
+ * @returns {Promise<void>} A promise that resolves after milestone details are updated and navigation is complete.
+ */
 const saveInput = async () => {
   if (validate()) {
-    await updateMilestoneDetails(milestoneData.value)
-    await router.push('/homepage/milestone')
+    await updateMilestoneDetails(milestoneData.value);
+
+    await router.push('/homepage/milestone');
   } else {
-    console.log('fail')
-  }
-}
-
-const handleFileChange = (event: any) => {
-  const file = event.target.files[0]
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    image.value = e.target?.result
-  }
-  reader.readAsDataURL(file)
-}
-
-const removeImage = () => {
-  image.value = null;
-}
-
-const fileInput = ref<HTMLInputElement | null>(null);
-
-const openFileExplorer = () => {
-  if (fileInput.value instanceof HTMLInputElement) {
-    fileInput.value.click();
+    console.log('fail');
   }
 };
+
+/**
+ * Handles the change event when a file input's value changes.
+ * Reads the selected file using `FileReader` and sets the `image.value` to the data URL of the loaded file.
+ * @param {Event} event - The change event object triggered by the file input.
+ * @returns {void} This function does not return a value.
+ */
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    image.value = e.target?.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+/**
+ * Removes the image data by setting `image.value` to `null`.
+ * @returns {void} This function does not return a value.
+ */
+const removeImage = () => {
+  image.value = null;
+};
+
+const fileInput = ref<HTMLInputElement | null>(null);
 </script>
 
 <template>
