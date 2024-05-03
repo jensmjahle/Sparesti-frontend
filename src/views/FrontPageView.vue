@@ -8,10 +8,8 @@ import { useTokenStore } from '@/stores/token'
  * @returns {void}
  */
 onMounted(()=>{
-  useTokenStore().logout();
+  useTokenStore().cleanStore();
 })
-
-
 </script>
 
 <template>

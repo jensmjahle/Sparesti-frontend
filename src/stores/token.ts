@@ -23,6 +23,10 @@ export const useTokenStore = defineStore({
     },
 
     actions: {
+        async reHydrate() {
+            // Restart timers when the store is rehydrated
+            await this.refreshToken();
+        },
         async getTokenAndSaveInStore(username: string, password: string) {
             let response;
             try {
@@ -51,7 +55,7 @@ export const useTokenStore = defineStore({
             }
         },
 
-        async refreshToken() {
+        async refreshToken () {
             try {
                 const response = await refreshToken(this.jwtToken);
                 if (response !== undefined) {
@@ -69,12 +73,12 @@ export const useTokenStore = defineStore({
         },
 
         async logout() {
-            this.jwtToken = "";
-            this.username = null;
-            this.isConnectedToBank = null;
-            this.displayPopUp = false;
-            this.timerClear();
+            this.cleanStore();
             await router.push("/login");
+        },
+
+        cleanStore()  {
+            this.$reset();
         },
 
         timerClear() {
@@ -89,7 +93,6 @@ export const useTokenStore = defineStore({
             this.timer = setTimeout(async () => {
                 console.log(this.isActive)
                 if (this.isActive) {
-                    this.timerClear();
                     await this.refreshToken();
 
                 } else this.displayPopUp = true;

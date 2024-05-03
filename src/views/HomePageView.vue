@@ -7,7 +7,7 @@ import HomePagePopUp from './HomePage/HomePagePopUp.vue';
 import router from "@/router";
 
 const store = useTokenStore();
-const showPopup = ref(store.displayPopUp);
+const showPopup = ref();
 const isMounted = ref<boolean>(false)
 let timer = null as ReturnType<typeof setTimeout> | null
 
@@ -21,7 +21,9 @@ onMounted(async() => {
     await router.push('/login');
   }
 
-  if (timer) clearTimeout(timer)
+  await store.reHydrate();
+
+  showPopup.value = store.displayPopUp;
 
   timer = setInterval(() => {
     // After a certain interval, assume user is inactive
