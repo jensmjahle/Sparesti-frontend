@@ -212,7 +212,7 @@ async function deleteAMilestone(milestoneId:number){
   #MilestonePath{
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 94.5%;
   }
 
   #Path{
@@ -243,7 +243,7 @@ async function deleteAMilestone(milestoneId:number){
   }
   @media only screen and (max-width: 1000px) {
     #Path{
-      height: 100%;
+      height: 80%;
     }
 
     #Path{

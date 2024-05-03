@@ -48,12 +48,12 @@ const validate = () => {
     dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>current_sum.value) || current_sum.value == '' || <number>current_sum.value<=0 ) {
+  if (isNaN(<number>current_sum.value) || current_sum.value == '') {
     amountErrorStart.value = 'Fyll inn et gyldig beløp!'
     isValid = false;
   }
 
-  if(isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value<=0){
+  if(isNaN(<number>goal_sum.value) || goal_sum.value == ''){
     amountErrorGoal.value = 'Fyll inn et gyldig beløp!'
     isValid = false;
   }
@@ -78,7 +78,7 @@ const milestoneData = computed(() => ({
 const saveInput = async () => {
   if (validate()) {
     await createMilestone(milestoneData.value, tokenStore.jwtToken);
-    await router.push('/homepage/milestone');
+    await router.push('/homepage/home');
   } else {
     console.log('fail')
   }
@@ -141,19 +141,18 @@ const openFileExplorer = () => {
                v-if="titleError">{{ titleError }}</label>
       </div>
 
-      <div class="input-large" id="description-area">
+      <div class="input-large">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
           place-holder="Beskriv sparemålet"
           :error="descriptionError !== ''"
-
         ></BaseTextArea>
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
 
       <div class="smaller-inputs">
-        <div class="input" id="goal-input">
+        <div class="input">
           <base-input
             v-model="goal_sum"
             label="Hvor mye vil du spare (nok)?"
@@ -163,7 +162,7 @@ const openFileExplorer = () => {
           ></base-input>
           <label class="error" v-if="amountErrorGoal">{{ amountErrorGoal }}</label>
         </div>
-        <div class="input" id="current-input">
+        <div class="input">
           <base-input
             v-model="current_sum"
             place-holder="Sett inn hvor mye du har nå"
@@ -185,13 +184,12 @@ const openFileExplorer = () => {
             :disabled="true"
           ></VueDatePicker>
         </div>
-        <div class="input" id="end-date">
+        <div class="input">
           <h3>Slutt dato</h3>
           <VueDatePicker
             :enable-time-picker="false"
             placeholder="Velg slutt dato"
             v-model="end_date"
-            auto-apply
             :min-date="tomorrow"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>

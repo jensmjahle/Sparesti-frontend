@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TopNav from '@/components/navigation/TopNav.vue'
 import SideNav from '@/components/navigation/SideNav.vue'
-import {onMounted, ref, watch, onUnmounted } from 'vue';
+import { onMounted, ref, watch, onUnmounted } from 'vue';
 import { useTokenStore } from '@/stores/token';
 import HomePagePopUp from './HomePage/HomePagePopUp.vue';
 import router from "@/router";
