@@ -38,7 +38,7 @@ Cypress.Commands.add('login', (username: string, password) => {
   cy.get('[data-testid="PasswordInput"]').type(password)
   cy.get('[data-testid="LogInButton"]').should('be.enabled')
   cy.get('[data-testid="LogInButton"]').click()
-  cy.wait(2500)
+  cy.wait(5000)
 })
 
 export {}
