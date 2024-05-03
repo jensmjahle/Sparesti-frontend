@@ -13,7 +13,7 @@ describe('TotalSavings', () => {
 
     const savedAmount = wrapper.find('#Saved')
 
-    expect(savedAmount.text()).toBe(`${totalSaved} nok`)
+    expect(savedAmount.text()).toBe(`${totalSaved} NOK`)
   })
 
 })
