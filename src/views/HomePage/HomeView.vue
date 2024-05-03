@@ -6,6 +6,8 @@ import { getUserTotalSavings } from '@/utils/HomePageUtils'
 
 import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
 import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
+import router from "@/router";
+import TutorialView from "@/views/HomePage/TutorialView.vue";
 
 const displayType = ref<boolean>(true);
 const displayHelpPopUp = ref<boolean>(false);
@@ -29,6 +31,10 @@ const saved = ref(0)
 
 async function userSavings(){
   saved.value = await getUserTotalSavings()
+}
+
+const DisplayTutorial = () =>{
+   router.push('/homepage/tutorial')
 }
 
 userSavings()
@@ -63,6 +69,7 @@ userSavings()
     <div class="main">
       <div class="left" :class="{ 'mobile-hide': !displayType }">
         <TotalSavings class="create-challenge-button" :total-saved="saved"></TotalSavings>
+        <button class="tutorial-button" @click="DisplayTutorial">Ny til Sparesti? Trykk her!</button>
         <ActiveMilestonesList class="active-challenges"></ActiveMilestonesList>
       </div>
       <div class="right" :class="{ 'mobile-hide': displayType }">
