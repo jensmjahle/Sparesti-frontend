@@ -83,7 +83,7 @@ const saveInput = async() => {
     </div>
 
     <div class="input-container">
-      <div class="input" id="title-input">
+      <div class="input" id="title-input" @keyup.enter="saveInput">
         <BaseInput
           v-model="title"
           label="Tittel"
@@ -95,7 +95,7 @@ const saveInput = async() => {
                v-if="titleError">{{ titleError }}</label>
       </div>
 
-      <div class="input-large">
+      <div class="input-large" @keyup.enter="saveInput">
         <BaseTextArea
           v-model="description"
           label="Beskrivelse"
@@ -105,7 +105,7 @@ const saveInput = async() => {
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
 
-      <div class="input">
+      <div class="input" @keyup.enter="saveInput">
         <base-input
           v-model="goal_sum"
           place-holder="Hvor mye sparer du av utfordringen?"

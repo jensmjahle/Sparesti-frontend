@@ -105,3 +105,14 @@ Jens Martin Jahle
 ## Project status
 This project is currently finished and will not be maintained.
 There are no plans to continue development on this project in the future.
+
+
+### Display test coverage
+1. Run the following command to run the tests:
+```sh
+npm run test:unit -- --coverage
+```
+2. Run the following command to display the test coverage:
+```sh
+start coverage/index.html
+```

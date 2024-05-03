@@ -60,8 +60,9 @@ const saveAccountInfo = async ()=> {
       await updateBankAccountInfo(token,checkingAccount.value, savingAccount.value)
       await fetchAccountInfo();
       await fetchUserInfo();
+      toast.success('Konto opplysninger ble oppdatert!')
     } catch (error){
-      toast.success('Noe gikk galt! Venligst prøv på nytt.')
+      toast.error('Noe gikk galt! Venligst prøv på nytt.')
       accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
   }
@@ -78,7 +79,7 @@ const saveAccountInfo = async ()=> {
       </button>
     </div>
 
-    <div class="input-fields">
+    <div class="input-fields" @keyup.enter="saveAccountInfo">
 
       <div class="input-collection">
         <h4>Forbrukskonto: </h4>
