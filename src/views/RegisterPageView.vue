@@ -30,6 +30,7 @@ interface Account {
   currency: string;
 }
 
+const hasBankAccounts = ref<boolean>(true);
 const accounts = ref<Account[]>([])
 
 let index = 0;
@@ -56,8 +57,12 @@ const selectedOption = ref(accounts.value.indexOf(FirstTimeAnswersStore().userRe
  * @returns {Promise<Array>} A Promise that resolves with an array of user bank accounts.
  */
 const fetchAccounts = async () => {
-  accounts.value = await getUserBankAccounts(useTokenStore().getJwtToken)
-  console.log(useTokenStore().getJwtToken)
+  try{
+    accounts.value = await getUserBankAccounts(useTokenStore().getJwtToken)
+    console.log(useTokenStore().getJwtToken)
+  } catch (error){
+    hasBankAccounts.value = false;
+  }
 }
 
 /**
@@ -68,6 +73,10 @@ const fetchAccounts = async () => {
 onMounted(  () => {
   fetchAccounts()
 })
+
+const routeToLogin = () => {
+  router.push('/login')
+}
 
 /**
  * Handles the logic for what displays when nextButton is pressed and saves input values in store.
@@ -162,13 +171,20 @@ function updateSelectedOption() {
   <div id = RegisterPage>
     <TopBanner/>
     <ProgressBar :Max="questions.length" :Current="index" id = Progress />
-    <div id = QuestionArea>
+    <div id = QuestionArea v-if="hasBankAccounts">
       <h2>{{currentQuestion}}</h2>
       <input id = answerField :type=currentQuestionType v-model="answer" v-show="showInput">
       <select id = selectField v-show="showSelect" @change="updateSelectedOption" v-model="selectedOption">
         <option value="" disabled selected>Velg konto</option>
         <option v-for="(option, index) in accounts" :key="index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
       </select>
+    </div>
+    <div id="QuestionArea" v-else>
+      <h2>
+        OBS! For å opprette en brukerkonto, må du først ha en aktiv bankkonto i Mock Bank.
+        Vennligst registrer en konto hos Mock Bank før du fortsetter med opprettelsen av din brukerprofil.
+      </h2>
+      <button @click="routeToLogin" class="login-button"><h3>Gå tilbake til Login</h3></button>
     </div>
     <div id = buttons>
       <button id = backButton @click ="prevQuestion()" :disabled="index === 0" :class="{ 'active': index !==0, 'disabled': index === 0 }">Tilbake</button>
@@ -256,6 +272,24 @@ function updateSelectedOption() {
     border-radius: 20px;
     font-size: 2em;
   }
+
+  .login-button{
+    border-radius: 20px;
+    border: none;
+    background: var(--color-logout-button);
+    color: var(--color-headerText);
+    margin-top: 20px;
+    padding: 2.0%;
+  }
+
+  .login-button:active{
+    background: var(--color-logout-button-click);
+  }
+
+  .login-button:hover{
+    transform: scale(1.02);
+  }
+
 
   #nextButton{
     background-color: var(--color-confirm-button);
