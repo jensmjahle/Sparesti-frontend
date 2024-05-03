@@ -2,10 +2,8 @@
 import { onMounted } from 'vue'
 import { useTokenStore } from '@/stores/token'
 onMounted(()=>{
-  useTokenStore().logout();
+  useTokenStore().cleanStore();
 })
-
-
 </script>
 
 <template>

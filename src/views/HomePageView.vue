@@ -7,7 +7,7 @@ import HomePagePopUp from './HomePage/HomePagePopUp.vue';
 import router from "@/router";
 
 const store = useTokenStore();
-const showPopup = ref(store.displayPopUp);
+const showPopup = ref();
 const isMounted = ref<boolean>(false)
 
 onMounted(async() => {
@@ -16,7 +16,9 @@ onMounted(async() => {
     await router.push('/login');
   }
 
-  console.log('showPopup', store.displayPopUp);
+  await store.reHydrate();
+
+  showPopup.value = store.displayPopUp;
 
   setInterval(() => {
     // After a certain interval, assume user is inactive
@@ -29,6 +31,7 @@ onMounted(async() => {
 
   isMounted.value = true;
 });
+
 
 onUnmounted(async () => {
   document.removeEventListener('mousemove', handleMouseMove);
@@ -51,6 +54,15 @@ watch(
       }
     }
 );
+
+watch(
+  () => store.tokenTimer,
+  (newVal) => {
+    if (newVal === 0) {
+      store.logout();
+    }
+  }
+)
 
 const closePopup = () => {
   showPopup.value = false;
