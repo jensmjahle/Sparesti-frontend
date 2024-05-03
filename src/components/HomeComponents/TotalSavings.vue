@@ -2,6 +2,9 @@
 
 import { defineProps } from 'vue'
 
+/**
+ * Defines the props necessary for the component
+ */
 const props = defineProps({
   totalSaved: Number
 });
