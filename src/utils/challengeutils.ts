@@ -189,7 +189,7 @@ export const getInactiveChallenges  = async (token:string):Promise<any>=>{
       },
       params: {
         'page': 0,
-        'size': 10
+        'size': 3
       }
     };
     const result = await axios.get(`${BASE_URL}/user/challenge/paginated/inactive`,config);
