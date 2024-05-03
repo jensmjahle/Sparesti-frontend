@@ -11,13 +11,15 @@ const showPopup = ref(store.displayPopUp);
 const isMounted = ref<boolean>(false)
 let timer = null as ReturnType<typeof setTimeout> | null
 
+/**
+ * Handles logic that is needed on the view and executes when the view is mounted.
+ * @returns {void}
+ */
 onMounted(async() => {
   if (store.jwtToken === '' || store.jwtToken.includes('Request') ||
     !store.isConnectedToBank || store.jwtToken.includes('Error')) {
     await router.push('/login');
   }
-
-  console.log('showPopup', store.displayPopUp);
 
   if (timer) clearTimeout(timer)
 
@@ -33,19 +35,35 @@ onMounted(async() => {
   isMounted.value = true;
 });
 
+/**
+ * Handles logic that needs to be reset when the view is unmounted.
+ * @returns {void}
+ */
 onUnmounted(async () => {
   document.removeEventListener('mousemove', handleMouseMove);
   document.removeEventListener('keydown', handleKeyDown);
 });
 
+/**
+ * Handles mouseMove action.
+ * @returns {void}
+ */
 const handleMouseMove = () => {
   useTokenStore().setActive(true);
 };
 
+/**
+ * Handles keyDown action.
+ * @returns {void}
+ */
 const handleKeyDown = () => {
   useTokenStore().setActive(true);
 };
 
+/**
+ * Listens to changes in the store.displayPopUp value.
+ * Updates showPopUp in case of change.
+ */
 watch(
     () => store.displayPopUp,
     (newVal) => {
@@ -55,6 +73,10 @@ watch(
     }
 );
 
+/**
+ * Sets showPopUp to false.
+ * @returns {void}
+ */
 const closePopup = () => {
   showPopup.value = false;
 };
