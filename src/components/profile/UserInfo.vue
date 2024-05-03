@@ -111,8 +111,11 @@ watch(email, checkInput);
         <button tabindex="0" type="button" for="profile-picture-input" class="profile-picture-button" @click="openFileExplorer">
           <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
                  @change="handleFileChange">
-          <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
-          <img v-else src=/src/components/icons/navigation/user.svg alt="profile-picture" class="profile-picture">
+          <div class="profile-picture-container">
+            <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
+            <img v-else src="/src/components/icons/navigation/user.svg" alt="profile-picture" class="profile-picture">
+            <img src="/src/components/icons/image/pencil-edit.svg" alt="edit-icon" class="edit-icon">
+          </div>
         </button>
       </div>
       <div class="text-input">
@@ -218,6 +221,20 @@ watch(email, checkInput);
   height: 100%;
   width: 20%;
   justify-content: center;
+}
+
+.profile-picture-container {
+  position: relative; /* Make the container relative */
+}
+
+.edit-icon {
+  position: absolute;
+  top: 0;
+  left: -0.5vw;
+  width: 2vw;
+  height: 2vw;
+  z-index: 1;
+  transform: scaleX(-1);
 }
 
 .input-collection{
