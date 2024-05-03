@@ -4,7 +4,6 @@ import ToggleButton from '@/components/economy/ToggleButton.vue'
 
 describe('ToggleButton', () => {
   it('toggles chart visibility when clicked', async () => {
-
     const wrapper = mount(ToggleButton) as any
     expect(wrapper.vm.chartVisible).toBe(false)
     await wrapper.find('input[type="checkbox"]').trigger('change')
@@ -22,7 +21,6 @@ describe('ToggleButton', () => {
     expect(wrapper.vm.chartVisible).toBe(true)
 
     await wrapper.find('input[type="checkbox"]').trigger('change')
-
 
     expect(wrapper.emitted('toggle-chart')).toBeTruthy()
     expect(toggleChartEmit[1][0]).toBe(false)

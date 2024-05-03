@@ -1,20 +1,18 @@
 <script setup lang="ts">
-
-import { ref} from 'vue'
+import { ref } from 'vue'
 import { updatePasswordInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
-import {useToast} from "vue-toast-notification";
-
+import { useToast } from 'vue-toast-notification'
 
 /**
  * Initiates toast for error messages
  */
-const toast = useToast();
+const toast = useToast()
 
 /**
  * Holds the current password
  */
-const currentPassword = ref<string>('');
+const currentPassword = ref<string>('')
 
 /**
  * Holds the new password
@@ -24,7 +22,7 @@ const newPassword = ref<string>('')
 /**
  * Holds the new password error
  */
-const newPasswordError = ref<string|null>(null)
+const newPasswordError = ref<string | null>(null)
 
 /**
  * Holds the current password error
@@ -40,8 +38,8 @@ const passwordError = ref<string | null>(null)
  * Validates the password inputs
  */
 const validInput = () => {
-  checkInput();
-  return(newPasswordError.value == null && currentPasswordError.value == null);
+  checkInput()
+  return newPasswordError.value == null && currentPasswordError.value == null
 }
 
 /**
@@ -49,36 +47,39 @@ const validInput = () => {
  * relevant errors
  */
 const checkInput = () => {
-
-  if(currentPassword.value.trim() == ''){
-    currentPasswordError.value = 'Mangler nåværende passord!';
-  } else{
-    currentPasswordError.value = null;
-  }
-
-  if(newPassword.value.trim() == ''){
-    newPasswordError.value = 'Mangler nytt passord!';
+  if (currentPassword.value.trim() == '') {
+    currentPasswordError.value = 'Mangler nåværende passord!'
   } else {
-    newPasswordError.value = null;
+    currentPasswordError.value = null
   }
 
-  if(currentPassword.value == newPassword.value && newPassword.value.trim() && currentPassword.value.trim()){
+  if (newPassword.value.trim() == '') {
+    newPasswordError.value = 'Mangler nytt passord!'
+  } else {
+    newPasswordError.value = null
+  }
+
+  if (
+    currentPassword.value == newPassword.value &&
+    newPassword.value.trim() &&
+    currentPassword.value.trim()
+  ) {
     newPasswordError.value = 'Nytt passordet er likt nåværende passord!'
   }
 
-  if(!validatePassword(newPassword.value.trim()) && newPassword.value.trim() !== ""){
-    newPasswordError.value = "Nytt passord må være minst 8 tegn langt"
+  if (!validatePassword(newPassword.value.trim()) && newPassword.value.trim() !== '') {
+    newPasswordError.value = 'Nytt passord må være minst 8 tegn langt'
   }
 
-  passwordError.value = null;
+  passwordError.value = null
 }
 
 /**
  * Checks that a users password is at least 8 characters long
  * @param passwordToCheck the password to check
  */
-function validatePassword(passwordToCheck:string){
-  return passwordToCheck.trim().length >= 8;
+function validatePassword(passwordToCheck: string) {
+  return passwordToCheck.trim().length >= 8
 }
 
 /**
@@ -86,10 +87,10 @@ function validatePassword(passwordToCheck:string){
  * Shows an error message if task fails
  */
 const saveInfo = async () => {
-  checkInput();
-  if(validInput()){
-    try{
-      await updatePasswordInfo( useTokenStore().jwtToken, currentPassword.value,newPassword.value)
+  checkInput()
+  if (validInput()) {
+    try {
+      await updatePasswordInfo(useTokenStore().jwtToken, currentPassword.value, newPassword.value)
       toast.success('Passordet ble oppdatert!')
       clearInput()
     } catch (error) {
@@ -103,10 +104,9 @@ const saveInfo = async () => {
  * Clears the password inputs
  */
 const clearInput = () => {
-  currentPassword.value = '';
-  newPassword.value = '';
+  currentPassword.value = ''
+  newPassword.value = ''
 }
-
 </script>
 
 <template>
@@ -119,27 +119,31 @@ const clearInput = () => {
     </div>
     <div class="input-fields" @keyup.enter="saveInfo">
       <div class="input-collection">
-        <h4>Nåværende passord: </h4>
-        <input class="input"
-               :class="{'error': currentPasswordError}"
-               type="password"
-               v-model="currentPassword"
-               data-testid="current-password-input">
+        <h4>Nåværende passord:</h4>
+        <input
+          class="input"
+          :class="{ error: currentPasswordError }"
+          type="password"
+          v-model="currentPassword"
+          data-testid="current-password-input"
+        />
         <div class="alert-box">
-          <h4 v-if="currentPasswordError" class="error-message">{{currentPasswordError}}</h4>
+          <h4 v-if="currentPasswordError" class="error-message">{{ currentPasswordError }}</h4>
         </div>
       </div>
 
       <div class="input-collection">
-        <h4>Nytt passord: </h4>
-        <input class="input"
-               :class="{'error': newPasswordError}"
-               type="password"
-               v-model="newPassword"
-               data-testid="new-password-input">
+        <h4>Nytt passord:</h4>
+        <input
+          class="input"
+          :class="{ error: newPasswordError }"
+          type="password"
+          v-model="newPassword"
+          data-testid="new-password-input"
+        />
         <div class="alert-box">
-          <h4 v-if="newPasswordError" class="error-message">{{newPasswordError}}</h4>
-          <h4 v-if="passwordError" class="error-message">{{passwordError}}</h4>
+          <h4 v-if="newPasswordError" class="error-message">{{ newPasswordError }}</h4>
+          <h4 v-if="passwordError" class="error-message">{{ passwordError }}</h4>
         </div>
       </div>
     </div>
@@ -147,48 +151,46 @@ const clearInput = () => {
 </template>
 
 <style scoped>
-.password-info{
+.password-info {
   display: flex;
   flex-direction: column;
 
   width: 100%;
   min-height: 100%;
-
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   width: 100%;
 }
 
-.title{
+.title {
   font-weight: bold;
 }
-.save-button{
+.save-button {
   border-radius: 20px;
-  padding-right: 5.0%;
-  padding-left: 5.0%;
+  padding-right: 5%;
+  padding-left: 5%;
   color: var(--color-headerText);
   background-color: var(--color-save-button);
   border: none;
 }
 
-.save-button:hover{
+.save-button:hover {
   transform: scale(1.02);
 }
 
-.save-button:active{
+.save-button:active {
   background-color: var(--color-save-button-click);
 }
 
-.save-button-title{
+.save-button-title {
   font-weight: bold;
 }
 
-.input-fields{
-
+.input-fields {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -197,32 +199,31 @@ const clearInput = () => {
   place-content: start;
 }
 
-.input-collection{
+.input-collection {
   display: flex;
   flex-direction: column;
   height: 50%;
 }
 
-.input{
+.input {
   border-radius: 20px;
   border: 2px solid var(--color-border);
   min-height: 30px;
-  padding-left: 2.0%;
+  padding-left: 2%;
 }
 
-.alert-box{
+.alert-box {
   display: flex;
   flex-direction: column;
   place-items: center;
   min-height: 20px;
 }
 
-.error{
+.error {
   border-color: var(--color-border-error);
 }
 
-.error-message{
+.error-message {
   color: var(--color-text-error);
 }
-
 </style>

@@ -11,23 +11,26 @@ import { defineStore } from 'pinia'
 /**
  * Creates and returns a MilestoneStore instance.
  */
-export const useMilestoneStore = defineStore('milestoneId', () => {
-  const milestoneId = ref(0); // Initializing milestoneId with 0
+export const useMilestoneStore = defineStore(
+  'milestoneId',
+  () => {
+    const milestoneId = ref(0) // Initializing milestoneId with 0
 
-  /**
-   * Sets the milestone ID.
-   * @param id - The ID of the milestone to set.
-   * @returns void
-   */
-  function setMilestoneId(id: number) {
-    milestoneId.value = id; // Updating the milestoneId with the provided id
-    console.log(id); // Logging the id to console
-  }
+    /**
+     * Sets the milestone ID.
+     * @param id - The ID of the milestone to set.
+     * @returns void
+     */
+    function setMilestoneId(id: number) {
+      milestoneId.value = id // Updating the milestoneId with the provided id
+      console.log(id) // Logging the id to console
+    }
 
-
-  return { milestoneId, setMilestoneId}
-}, {
-  persist: {
-    storage: sessionStorage,
+    return { milestoneId, setMilestoneId }
   },
-})
+  {
+    persist: {
+      storage: sessionStorage
+    }
+  }
+)

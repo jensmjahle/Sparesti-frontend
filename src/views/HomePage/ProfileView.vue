@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { onMounted, ref } from 'vue'
 import UserInfo from '@/components/profile/UserInfo.vue'
 import BankAccountInfo from '@/components/profile/BankAccountInfo.vue'
@@ -10,10 +9,10 @@ import { getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import DeleteUserPopUp from '@/components/popups/DeleteUserPopUp.vue'
 
-const token:string = useTokenStore().jwtToken;
+const token: string = useTokenStore().jwtToken
 
-const firstName = ref<string>('Profile');
-const lastName = ref<string>('');
+const firstName = ref<string>('Profile')
+const lastName = ref<string>('')
 
 const displayDeletePopUp = ref<boolean>(false)
 
@@ -23,9 +22,9 @@ const displayDeletePopUp = ref<boolean>(false)
  */
 onMounted(async () => {
   try {
-    await fetchUserInfo();
+    await fetchUserInfo()
   } catch (error) {
-    console.error('Error fetching user info:', error);
+    console.error('Error fetching user info:', error)
   }
 })
 
@@ -33,14 +32,13 @@ onMounted(async () => {
  * Handles fetching info connected to a user and stores the data in variables.
  * @returns {void}
  */
-const fetchUserInfo = async () =>{
-  try{
+const fetchUserInfo = async () => {
+  try {
     const response = await getUserInfo(token)
-    firstName.value = response.firstName;
-    lastName.value = response.lastName;
-
-  } catch (error){
-    console.error('Error fetching user info:', error);
+    firstName.value = response.firstName
+    lastName.value = response.lastName
+  } catch (error) {
+    console.error('Error fetching user info:', error)
   }
 }
 
@@ -49,7 +47,7 @@ const fetchUserInfo = async () =>{
  * @returns {void}
  */
 const logout = () => {
-  useTokenStore().logout();
+  useTokenStore().logout()
 }
 
 /**
@@ -57,7 +55,7 @@ const logout = () => {
  * @returns {void}
  */
 const handleRequestToDeleteUser = async () => {
-  displayDeletePopUp.value = true;
+  displayDeletePopUp.value = true
 }
 
 /**
@@ -65,26 +63,23 @@ const handleRequestToDeleteUser = async () => {
  * @returns {void}
  */
 const closeDeletePopUp = async () => {
-  displayDeletePopUp.value = false;
+  displayDeletePopUp.value = false
 }
-
 </script>
 
 <template>
   <div v-if="displayDeletePopUp" class="popup-container">
-    <DeleteUserPopUp
-      @closeDeletePopUp="closeDeletePopUp"
-    ></DeleteUserPopUp>
+    <DeleteUserPopUp @closeDeletePopUp="closeDeletePopUp"></DeleteUserPopUp>
   </div>
   <div class="profile-view">
     <div class="header">
-      <h2 class="view-title">{{firstName}} {{lastName}}</h2>
+      <h2 class="view-title">{{ firstName }} {{ lastName }}</h2>
       <button class="user-button" id="logout-button" @click="logout">
         <h3 class="user-button-title">Logg ut</h3>
       </button>
     </div>
     <div id="top">
-      <div class="component" id="user-info" >
+      <div class="component" id="user-info">
         <UserInfo></UserInfo>
       </div>
       <div class="component" id="password-info">
@@ -127,8 +122,7 @@ const closeDeletePopUp = async () => {
   z-index: 1000; /* Adjust z-index as needed */
 }
 
-
-.profile-view{
+.profile-view {
   display: flex;
   flex-direction: column;
 
@@ -138,83 +132,86 @@ const closeDeletePopUp = async () => {
   gap: 2.5%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   width: 100%;
   place-content: space-between;
 }
 
-.view-title{
+.view-title {
   color: var(--color-heading);
 }
 
-.user-button{
+.user-button {
   border-radius: 20px;
   width: 20%;
   border: none;
 }
 
-.user-button:hover{
+.user-button:hover {
   transform: scale(1.02);
 }
 
-#logout-button{
+#logout-button {
   background-color: var(--color-logout-button);
 }
 
-#logout-button:active{
+#logout-button:active {
   background-color: var(--color-logout-button-click);
 }
 
-.user-button-title{
+.user-button-title {
   color: var(--color-headerText);
   font-weight: bold;
 }
 
-#top, #middle{
+#top,
+#middle {
   display: flex;
   flex-direction: row;
   width: 100%;
   gap: 1.5%;
 }
 
-#top{
+#top {
   min-height: 35%;
 }
 
-#middle{
+#middle {
   min-height: 38.5%;
 }
 
-#bottom{
+#bottom {
   height: 50%;
   min-height: 40%;
 }
-.component{
+.component {
   border: 2px solid var(--color-border);
   border-radius: 20px;
   box-shadow: 0 4px 4px var(--color-shadow);
   width: 100%;
-  padding: 1.0%;
+  padding: 1%;
 }
 
-#user-info, #income-info{
+#user-info,
+#income-info {
   width: 60%;
   height: 100%;
 }
 
-#password-info, #account-info{
+#password-info,
+#account-info {
   width: 40%;
   height: 100%;
 }
 
-#badges{
+#badges {
   width: 100%;
   min-height: 100%;
 }
 
-.delete-user-button-box{
+.delete-user-button-box {
   display: flex;
   width: 100%;
   height: 20%;
@@ -224,43 +221,45 @@ const closeDeletePopUp = async () => {
   place-content: center;
 }
 
-#delete-user-button{
+#delete-user-button {
   width: 25%;
   background-color: var(--color-cancel-button);
 }
 
-#delete-user-button:active{
+#delete-user-button:active {
   background-color: var(--color-cancel-button-click);
 }
 
-@media only screen and (max-width: 1000px){
-  #top{
+@media only screen and (max-width: 1000px) {
+  #top {
     display: flex;
     flex-direction: column;
     place-content: space-evenly;
     width: 100%;
     min-height: 60%;
   }
-  #middle{
+  #middle {
     display: flex;
     flex-direction: column;
     place-content: space-evenly;
     width: 100%;
     min-height: 70%;
   }
-  #user-info, #password-info, #income-info, #account-info{
+  #user-info,
+  #password-info,
+  #income-info,
+  #account-info {
     width: 100%;
   }
 
-  #user-info, #password-info{
+  #user-info,
+  #password-info {
     height: 50%;
   }
 
-  #delete-user-button{
+  #delete-user-button {
     width: 35%;
     height: 75%;
   }
-
 }
-
 </style>

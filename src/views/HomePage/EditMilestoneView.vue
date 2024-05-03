@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { ref, computed, onMounted } from 'vue'
@@ -15,8 +13,8 @@ import eventBus from '@/components/service/eventBus.js'
 const title = ref('')
 const description = ref('')
 const end_date = ref()
-const current_sum = ref<string|number>('')
-const goal_sum = ref<string|number>('')
+const current_sum = ref<string | number>('')
+const goal_sum = ref<string | number>('')
 const start_date = ref(new Date())
 const titleError = ref('')
 const descriptionError = ref('')
@@ -38,7 +36,7 @@ tomorrow.setDate(tomorrow.getDate() + 1)
  * @returns {Promise<void>} A promise that resolves when milestone details are fetched and reactive values are updated.
  */
 onMounted(async () => {
-  const milestoneId = useMilestoneStore().milestoneId;
+  const milestoneId = useMilestoneStore().milestoneId
   console.log(milestoneId)
   const response = await getMilestoneDetails(milestoneStore.milestoneId)
   if (response === null) {
@@ -51,7 +49,7 @@ onMounted(async () => {
     current_sum.value = data.milestoneCurrentSum
     start_date.value = data.startDate
     end_date.value = data.deadlineDate
-    image.value = data.milestoneImage ? `data:image/png;base64,${data.milestoneImage}` : null;
+    image.value = data.milestoneImage ? `data:image/png;base64,${data.milestoneImage}` : null
     console.log(image.value)
     console.log(data.milestoneImage)
   }
@@ -84,17 +82,20 @@ const validate = () => {
   }
   if (isNaN(<number>current_sum.value) || current_sum.value == '') {
     amountErrorStart.value = 'Fyll inn et gyldig beløp!'
-    isValid = false;
+    isValid = false
   }
 
-  if(isNaN(<number>goal_sum.value) || goal_sum.value == ''){
+  if (isNaN(<number>goal_sum.value) || goal_sum.value == '') {
     amountErrorGoal.value = 'Fyll inn et gyldig beløp!'
-    isValid = false;
+    isValid = false
   }
 
-  if (parseInt(<string>goal_sum.value) <= parseInt(<string>current_sum.value) && amountErrorStart.value == '') {
-    amountErrorStart.value = 'Nåværende beløp kan ikke være lik eller større enn sparebeløpet!';
-    isValid = false;
+  if (
+    parseInt(<string>goal_sum.value) <= parseInt(<string>current_sum.value) &&
+    amountErrorStart.value == ''
+  ) {
+    amountErrorStart.value = 'Nåværende beløp kan ikke være lik eller større enn sparebeløpet!'
+    isValid = false
   }
   return isValid
 }
@@ -120,7 +121,7 @@ const milestoneData = computed(() => ({
   milestoneImage: image.value ? image.value : '',
   deadlineDate: end_date.value ? end_date.value : null,
   startDate: start_date.value ? start_date.value : null
-}));
+}))
 
 /**
  * Saves input by updating milestone details and navigating to the milestone page if input is valid.
@@ -156,10 +157,10 @@ const handleFileChange = (event: any) => {
  * @returns {void} This function does not return a value.
  */
 const removeImage = () => {
-  image.value = null;
+  image.value = null
 }
 
-const fileInput = ref<HTMLInputElement | null>(null);
+const fileInput = ref<HTMLInputElement | null>(null)
 </script>
 
 <template>
@@ -173,37 +174,49 @@ const fileInput = ref<HTMLInputElement | null>(null);
     </div>
 
     <div class="input-container">
-
       <div class="image-container">
         <div class="add-image-box">
           <label>
-            <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
-                   @change="handleFileChange">
-            <img v-if="image" :src="image" id="image" alt="Selected Image">
-            <button v-if="image" class="remove-image-button" @click="removeImage">Fjern bilde</button>
-            <img v-else src="../../components/icons/image/AddImage.png" alt="add image" id="placeholder-img" width="50px" height="50px">
+            <input
+              type="file"
+              style="display: none"
+              ref="fileInput"
+              accept="image/png, image/jpeg"
+              @change="handleFileChange"
+            />
+            <img v-if="image" :src="image" id="image" alt="Selected Image" />
+            <button v-if="image" class="remove-image-button" @click="removeImage">
+              Fjern bilde
+            </button>
+            <img
+              v-else
+              src="../../components/icons/image/AddImage.png"
+              alt="add image"
+              id="placeholder-img"
+              width="50px"
+              height="50px"
+            />
           </label>
         </div>
       </div>
 
       <div class="input" id="title-input">
         <BaseInput
-            v-model="title"
-            label="Tittel"
-            place-holder="Navn på sparemålet"
-            type="email"
-            :error="titleError !== ''"
+          v-model="title"
+          label="Tittel"
+          place-holder="Navn på sparemålet"
+          type="email"
+          :error="titleError !== ''"
         ></BaseInput>
-        <label class="error"
-               v-if="titleError">{{ titleError }}</label>
+        <label class="error" v-if="titleError">{{ titleError }}</label>
       </div>
 
       <div class="input-large">
         <BaseTextArea
-            v-model="description"
-            label="Beskrivelse"
-            place-holder="Beskriv sparemålet"
-            :error="descriptionError !== ''"
+          v-model="description"
+          label="Beskrivelse"
+          place-holder="Beskriv sparemålet"
+          :error="descriptionError !== ''"
         ></BaseTextArea>
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
@@ -211,20 +224,20 @@ const fileInput = ref<HTMLInputElement | null>(null);
       <div class="smaller-inputs">
         <div class="input">
           <base-input
-              v-model="goal_sum"
-              label="Hvor mye vil du spare (nok)?"
-              place-holder="Sett inn hvor mye du vil spare"
-              id="test"
-              :error="amountErrorGoal !== ''"
+            v-model="goal_sum"
+            label="Hvor mye vil du spare (nok)?"
+            place-holder="Sett inn hvor mye du vil spare"
+            id="test"
+            :error="amountErrorGoal !== ''"
           ></base-input>
           <label class="error" v-if="amountErrorGoal">{{ amountErrorGoal }}</label>
         </div>
         <div class="input">
           <base-input
-              v-model="current_sum"
-              place-holder="Sett inn hvor mye du har nå"
-              label="Hvor mye har du nå (nok)?"
-              :error="amountErrorStart !== ''"
+            v-model="current_sum"
+            place-holder="Sett inn hvor mye du har nå"
+            label="Hvor mye har du nå (nok)?"
+            :error="amountErrorStart !== ''"
           ></base-input>
           <label class="error" v-if="amountErrorStart">{{ amountErrorStart }}</label>
         </div>
@@ -234,21 +247,21 @@ const fileInput = ref<HTMLInputElement | null>(null);
         <div class="input">
           <h3>Start dato</h3>
           <VueDatePicker
-              :enable-time-picker="false"
-              placeholder="Velg start dato"
-              v-model="start_date"
-              :min-date="start_date"
-              :disabled="true"
+            :enable-time-picker="false"
+            placeholder="Velg start dato"
+            v-model="start_date"
+            :min-date="start_date"
+            :disabled="true"
           ></VueDatePicker>
         </div>
         <div class="input">
           <h3>Slutt dato</h3>
           <VueDatePicker
-              :enable-time-picker="false"
-              tabindex="0"
-              placeholder="Velg slutt dato"
-              v-model="end_date"
-              :min-date="tomorrow"
+            :enable-time-picker="false"
+            tabindex="0"
+            placeholder="Velg slutt dato"
+            v-model="end_date"
+            :min-date="tomorrow"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>
@@ -263,8 +276,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
 </template>
 
 <style scoped>
-
-.create-milestone-view{
+.create-milestone-view {
   display: flex;
   flex-direction: column;
   min-height: fit-content;
@@ -274,18 +286,18 @@ const fileInput = ref<HTMLInputElement | null>(null);
   gap: 2.5%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   height: 5%;
 }
 
-.title{
-  color: var(--color-header)
+.title {
+  color: var(--color-header);
 }
 
-#top-button{
+#top-button {
   height: 100%;
   width: 30%;
 }
@@ -297,7 +309,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
   text-align: left;
   width: 100%;
   height: 85%;
-  gap: 1.0%;
+  gap: 1%;
 }
 
 .smaller-inputs {
@@ -308,7 +320,7 @@ const fileInput = ref<HTMLInputElement | null>(null);
   gap: 2%;
 }
 
-.input-large{
+.input-large {
   display: flex;
   flex-direction: column;
   height: 60%;
@@ -352,17 +364,17 @@ label {
   overflow: hidden;
 }
 
-#image{
+#image {
   width: 100%;
   cursor: pointer;
 }
 
-.image-button{
+.image-button {
   background: none;
   border: none;
 }
 
-#placeholder-img:hover{
+#placeholder-img:hover {
   cursor: pointer;
   transform: scale(1.05);
 }
@@ -383,11 +395,11 @@ label {
   border-radius: 20px;
 }
 
-.remove-image-button:hover{
+.remove-image-button:hover {
   transform: scale(1.05);
 }
 
-.submit-button{
+.submit-button {
   width: 100%;
   height: 10%;
 }
@@ -419,29 +431,28 @@ label {
 }
 
 @media screen and (max-width: 1000px) {
-
-  .create-milestone-view{
+  .create-milestone-view {
     height: 150%;
   }
 
-  .input-container{
-    gap: 1.0%;
+  .input-container {
+    gap: 1%;
   }
-  .smaller-inputs{
+  .smaller-inputs {
     display: flex;
     flex-direction: column;
     height: 40%;
   }
 
-  .input{
-    height: 100%
+  .input {
+    height: 100%;
   }
 
-  #title-input{
-    height: 20%
+  #title-input {
+    height: 20%;
   }
 
-  .image-container{
+  .image-container {
     height: 45%;
   }
 }

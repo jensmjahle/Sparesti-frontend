@@ -1,32 +1,30 @@
 <script setup lang="ts">
-
 import { useTokenStore } from '@/stores/token'
 import { deleteUser } from '@/utils/profileutils'
 
 /**
  * Defines the emits for this component
  */
-const emit = defineEmits(['closeDeletePopUp', 'challengeDeleted']);
+const emit = defineEmits(['closeDeletePopUp', 'challengeDeleted'])
 
 /**
  * Emits a closeDeletePopUp signal to the parent
  */
 const cancelCompleteThisChallenge = () => {
-  emit('closeDeletePopUp');
+  emit('closeDeletePopUp')
 }
 
 /**
  * Deletes the active user and logs them out
  */
 const deleteThisUser = async () => {
-  try{
-    await deleteUser(useTokenStore().jwtToken);
-    useTokenStore().logout();
-  }catch (error){
+  try {
+    await deleteUser(useTokenStore().jwtToken)
+    useTokenStore().logout()
+  } catch (error) {
     console.log(error)
   }
 }
-
 </script>
 
 <template>
@@ -35,8 +33,8 @@ const deleteThisUser = async () => {
     <h2>Er du sikker på at du vil slette brukeren?</h2>
 
     <div class="content">
-      <img class="sad-pig-img" src="/src/assets/png/sad-pig.png" alt="sad-pig" >
-      <h3> Husk! Dagens små sparinger kan føre til morgendagens store drømmer.</h3>
+      <img class="sad-pig-img" src="/src/assets/png/sad-pig.png" alt="sad-pig" />
+      <h3>Husk! Dagens små sparinger kan føre til morgendagens store drømmer.</h3>
     </div>
 
     <div class="option-buttons">
@@ -48,7 +46,6 @@ const deleteThisUser = async () => {
       </button>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -65,21 +62,19 @@ const deleteThisUser = async () => {
   border: 2px solid var(--color-border);
 
   place-content: space-between;
-
 }
 
-.content{
+.content {
   display: flex;
   flex-direction: row;
   place-items: center;
 }
 
-.sad-pig-img{
-  width:30%;
+.sad-pig-img {
+  width: 30%;
 }
 
-
-.option-buttons{
+.option-buttons {
   display: flex;
   flex-direction: row;
 
@@ -87,41 +82,40 @@ const deleteThisUser = async () => {
   place-content: space-between;
 }
 
-.option-button{
+.option-button {
   border: none;
   border-radius: 20px;
   width: 35%;
-
 }
 
-.option-button-title{
+.option-button-title {
   color: var(--color-headerText);
   font-weight: bold;
 }
 
-#cancel-button{
+#cancel-button {
   background-color: var(--color-cancel-button);
 }
-#cancel-button:active{
+#cancel-button:active {
   background-color: var(--color-cancel-button-click);
 }
 
-#delete-button{
+#delete-button {
   background-color: var(--color-confirm-button);
 }
-#delete-button:active{
+#delete-button:active {
   background-color: var(--color-confirm-button-click);
 }
 
-#delete-button:hover, #cancel-button:hover{
+#delete-button:hover,
+#cancel-button:hover {
   transform: scale(1.02);
 }
 
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 1000px) {
   .popup-content {
     width: 90%;
     height: 60%;
   }
 }
-
 </style>

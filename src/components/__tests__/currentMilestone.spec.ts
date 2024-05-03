@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { useMilestoneStore} from '../../stores/currentMilestone'
+import { useMilestoneStore } from '../../stores/currentMilestone'
 import { describe, it, expect, beforeEach } from 'vitest'
 
 describe('currentMilestoneStore', () => {

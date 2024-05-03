@@ -2,24 +2,24 @@
 import { onMounted, ref } from 'vue'
 import { getLockedAchievements, getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
-import { getUserNewAchievements } from "@/utils/userUtils";
+import { getUserNewAchievements } from '@/utils/userUtils'
 
 /**
  * Defines achievement object type
  */
-interface Achievement{
-  achievementId: number,
-  achievementTitle: string,
-  achievementDescription:string,
+interface Achievement {
+  achievementId: number
+  achievementTitle: string
+  achievementDescription: string
   badge: string
 }
 
 /**
  * Defines the props necessary for this component
  */
-const props = defineProps <{
+const props = defineProps<{
   title: string
-}>();
+}>()
 
 /**
  * Holds the title of the achievement
@@ -41,17 +41,16 @@ const newAchievements = ref<Achievement[]>([])
  */
 const achievementsLocked = ref<Achievement[]>([])
 
-
 /**
  * Code to execute on component mount
  */
 onMounted(async () => {
   try {
-    await fetchNewAchievements();
-    await fetchBadgeInfo();
-    await fetchLockedAchievements();
+    await fetchNewAchievements()
+    await fetchBadgeInfo()
+    await fetchLockedAchievements()
   } catch (error) {
-    console.error('Error fetching achievements:', error);
+    console.error('Error fetching achievements:', error)
   }
 })
 
@@ -61,7 +60,7 @@ onMounted(async () => {
 const fetchNewAchievements = async () => {
   try {
     newAchievements.value = await getUserNewAchievements()
-  } catch (error){
+  } catch (error) {
     console.error('Error fetching new achievements:' + error)
   }
 }
@@ -71,11 +70,12 @@ const fetchNewAchievements = async () => {
  */
 const fetchBadgeInfo = async () => {
   try {
-    const response = await getUserInfo(useTokenStore().jwtToken);
+    const response = await getUserInfo(useTokenStore().jwtToken)
     achievements.value = response.achievementDTOList.filter(
-        (ach: Achievement) => !newAchievements.value.find((newAch) => newAch.achievementId === ach.achievementId)
-    );
-  } catch (error){
+      (ach: Achievement) =>
+        !newAchievements.value.find((newAch) => newAch.achievementId === ach.achievementId)
+    )
+  } catch (error) {
     console.error('Error fetching achievements:' + error)
   }
 }
@@ -84,45 +84,66 @@ const fetchBadgeInfo = async () => {
  * Fetches the locked achievements for a user
  */
 const fetchLockedAchievements = async () => {
-  try{
-    achievementsLocked.value = await getLockedAchievements(useTokenStore().jwtToken);
-  } catch (error){
+  try {
+    achievementsLocked.value = await getLockedAchievements(useTokenStore().jwtToken)
+  } catch (error) {
     console.log('Error fetching locked achievements:' + error)
-
   }
 }
-
 </script>
 
 <template>
   <div class="badge-container">
-    <h3 class="title">{{title}}</h3>
+    <h3 class="title">{{ title }}</h3>
     <div class="badges">
-      <div class="badge" v-for="newAchievement in newAchievements" :key="newAchievement.achievementId">
+      <div
+        class="badge"
+        v-for="newAchievement in newAchievements"
+        :key="newAchievement.achievementId"
+      >
         <h3 class="new-badge-title">Ny mynt!</h3>
-        <img class="badge-img" src="/src/assets/png/gold-coin.png" :alt="newAchievement.achievementTitle"
-             v-tooltip :title="newAchievement.achievementDescription">
-        <h3 class="badge-title"> {{newAchievement.achievementTitle}}</h3>
+        <img
+          class="badge-img"
+          src="/src/assets/png/gold-coin.png"
+          :alt="newAchievement.achievementTitle"
+          v-tooltip
+          :title="newAchievement.achievementDescription"
+        />
+        <h3 class="badge-title">{{ newAchievement.achievementTitle }}</h3>
       </div>
       <div class="badge" v-for="achievement in achievements" :key="achievement.achievementId">
-        <img class="badge-img" src="/src/assets/png/gold-coin.png" :alt="achievement.achievementTitle"
-             v-tooltip :title="achievement.achievementDescription">
-        <h3 class="badge-title"> {{achievement.achievementTitle}}</h3>
+        <img
+          class="badge-img"
+          src="/src/assets/png/gold-coin.png"
+          :alt="achievement.achievementTitle"
+          v-tooltip
+          :title="achievement.achievementDescription"
+        />
+        <h3 class="badge-title">{{ achievement.achievementTitle }}</h3>
       </div>
-      <div class="badge" v-for="achievementLocked in achievementsLocked" :key="achievementLocked.achievementId">
-        <img class="locked-badge-img" src="/src/assets/png/gold-coin.png" :alt="achievementLocked.achievementTitle"
-             v-tooltip :title="achievementLocked.achievementDescription">
-        <h3 class="badge-title"> {{achievementLocked.achievementTitle}}</h3>
+      <div
+        class="badge"
+        v-for="achievementLocked in achievementsLocked"
+        :key="achievementLocked.achievementId"
+      >
+        <img
+          class="locked-badge-img"
+          src="/src/assets/png/gold-coin.png"
+          :alt="achievementLocked.achievementTitle"
+          v-tooltip
+          :title="achievementLocked.achievementDescription"
+        />
+        <h3 class="badge-title">{{ achievementLocked.achievementTitle }}</h3>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.new-badge-title{
-  color: var(--text-color-orange)
+.new-badge-title {
+  color: var(--text-color-orange);
 }
-.badge-container{
+.badge-container {
   display: flex;
   flex-direction: column;
   min-width: 100%;
@@ -130,50 +151,49 @@ const fetchLockedAchievements = async () => {
 
   overflow-x: scroll;
 }
-.title{
+.title {
   font-weight: bold;
 }
 
-.badges{
+.badges {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   width: 100%;
   height: 100%;
-  gap: 2.0%;
+  gap: 2%;
 }
 
-.badge{
+.badge {
   display: flex;
   flex-direction: column;
-  width: calc(100%/5);
+  width: calc(100% / 5);
   min-width: 150px;
 }
-.badge-img{
+.badge-img {
   width: 100%;
 }
 
-.locked-badge-img:hover{
+.locked-badge-img:hover {
   transform: rotateZ(180deg);
 }
 
-.badge-img:hover{
+.badge-img:hover {
   transform: rotateZ(180deg);
 }
 
-.locked-badge-img{
+.locked-badge-img {
   width: 100%;
   filter: grayscale(100%);
 }
 
-.badge-title{
+.badge-title {
   text-align: center;
 }
 
 @media only screen and (max-width: 750px) {
- .badge{
-   width: 20%;
- }
+  .badge {
+    width: 20%;
+  }
 }
-
 </style>

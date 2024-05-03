@@ -6,35 +6,35 @@ import TransactionComponent from '@/components/economy/TransactionComponent.vue'
 import { getTransactions } from '@/utils/TransactionUtils'
 import { useTokenStore } from '@/stores/token'
 import EconomyHelpPopUp from '@/components/popups/help/EconomyHelpPopUp.vue'
-import {useToast} from "vue-toast-notification";
+import { useToast } from 'vue-toast-notification'
 
-ChartJS.register(ArcElement,Tooltip,Legend, Colors)
+ChartJS.register(ArcElement, Tooltip, Legend, Colors)
 
 interface Transaction {
-  "transactionCategory": string,
-  "transactionTitle": string,
-  "amount": number,
-  "transactionId": number,
-  "time": string,
+  transactionCategory: string
+  transactionTitle: string
+  amount: number
+  transactionId: number
+  time: string
 }
 
-const token:string = useTokenStore().jwtToken;
-const toast = useToast();
+const token: string = useTokenStore().jwtToken
+const toast = useToast()
 
 const selectedOption = ref<string | null>('')
 
 const displayHelpPopUp = ref<boolean>(false)
 
-const pages = ref<number>(0);
-const currentPage = ref<number>(0);
-const transactionsPerPage = 5; // Assuming 5 transactions per page
+const pages = ref<number>(0)
+const currentPage = ref<number>(0)
+const transactionsPerPage = 5 // Assuming 5 transactions per page
 
 /**
  * Decrements the current page number by one to navigate to the previous page.
  * @returns {void} This function does not return a value.
  */
 const previousPage = () => {
-  currentPage.value --
+  currentPage.value--
 }
 
 /**
@@ -42,16 +42,16 @@ const previousPage = () => {
  * @param {number} pageNumber - The page number to navigate to.
  * @returns {void} This function does not return a value.
  */
-const goToPage = (pageNumber:number) => {
-  currentPage.value = pageNumber;
+const goToPage = (pageNumber: number) => {
+  currentPage.value = pageNumber
 }
 
 /**
  * Increments the current page number by one to navigate to the next page.
  * @returns {void} This function does not return a value.
  */
-const nextPage = () =>{
-  currentPage.value ++;
+const nextPage = () => {
+  currentPage.value++
 }
 
 const transactions = ref<Transaction[]>([])
@@ -62,8 +62,8 @@ const transactions = ref<Transaction[]>([])
  * Displays an error toast if fetching transactions fails.
  * @returns {Promise<void>} A promise that resolves after transactions are fetched and updated.
  */
-const fetchTransactions = async() =>  {
-  try{
+const fetchTransactions = async () => {
+  try {
     const response = await getTransactions(token)
     transactions.value = response
     console.log(transactions.value)
@@ -78,9 +78,9 @@ const fetchTransactions = async() =>  {
  * Fetches transactions and handles selection change after the component is mounted.
  * @returns {Promise<void>} A promise that resolves after transactions are fetched and selection change is handled.
  */
-onMounted(async ()  => {
-  await fetchTransactions();
-  handleSelectionChange('Alle');
+onMounted(async () => {
+  await fetchTransactions()
+  handleSelectionChange('Alle')
 })
 
 const displayType = ref<boolean>(false)
@@ -90,7 +90,7 @@ const displayType = ref<boolean>(false)
  * @returns {void} This function does not return a value.
  */
 const displayNewChallenges = () => {
-  displayType.value = false;
+  displayType.value = false
   console.log(displayType.value)
 }
 
@@ -99,7 +99,7 @@ const displayNewChallenges = () => {
  * @returns {void} This function does not return a value.
  */
 const displayActiveChallenges = () => {
-  displayType.value = true;
+  displayType.value = true
   console.log(displayType.value)
 }
 
@@ -108,7 +108,7 @@ const displayActiveChallenges = () => {
  * @returns {void} This function does not return a value.
  */
 const openHelpPopUp = () => {
-  displayHelpPopUp.value = true;
+  displayHelpPopUp.value = true
 }
 
 /**
@@ -116,8 +116,8 @@ const openHelpPopUp = () => {
  * @returns {void} This function does not return a value.
  */
 const closeHelpPopUp = () => {
-  displayHelpPopUp.value = false;
-  console.log(displayHelpPopUp);
+  displayHelpPopUp.value = false
+  console.log(displayHelpPopUp)
 }
 
 /**
@@ -127,9 +127,9 @@ const closeHelpPopUp = () => {
  * @returns {void} This function does not return a value.
  */
 const handleSelectionChange = (value: string | null) => {
-  selectedOption.value = value;
-  currentPage.value = 0;
-  calculateNumberOfPages();
+  selectedOption.value = value
+  currentPage.value = 0
+  calculateNumberOfPages()
 }
 
 /**
@@ -139,7 +139,7 @@ const handleSelectionChange = (value: string | null) => {
  */
 const distinctCategories = computed(() => {
   const categories = new Set<string>()
-  transactions.value.forEach(transaction => {
+  transactions.value.forEach((transaction) => {
     console.log(transaction.transactionCategory)
     categories.add(transaction.transactionCategory)
     console.log(categories)
@@ -166,7 +166,9 @@ const filteredTransactions = computed(() => {
   if (selectedOption.value === 'Alle' || !selectedOption.value) {
     return transactions.value
   } else {
-    return transactions.value.filter(transaction => transaction.transactionCategory === selectedOption.value)
+    return transactions.value.filter(
+      (transaction) => transaction.transactionCategory === selectedOption.value
+    )
   }
 })
 
@@ -176,8 +178,11 @@ const filteredTransactions = computed(() => {
  * @returns {Transaction[]} An array of transactions to display on the current page.
  */
 const transactionsToDisplay = computed(() => {
-  return filteredTransactions.value.slice(currentPage.value * transactionsPerPage, (currentPage.value * transactionsPerPage) + transactionsPerPage);
-});
+  return filteredTransactions.value.slice(
+    currentPage.value * transactionsPerPage,
+    currentPage.value * transactionsPerPage + transactionsPerPage
+  )
+})
 
 /**
  * Calculates the number of pages based on the filtered transactions and updates the `pages` reactive value.
@@ -185,7 +190,7 @@ const transactionsToDisplay = computed(() => {
  * @returns {void} This function does not return a value.
  */
 const calculateNumberOfPages = () => {
-  pages.value = Math.ceil(filteredTransactions.value.length / transactionsPerPage);
+  pages.value = Math.ceil(filteredTransactions.value.length / transactionsPerPage)
 }
 
 /**
@@ -194,41 +199,46 @@ const calculateNumberOfPages = () => {
  * @returns {ChartData} Chart data object containing labels and datasets for visualization.
  */
 const chartData = computed(() => {
-  const data: { labels: string[], datasets: { data: number[], label:string ,backgroundColor: string[] }[] } = {
+  const data: {
+    labels: string[]
+    datasets: { data: number[]; label: string; backgroundColor: string[] }[]
+  } = {
     labels: [],
-    datasets: [{
-      label: "kr",
-      data: [],
-      backgroundColor: [],
-    }]
+    datasets: [
+      {
+        label: 'kr',
+        data: [],
+        backgroundColor: []
+      }
+    ]
   }
 
-  const categoryAmounts: { [key: string]: number } = {};
-  const usedColors = new Set();
+  const categoryAmounts: { [key: string]: number } = {}
+  const usedColors = new Set()
 
-  transactions.value.forEach(transaction => {
-    const { transactionCategory, amount } = transaction;
+  transactions.value.forEach((transaction) => {
+    const { transactionCategory, amount } = transaction
     console.log(transactionCategory)
     const category = transactionCategory
     if (category in categoryAmounts) {
-      categoryAmounts[category] += amount;
+      categoryAmounts[category] += amount
     } else {
-      categoryAmounts[category] = amount;
-      data.labels.push(category);
-      let color = getRandomColor();
+      categoryAmounts[category] = amount
+      data.labels.push(category)
+      let color = getRandomColor()
       // Ensure the color hasn't been used yet
       while (usedColors.has(color)) {
-        color = getRandomColor();
+        color = getRandomColor()
       }
-      usedColors.add(color);
-      data.datasets[0].backgroundColor.push(color);
+      usedColors.add(color)
+      data.datasets[0].backgroundColor.push(color)
     }
-  });
+  })
 
-  data.labels.forEach(label => {
-    data.datasets[0].data.push(categoryAmounts[label]);
-  });
-  return data;
+  data.labels.forEach((label) => {
+    data.datasets[0].data.push(categoryAmounts[label])
+  })
+  return data
 })
 
 /**
@@ -237,7 +247,7 @@ const chartData = computed(() => {
  * @returns {string} A randomly generated color in CSS format (e.g., hex, rgba, etc.).
  */
 const getRandomColor = () => {
-  const computedStyle = getComputedStyle(document.documentElement);
+  const computedStyle = getComputedStyle(document.documentElement)
 
   const colorVariables = [
     '--color-pieChartBlue',
@@ -246,95 +256,106 @@ const getRandomColor = () => {
     '--color-pieChartOrange',
     '--color-pieChartPurple',
     '--color-pieChartGrey'
-  ];
+  ]
 
-  const randomIndex = Math.floor(Math.random() * colorVariables.length);
+  const randomIndex = Math.floor(Math.random() * colorVariables.length)
 
-  const randomColorVariable = colorVariables[randomIndex];
-  const randomColor = computedStyle.getPropertyValue(randomColorVariable);
+  const randomColorVariable = colorVariables[randomIndex]
+  const randomColor = computedStyle.getPropertyValue(randomColorVariable)
   console.log('color')
   console.log(randomColorVariable)
 
-  return randomColor;
+  return randomColor
 }
-
 </script>
 
 <template>
   <div class="economy-view">
-
     <div class="header">
       <h2 class="title">Dine transaksjoner!</h2>
       <img
-          src="/src/components/icons/navigation/help.svg"
-          alt="hjelp"
-          @click="openHelpPopUp"
-          tabindex="0"
-          @keyup.enter="openHelpPopUp"
-          class="help-icon">
+        src="/src/components/icons/navigation/help.svg"
+        alt="hjelp"
+        @click="openHelpPopUp"
+        tabindex="0"
+        @keyup.enter="openHelpPopUp"
+        class="help-icon"
+      />
       <div v-if="displayHelpPopUp" class="popup-container">
-        <EconomyHelpPopUp
-            @closePopUp="closeHelpPopUp"
-        ></EconomyHelpPopUp>
+        <EconomyHelpPopUp @closePopUp="closeHelpPopUp"></EconomyHelpPopUp>
       </div>
     </div>
 
     <div class="toggle-buttons">
-      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+      <button
+        class="toggle-button"
+        @click="displayNewChallenges"
+        :class="{ 'active-button': !displayType }"
+      >
         <h3 class="toggle-button-title">Transaksjoner</h3>
       </button>
-      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+      <button
+        class="toggle-button"
+        @click="displayActiveChallenges"
+        :class="{ 'active-button': displayType }"
+      >
         <h3 class="toggle-button-title">Diagram</h3>
       </button>
     </div>
 
     <div class="container">
-
-      <div class="box" :class="{'hide': displayType }">
+      <div class="box" :class="{ hide: displayType }">
         <div class="custom-dropdown-container">
-          <select class="custom-dropdown" v-model="selectedOption" @change="handleSelectionChange(selectedOption)">
+          <select
+            class="custom-dropdown"
+            v-model="selectedOption"
+            @change="handleSelectionChange(selectedOption)"
+          >
             <option disabled value="" selected>Kategori</option>
-            <option v-for="option in dropdownOptions" :key="option" :value="option">{{ option }}</option>
+            <option v-for="option in dropdownOptions" :key="option" :value="option">
+              {{ option }}
+            </option>
           </select>
         </div>
 
         <div class="component-container" v-if="filteredTransactions">
           <transaction-component
-              class="transaction"
-              v-for="transaction in transactionsToDisplay"
-              :key="transaction.transactionId"
-              :title="transaction.transactionTitle"
-              :category="transaction.transactionCategory"
-              :amount="transaction.amount"
-              :date="transaction.time"
+            class="transaction"
+            v-for="transaction in transactionsToDisplay"
+            :key="transaction.transactionId"
+            :title="transaction.transactionTitle"
+            :category="transaction.transactionCategory"
+            :amount="transaction.amount"
+            :date="transaction.time"
           ></transaction-component>
         </div>
 
         <div class="pagination">
           <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
-          <div  v-if="pages>1" class="page-numbers">
+          <div v-if="pages > 1" class="page-numbers">
             <button
-                v-for="pageNumber in pages"
-                :key="pageNumber-2"
-                :class="{ chosen: pageNumber-1 === currentPage }"
-                @click="goToPage(pageNumber-1)"
-            >{{ pageNumber}}</button>
+              v-for="pageNumber in pages"
+              :key="pageNumber - 2"
+              :class="{ chosen: pageNumber - 1 === currentPage }"
+              @click="goToPage(pageNumber - 1)"
+            >
+              {{ pageNumber }}
+            </button>
           </div>
-          <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
+          <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">
+            Neste side
+          </button>
         </div>
       </div>
 
-      <div class="pie-box" :class="{ 'hide': !displayType}">
+      <div class="pie-box" :class="{ hide: !displayType }">
         <Pie :data="chartData" :options="{ maintainAspectRatio: false }"></Pie>
       </div>
-
     </div>
-
   </div>
 </template>
 
 <style scoped>
-
 .economy-view {
   display: flex;
   flex-direction: column;
@@ -357,23 +378,23 @@ const getRandomColor = () => {
   z-index: 1000; /* Adjust z-index as needed */
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   max-height: 6.5%;
 }
 
-.help-icon:hover{
+.help-icon:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
 
-.title{
+.title {
   color: var(--color-heading);
 }
 
-.toggle-buttons{
+.toggle-buttons {
   display: none;
 }
 
@@ -396,18 +417,19 @@ const getRandomColor = () => {
   height: 100%;
 }
 
-.transaction{
-  height: calc(100%/5);
+.transaction {
+  height: calc(100% / 5);
 }
 
-.pie-box, .box{
+.pie-box,
+.box {
   display: flex;
   flex-direction: column;
 
   border-radius: 20px;
   border: 1px solid var(--color-border);
 
-  width:50%;
+  width: 50%;
   height: 100%;
 
   padding: 1.5%;
@@ -418,7 +440,7 @@ const getRandomColor = () => {
   transition: transform 0.3s ease-in-out;
 }
 
-.box{
+.box {
   place-content: space-between;
   gap: 2.5%;
 }
@@ -429,7 +451,7 @@ const getRandomColor = () => {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 8.0%;
+  height: 8%;
 }
 
 .custom-dropdown {
@@ -439,7 +461,7 @@ const getRandomColor = () => {
   border-radius: 20px;
 }
 
-.custom-dropdown:hover{
+.custom-dropdown:hover {
   transform: scale(1.02);
 }
 
@@ -448,7 +470,7 @@ const getRandomColor = () => {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 5.0%;
+  height: 5%;
 }
 
 .pagination button {
@@ -463,15 +485,15 @@ const getRandomColor = () => {
   transform: scale(1.05);
 }
 
-.pagination button:active{
+.pagination button:active {
   background-color: var(--color-pageination-button-click);
 }
 
 .pagination button:disabled {
-  color:  var(--color-inactive-button-text);
+  color: var(--color-inactive-button-text);
   cursor: not-allowed;
   transform: none;
-  background-color: var(--color-pageination-button) ;
+  background-color: var(--color-pageination-button);
 }
 
 .page-numbers {
@@ -492,21 +514,20 @@ const getRandomColor = () => {
   background-color: var(--color-pageination-button-click);
 }
 
-.chosen{
+.chosen {
   color: var(--color-heading);
   font-weight: bold;
 }
 
 @media screen and (max-width: 1000px) {
-
-  .economy-view{
+  .economy-view {
     height: 120%;
   }
 
-  .hide{
+  .hide {
     display: none;
   }
-  .toggle-buttons{
+  .toggle-buttons {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -514,23 +535,23 @@ const getRandomColor = () => {
     place-content: space-between;
   }
 
-  .toggle-button{
+  .toggle-button {
     width: 49.5%;
     border-radius: 20px;
     border: none;
     background-color: var(--color-confirm-button);
   }
 
-  .toggle-button:hover{
+  .toggle-button:hover {
     transform: scale(1.02);
   }
 
-  .toggle-button-title{
+  .toggle-button-title {
     font-weight: bold;
     color: var(--color-headerText);
   }
 
-  .active-button{
+  .active-button {
     background-color: var(--color-confirm-button-click);
   }
 
@@ -539,7 +560,7 @@ const getRandomColor = () => {
     height: 100%;
   }
 
-  .box{
+  .box {
     width: 100%;
     height: 100%;
   }
@@ -552,9 +573,8 @@ const getRandomColor = () => {
 }
 
 @media (prefers-color-scheme: dark) {
-  .help-icon{
+  .help-icon {
     filter: invert(1);
   }
 }
-
 </style>

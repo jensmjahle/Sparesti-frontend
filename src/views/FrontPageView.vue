@@ -7,13 +7,12 @@ import { useTokenStore } from '@/stores/token'
  * @param {useTokenStore}
  * @returns {void}
  */
-onMounted(()=>{
-  useTokenStore().cleanStore();
+onMounted(() => {
+  useTokenStore().cleanStore()
 })
 </script>
 
 <template>
-   <router-view></router-view>
+  <router-view></router-view>
 </template>
-<style scoped>
-</style>
+<style scoped></style>

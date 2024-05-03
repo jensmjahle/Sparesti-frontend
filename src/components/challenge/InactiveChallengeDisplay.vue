@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { activateChallenge, deleteChallenge } from '@/utils/challengeutils'
 import { useTokenStore } from '@/stores/token'
 import eventBus from '@/components/service/eventBus.js'
@@ -13,12 +12,12 @@ const toast = useToast()
 /**
  * Initiates object type challenge with all necessary fields for a challenge
  */
-interface Challenge{
-  'challengeId':number,
-  'challengeTitle':string,
-  'challengeDescription':string,
-  'goalSum':number,
-  'expirationDate':string
+interface Challenge {
+  challengeId: number
+  challengeTitle: string
+  challengeDescription: string
+  goalSum: number
+  expirationDate: string
 }
 
 /**
@@ -30,21 +29,23 @@ const props = defineProps({
     type: Object as () => Challenge,
     required: true
   }
-});
-
+})
 
 /**
  * Defines the emits for this component.
  * Defines a challenge accepted emit and a challenge declined emit
  */
-const emit = defineEmits(['challengeAccepted', 'challengeDeclined']);
+const emit = defineEmits(['challengeAccepted', 'challengeDeclined'])
 
 /**
  * Calculates the expiration date for the challenge
  */
 const expirationDate = () => {
-  return new Date(props.challenge?.expirationDate).
-  toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  return new Date(props.challenge?.expirationDate).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  })
 }
 
 /**
@@ -55,11 +56,11 @@ const expirationDate = () => {
  * to the user
  */
 const declineChallenge = async () => {
-  if(props.challenge.challengeId){
-    try{
-      await deleteChallenge(useTokenStore().jwtToken, props.challenge.challengeId);
-      emit('challengeDeclined', props.challenge.challengeId);
-    } catch (error){
+  if (props.challenge.challengeId) {
+    try {
+      await deleteChallenge(useTokenStore().jwtToken, props.challenge.challengeId)
+      emit('challengeDeclined', props.challenge.challengeId)
+    } catch (error) {
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
     }
   } else {
@@ -74,12 +75,12 @@ const declineChallenge = async () => {
  * In the event of an error displays an error PopUp to the user
  */
 const acceptChallenge = async () => {
-  if(props.challenge.challengeId){
-    try{
-      await activateChallenge(useTokenStore().jwtToken, props.challenge.challengeId);
-      emit('challengeAccepted', props.challenge.challengeId);
-      eventBus.emit('updateChallenges');
-    } catch (error){
+  if (props.challenge.challengeId) {
+    try {
+      await activateChallenge(useTokenStore().jwtToken, props.challenge.challengeId)
+      emit('challengeAccepted', props.challenge.challengeId)
+      eventBus.emit('updateChallenges')
+    } catch (error) {
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
     }
   }
@@ -91,8 +92,8 @@ const acceptChallenge = async () => {
     <h2 class="title">{{ props.challenge.challengeTitle }}</h2>
     <h4 class="description">{{ props.challenge.challengeDescription }}</h4>
     <div class="info">
-      <h4>Utløpsdato: {{expirationDate()}} |</h4>
-      <h4 class="sum"> Sparesum: {{props.challenge.goalSum}} kr,-</h4>
+      <h4>Utløpsdato: {{ expirationDate() }} |</h4>
+      <h4 class="sum">Sparesum: {{ props.challenge.goalSum }} kr,-</h4>
     </div>
     <div class="options">
       <button class="option-button" id="decline-button" @click="declineChallenge">
@@ -101,69 +102,66 @@ const acceptChallenge = async () => {
       <button class="option-button" id="accept-button" @click="acceptChallenge">
         <h3 class="button-text">Godta</h3>
       </button>
-
     </div>
   </div>
 </template>
 
 <style scoped>
-.potential-challenge-display{
+.potential-challenge-display {
   display: flex;
   flex-direction: column;
   place-content: space-between;
   padding: 1.5%;
 }
 
-.title{
+.title {
   text-align: center;
 }
 
-.description{
+.description {
   text-align: center;
 }
-.info{
+.info {
   display: flex;
   flex-direction: row;
   place-content: center;
-  gap: 1.0%;
+  gap: 1%;
 }
 
-.options{
+.options {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   gap: 2.5%;
 }
 
-.option-button{
+.option-button {
   width: 50%;
   border-radius: 20px;
   border: none;
 }
 
-.option-button:hover{
+.option-button:hover {
   transform: scale(1.02);
 }
 
-.button-text{
+.button-text {
   color: var(--color-buttonText);
   font-weight: bold;
 }
 
-#accept-button{
+#accept-button {
   background-color: var(--color-confirm-button);
 }
-#accept-button:active{
+#accept-button:active {
   background-color: var(--color-confirm-button-click);
 }
 
-#decline-button{
+#decline-button {
   background-color: var(--color-cancel-button);
 }
 
-#decline-button:active{
+#decline-button:active {
   background-color: var(--color-cancel-button-click);
 }
-
-
 </style>

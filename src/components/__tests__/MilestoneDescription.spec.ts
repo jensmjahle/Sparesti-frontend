@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import MilestoneDescription from '@/components/MilestonePath/MilestoneDescription.vue';
+import MilestoneDescription from '@/components/MilestonePath/MilestoneDescription.vue'
 import { describe, it, expect } from 'vitest'
 
 describe('MilestoneDescription', () => {

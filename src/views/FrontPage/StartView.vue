@@ -1,33 +1,33 @@
 <script setup lang="ts">
-
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 import InfoComponent from '@/components/InfoComponent.vue'
 
-const router = useRouter();
+const router = useRouter()
 
-function navigateToLogin(){
+function navigateToLogin() {
   router.push('/login')
 }
 </script>
 
 <template>
-  <div id = StartPage>
-    <div id = "heading">
-      <h1 id = "title">Sparesti<img src="../../assets/png/pig_394778.png" alt ="logo" id = "logo"></h1>
+  <div id="StartPage">
+    <div id="heading">
+      <h1 id="title">Sparesti<img src="../../assets/png/pig_394778.png" alt="logo" id="logo" /></h1>
     </div>
-    <div id = Info>
-      <InfoComponent/>
+    <div id="Info">
+      <InfoComponent />
     </div>
-    <div id = LogIn>
-      <button id = LogInButton @click="navigateToLogin()" data-testid="LogInButton"><h2>Login / Registrer bruker</h2></button>
+    <div id="LogIn">
+      <button id="LogInButton" @click="navigateToLogin()" data-testid="LogInButton">
+        <h2>Login / Registrer bruker</h2>
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
-
-#StartPage{
-  background-image: url("../../assets/farm.jpg");
+#StartPage {
+  background-image: url('../../assets/farm.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   min-width: 100%;
@@ -39,22 +39,21 @@ function navigateToLogin(){
   align-items: center;
 }
 
-#heading{
+#heading {
   margin-top: 1%;
   text-align: center;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
   border: 2px solid var(--color-border);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
 }
 
-
-#logo{
+#logo {
   max-width: 15%;
   max-height: 15%;
 }
 
-#title{
+#title {
   padding: 1%;
   background: linear-gradient(45deg, var(--color-heading), #eaeaea);
   -webkit-background-clip: text;
@@ -65,22 +64,22 @@ function navigateToLogin(){
   align-items: center;
 }
 
-#Info{
+#Info {
   margin: 1%;
   width: 80%;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#LogIn{
+#LogIn {
   margin: 1%;
   min-width: 80%;
 }
 
-#LogInButton{
+#LogInButton {
   min-width: 100%;
   padding: 30px;
   background-color: var(--color-confirm-button);
@@ -89,14 +88,14 @@ function navigateToLogin(){
   border-radius: 20px;
 }
 
-#LogInButton:hover{
+#LogInButton:hover {
   transform: scale(1.05);
 }
 
 @media (prefers-color-scheme: dark) {
-  #heading, #Info{
-    background-color: rgba(0,0,0,0.8);
+  #heading,
+  #Info {
+    background-color: rgba(0, 0, 0, 0.8);
   }
 }
-
 </style>

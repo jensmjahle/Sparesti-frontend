@@ -12,40 +12,43 @@ const props = defineProps({
 /**
  * Defines emits for this component
  */
-const emits = defineEmits(['delete']);
+const emits = defineEmits(['delete'])
 
 /**
  * emits a delete event to the parent
  */
 function deleteMilestone() {
-  if(props.label === 'Slett'){
-    emits('delete');
+  if (props.label === 'Slett') {
+    emits('delete')
   }
 }
-
-
 </script>
 
 <template>
   <div class="button-box">
-    <button class="save-button" :style="{ backgroundColor: buttonColor}" @click="deleteMilestone()">{{label}}</button>
+    <button
+      class="save-button"
+      :style="{ backgroundColor: buttonColor }"
+      @click="deleteMilestone()"
+    >
+      {{ label }}
+    </button>
   </div>
 </template>
 
 <style scoped>
-
-.button-box{
+.button-box {
   width: 100%;
   padding: 2%;
   overflow: auto;
   scrollbar-width: none;
 }
 
-.save-button{
+.save-button {
   border-radius: 20px;
   width: 100%;
-  padding-right: 5.0%;
-  padding-left: 5.0%;
+  padding-right: 5%;
+  padding-left: 5%;
   color: var(--color-headerText);
   background-color: var(--color-save-button);
   border: none;
@@ -55,15 +58,15 @@ function deleteMilestone() {
   font-weight: bold;
 }
 
-.save-button:hover{
+.save-button:hover {
   transform: scale(1.02);
 }
 
-.save-button:active{
+.save-button:active {
   background-color: var(--color-save-button-click);
 }
 
-.save-button-title{
+.save-button-title {
   font-weight: bold;
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
 
 /**
  * Defines the required props for the component
@@ -27,33 +27,33 @@ const toggleExpand = () => {
  * Calculates the date
  */
 const calculateDate = () => {
-  if(props.date){
-    return new Date(props.date).
-    toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  if (props.date) {
+    return new Date(props.date).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    })
   }
 }
-
 </script>
 
 <template>
   <div class="component" :class="{ expanded: isExpanded }" @click="toggleExpand">
     <div class="component-left">
       <div class="component-title">
-        {{title}}
+        {{ title }}
       </div>
     </div>
     <div class="component-right">
       <div class="component-right-field">
-        <span> Dato: {{calculateDate()}}</span>
+        <span> Dato: {{ calculateDate() }}</span>
+      </div>
+      <div class="component-right-field">
+        <span> {{ amount }}kr </span>
       </div>
       <div class="component-right-field">
         <span>
-          {{amount}}kr
-        </span>
-      </div>
-      <div class="component-right-field">
-        <span>
-          {{category}}
+          {{ category }}
         </span>
       </div>
     </div>
@@ -61,7 +61,6 @@ const calculateDate = () => {
 </template>
 
 <style scoped>
-
 .component {
   border-radius: 20px;
   border: 1px solid var(--color-border);
@@ -69,15 +68,15 @@ const calculateDate = () => {
   width: 100%;
   height: 100%;
   margin-bottom: 2.5%;
-  display:flex;
+  display: flex;
   overflow: hidden;
   transition: height 0.3s ease;
-  background-color: var(--vt-c-Orange)
+  background-color: var(--vt-c-Orange);
 }
 
-.component-left{
-  width:50%;
-  height:100%;
+.component-left {
+  width: 50%;
+  height: 100%;
 }
 .component-right {
   display: flex;
@@ -86,7 +85,6 @@ const calculateDate = () => {
   height: 100%;
 }
 
-
 .component-title {
   height: 100%;
   width: 100%;
@@ -94,10 +92,9 @@ const calculateDate = () => {
   flex-wrap: wrap;
   align-items: center;
   padding-left: 20px;
-  font-size:1.4em;
+  font-size: 1.4em;
   word-break: break-word;
   color: white;
-
 }
 
 .component-right-field {

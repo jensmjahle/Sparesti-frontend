@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import MilestoneProgress from '@/components/MilestonePath/MilestoneProgress.vue'
 import { onMounted, ref } from 'vue'
 import DirectTransfer from '@/components/MilestonePath/DirectTransfer.vue'
@@ -18,29 +17,29 @@ const router = useRouter()
 const displayType = ref<boolean>(false)
 const displayHelpPopUp = ref<boolean>(false)
 
-const pathName = ref("PathNameHere")
-const pathDescription = ref("PathDescriptionHere")
-const editLabel = ref("Rediger")
-const deleteLabel = ref("Slett")
+const pathName = ref('PathNameHere')
+const pathDescription = ref('PathDescriptionHere')
+const editLabel = ref('Rediger')
+const deleteLabel = ref('Slett')
 const deleteColor = ref('var(--vt-c-Raspberry)')
 const editColor = ref('--vt-c-Orange')
 const totalToSave = ref(3000)
 const totalSaved = ref(0)
 
-const milestonePathKey = ref(0);
+const milestonePathKey = ref(0)
 
 /**
  * Sets the display type to show new challenges.
  */
 const displayNewChallenges = () => {
-  displayType.value = false;
+  displayType.value = false
 }
 
 /**
  * Sets the display type to show active challenges.
  */
 const displayActiveChallenges = () => {
-  displayType.value = true;
+  displayType.value = true
 }
 
 /**
@@ -48,8 +47,8 @@ const displayActiveChallenges = () => {
  * Fetches milestone details and updates related values accordingly.
  * Redirects to '/homepage/milestone' if milestone details are not found.
  */
-onMounted( async () =>{
-  const milestoneId = useMilestoneStore().milestoneId;
+onMounted(async () => {
+  const milestoneId = useMilestoneStore().milestoneId
   console.log(milestoneId)
   const response = await getMilestoneDetails(milestoneId)
   if (response === null) {
@@ -59,7 +58,7 @@ onMounted( async () =>{
     pathDescription.value = response.data.milestoneDescription
     totalToSave.value = response.data.milestoneGoalSum
     totalSaved.value = response.data.milestoneCurrentSum
-    milestonePathKey.value++;
+    milestonePathKey.value++
   }
 })
 
@@ -69,16 +68,16 @@ onMounted( async () =>{
  */
 function updateTotalSaved(value: number) {
   directTransfer(value, useMilestoneStore().milestoneId)
-  totalSaved.value += value;
-  milestonePathKey.value++;
-  displayTransferPopUp.value = false;
+  totalSaved.value += value
+  milestonePathKey.value++
+  displayTransferPopUp.value = false
 }
 
 /**
  * Opens the help pop-up by setting its display state to true.
  */
 const openHelpPopUp = () => {
-  displayHelpPopUp.value = true;
+  displayHelpPopUp.value = true
 }
 
 /**
@@ -86,7 +85,7 @@ const openHelpPopUp = () => {
  * This function can be awaited if needed.
  */
 const closeHelpPopUp = async () => {
-  displayHelpPopUp.value = false;
+  displayHelpPopUp.value = false
 }
 
 const displayTransferPopUp = ref<boolean>(false)
@@ -96,16 +95,16 @@ const refTransferAmount = ref(0)
  * Opens the transfer confirmation pop-up with the specified value.
  * @param {number} value - The amount to transfer.
  */
-const openTransferConfirmationPopUp = (value:number) => {
-  refTransferAmount.value = value;
-  displayTransferPopUp.value = true;
+const openTransferConfirmationPopUp = (value: number) => {
+  refTransferAmount.value = value
+  displayTransferPopUp.value = true
 }
 
 /**
  * Closes the transfer confirmation pop-up.
  */
 const closeTransferConfirmationPopUp = () => {
-  displayTransferPopUp.value = false;
+  displayTransferPopUp.value = false
 }
 
 /**
@@ -136,85 +135,98 @@ const closeDeleteMilestonePopUp = () => {
  * - Redirects to '/homepage/milestone'.
  * @param {number} milestoneId - The ID of the milestone to be deleted.
  */
-async function deleteAMilestone(milestoneId:number){
-  console.log("Delete method called")
+async function deleteAMilestone(milestoneId: number) {
+  console.log('Delete method called')
   await deleteMilestone(milestoneId)
   closeDeleteMilestonePopUp()
-  await router.push("/homepage/milestone")
+  await router.push('/homepage/milestone')
 }
 </script>
 
 <template>
   <div v-if="displayTransferPopUp" class="popup-container">
     <ConfirmTransferPopUp
-        @closePopUp="closeTransferConfirmationPopUp"
-        @confirmTransfer="updateTotalSaved(refTransferAmount)"
-        :transfer-amount="refTransferAmount"
+      @closePopUp="closeTransferConfirmationPopUp"
+      @confirmTransfer="updateTotalSaved(refTransferAmount)"
+      :transfer-amount="refTransferAmount"
     ></ConfirmTransferPopUp>
   </div>
-  <div v-if = "displayDeleteMilestonePopUp" class="popup-container">
+  <div v-if="displayDeleteMilestonePopUp" class="popup-container">
     <DeleteMilestonePopUp
-        @closeDeletePopUp="closeDeleteMilestonePopUp"
-        @milestoneDeleted="deleteAMilestone(useMilestoneStore().milestoneId)"
+      @closeDeletePopUp="closeDeleteMilestonePopUp"
+      @milestoneDeleted="deleteAMilestone(useMilestoneStore().milestoneId)"
     ></DeleteMilestonePopUp>
   </div>
-  <div id = milestonePathView>
+  <div id="milestonePathView">
     <div class="header">
-      <h2 class="title">Sparemål: {{pathName}}</h2>
+      <h2 class="title">Sparemål: {{ pathName }}</h2>
       <img
-          src="/src/components/icons/navigation/help.svg"
-          alt="hjelp"
-          @click="openHelpPopUp"
-          tabindex="0"
-          @keyup.enter="openHelpPopUp"
-          class="help-icon">
+        src="/src/components/icons/navigation/help.svg"
+        alt="hjelp"
+        @click="openHelpPopUp"
+        tabindex="0"
+        @keyup.enter="openHelpPopUp"
+        class="help-icon"
+      />
       <div v-if="displayHelpPopUp" class="popup-container">
-        <PathHelpPopUp
-            @closePopUpp="closeHelpPopUp"
-        ></PathHelpPopUp>
+        <PathHelpPopUp @closePopUpp="closeHelpPopUp"></PathHelpPopUp>
       </div>
     </div>
 
     <div class="toggle-buttons">
-      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+      <button
+        class="toggle-button"
+        @click="displayNewChallenges"
+        :class="{ 'active-button': !displayType }"
+      >
         <h3 class="toggle-button-title">Sparesti</h3>
       </button>
-      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+      <button
+        class="toggle-button"
+        @click="displayActiveChallenges"
+        :class="{ 'active-button': displayType }"
+      >
         <h3 class="toggle-button-title">Informasjon</h3>
       </button>
     </div>
-    <div id = MilestonePath>
-
-      <div id = Path :class="{'mobile-hide': displayType}">
-        <MilestonePath :total-to-save="totalToSave" :total-saved="totalSaved" :key="milestonePathKey"/>
+    <div id="MilestonePath">
+      <div id="Path" :class="{ 'mobile-hide': displayType }">
+        <MilestonePath
+          :total-to-save="totalToSave"
+          :total-saved="totalSaved"
+          :key="milestonePathKey"
+        />
       </div>
 
-      <div id = Info :class="{'mobile-hide': !displayType}">
-        <div id = Progress>
-          <MilestoneProgress :total-to-save="totalToSave" :total-saved="totalSaved"/>
+      <div id="Info" :class="{ 'mobile-hide': !displayType }">
+        <div id="Progress">
+          <MilestoneProgress :total-to-save="totalToSave" :total-saved="totalSaved" />
         </div>
-        <div id = Description>
-          <MilestoneDescription :path-description="pathDescription"/>
+        <div id="Description">
+          <MilestoneDescription :path-description="pathDescription" />
         </div>
-        <div id = Transfer>
-          <DirectTransfer @transfer-value="openTransferConfirmationPopUp"/>
+        <div id="Transfer">
+          <DirectTransfer @transfer-value="openTransferConfirmationPopUp" />
         </div>
-        <div id = buttons>
-          <milestone-button :label="editLabel" :button-color="editColor" @click="router.push('/homepage/edit-milestone')"></milestone-button>
-          <milestone-button :label="deleteLabel" :button-color="deleteColor" @delete="openDeleteMilestonePopUp"></milestone-button>
+        <div id="buttons">
+          <milestone-button
+            :label="editLabel"
+            :button-color="editColor"
+            @click="router.push('/homepage/edit-milestone')"
+          ></milestone-button>
+          <milestone-button
+            :label="deleteLabel"
+            :button-color="deleteColor"
+            @delete="openDeleteMilestonePopUp"
+          ></milestone-button>
         </div>
       </div>
-
     </div>
   </div>
-
-
-
 </template>
 
 <style scoped>
-
-#milestonePathView{
+#milestonePathView {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -222,18 +234,18 @@ async function deleteAMilestone(milestoneId:number){
   gap: 2.5%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   max-height: 6.5%;
 }
 
-.title{
+.title {
   color: var(--color-heading);
 }
 
-.help-icon:hover{
+.help-icon:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -252,56 +264,57 @@ async function deleteAMilestone(milestoneId:number){
   z-index: 1000; /* Adjust z-index as needed */
 }
 
-.toggle-buttons{
+.toggle-buttons {
   display: none;
 }
 
-#MilestonePath{
+#MilestonePath {
   display: flex;
   width: 100%;
   height: 94.5%;
 }
 
-#Path{
+#Path {
   width: 60%;
   height: 100%;
 }
 
-#Info{
+#Info {
   width: 40%;
   height: 100%;
 }
 
-#Progress{
+#Progress {
   width: 100%;
   height: 20%;
 }
 
-#Progress, #Transfer{
+#Progress,
+#Transfer {
   margin-bottom: 5%;
 }
 
-#Description{
-  margin-bottom: 1.5%
+#Description {
+  margin-bottom: 1.5%;
 }
-#buttons{
+#buttons {
   display: flex;
   flex-direction: row;
 }
 @media only screen and (max-width: 1000px) {
-  #Path{
+  #Path {
     height: 80%;
   }
 
-  #Path{
+  #Path {
     width: 100%;
   }
 
-  #Info{
+  #Info {
     width: 100%;
   }
 
-  .toggle-buttons{
+  .toggle-buttons {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -309,37 +322,36 @@ async function deleteAMilestone(milestoneId:number){
     place-content: space-between;
   }
 
-  .toggle-button{
+  .toggle-button {
     width: 49.5%;
     border-radius: 20px;
     border: none;
     background-color: var(--color-confirm-button);
   }
 
-  .toggle-button:hover{
+  .toggle-button:hover {
     transform: scale(1.02);
   }
 
-  .toggle-button-title{
+  .toggle-button-title {
     font-weight: bold;
     color: var(--color-headerText);
   }
 
-  .active-button{
+  .active-button {
     background-color: var(--color-confirm-button-click);
   }
 
-  .mobile-hide{
+  .mobile-hide {
     display: none;
   }
-  #buttons{
+  #buttons {
     flex-direction: column;
   }
 }
 @media (prefers-color-scheme: dark) {
-  .help-icon{
+  .help-icon {
     filter: invert(1);
   }
 }
-
 </style>

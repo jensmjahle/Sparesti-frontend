@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 import DicoverHelpPopUp from '@/components/popups/help/DicoverHelpPopUp.vue'
 
 type Article = {
   source: {
-    id: string | null;
-    name: string;
-  };
-  author: string | null;
-  title: string;
-  description: string;
-  url: string;
-  urlToImage: string;
-  publishedAt: string;
-  content: string | null;
-};
+    id: string | null
+    name: string
+  }
+  author: string | null
+  title: string
+  description: string
+  url: string
+  urlToImage: string
+  publishedAt: string
+  content: string | null
+}
 
 const displayHelpPopUp = ref<boolean>(false)
 
@@ -23,7 +23,7 @@ const displayHelpPopUp = ref<boolean>(false)
  * @returns {void} This function does not return a value.
  */
 const openHelpPopUp = () => {
-  displayHelpPopUp.value = true;
+  displayHelpPopUp.value = true
 }
 
 /**
@@ -31,10 +31,10 @@ const openHelpPopUp = () => {
  * @returns {Promise<void>} A promise that resolves after the help pop-up is closed.
  */
 const closeHelpPopUp = async () => {
-  displayHelpPopUp.value = false;
+  displayHelpPopUp.value = false
 }
 
-const articles = ref<Article[]>([]);
+const articles = ref<Article[]>([])
 
 /**
  * Vue composition API hook to fetch news articles related to finance topics upon component mounting.
@@ -46,13 +46,15 @@ const articles = ref<Article[]>([]);
  */
 onMounted(async () => {
   try {
-    const response = await fetch('https://newsapi.org/v2/everything?q="spare"OR"sparing"OR"bank"OR"rente"&domains=e24.no&apiKey=b01f36ab840346f3b28c7c0a30cad606');
-    const data = await response.json();
-    articles.value = data.articles;
+    const response = await fetch(
+      'https://newsapi.org/v2/everything?q="spare"OR"sparing"OR"bank"OR"rente"&domains=e24.no&apiKey=b01f36ab840346f3b28c7c0a30cad606'
+    )
+    const data = await response.json()
+    articles.value = data.articles
   } catch (error) {
-    console.error('Error fetching articles:', error);
+    console.error('Error fetching articles:', error)
   }
-});
+})
 </script>
 
 <template>
@@ -65,40 +67,42 @@ onMounted(async () => {
         @click="openHelpPopUp"
         tabindex="0"
         @keyup.enter="openHelpPopUp"
-        class="help-icon">
+        class="help-icon"
+      />
       <div v-if="displayHelpPopUp" class="popup-container">
-        <DicoverHelpPopUp
-          @closePopUp="closeHelpPopUp"
-        ></DicoverHelpPopUp>
+        <DicoverHelpPopUp @closePopUp="closeHelpPopUp"></DicoverHelpPopUp>
       </div>
     </div>
 
     <div class="discover-items">
-      <div v-for="(article, index) in articles" :key="index" class="article-item" data-testid="Articles">
+      <div
+        v-for="(article, index) in articles"
+        :key="index"
+        class="article-item"
+        data-testid="Articles"
+      >
         <a :href="article.url" target="_blank" class="article-link">
           <div class="article-content">
             <h3 class="article-title">{{ article.title }}</h3>
             <h4 class="article-description">{{ article.description }}</h4>
             <div class="image-div">
-              <img :src="article.urlToImage" alt="Article Thumbnail" class="image">
+              <img :src="article.urlToImage" alt="Article Thumbnail" class="image" />
             </div>
           </div>
         </a>
       </div>
     </div>
-
   </div>
 </template>
 
 <style scoped>
-
 /* Dark mode media query */
 @media (prefers-color-scheme: dark) {
   .article-content {
     background-color: var(--vt-c-black-mute);
   }
 
-  .help-icon{
+  .help-icon {
     filter: invert(1);
   }
 }
@@ -110,14 +114,14 @@ onMounted(async () => {
   }
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   max-height: 6.5%;
 }
 
-.help-icon:hover{
+.help-icon:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -157,8 +161,11 @@ onMounted(async () => {
 
 .article-item {
   width: calc(calc(100% - 2 * 1.5%) / 3);
-  height: 7.0%;
-  h1:hover, h3:hover, h2:hover, h4:hover{
+  height: 7%;
+  h1:hover,
+  h3:hover,
+  h2:hover,
+  h4:hover {
     cursor: pointer;
   }
 }
@@ -166,7 +173,7 @@ onMounted(async () => {
 .article-content {
   display: flex;
   flex-direction: column;
-  padding: 5.0%;
+  padding: 5%;
   border-radius: 20px;
   height: 100%;
   width: 100%;
@@ -192,7 +199,6 @@ onMounted(async () => {
   border-radius: 20px;
 }
 
-
 @media screen and (max-width: 900px) {
   .article-item {
     width: calc(calc(98.5%) / 2);
@@ -201,7 +207,6 @@ onMounted(async () => {
 }
 
 @media screen and (max-width: 600px) {
-
   .article-item {
     width: 100%;
     aspect-ratio: 1/0.5;
@@ -215,5 +220,4 @@ onMounted(async () => {
   transition: none;
   border-radius: 20px;
 }
-
 </style>

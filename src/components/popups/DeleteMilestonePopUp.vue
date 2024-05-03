@@ -1,31 +1,29 @@
 <script setup lang="ts">
-
 /**
  * Defines the props necessary for this component
  */
 const props = defineProps({
-  challengeId: Number,
-});
+  challengeId: Number
+})
 
 /**
  * Define the emits for this component
  */
-const emit = defineEmits(['closeDeletePopUp', 'milestoneDeleted']);
+const emit = defineEmits(['closeDeletePopUp', 'milestoneDeleted'])
 
 /**
  * Emits a closeDeletePopUp to the parent
  */
 const cancelCompleteThisMilestone = () => {
-  emit('closeDeletePopUp');
+  emit('closeDeletePopUp')
 }
 
 /**
  * Emits a milestoneDeleted to the parent
  */
 const deleteThisMilestone = async () => {
-  emit('milestoneDeleted');
+  emit('milestoneDeleted')
 }
-
 </script>
 
 <template>
@@ -34,9 +32,8 @@ const deleteThisMilestone = async () => {
     <h2>Er du sikker på at du vil slette sparemålet?</h2>
 
     <div class="content">
-      <img class="sad-pig-img" src="/src/assets/png/sad-pig.png" alt="sad-pig" >
-      <h3> Husk! Dagens små sparinger kan føre til morgendagens store drømmer.</h3>
-
+      <img class="sad-pig-img" src="/src/assets/png/sad-pig.png" alt="sad-pig" />
+      <h3>Husk! Dagens små sparinger kan føre til morgendagens store drømmer.</h3>
     </div>
 
     <div class="option-buttons">
@@ -48,7 +45,6 @@ const deleteThisMilestone = async () => {
       </button>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -65,21 +61,19 @@ const deleteThisMilestone = async () => {
   border: 2px solid var(--color-border);
 
   place-content: space-between;
-
 }
 
-.content{
+.content {
   display: flex;
   flex-direction: row;
   place-items: center;
 }
 
-.sad-pig-img{
-  width:30%;
+.sad-pig-img {
+  width: 30%;
 }
 
-
-.option-buttons{
+.option-buttons {
   display: flex;
   flex-direction: row;
 
@@ -87,41 +81,40 @@ const deleteThisMilestone = async () => {
   place-content: space-between;
 }
 
-.option-button{
+.option-button {
   border: none;
   border-radius: 20px;
   width: 35%;
-
 }
 
-.option-button-title{
+.option-button-title {
   color: var(--color-headerText);
   font-weight: bold;
 }
 
-#cancel-button{
+#cancel-button {
   background-color: var(--color-cancel-button);
 }
-#cancel-button:active{
+#cancel-button:active {
   background-color: var(--color-cancel-button-click);
 }
 
-#delete-button{
+#delete-button {
   background-color: var(--color-confirm-button);
 }
-#delete-button:active{
+#delete-button:active {
   background-color: var(--color-confirm-button-click);
 }
 
-#delete-button:hover, #cancel-button:hover{
+#delete-button:hover,
+#cancel-button:hover {
   transform: scale(1.02);
 }
 
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 1000px) {
   .popup-content {
     width: 90%;
     height: 60%;
   }
 }
-
 </style>

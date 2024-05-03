@@ -8,20 +8,25 @@ import { RouterView } from 'vue-router'
   </div>
 </template>
 <style>
-.app{
+.app {
   height: 100vh;
   width: 100vw;
 }
 
-button:hover{
+button:hover {
   cursor: pointer;
-  h1:hover, h3:hover, h2:hover, h4:hover{
+  h1:hover,
+  h3:hover,
+  h2:hover,
+  h4:hover {
     cursor: pointer;
   }
 }
 
-h1:hover, h3:hover, h2:hover, h4:hover{
+h1:hover,
+h3:hover,
+h2:hover,
+h4:hover {
   cursor: default;
 }
-
 </style>

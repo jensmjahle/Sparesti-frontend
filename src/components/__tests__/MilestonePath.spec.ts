@@ -4,7 +4,6 @@ import { describe, it, expect } from 'vitest'
 
 describe('PathNode.vue', () => {
   describe('computed', () => {
-
     it('calculates remaining nodes correctly', () => {
       const totalToSave = 2000
       const totalSaved = 500
@@ -12,9 +11,14 @@ describe('PathNode.vue', () => {
         props: { totalToSave, totalSaved }
       })
 
-      const actualValue = (wrapper.vm as any).remainingNodes;
+      const actualValue = (wrapper.vm as any).remainingNodes
 
-      expect(actualValue).toBe(Math.ceil((wrapper.vm as any).totalNodes - ((wrapper.vm as any).totalNodes * (totalSaved / totalToSave))))
+      expect(actualValue).toBe(
+        Math.ceil(
+          (wrapper.vm as any).totalNodes -
+            (wrapper.vm as any).totalNodes * (totalSaved / totalToSave)
+        )
+      )
     })
 
     it('sets remaining nodes to total nodes if total saved is 0', () => {
@@ -23,7 +27,7 @@ describe('PathNode.vue', () => {
         props: { totalToSave, totalSaved: 0 }
       })
 
-      const actualValue = (wrapper.vm as any).remainingNodes;
+      const actualValue = (wrapper.vm as any).remainingNodes
 
       expect(actualValue).toBe((wrapper.vm as any).totalNodes)
     })
@@ -38,7 +42,7 @@ describe('PathNode.vue', () => {
         props: { totalToSave, totalSaved }
       })
 
-      const actualValue = (wrapper.vm as any).nodes;
+      const actualValue = (wrapper.vm as any).nodes
 
       expect(actualValue).toHaveLength(totalNodes)
     })
@@ -51,8 +55,12 @@ describe('PathNode.vue', () => {
       })
       const nodes = wrapper.findAll('.node')
       nodes.forEach((node, index) => {
-
-        const colorIndex = index < (wrapper.vm as any).remainingNodes - 1 ? 0 : (index === (wrapper.vm as any).remainingNodes - 1 ? 1 : 2)
+        const colorIndex =
+          index < (wrapper.vm as any).remainingNodes - 1
+            ? 0
+            : index === (wrapper.vm as any).remainingNodes - 1
+              ? 1
+              : 2
         const foregroundColor = (wrapper.vm as any).nodeForegroundColors[colorIndex]
         const backgroundColor = (wrapper.vm as any).nodeBackgroundColors[colorIndex]
         const nodeStyle = (node.element as HTMLElement).style

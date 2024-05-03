@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import BaseInput from '@/components/create-form/BaseInput.vue'
 import BaseTextArea from '@/components/create-form/BaseTextArea.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
@@ -9,14 +8,14 @@ import { createMilestone } from '@/utils/createMilestoneUtils'
 import { useTokenStore } from '@/stores/token'
 import { useRouter } from 'vue-router'
 import { createChallenge } from '@/utils/challengeutils'
-import {useToast} from "vue-toast-notification";
-const toast = useToast();
+import { useToast } from 'vue-toast-notification'
+const toast = useToast()
 
 const title = ref('')
 const description = ref('')
 const start_date = ref(new Date())
 const end_date = ref()
-const goal_sum = ref<number|string>('')
+const goal_sum = ref<number | string>('')
 const titleError = ref('')
 const descriptionError = ref('')
 const dateError = ref('')
@@ -51,7 +50,7 @@ const validate = () => {
     dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value<=0) {
+  if (isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value <= 0) {
     amountError.value = 'Fyll inn et gyldig sparebeløp!'
     isValid = false
   }
@@ -68,7 +67,7 @@ const challengeData = computed(() => ({
   challengeTitle: title.value,
   challengeDescription: description.value,
   goalSum: goal_sum.value,
-  expirationDate: end_date.value ? end_date.value : null,
+  expirationDate: end_date.value ? end_date.value : null
 }))
 
 /**
@@ -78,7 +77,7 @@ const challengeData = computed(() => ({
  * Displays success or error toast messages based on the operation outcome.
  * @returns {Promise<void>} A promise that resolves after attempting to save and create the challenge.
  */
-const saveInput = async() => {
+const saveInput = async () => {
   if (validate()) {
     await createChallenge(tokenStore.jwtToken, challengeData.value)
     await router.push('/homepage/challenge')
@@ -109,8 +108,7 @@ const saveInput = async() => {
           type="email"
           :error="titleError !== ''"
         ></BaseInput>
-        <label class="error"
-               v-if="titleError">{{ titleError }}</label>
+        <label class="error" v-if="titleError">{{ titleError }}</label>
       </div>
 
       <div class="input-large" @keyup.enter="saveInput" id="description-area">
@@ -166,8 +164,7 @@ const saveInput = async() => {
 </template>
 
 <style scoped>
-
-.create-challenge-view{
+.create-challenge-view {
   display: flex;
   flex-direction: column;
   min-height: fit-content;
@@ -177,18 +174,18 @@ const saveInput = async() => {
   gap: 2.5%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
-  height: 6.0%;
+  height: 6%;
 }
 
-.title{
-  color: var(--color-header)
+.title {
+  color: var(--color-header);
 }
 
-#top-button{
+#top-button {
   height: 100%;
   width: 30%;
 }
@@ -200,7 +197,7 @@ const saveInput = async() => {
   text-align: left;
   width: 100%;
   height: 85%;
-  gap: 1.0%;
+  gap: 1%;
 }
 
 .smaller-inputs {
@@ -211,7 +208,7 @@ const saveInput = async() => {
   gap: 2%;
 }
 
-.input-large{
+.input-large {
   display: flex;
   flex-direction: column;
   height: 60%;
@@ -229,7 +226,7 @@ const saveInput = async() => {
 label {
   font-size: 1.5em;
 }
-.submit-button{
+.submit-button {
   width: 100%;
   height: 10%;
 }
@@ -261,27 +258,25 @@ label {
 }
 
 @media screen and (max-width: 1000px) {
-  .input-container{
-    gap: 1.0%;
+  .input-container {
+    gap: 1%;
   }
-  .smaller-inputs{
+  .smaller-inputs {
     display: flex;
     flex-direction: column;
     place-content: space-evenly;
     height: 40%;
   }
-  .input{
-    height: 20%
+  .input {
+    height: 20%;
   }
 
-  #nested{
+  #nested {
     height: 50%;
   }
 
-
-  #title-input{
-    height: 20%
+  #title-input {
+    height: 20%;
   }
 }
 </style>
-

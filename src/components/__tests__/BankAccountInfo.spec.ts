@@ -1,14 +1,14 @@
 // Import necessary dependencies
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import BankAccountInfo from '@/components/profile/BankAccountInfo.vue';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import BankAccountInfo from '@/components/profile/BankAccountInfo.vue'
 import { createPinia, setActivePinia } from 'pinia'
 
 describe('AccountInfo.vue', () => {
-  let wrapper:any
+  let wrapper: any
 
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(createPinia())
     wrapper = mount(BankAccountInfo)
   })
 
