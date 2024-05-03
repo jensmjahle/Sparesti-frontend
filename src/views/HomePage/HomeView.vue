@@ -91,7 +91,7 @@ userSavings()
       <div class="left" :class="{ 'mobile-hide': !displayType }">
         <TotalSavings class="create-challenge-button" :total-saved="saved"></TotalSavings>
         <button class="tutorial-button" @click="DisplayTutorial">Ny til Sparesti? Trykk her!</button>
-        <ActiveMilestonesList class="active-challenges"></ActiveMilestonesList>
+        <ActiveMilestonesList class="active-milestones"></ActiveMilestonesList>
       </div>
       <div class="right" :class="{ 'mobile-hide': displayType }">
         <h2 class="active-challenges-title">Aktive utfordringer</h2>
@@ -164,7 +164,7 @@ userSavings()
   display: flex;
   flex-direction: row;
   width: 100%;
-  min-height: 120%;
+  min-height: 150%;
   padding-bottom: 1.5%;
   gap: 2.5%;
 }
@@ -182,10 +182,9 @@ userSavings()
   min-height: 10%;
 }
 
-.active-challenges{
-  height: 90%;
+.active-milestones{
+  height: 78%;
 }
-
 
 .right{
   display: flex;
