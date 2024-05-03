@@ -92,7 +92,7 @@ const saveAccountInfo = async () => {
 
       await fetchAccounts();
       await fetchUserInfo();
-      toast.success('Konto opplysninger ble oppdatert!')
+      toast.success('Konto-opplysninger ble oppdatert!')
     } catch (error){
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
       accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
