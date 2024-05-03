@@ -5,6 +5,10 @@ import InfoComponent from '@/components/InfoComponent.vue'
 
 const router = useRouter();
 
+/**
+ * Navigates the user to the login page using Vue Router.
+ * @returns {void} This function does not return a value.
+ */
 function navigateToLogin(){
   router.push('/login')
 }
