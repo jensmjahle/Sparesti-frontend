@@ -22,16 +22,11 @@ const isBurgerMenuOpen = ref(false);
 const profilePictureBase64 = ref<any>()
 
 /**
- * Initializes the token store
- */
-const tokenStore = useTokenStore()
-
-/**
  * Fetches the users profile picture
  */
 const fetchProfilePicture = async () =>{
   try{
-    const response = await getUserInfo(tokenStore.jwtToken)
+    const response = await getUserInfo(useTokenStore().jwtToken)
     profilePictureBase64.value = response.profilePictureBase64 ?
       `data:image/png;base64,${response.profilePictureBase64}` : null
   } catch (error){

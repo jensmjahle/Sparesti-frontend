@@ -21,11 +21,6 @@ interface Challenge{
 }
 
 /**
- * Gets the users token from the token store and stores it in the token variable
- */
-const token:string = useTokenStore().jwtToken;
-
-/**
  * Initiates the jsConfetti
  */
 const jsConfetti = new JSConfetti()
@@ -93,7 +88,7 @@ onMounted(async () => {
  */
 const fetchActiveChallenges = async () => {
   try{
-    const { content, totalPages, number } = await getActiveChallenges(token, currentPage.value,SIZE)
+    const { content, totalPages, number } = await getActiveChallenges(useTokenStore().jwtToken, currentPage.value,SIZE)
 
     pages.value = totalPages;
     currentPage.value = number;

@@ -22,11 +22,6 @@ interface Milestone{
 }
 
 /**
- * Stores the users jwt token
- */
-const token = useTokenStore().jwtToken
-
-/**
  * Hold a list of active milestones
  */
 const activeMilestones = ref<Milestone[]>([])
@@ -59,7 +54,7 @@ onMounted( () => {
  */
 const fetchActiveMilestones = async () => {
   try{
-    const { content, totalPages, number } = await getAllMilestonesPaginated(token, currentPage.value,SIZE)
+    const { content, totalPages, number } = await getAllMilestonesPaginated(useTokenStore().jwtToken, currentPage.value,SIZE)
     pages.value = totalPages;
     currentPage.value = number;
     activeMilestones.value = content;

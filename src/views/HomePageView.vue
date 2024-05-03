@@ -28,7 +28,7 @@ onMounted(async() => {
   timer = setInterval(() => {
     // After a certain interval, assume user is inactive
     useTokenStore().setActive(false);
-  }, 60000);
+  }, 30000);
 
   // Add event listeners when the component is mounted
   document.addEventListener('mousemove', handleMouseMove);

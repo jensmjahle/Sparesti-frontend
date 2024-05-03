@@ -15,11 +15,6 @@ interface Account {
 }
 
 /**
- * Holds the user jwt token
- */
-const token:string = useTokenStore().jwtToken;
-
-/**
  * Initiates toast for error messages
  */
 const toast = useToast();
@@ -66,7 +61,7 @@ onMounted(async () => {
 const fetchUserInfo = async () =>{
   try {
     // Retrieve chosen accounts
-    const response = await getUserInfo(token);
+    const response = await getUserInfo(useTokenStore().jwtToken);
 
     // Update current selection indices based on a match between account numbers
     for (let i = 0; i < accounts.value.length; i++) {
@@ -115,7 +110,7 @@ const saveAccountInfo = async () => {
   if (savingAccountError.value == null) {
     try {
       await updateBankAccountInfo(
-          token,
+        useTokenStore().jwtToken,
           accounts.value[checkingAccount.value].accountNumber,
           accounts.value[  savingAccount.value].accountNumber
       )

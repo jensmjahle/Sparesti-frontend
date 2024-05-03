@@ -21,11 +21,6 @@ interface Milestone{
 }
 
 /**
- * Holds the users jwt token
- */
-const token = useTokenStore().jwtToken
-
-/**
  * Hold the id of the milestone that is expanded
  */
 const expandedMileStoneId = ref<number>(-1);
@@ -63,7 +58,7 @@ onMounted( () => {
 const fetchMilestoneLogs = async () => {
   try{
     console.log(currentPage.value)
-    const { content, totalPages, number } = await getAllMilestoneLogs(token, currentPage.value,SIZE)
+    const { content, totalPages, number } = await getAllMilestoneLogs(useTokenStore().jwtToken, currentPage.value,SIZE)
     pages.value = totalPages;
     currentPage.value = number;
     completedMilestones.value = content;
