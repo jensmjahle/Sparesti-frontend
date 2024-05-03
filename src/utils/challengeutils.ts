@@ -1,10 +1,15 @@
+/**
+ * This file contains functions for managing challenges via API calls.
+ */
 import axios from "axios";
 import { BASE_URL } from "@/config/config";
 import {useToast} from "vue-toast-notification";
 import 'vue-toast-notification/dist/theme-sugar.css';
 
 const toast = useToast();
-
+/**
+ * Test data for challenge recommendations.
+ */
 const challengeRecomendationsTestData = [
   {
     challengeId:1,
@@ -20,7 +25,9 @@ const challengeRecomendationsTestData = [
     challengeDescription:'Spar 5kr for å burke handlenett på butikken.'
   },
 ];
-
+/**
+ * Test data for active challenges.
+ */
 const activeChallengesTestData = [
   {
     challengeId: 4,
@@ -41,6 +48,12 @@ const activeChallengesTestData = [
   },
 ]
 
+/**
+ * Creates a new challenge.
+ * @param token User token for authentication.
+ * @param data Data of the challenge to be created.
+ * @returns Promise with the response data.
+ */
 export const createChallenge = async (
   token: string, data: any ):Promise<any>=>{
   try{
@@ -56,7 +69,12 @@ export const createChallenge = async (
     toast.error('Kunne ikke opprette utfordringen. Prøv igjen senere.');
   }
 }
-
+/**
+ * Deletes a challenge.
+ * @param token User token for authentication.
+ * @param challengeId ID of the challenge to be deleted.
+ * @returns Promise with the response data.
+ */
 export const deleteChallenge = async (token:string, challengeId: number):Promise<any>=>{
   try{
     const config = {
@@ -71,7 +89,13 @@ export const deleteChallenge = async (token:string, challengeId: number):Promise
     toast.error('Kunne ikke slette utfordringen. Prøv igjen senere.');
   }
 }
-
+/**
+ * Completes a challenge.
+ * @param token User token for authentication.
+ * @param challengeId ID of the challenge to be completed.
+ * @param milestoneId ID of the milestone to be completed.
+ * @returns Promise with the response data.
+ */
 export const completeChallenge= async (token:string, challengeId:number, milestoneId:number):Promise<any>=>{
   try{
     const config = {
@@ -90,7 +114,12 @@ export const completeChallenge= async (token:string, challengeId:number, milesto
     toast.error('Kunne ikke fullføre utfordringen. Prøv igjen senere.');
   }
 }
-
+/**
+ * Activates a challenge.
+ * @param token User token for authentication.
+ * @param challengeId ID of the challenge to be activated.
+ * @returns Promise with the response data.
+ */
 export const activateChallenge= async (token:string, challengeId: number):Promise<any>=>{
   console.log(challengeId)
   try{
@@ -106,7 +135,12 @@ export const activateChallenge= async (token:string, challengeId: number):Promis
     toast.error('Kunne ikke aktivere utfordringen. Prøv igjen senere.');
   }
 }
-
+/**
+ * Gets information about a challenge.
+ * @param token User token for authentication.
+ * @param challengeId ID of the challenge to get information about.
+ * @returns Promise with the response data.
+ */
 export const getChallenge = async (token:string, challengeId: number):Promise<any>=>{
   try{
     const config = {
