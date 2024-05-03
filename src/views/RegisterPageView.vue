@@ -6,6 +6,7 @@ import { FirstTimeAnswersStore } from '@/stores/FirstTimeAnswers'
 import router from '@/router'
 import { getUserBankAccounts, updateUserAccount } from '@/utils/registerPageUtils'
 import { useTokenStore } from '@/stores/token'
+import { useToast } from 'vue-toast-notification'
 
 const questions = [
   'Hva er fødselsdatoen din?',
@@ -107,11 +108,17 @@ async function nextQuestion() {
       showSelect.value = false
     }
   } else {
-    await updateUserAccount(
-      convertToJsonObject(FirstTimeAnswersStore().userResponses),
-      useTokenStore().getJwtToken
-    )
-    router.push('/homepage/home')
+    try {
+      await updateUserAccount(
+        convertToJsonObject(FirstTimeAnswersStore().userResponses),
+        useTokenStore().getJwtToken
+      )
+      await router.push('/login')
+      useToast().success("Bruker registert. Login for å komme i gang!")
+    } catch (e) {
+      useToast().error("Kunne ikke registrere nye brukeropplysninger! Prøv igjen.")
+    }
+
   }
   if (index === questions.length - 1) {
     nextButtonText.value = 'Fullfør'
