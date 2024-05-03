@@ -26,7 +26,7 @@ const displayActiveChallenges = () => {
  * Navigates to the specified path using the router.
  * @param {string} path - The path to navigate to.
  */
-const navigateTo = (path) => {
+const navigateTo = (path: string) => {
   router.push(path);
 };
 

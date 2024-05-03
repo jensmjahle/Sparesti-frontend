@@ -34,25 +34,25 @@ const transactionsPerPage = 5; // Assuming 5 transactions per page
  * @returns {void} This function does not return a value.
  */
 const previousPage = () => {
-  currentPage.value--;
-};
+  currentPage.value --
+}
 
 /**
  * Sets the current page number to the specified page number to navigate directly to that page.
  * @param {number} pageNumber - The page number to navigate to.
  * @returns {void} This function does not return a value.
  */
-const goToPage = (pageNumber) => {
+const goToPage = (pageNumber:number) => {
   currentPage.value = pageNumber;
-};
+}
 
 /**
  * Increments the current page number by one to navigate to the next page.
  * @returns {void} This function does not return a value.
  */
-const nextPage = () => {
-  currentPage.value++;
-};
+const nextPage = () =>{
+  currentPage.value ++;
+}
 
 const transactions = ref<Transaction[]>([])
 
@@ -62,26 +62,26 @@ const transactions = ref<Transaction[]>([])
  * Displays an error toast if fetching transactions fails.
  * @returns {Promise<void>} A promise that resolves after transactions are fetched and updated.
  */
-const fetchTransactions = async () => {
-  try {
-    const response = await getTransactions(token);
-    transactions.value = response;
-    console.log(transactions.value);
+const fetchTransactions = async() =>  {
+  try{
+    const response = await getTransactions(token)
+    transactions.value = response
+    console.log(transactions.value)
   } catch (e) {
-    console.log(e);
-    toast.error('Vi klarte ikke hente dine transaksjoner! Venligst prøv på nytt.');
+    console.log(e)
+    toast.error('Vi klarte ikke hente dine transaksjoner! Venligst prøv på nytt.')
   }
-};
+}
 
 /**
  * Lifecycle hook that runs when the component is mounted.
  * Fetches transactions and handles selection change after the component is mounted.
  * @returns {Promise<void>} A promise that resolves after transactions are fetched and selection change is handled.
  */
-onMounted(async () => {
+onMounted(async ()  => {
   await fetchTransactions();
   handleSelectionChange('Alle');
-});
+})
 
 const displayType = ref<boolean>(false)
 
@@ -91,8 +91,8 @@ const displayType = ref<boolean>(false)
  */
 const displayNewChallenges = () => {
   displayType.value = false;
-  console.log(displayType.value);
-};
+  console.log(displayType.value)
+}
 
 /**
  * Sets the display type to show active challenges and logs the updated value to the console.
@@ -100,8 +100,8 @@ const displayNewChallenges = () => {
  */
 const displayActiveChallenges = () => {
   displayType.value = true;
-  console.log(displayType.value);
-};
+  console.log(displayType.value)
+}
 
 /**
  * Opens the help pop-up by setting its display state to true.
@@ -109,7 +109,7 @@ const displayActiveChallenges = () => {
  */
 const openHelpPopUp = () => {
   displayHelpPopUp.value = true;
-};
+}
 
 /**
  * Closes the help pop-up by setting its display state to false and logs the updated value to the console.
@@ -118,7 +118,7 @@ const openHelpPopUp = () => {
 const closeHelpPopUp = () => {
   displayHelpPopUp.value = false;
   console.log(displayHelpPopUp);
-};
+}
 
 /**
  * Handles the selection change event by updating the selected option, resetting the current page to 0,
@@ -126,11 +126,11 @@ const closeHelpPopUp = () => {
  * @param {string | null} value - The value of the selected option.
  * @returns {void} This function does not return a value.
  */
-const handleSelectionChange = (value) => {
+const handleSelectionChange = (value: string | null) => {
   selectedOption.value = value;
   currentPage.value = 0;
   calculateNumberOfPages();
-};
+}
 
 /**
  * Computed property that returns an array of distinct transaction categories based on the transactions list.
@@ -138,14 +138,14 @@ const handleSelectionChange = (value) => {
  * @returns {string[]} An array containing distinct transaction categories.
  */
 const distinctCategories = computed(() => {
-  const categories = new Set<string>();
+  const categories = new Set<string>()
   transactions.value.forEach(transaction => {
-    console.log(transaction.transactionCategory);
-    categories.add(transaction.transactionCategory);
-    console.log(categories);
-  });
-  return Array.from(categories);
-});
+    console.log(transaction.transactionCategory)
+    categories.add(transaction.transactionCategory)
+    console.log(categories)
+  })
+  return Array.from(categories)
+})
 
 /**
  * Computed property that returns dropdown options for filtering transactions by category.
@@ -153,8 +153,8 @@ const distinctCategories = computed(() => {
  * @returns {string[]} An array of dropdown options for transaction category filtering.
  */
 const dropdownOptions = computed(() => {
-  return ['Alle', ...distinctCategories.value];
-});
+  return ['Alle', ...distinctCategories.value]
+})
 
 /**
  * Computed property that returns filtered transactions based on the selected option (category).
@@ -164,11 +164,11 @@ const dropdownOptions = computed(() => {
  */
 const filteredTransactions = computed(() => {
   if (selectedOption.value === 'Alle' || !selectedOption.value) {
-    return transactions.value;
+    return transactions.value
   } else {
-    return transactions.value.filter(transaction => transaction.transactionCategory === selectedOption.value);
+    return transactions.value.filter(transaction => transaction.transactionCategory === selectedOption.value)
   }
-});
+})
 
 /**
  * Computed property that returns a slice of filtered transactions to display on the current page.
@@ -176,10 +176,7 @@ const filteredTransactions = computed(() => {
  * @returns {Transaction[]} An array of transactions to display on the current page.
  */
 const transactionsToDisplay = computed(() => {
-  return filteredTransactions.value.slice(
-      currentPage.value * transactionsPerPage,
-      (currentPage.value * transactionsPerPage) + transactionsPerPage
-  );
+  return filteredTransactions.value.slice(currentPage.value * transactionsPerPage, (currentPage.value * transactionsPerPage) + transactionsPerPage);
 });
 
 /**
@@ -189,7 +186,7 @@ const transactionsToDisplay = computed(() => {
  */
 const calculateNumberOfPages = () => {
   pages.value = Math.ceil(filteredTransactions.value.length / transactionsPerPage);
-};
+}
 
 /**
  * Computed property that generates chart data based on transaction categories and amounts.
@@ -197,22 +194,22 @@ const calculateNumberOfPages = () => {
  * @returns {ChartData} Chart data object containing labels and datasets for visualization.
  */
 const chartData = computed(() => {
-  const data = {
+  const data: { labels: string[], datasets: { data: number[], label:string ,backgroundColor: string[] }[] } = {
     labels: [],
     datasets: [{
       label: "kr",
       data: [],
       backgroundColor: [],
     }]
-  };
+  }
 
-  const categoryAmounts = {};
+  const categoryAmounts: { [key: string]: number } = {};
   const usedColors = new Set();
 
   transactions.value.forEach(transaction => {
     const { transactionCategory, amount } = transaction;
-    console.log(transactionCategory);
-    const category = transactionCategory;
+    console.log(transactionCategory)
+    const category = transactionCategory
     if (category in categoryAmounts) {
       categoryAmounts[category] += amount;
     } else {
@@ -232,7 +229,7 @@ const chartData = computed(() => {
     data.datasets[0].data.push(categoryAmounts[label]);
   });
   return data;
-});
+})
 
 /**
  * Generates a random color by selecting a CSS custom property (variable) value from the document's root element.
@@ -255,11 +252,11 @@ const getRandomColor = () => {
 
   const randomColorVariable = colorVariables[randomIndex];
   const randomColor = computedStyle.getPropertyValue(randomColorVariable);
-  console.log('color');
-  console.log(randomColorVariable);
+  console.log('color')
+  console.log(randomColorVariable)
 
   return randomColor;
-};
+}
 
 </script>
 
@@ -269,15 +266,15 @@ const getRandomColor = () => {
     <div class="header">
       <h2 class="title">Dine transaksjoner!</h2>
       <img
-        src="/src/components/icons/navigation/help.svg"
-        alt="hjelp"
-        @click="openHelpPopUp"
-        tabindex="0"
-        @keyup.enter="openHelpPopUp"
-        class="help-icon">
+          src="/src/components/icons/navigation/help.svg"
+          alt="hjelp"
+          @click="openHelpPopUp"
+          tabindex="0"
+          @keyup.enter="openHelpPopUp"
+          class="help-icon">
       <div v-if="displayHelpPopUp" class="popup-container">
         <EconomyHelpPopUp
-          @closePopUp="closeHelpPopUp"
+            @closePopUp="closeHelpPopUp"
         ></EconomyHelpPopUp>
       </div>
     </div>
@@ -303,13 +300,13 @@ const getRandomColor = () => {
 
         <div class="component-container" v-if="filteredTransactions">
           <transaction-component
-            class="transaction"
-            v-for="transaction in transactionsToDisplay"
-            :key="transaction.transactionId"
-            :title="transaction.transactionTitle"
-            :category="transaction.transactionCategory"
-            :amount="transaction.amount"
-            :date="transaction.time"
+              class="transaction"
+              v-for="transaction in transactionsToDisplay"
+              :key="transaction.transactionId"
+              :title="transaction.transactionTitle"
+              :category="transaction.transactionCategory"
+              :amount="transaction.amount"
+              :date="transaction.time"
           ></transaction-component>
         </div>
 
@@ -317,10 +314,10 @@ const getRandomColor = () => {
           <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
           <div  v-if="pages>1" class="page-numbers">
             <button
-              v-for="pageNumber in pages"
-              :key="pageNumber-2"
-              :class="{ chosen: pageNumber-1 === currentPage }"
-              @click="goToPage(pageNumber-1)"
+                v-for="pageNumber in pages"
+                :key="pageNumber-2"
+                :class="{ chosen: pageNumber-1 === currentPage }"
+                @click="goToPage(pageNumber-1)"
             >{{ pageNumber}}</button>
           </div>
           <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
