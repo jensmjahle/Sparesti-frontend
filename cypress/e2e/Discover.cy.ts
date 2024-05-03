@@ -1,10 +1,13 @@
 describe('Discover View Tests', () => {
   beforeEach(() => {
+    cy.login('JohnSmith12', 'password')
     cy.visit('/homepage/discover')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(2200)
   })
 
   it('displays articles', () => {
-    cy.get('[data-testid="Articles"]').should('have.length.above', 0)
+    cy.get('.article-item').should('have.length.above', 0)
   })
 
   it('opens help popup', () => {
