@@ -18,7 +18,6 @@ const closePopUp = () => {
       På denne siden finner du en oversikt over alle dine nåværende sparemål. Klikk på sparemålene
       for å se flere detaljer. Er det noe du sparer til? Klikk på den store grønne knappen "Lag nytt sparemål + "
       for å opprette et nytt sparemål. Du finner også en oversikt over dine tidligere sparemål til venstre på siden.
-      Trykk på dine tidligere mål for å se detaljene
 
     </h3>
 

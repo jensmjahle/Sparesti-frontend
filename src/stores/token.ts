@@ -34,6 +34,13 @@ export const useTokenStore = defineStore({
 
     actions: {
         /**
+         * When page is refreshed, the store will execute refreshToken()
+         */
+        async reHydrate() {
+            // Restart timers when the store is rehydrated
+            await this.refreshToken();
+        },
+                /**
          * Retrieves the JWT token and saves it in the store.
          * @param username - The username for authentication.
          * @param password - The password for authentication.
@@ -68,7 +75,7 @@ export const useTokenStore = defineStore({
         /**
          * Refreshes the JWT token.
          */
-        async refreshToken() {
+        async refreshToken () {
             try {
                 const response = await refreshToken(this.jwtToken);
                 if (response !== undefined) {
@@ -91,13 +98,17 @@ export const useTokenStore = defineStore({
          * Logs out the user and resets the state of the store.
          */
         async logout() {
-            this.jwtToken = "";
-            this.username = null;
-            this.isConnectedToBank = null;
-            this.displayPopUp = false;
-            this.timerClear();
+            this.cleanStore();
             await router.push("/login");
         },
+        
+        /**
+         * Clears the store
+         */
+        cleanStore()  {
+            this.$reset();
+        },
+
         /**
          * Clears the timers.
          */
@@ -115,7 +126,6 @@ export const useTokenStore = defineStore({
             this.timer = setTimeout(async () => {
                 console.log(this.isActive)
                 if (this.isActive) {
-                    this.timerClear();
                     await this.refreshToken();
 
                 } else this.displayPopUp = true;

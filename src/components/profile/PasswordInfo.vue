@@ -79,8 +79,7 @@ const clearInput = () => {
         <h3 class="save-button-title">Lagre</h3>
       </button>
     </div>
-    <div class="input-fields">
-
+    <div class="input-fields" @keyup.enter="saveInfo">
       <div class="input-collection">
         <h4>Nåværende passord: </h4>
         <input class="input"

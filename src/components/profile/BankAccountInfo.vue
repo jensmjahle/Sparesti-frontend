@@ -5,62 +5,94 @@ import { getUserAccountInfo, getUserInfo, updateBankAccountInfo } from '@/utils/
 import { useTokenStore } from '@/stores/token'
 import {useToast} from "vue-toast-notification";
 
+
+
+interface Account {
+  accountNumber: number;
+  username: string;
+  balance: number;
+  name: string;
+  type: string;
+  currency: string;
+}
+
+
+
 const token:string = useTokenStore().jwtToken;
 const toast = useToast();
 
-const savingAccount = ref<number>(0);
-const checkingAccount= ref<number>(0);
+const savingAccount   = ref<number>(0);
+const checkingAccount = ref<number>(0);
+
+const accounts = ref<Account[]>([])
 
 const savingAccountError = ref<string | null>(null);
 const accountError = ref<string | null>(null);
 
-const accounts = ref<number[]>([])
+
 
 onMounted(async () => {
   try {
+    await fetchAccounts();
     await fetchUserInfo();
-    await fetchAccountInfo();
   } catch (error) {
     console.error('Error fetching user info:', error);
   }
 })
+
+
+
 const fetchUserInfo = async () =>{
-  try{
+  try {
+    // Retrieve chosen accounts
     const response = await getUserInfo(token);
 
-    checkingAccount.value = response.currentAccount;
-    savingAccount.value = response.savingsAccount;
+    // Update current selection indices based on a match between account numbers
+    for (let i = 0; i < accounts.value.length; i++) {
+      if (accounts.value[i].accountNumber == response.savingsAccount)
+        savingAccount.value = i;
+
+      if (accounts.value[i].accountNumber == response.currentAccount)
+        checkingAccount.value = i;
+    }
 
   } catch (error){
     console.error('Error fetching user info:', error);
   }
 }
 
-const fetchAccountInfo = async () => {
-  const response = await getUserAccountInfo(token);
-  accounts.value = [];
-  for(let i = 0; i < response.length; i++){
-    accounts.value.push(response[i].accountNumber)
-  }
+
+
+const fetchAccounts = async () => {
+  accounts.value = await getUserAccountInfo(useTokenStore().jwtToken)
 }
 
+
+
 const checkInput = () => {
-  if(savingAccount.value == checkingAccount.value){
+  if (savingAccount.value == checkingAccount.value)
     savingAccountError.value = 'Sparekonto er lik brukskonto!'
-  } else{
+  else
     savingAccountError.value = null;
-  }
+
   accountError.value = null;
 }
 
-const saveAccountInfo = async ()=> {
+
+
+const saveAccountInfo = async () => {
   checkInput()
-  if(savingAccountError.value == null){
-    try{
-      await updateBankAccountInfo(token,checkingAccount.value, savingAccount.value)
-      await fetchAccountInfo();
+  if (savingAccountError.value == null) {
+    try {
+      await updateBankAccountInfo(
+          token,
+          accounts.value[checkingAccount.value].accountNumber,
+          accounts.value[  savingAccount.value].accountNumber
+      )
+
+      await fetchAccounts();
       await fetchUserInfo();
-      toast.success("Konto info oppdatert")
+      toast.success('Konto-opplysninger ble oppdatert!')
     } catch (error){
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
       accountError.value = 'Noe gikk galt! Venligst prøv på nytt.'
@@ -69,6 +101,8 @@ const saveAccountInfo = async ()=> {
 }
 
 </script>
+
+
 
 <template>
   <div class="account-info">
@@ -79,19 +113,19 @@ const saveAccountInfo = async ()=> {
       </button>
     </div>
 
-    <div class="input-fields">
+    <div class="input-fields" @keyup.enter="saveAccountInfo">
 
       <div class="input-collection">
         <h4>Forbrukskonto: </h4>
         <select class="accounts" v-model="checkingAccount">
-          <option v-for="(account, index) in accounts" :key="'check' + index" :value="account">{{ account }}</option>
+          <option v-for="(option, index) in accounts" :key="'check' + index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
         </select>
       </div>
 
       <div class="input-collection">
         <h4>Sparekonto: </h4>
         <select class="accounts" :class="{'error': savingAccountError}" v-model="savingAccount">
-          <option v-for="(account, index) in accounts"  :key="'saving' + index" :value="account">{{ account }}</option>
+          <option v-for="(option, index) in accounts" :key="'saving' + index" :value="index">{{ option.type + ": " + option.accountNumber }}</option>
         </select>
       </div>
 

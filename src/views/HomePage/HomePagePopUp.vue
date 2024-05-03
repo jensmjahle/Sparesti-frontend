@@ -7,15 +7,26 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
+/**
+ * Continues browsing by refreshing the user's token and emitting a 'close' event.
+ * This function is typically used when the user wants to continue browsing after a token refresh.
+ * @returns {void} This function does not return a value.
+ */
 const continueBrowse = () => {
   useTokenStore().refreshToken();
   emit('close');
 };
 
+/**
+ * Logs the user out from browsing by performing a logout action and emitting a 'close' event.
+ * This function is used to log the user out from the browsing session.
+ * @returns {void} This function does not return a value.
+ */
 const logoutFromBrowse = () => {
   useTokenStore().logout();
   emit('close');
 };
+
 </script>
 
 <template>

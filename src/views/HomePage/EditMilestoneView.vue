@@ -31,7 +31,12 @@ const router = useRouter()
 const tomorrow = new Date(start_date.value)
 tomorrow.setDate(tomorrow.getDate() + 1)
 
-
+/**
+ * Lifecycle hook that runs when the component is mounted.
+ * Retrieves milestone details based on the current milestone ID and populates reactive values with the fetched data.
+ * Redirects to '/homepage/milestone' if milestone details are not found.
+ * @returns {Promise<void>} A promise that resolves when milestone details are fetched and reactive values are updated.
+ */
 onMounted(async () => {
   const milestoneId = useMilestoneStore().milestoneId;
   console.log(milestoneId)
@@ -51,6 +56,12 @@ onMounted(async () => {
     console.log(data.milestoneImage)
   }
 })
+
+/**
+ * Validates the input fields for the milestone form.
+ * Updates error messages for invalid fields and checks various conditions for validity.
+ * @returns {boolean} A boolean indicating whether the input fields are valid (true) or not (false).
+ */
 const validate = () => {
   let isValid = true
   titleError.value = ''
@@ -88,6 +99,18 @@ const validate = () => {
   return isValid
 }
 
+/**
+ * Computed property that represents milestone data derived from reactive values.
+ * @returns {Object} An object containing milestone data based on current reactive values.
+ * @property {number} milestoneId - The ID of the milestone.
+ * @property {string} milestoneTitle - The title of the milestone.
+ * @property {string} milestoneDescription - The description of the milestone.
+ * @property {number} milestoneGoalSum - The goal sum of the milestone.
+ * @property {number} milestoneCurrentSum - The current sum achieved for the milestone.
+ * @property {string} milestoneImage - The image URL of the milestone (or an empty string if not set).
+ * @property {Date|null} deadlineDate - The deadline date of the milestone (or null if not set).
+ * @property {Date|null} startDate - The start date of the milestone (or null if not set).
+ */
 const milestoneData = computed(() => ({
   milestoneId: milestoneStore.milestoneId,
   milestoneTitle: title.value,
@@ -99,6 +122,11 @@ const milestoneData = computed(() => ({
   startDate: start_date.value ? start_date.value : null
 }));
 
+/**
+ * Saves input by updating milestone details and navigating to the milestone page if input is valid.
+ * Logs 'fail' to console if input validation fails.
+ * @returns {Promise<void>} A promise that resolves after milestone details are updated and navigation is complete.
+ */
 const saveInput = async () => {
   if (validate()) {
     await updateMilestoneDetails(milestoneData.value)
@@ -108,6 +136,12 @@ const saveInput = async () => {
   }
 }
 
+/**
+ * Handles the change event when a file input's value changes.
+ * Reads the selected file using `FileReader` and sets the `image.value` to the data URL of the loaded file.
+ * @param {Event} event - The change event object triggered by the file input.
+ * @returns {void} This function does not return a value.
+ */
 const handleFileChange = (event: any) => {
   const file = event.target.files[0]
   const reader = new FileReader()
@@ -117,17 +151,15 @@ const handleFileChange = (event: any) => {
   reader.readAsDataURL(file)
 }
 
+/**
+ * Removes the image data by setting `image.value` to `null`.
+ * @returns {void} This function does not return a value.
+ */
 const removeImage = () => {
   image.value = null;
 }
 
 const fileInput = ref<HTMLInputElement | null>(null);
-
-const openFileExplorer = () => {
-  if (fileInput.value instanceof HTMLInputElement) {
-    fileInput.value.click();
-  }
-};
 </script>
 
 <template>
@@ -156,11 +188,11 @@ const openFileExplorer = () => {
 
       <div class="input" id="title-input">
         <BaseInput
-          v-model="title"
-          label="Tittel"
-          place-holder="Navn på sparemålet"
-          type="email"
-          :error="titleError !== ''"
+            v-model="title"
+            label="Tittel"
+            place-holder="Navn på sparemålet"
+            type="email"
+            :error="titleError !== ''"
         ></BaseInput>
         <label class="error"
                v-if="titleError">{{ titleError }}</label>
@@ -168,10 +200,10 @@ const openFileExplorer = () => {
 
       <div class="input-large">
         <BaseTextArea
-          v-model="description"
-          label="Beskrivelse"
-          place-holder="Beskriv sparemålet"
-          :error="descriptionError !== ''"
+            v-model="description"
+            label="Beskrivelse"
+            place-holder="Beskriv sparemålet"
+            :error="descriptionError !== ''"
         ></BaseTextArea>
         <label class="error" v-if="descriptionError">{{ descriptionError }}</label>
       </div>
@@ -179,20 +211,20 @@ const openFileExplorer = () => {
       <div class="smaller-inputs">
         <div class="input">
           <base-input
-            v-model="goal_sum"
-            label="Hvor mye vil du spare (nok)?"
-            place-holder="Sett inn hvor mye du vil spare"
-            id="test"
-            :error="amountErrorGoal !== ''"
+              v-model="goal_sum"
+              label="Hvor mye vil du spare (nok)?"
+              place-holder="Sett inn hvor mye du vil spare"
+              id="test"
+              :error="amountErrorGoal !== ''"
           ></base-input>
           <label class="error" v-if="amountErrorGoal">{{ amountErrorGoal }}</label>
         </div>
         <div class="input">
           <base-input
-            v-model="current_sum"
-            place-holder="Sett inn hvor mye du har nå"
-            label="Hvor mye har du nå (nok)?"
-            :error="amountErrorStart !== ''"
+              v-model="current_sum"
+              place-holder="Sett inn hvor mye du har nå"
+              label="Hvor mye har du nå (nok)?"
+              :error="amountErrorStart !== ''"
           ></base-input>
           <label class="error" v-if="amountErrorStart">{{ amountErrorStart }}</label>
         </div>
@@ -202,21 +234,21 @@ const openFileExplorer = () => {
         <div class="input">
           <h3>Start dato</h3>
           <VueDatePicker
-            :enable-time-picker="false"
-            placeholder="Velg start dato"
-            v-model="start_date"
-            :min-date="start_date"
-            :disabled="true"
+              :enable-time-picker="false"
+              placeholder="Velg start dato"
+              v-model="start_date"
+              :min-date="start_date"
+              :disabled="true"
           ></VueDatePicker>
         </div>
         <div class="input">
           <h3>Slutt dato</h3>
           <VueDatePicker
-            :enable-time-picker="false"
-            tabindex="0"
-            placeholder="Velg slutt dato"
-            v-model="end_date"
-            :min-date="tomorrow"
+              :enable-time-picker="false"
+              tabindex="0"
+              placeholder="Velg slutt dato"
+              v-model="end_date"
+              :min-date="tomorrow"
           ></VueDatePicker>
           <label class="error" v-if="dateError">{{ dateError }}</label>
         </div>

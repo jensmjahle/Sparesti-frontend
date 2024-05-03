@@ -29,18 +29,39 @@ const pages = ref<number>(0);
 const currentPage = ref<number>(0);
 const transactionsPerPage = 5; // Assuming 5 transactions per page
 
+/**
+ * Decrements the current page number by one to navigate to the previous page.
+ * @returns {void} This function does not return a value.
+ */
 const previousPage = () => {
   currentPage.value --
 }
+
+/**
+ * Sets the current page number to the specified page number to navigate directly to that page.
+ * @param {number} pageNumber - The page number to navigate to.
+ * @returns {void} This function does not return a value.
+ */
 const goToPage = (pageNumber:number) => {
   currentPage.value = pageNumber;
 }
 
+/**
+ * Increments the current page number by one to navigate to the next page.
+ * @returns {void} This function does not return a value.
+ */
 const nextPage = () =>{
   currentPage.value ++;
 }
 
 const transactions = ref<Transaction[]>([])
+
+/**
+ * Asynchronously fetches user transactions and updates the `transactions` reactive value.
+ * Logs the fetched transactions to the console.
+ * Displays an error toast if fetching transactions fails.
+ * @returns {Promise<void>} A promise that resolves after transactions are fetched and updated.
+ */
 const fetchTransactions = async() =>  {
   try{
     const response = await getTransactions(token)
@@ -51,6 +72,12 @@ const fetchTransactions = async() =>  {
     toast.error('Vi klarte ikke hente dine transaksjoner! Venligst prøv på nytt.')
   }
 }
+
+/**
+ * Lifecycle hook that runs when the component is mounted.
+ * Fetches transactions and handles selection change after the component is mounted.
+ * @returns {Promise<void>} A promise that resolves after transactions are fetched and selection change is handled.
+ */
 onMounted(async ()  => {
   await fetchTransactions();
   handleSelectionChange('Alle');
@@ -58,29 +85,58 @@ onMounted(async ()  => {
 
 const displayType = ref<boolean>(false)
 
+/**
+ * Sets the display type to show new challenges and logs the updated value to the console.
+ * @returns {void} This function does not return a value.
+ */
 const displayNewChallenges = () => {
   displayType.value = false;
   console.log(displayType.value)
 }
+
+/**
+ * Sets the display type to show active challenges and logs the updated value to the console.
+ * @returns {void} This function does not return a value.
+ */
 const displayActiveChallenges = () => {
   displayType.value = true;
   console.log(displayType.value)
 }
 
+/**
+ * Opens the help pop-up by setting its display state to true.
+ * @returns {void} This function does not return a value.
+ */
 const openHelpPopUp = () => {
   displayHelpPopUp.value = true;
 }
+
+/**
+ * Closes the help pop-up by setting its display state to false and logs the updated value to the console.
+ * @returns {void} This function does not return a value.
+ */
 const closeHelpPopUp = () => {
   displayHelpPopUp.value = false;
   console.log(displayHelpPopUp);
 }
 
+/**
+ * Handles the selection change event by updating the selected option, resetting the current page to 0,
+ * and calculating the number of pages.
+ * @param {string | null} value - The value of the selected option.
+ * @returns {void} This function does not return a value.
+ */
 const handleSelectionChange = (value: string | null) => {
   selectedOption.value = value;
   currentPage.value = 0;
   calculateNumberOfPages();
 }
 
+/**
+ * Computed property that returns an array of distinct transaction categories based on the transactions list.
+ * Uses a Set to collect unique transaction categories from the `transactions` list.
+ * @returns {string[]} An array containing distinct transaction categories.
+ */
 const distinctCategories = computed(() => {
   const categories = new Set<string>()
   transactions.value.forEach(transaction => {
@@ -91,10 +147,21 @@ const distinctCategories = computed(() => {
   return Array.from(categories)
 })
 
+/**
+ * Computed property that returns dropdown options for filtering transactions by category.
+ * Includes 'Alle' (All) option followed by distinct transaction categories.
+ * @returns {string[]} An array of dropdown options for transaction category filtering.
+ */
 const dropdownOptions = computed(() => {
   return ['Alle', ...distinctCategories.value]
 })
 
+/**
+ * Computed property that returns filtered transactions based on the selected option (category).
+ * Filters transactions by category matching the `selectedOption` value.
+ * If 'Alle' (All) or no option is selected, returns all transactions.
+ * @returns {Transaction[]} An array of filtered transactions based on the selected category option.
+ */
 const filteredTransactions = computed(() => {
   if (selectedOption.value === 'Alle' || !selectedOption.value) {
     return transactions.value
@@ -103,14 +170,29 @@ const filteredTransactions = computed(() => {
   }
 })
 
+/**
+ * Computed property that returns a slice of filtered transactions to display on the current page.
+ * Retrieves a subset of transactions based on the current page and number of transactions per page.
+ * @returns {Transaction[]} An array of transactions to display on the current page.
+ */
 const transactionsToDisplay = computed(() => {
   return filteredTransactions.value.slice(currentPage.value * transactionsPerPage, (currentPage.value * transactionsPerPage) + transactionsPerPage);
 });
 
+/**
+ * Calculates the number of pages based on the filtered transactions and updates the `pages` reactive value.
+ * Sets the `pages` value to the ceiling of the total number of filtered transactions divided by transactions per page.
+ * @returns {void} This function does not return a value.
+ */
 const calculateNumberOfPages = () => {
   pages.value = Math.ceil(filteredTransactions.value.length / transactionsPerPage);
 }
 
+/**
+ * Computed property that generates chart data based on transaction categories and amounts.
+ * Constructs data for a chart with labels (categories) and corresponding dataset (amounts).
+ * @returns {ChartData} Chart data object containing labels and datasets for visualization.
+ */
 const chartData = computed(() => {
   const data: { labels: string[], datasets: { data: number[], label:string ,backgroundColor: string[] }[] } = {
     labels: [],
@@ -149,7 +231,11 @@ const chartData = computed(() => {
   return data;
 })
 
-// Function to generate random color
+/**
+ * Generates a random color by selecting a CSS custom property (variable) value from the document's root element.
+ * Randomly selects from a predefined list of color variables and retrieves the corresponding color value.
+ * @returns {string} A randomly generated color in CSS format (e.g., hex, rgba, etc.).
+ */
 const getRandomColor = () => {
   const computedStyle = getComputedStyle(document.documentElement);
 
@@ -180,15 +266,15 @@ const getRandomColor = () => {
     <div class="header">
       <h2 class="title">Dine transaksjoner!</h2>
       <img
-        src="/src/components/icons/navigation/help.svg"
-        alt="hjelp"
-        @click="openHelpPopUp"
-        tabindex="0"
-        @keyup.enter="openHelpPopUp"
-        class="help-icon">
+          src="/src/components/icons/navigation/help.svg"
+          alt="hjelp"
+          @click="openHelpPopUp"
+          tabindex="0"
+          @keyup.enter="openHelpPopUp"
+          class="help-icon">
       <div v-if="displayHelpPopUp" class="popup-container">
         <EconomyHelpPopUp
-          @closePopUp="closeHelpPopUp"
+            @closePopUp="closeHelpPopUp"
         ></EconomyHelpPopUp>
       </div>
     </div>
@@ -214,13 +300,13 @@ const getRandomColor = () => {
 
         <div class="component-container" v-if="filteredTransactions">
           <transaction-component
-            class="transaction"
-            v-for="transaction in transactionsToDisplay"
-            :key="transaction.transactionId"
-            :title="transaction.transactionTitle"
-            :category="transaction.transactionCategory"
-            :amount="transaction.amount"
-            :date="transaction.time"
+              class="transaction"
+              v-for="transaction in transactionsToDisplay"
+              :key="transaction.transactionId"
+              :title="transaction.transactionTitle"
+              :category="transaction.transactionCategory"
+              :amount="transaction.amount"
+              :date="transaction.time"
           ></transaction-component>
         </div>
 
@@ -228,10 +314,10 @@ const getRandomColor = () => {
           <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
           <div  v-if="pages>1" class="page-numbers">
             <button
-              v-for="pageNumber in pages"
-              :key="pageNumber-2"
-              :class="{ chosen: pageNumber-1 === currentPage }"
-              @click="goToPage(pageNumber-1)"
+                v-for="pageNumber in pages"
+                :key="pageNumber-2"
+                :class="{ chosen: pageNumber-1 === currentPage }"
+                @click="goToPage(pageNumber-1)"
             >{{ pageNumber}}</button>
           </div>
           <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
