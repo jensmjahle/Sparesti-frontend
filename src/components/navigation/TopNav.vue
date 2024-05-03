@@ -6,11 +6,29 @@ import { getUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import eventBus from '@/components/service/eventBus.js'
 
+/**
+ * Initializes the router
+ */
 const router = useRouter();
+
+/**
+ * Hold if the burger menu is visible or not, default false
+ */
 const isBurgerMenuOpen = ref(false);
+
+/**
+ * Holds a base 64 encoded string representing the users profile picture
+ */
 const profilePictureBase64 = ref<any>()
+
+/**
+ * Initializes the token store
+ */
 const tokenStore = useTokenStore()
 
+/**
+ * Fetches the users profile picture
+ */
 const fetchProfilePicture = async () =>{
   try{
     const response = await getUserInfo(tokenStore.jwtToken)
@@ -20,6 +38,10 @@ const fetchProfilePicture = async () =>{
     console.error('Error fetching user info:', error);
   }
 }
+
+/**
+ * Logic to trigger on component mount
+ */
 onMounted(async () => {
   try {
     await fetchProfilePicture();
@@ -28,7 +50,9 @@ onMounted(async () => {
   }
 })
 
-
+/**
+ * Toggles if the burger menu is open or not
+ */
 const openBurgerMenu = () => {
   if(isBurgerMenuOpen.value) {
     isBurgerMenuOpen.value = false;
@@ -37,10 +61,18 @@ const openBurgerMenu = () => {
   }
 }
 
+/**
+ * Handles router push
+ * @param value
+ */
 const handleRoutePushed = (value: boolean) => {
   isBurgerMenuOpen.value = value;
 }
 
+/**
+ * Navigates the user to the given path
+ * @param path path to navigate to
+ */
 const navigate = (path: string) => {
   router.push(path)
 }
