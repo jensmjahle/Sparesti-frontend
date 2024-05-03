@@ -51,14 +51,28 @@ const showSelect= ref(false);
 
 const selectedOption = ref(accounts.value.indexOf(FirstTimeAnswersStore().userResponses[index]));
 
+/**
+ * Fetches user bank accounts using the JWT token found in the token store.
+ * @returns {Promise<Array>} A Promise that resolves with an array of user bank accounts.
+ */
 const fetchAccounts = async () => {
   accounts.value = await getUserBankAccounts(useTokenStore().getJwtToken)
   console.log(useTokenStore().getJwtToken)
 }
+
+/**
+ * Executes the fetchAccounts function when the component is mounted.
+ * @param {fetchAccounts}
+ * @returns {void}
+ */
 onMounted(  () => {
   fetchAccounts()
 })
 
+/**
+ * Handles the logic for what displays when nextButton is pressed and saves input values in store.
+ * @returns {void}
+ */
 async function nextQuestion(){
   if(index !== questions.length - 1){
     nextButtonText.value = "Neste"
@@ -79,7 +93,6 @@ async function nextQuestion(){
       showSelect.value = false;
     }
   } else {
-    console.log("Registration test happens")
     await updateUserAccount(convertToJsonObject(FirstTimeAnswersStore().userResponses), useTokenStore().getJwtToken)
     router.push("/homepage/home")
   }
@@ -88,6 +101,10 @@ async function nextQuestion(){
   }
 }
 
+/**
+ * Handles the logic for what displays when backButton is pressed and saves input values in store.
+ * @returns {void}
+ */
 async function prevQuestion(){
   if(index !== 0){
     if(currentQuestionType.value !== "selection"){
@@ -112,6 +129,11 @@ async function prevQuestion(){
 
 const nextButtonText = ref("Neste")
 
+/**
+ * Converts the firstTimeAnswerStore List into a JSON-Object
+ * @param responses
+ * @returns {JSON}
+ */
 function convertToJsonObject(responses: any[]): Record<string, any> {
   return {
     birthDate: responses[0],
@@ -125,6 +147,10 @@ function convertToJsonObject(responses: any[]): Record<string, any> {
   };
 }
 
+/**
+ * Updates selected option when this input is displayed
+ * @returns {void}
+ */
 function updateSelectedOption() {
   FirstTimeAnswersStore().setUserAnswer(index, accounts.value[selectedOption.value].accountNumber)
 }
