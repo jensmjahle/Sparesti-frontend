@@ -6,18 +6,49 @@ import { useTokenStore } from '@/stores/token'
 import eventBus from '@/components/service/eventBus.js'
 import {useToast} from "vue-toast-notification";
 
+/**
+ * Initiates toast for error messages
+ */
 const toast = useToast()
 
+/**
+ * Holds the users jwt token
+ */
 const token:string = useTokenStore().jwtToken;
 
+/**
+ * Holds the email error
+ */
 const emailError = ref<null|string>(null);
+
+/**
+ * Holds the image error
+ */
 const imgError = ref<null|string>(null);
+
+/**
+ * Holds the input error
+ */
 const inputError = ref<null|string>(null)
 
+/**
+ * Holds the username
+ */
 const username = ref<string>('');
+
+/**
+ * Holds the email
+ */
 const email = ref<string>('');
+
+/**
+ * Holds the profile picture as a base 64 encoded string
+ */
 const profilePictureBase64 = ref<any>()
 
+/**
+ * Code to be executed on component mount
+ */
 onMounted(async () => {
   try {
     await fetchUserInfo();
@@ -25,6 +56,10 @@ onMounted(async () => {
     console.error('Error fetching user info:', error);
   }
 })
+
+/**
+ * Fetches the user info for the username, email and profile picture
+ */
 const fetchUserInfo = async () =>{
   try{
     const response = await getUserInfo(token)
@@ -37,10 +72,17 @@ const fetchUserInfo = async () =>{
   }
 }
 
+/**
+ * Validates the entries in the email and img fields
+ */
 const validInput = () => {
   checkInput();
   return (emailError.value == null && imgError.value == null)
 }
+
+/**
+ * Checks that the inputs in the email and image fields follow the standard
+ */
 const checkInput = () => {
 
   if(email.value.trim() == '' || !isValidEmail(email.value)){
@@ -70,7 +112,10 @@ const saveUserInfo = async () => {
   }
 }
 
-
+/**
+ * Handles file change when the user decides to change their profile picture
+ * @param event
+ */
 const handleFileChange = (event: any) => {
   const file = event.target.files[0]
   if (file) {
@@ -89,6 +134,9 @@ const handleFileChange = (event: any) => {
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
+/**
+ * Opens the file explorer to let the user select new image
+ */
 const openFileExplorer = () => {
   if (fileInput.value instanceof HTMLInputElement) {
     fileInput.value.click();

@@ -5,18 +5,54 @@ import { getUserInfo, updateIncomeInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import {useToast} from "vue-toast-notification";
 
+/**
+ * Holds the users jwt token
+ */
 const token:string = useTokenStore().jwtToken;
+
+/**
+ * Initiates toast for error messaging
+ */
 const toast = useToast();
 
+/**
+ * Holds the users monthly income
+ */
 const monthlyIncome = ref<number>(0);
+
+/**
+ * Holds the users monthly income
+ */
 const monthlyFixedExpenses = ref<number>(0);
+
+/**
+ * Holds the users monthly savings
+ */
 const monthlySavings = ref<number>(0);
 
+/**
+ * Holds the monthly income error
+ */
 const monthlyIncomeError = ref<string|null>(null);
+
+/**
+ * Holds the monthly spending error
+ */
 const monthlySpendingError = ref<string|null>(null);
+
+/**
+ * Holds the monthly savings error
+ */
 const monthlySavingError = ref<string|null>(null);
+
+/**
+ * Holds the income error
+ */
 const incomeError = ref<string|null>(null);
 
+/**
+ * Code to execute on component mount
+ */
 onMounted(async () => {
   try {
     await fetchIncomeInfo();
@@ -25,6 +61,10 @@ onMounted(async () => {
   }
 })
 
+/**
+ * Fetches the info registered on the user for monthly income,
+ * monthly fixed expenses and monthly savings
+ */
 const fetchIncomeInfo = async () =>{
   try{
     const response = await getUserInfo(token);
@@ -36,6 +76,11 @@ const fetchIncomeInfo = async () =>{
   }
 }
 
+/**
+ * Updates the users monthly income, fixed expenses and monthly savings
+ * to the new values. Gives the user a confirmation when successful and
+ * gives a error if not successful
+ */
 const saveInput = async () => {
   if(validInput()){
     try {
@@ -54,6 +99,9 @@ const saveInput = async () => {
   }
 }
 
+/**
+ * validates the inputs for input fields
+ */
 const validInput = () => {
   checkInput();
   return (
@@ -62,6 +110,10 @@ const validInput = () => {
     monthlySavingError.value === null
   );
 };
+
+/**
+ * Checks the input of each field an ensures the inputs are valid
+ */
 const checkInput = () => {
   const stringIncome = monthlyIncome.value.toString();
   const stringFixedExpenses = monthlyFixedExpenses.value.toString();
