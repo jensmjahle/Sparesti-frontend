@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
+/**
+ * Initiates the router
+ */
 const router = useRouter();
 
+/**
+ * Navigates the user to the starting page
+ */
 function navigateToStartingPage(){
   router.push('/')
 }
