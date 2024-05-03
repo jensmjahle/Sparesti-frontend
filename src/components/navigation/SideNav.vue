@@ -36,14 +36,14 @@ watch(currentRoute, () => {
     <div class="button-menu">
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/home' || currentRoute.path == '/homepage' }"
+        :class="{ 'active': currentRoute.path == '/homepage/home' || currentRoute.path == '/homepage' || currentRoute.path == '/homepage/tutorial' }"
         @click="navigateTo('/homepage/home')">
         <img src="/src/components/icons/navigation/house-chimney.svg" alt="Home Icon" class="icon">
         <label class="button-label">Hjem</label>
       </button>
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/discover' }"
+        :class="{ 'active': currentRoute.path == '/homepage/discover'}"
         @click="navigateTo('/homepage/discover')">
         <img src="/src/components/icons/navigation/lightbulb-on.svg" alt="Discover Icon" class="icon">
         <label class="button-label">Sparetips</label>
@@ -53,7 +53,7 @@ watch(currentRoute, () => {
         :class="{ 'active': currentRoute.path == '/homepage/milestone'
         || currentRoute.path == '/homepage/create-milestone'
         || currentRoute.path == '/homepage/edit-milestone'
-        || currentRoute.path == 'homepage/path'}"
+        || currentRoute.path == '/homepage/path'}"
         @click="navigateTo('/homepage/milestone')">
         <img src="/src/components/icons/navigation/piggy-bank.svg" alt="Milestone Icon" class="icon">
         <label class="button-label">Sparemål</label>

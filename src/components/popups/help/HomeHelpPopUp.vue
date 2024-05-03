@@ -23,7 +23,7 @@ const closePopUp = () => {
     <h3>
       Hei! Du befinner deg for øyeblikket på hjem-siden til sparesti.
       På denne siden finner du en oversikt over alle dine sparemål og aktive utfordringer.
-      Dersom du er ny anbefaler vi at du klikker på den store grønne knappen "Ny til Sparesti? Klikk hær!"
+      Dersom du er ny anbefaler vi at du klikker på den store grønne knappen "Ny til Sparesti? Klikk her!"
     </h3>
 
     <div class="option-buttons">
