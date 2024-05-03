@@ -162,7 +162,7 @@ watch(email, checkInput);
           <div class="profile-picture-container">
             <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
             <img v-else src="/src/components/icons/navigation/user.svg" alt="profile-picture" class="profile-picture">
-            <img src="/src/components/icons/image/pencil-edit.svg" alt="edit-icon" class="edit-icon">
+            <img src="/src/components/icons/image/edit-image.png" alt="edit-icon" class="edit-icon">
           </div>
         </button>
       </div>
@@ -267,7 +267,7 @@ watch(email, checkInput);
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 20%;
+  width: 25%;
   justify-content: center;
 }
 
@@ -278,7 +278,7 @@ watch(email, checkInput);
 .edit-icon {
   position: absolute;
   top: 0;
-  left: -0.5vw;
+  left: -1.0vw;
   width: 2vw;
   height: 2vw;
   z-index: 1;
@@ -354,6 +354,12 @@ watch(email, checkInput);
 @media only screen and (max-width: 1000px) {
   .img-input{
     max-width: 15%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .edit-icon{
+    filter: invert(1);
   }
 }
 

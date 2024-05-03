@@ -9,7 +9,7 @@ const start = () => {
 
 <template>
   <div class="tutorial">
-    <h1> Velkommen til sparesti! </h1>
+    <h2 class="title"> Velkommen til sparesti! </h2>
     <h3> Tidligere har sparing vært kjedelig og lite inspirerende. Hos Sparesti ønsker vi å endre dette ved å gjøre sparing til en gøy og engasjerende opplevelse.</h3>
     <div class="component">
       <h2> Hvordan fungerer sparesti?</h2>
@@ -19,8 +19,10 @@ const start = () => {
     <div class="component">
       <h2> Hvordan kommer jeg i gang?</h2>
       <h3> For å komme i gang med Sparesti, begynner du med å opprette en "Sparesti". Dette gjør du ved å navigere til siden for sparing og klikke på "Opprett ny sparesti".</h3>
-      <img src="@/assets/tutorialImages/1.png" alt="hjem" class="image">
-      <img src="@/assets/tutorialImages/2.png" alt="sparestier" class="image">
+      <div class="img">
+        <img src="@/assets/tutorialImages/1.png" alt="hjem" class="image">
+        <img src="@/assets/tutorialImages/2.png" alt="sparestier" class="image">
+      </div>
       <h3> Fyll inn nødvendig informasjon, som hvor mye du vil spare, navnet på sparemålet, når det skal være fullført og en kort beskrivelse. Klikk deretter på "Lagre".</h3>
       <h3> Nå har du opprettet en sparesti! Du kan nå se sparestien din og begynne å spare penger. Besøk sparestien din for å overføre penger direkte eller vent til du mottar en utfordring for å begynne å spare.</h3>
   </div>
@@ -28,7 +30,9 @@ const start = () => {
       <h2> Hva er en sparesti?</h2>
       <h3> En sparesti representerer din reise mot sparingmålet ditt. For hvert utfordring du fullfører, kommer du ett steg nærmere målet ditt. Målet er å nå slutten av stien og fullføre sparingen.</h3>
       <h3> Du kan se fremgangen din ved å besøke sparestien din. Her kan du se hvor mye du har spart, hvor mye du har igjen og hvor langt du har igjen til målet ditt.</h3>
-      <img src="@/assets/tutorialImages/3.png" alt="sparesti" class="image">
+      <div class="img">
+        <img src="@/assets/tutorialImages/3.png" alt="sparesti" class="image">
+      </div>
     </div>
     <div class="component">
       <h2> Hva er en utfordring?</h2>
@@ -41,9 +45,11 @@ const start = () => {
       <h3> Sparetips er tips og triks for å spare penger som vi har henter fra E24. Trykk deg inn på en artikken for å lære noe nytt!</h3>
   </div>
   </div>
-  <button @click="start" class="button">Kom i gang!</button>
+  <div class="button-container">
+    <button @click="start" class="button">Kom i gang!</button>
+  </div>
   <div class="tutorial">
-    <h1> Ofte stilte spørsmål</h1>
+    <h2 class="title"> Ofte stilte spørsmål</h2>
     <div class="component">
       <h2> Hvorfor skal jeg bruke sparesti?</h2>
       <h3> Sparesti tilbyr en morsom og motiverende måte å spare penger på. Vi skreddersyr utfordringer og sparetips basert på ditt forbruk, slik at du kan nå sparingmålet ditt på en engasjerende måte.</h3>
@@ -71,8 +77,6 @@ const start = () => {
 .tutorial{
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
   gap: 6%;
 
 }
@@ -82,9 +86,27 @@ const start = () => {
  padding: 3% 0;
   gap: 20px;
 }
+
+.img{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: fit-content;
+  gap: 20px;
+  place-items: center;
+}
+
 .image {
   width: 100%;
-  height: auto;
+}
+
+.title{
+  color: var(--color-heading);
+}
+
+.button-container{
+  display: flex;
+  justify-content: center;
 }
 .button {
   padding: 20px 0;
