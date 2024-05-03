@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import ActiveMilestoneDisplay from '@/components/milestone/ActiveMilestoneDisplay.vue'
 import { onMounted, ref } from 'vue'
 import { useTokenStore } from '@/stores/token'
@@ -9,16 +8,16 @@ import eventBus from '@/components/service/eventBus.js'
 /**
  * Defines the necessary props for this component
  */
-interface Milestone{
-  milestoneId: number;
-  milestoneTitle: string;
+interface Milestone {
+  milestoneId: number
+  milestoneTitle: string
   milestoneDescription: string
-  milestoneGoalSum: number;
-  milestoneCurrentSum: number;
-  deadlineDate: Date;
-  startDate: Date;
-  milestoneImage: string;
-  username: string;
+  milestoneGoalSum: number
+  milestoneCurrentSum: number
+  deadlineDate: Date
+  startDate: Date
+  milestoneImage: string
+  username: string
 }
 
 /**
@@ -44,21 +43,25 @@ const SIZE = 3
 /**
  * Logic to be ran on component mount
  */
-onMounted( () => {
-  currentPage.value = 0;
-  fetchActiveMilestones();
+onMounted(() => {
+  currentPage.value = 0
+  fetchActiveMilestones()
 })
 
 /**
  * Fetches active milestones with pagination
  */
 const fetchActiveMilestones = async () => {
-  try{
-    const { content, totalPages, number } = await getAllMilestonesPaginated(useTokenStore().jwtToken, currentPage.value,SIZE)
-    pages.value = totalPages;
-    currentPage.value = number;
-    activeMilestones.value = content;
-  }catch (error){
+  try {
+    const { content, totalPages, number } = await getAllMilestonesPaginated(
+      useTokenStore().jwtToken,
+      currentPage.value,
+      SIZE
+    )
+    pages.value = totalPages
+    currentPage.value = number
+    activeMilestones.value = content
+  } catch (error) {
     console.log(error)
   }
 }
@@ -68,8 +71,8 @@ const fetchActiveMilestones = async () => {
  * the active milestones to show
  */
 const previousPage = () => {
-  currentPage.value --
-  fetchActiveMilestones();
+  currentPage.value--
+  fetchActiveMilestones()
 }
 
 /**
@@ -77,40 +80,42 @@ const previousPage = () => {
  * the active milestones to show
  * @param pageNumber page to navigate to
  */
-const goToPage = (pageNumber:number) => {
-  currentPage.value = pageNumber;
-  fetchActiveMilestones();
+const goToPage = (pageNumber: number) => {
+  currentPage.value = pageNumber
+  fetchActiveMilestones()
 }
 
 /**
  * Navigates the user to the next page and updates
  * the active milestones to show
  */
-const nextPage = () =>{
-  currentPage.value ++;
-  fetchActiveMilestones();
+const nextPage = () => {
+  currentPage.value++
+  fetchActiveMilestones()
 }
 
 eventBus.on('updateMilestones', () => {
-  fetchActiveMilestones();
-});
-
-
+  fetchActiveMilestones()
+})
 </script>
 
 <template>
   <div class="active-milestone-component">
     <div class="pagination">
       <button @click="previousPage" :disabled="currentPage === 0">Forige side</button>
-      <div  v-if="pages>1" class="page-numbers">
+      <div v-if="pages > 1" class="page-numbers">
         <button
           v-for="pageNumber in pages"
-          :key="pageNumber-2"
-          :class="{ chosen: pageNumber-1 === currentPage }"
-          @click="goToPage(pageNumber-1)"
-        >{{ pageNumber}}</button>
+          :key="pageNumber - 2"
+          :class="{ chosen: pageNumber - 1 === currentPage }"
+          @click="goToPage(pageNumber - 1)"
+        >
+          {{ pageNumber }}
+        </button>
       </div>
-      <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">Neste side</button>
+      <button @click="nextPage" :disabled="currentPage === pages - 1 || pages === 0">
+        Neste side
+      </button>
     </div>
 
     <div class="milestones">
@@ -128,16 +133,15 @@ eventBus.on('updateMilestones', () => {
         :image="activeMilestone.milestoneImage"
       ></ActiveMilestoneDisplay>
       <h4 v-if="activeMilestones.length === 0">
-        Opps, her var det tomt.<br>
+        Opps, her var det tomt.<br />
         Lag ditt første sparemål for å komme i gang!
       </h4>
     </div>
-
   </div>
 </template>
 
 <style scoped>
-.active-milestone-component{
+.active-milestone-component {
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -146,7 +150,7 @@ eventBus.on('updateMilestones', () => {
   width: 100%;
 }
 
-.milestones{
+.milestones {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -155,16 +159,16 @@ eventBus.on('updateMilestones', () => {
   gap: 2.5%;
 }
 
-.active-milestone{
+.active-milestone {
   border-radius: 20px;
   border: 2px solid var(--color-border);
   box-shadow: 0 4px 4px var(--color-shadow);
 
-  height: calc(95%/3);
+  height: calc(95% / 3);
   width: 100%;
 }
 
-.active-milestone:hover{
+.active-milestone:hover {
   transform: scale(1.02);
   cursor: pointer;
 }
@@ -189,15 +193,15 @@ eventBus.on('updateMilestones', () => {
   transform: scale(1.05);
 }
 
-.pagination button:active{
+.pagination button:active {
   background-color: var(--color-pageination-button-click);
 }
 
 .pagination button:disabled {
-  color:  var(--color-inactive-button-text);
+  color: var(--color-inactive-button-text);
   cursor: not-allowed;
   transform: none;
-  background-color: var(--color-pageination-button) ;
+  background-color: var(--color-pageination-button);
 }
 
 .page-numbers {
@@ -218,15 +222,14 @@ eventBus.on('updateMilestones', () => {
   background-color: var(--color-pageination-button-click);
 }
 
-.chosen{
+.chosen {
   color: var(--color-heading);
   font-weight: bold;
 }
 
-@media only screen and (max-width: 1000px){
-  .pagination{
+@media only screen and (max-width: 1000px) {
+  .pagination {
     place-content: center;
   }
 }
-
 </style>

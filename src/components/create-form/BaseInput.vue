@@ -3,26 +3,24 @@
  * Defines the props for the base input
  */
 const props = defineProps({
-    label: {
-      type: String,
-      default: ''
-    },
-    modelValue: {
-      type: [String, Number],
-      default: ''
-    },
-    placeHolder: {
-      type: String,
-      default: ''
-    },
-    type: {
-      type: String,
-      default: ''
-    },
+  label: {
+    type: String,
+    default: ''
+  },
+  modelValue: {
+    type: [String, Number],
+    default: ''
+  },
+  placeHolder: {
+    type: String,
+    default: ''
+  },
+  type: {
+    type: String,
+    default: ''
+  },
   error: Boolean
-  }
-)
-
+})
 </script>
 
 <template>
@@ -30,11 +28,11 @@ const props = defineProps({
   <input
     :placeholder="props.placeHolder"
     class="field"
-    :class="{'error': error}"
+    :class="{ error: error }"
     :value="modelValue"
     @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement)?.value)"
     :type="type"
-  >
+  />
 </template>
 
 <style scoped>
@@ -47,12 +45,12 @@ input {
   border: 2px solid var(--color-border);
 }
 
-.error{
+.error {
   border-color: var(--color-border-error);
 }
 
-@media screen and (max-width: 1200px){
-  label{
+@media screen and (max-width: 1200px) {
+  label {
     font-size: 1.2em;
   }
 }

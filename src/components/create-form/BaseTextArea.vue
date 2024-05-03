@@ -3,29 +3,28 @@
  * Defines the props for the BaseTextArea
  */
 const props = defineProps({
-    label: {
-      type: String,
-      default: ''
-    },
-    modelValue: {
-      type: [String, Number],
-      default: ''
-    },
-    placeHolder: {
-      type: String,
-      default: ''
-    },
+  label: {
+    type: String,
+    default: ''
+  },
+  modelValue: {
+    type: [String, Number],
+    default: ''
+  },
+  placeHolder: {
+    type: String,
+    default: ''
+  },
   error: Boolean
-  }
-)
+})
 </script>
 
 <template>
   <h3>{{ label }}</h3>
   <textarea
-    :placeholder=placeHolder
+    :placeholder="placeHolder"
     class="field"
-    :class="{'error':error}"
+    :class="{ error: error }"
     :value="modelValue"
     @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement)?.value)"
   />
@@ -36,19 +35,19 @@ textarea {
   height: 100%;
   width: 100%;
   border-radius: 20px;
-  padding: 1.0%;
+  padding: 1%;
   resize: none;
   margin: 8px 0;
   border: 2px solid var(--color-border);
   box-sizing: border-box;
 }
 
-.error{
+.error {
   border-color: var(--color-border-error);
 }
 
-@media screen and (max-width: 1200px){
-  label{
+@media screen and (max-width: 1200px) {
+  label {
     font-size: 1.2em;
   }
 }

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {useTokenStore} from "@/stores/token";
+import { useTokenStore } from '@/stores/token'
 
 const props = defineProps({
-  show: Boolean,
-});
+  show: Boolean
+})
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close'])
 
 /**
  * Continues browsing by refreshing the user's token and emitting a 'close' event.
@@ -13,9 +13,9 @@ const emit = defineEmits(['close']);
  * @returns {void} This function does not return a value.
  */
 const continueBrowse = () => {
-  useTokenStore().refreshToken();
-  emit('close');
-};
+  useTokenStore().refreshToken()
+  emit('close')
+}
 
 /**
  * Logs the user out from browsing by performing a logout action and emitting a 'close' event.
@@ -23,10 +23,9 @@ const continueBrowse = () => {
  * @returns {void} This function does not return a value.
  */
 const logoutFromBrowse = () => {
-  useTokenStore().logout();
-  emit('close');
-};
-
+  useTokenStore().logout()
+  emit('close')
+}
 </script>
 
 <template>

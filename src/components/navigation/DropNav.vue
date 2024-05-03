@@ -1,53 +1,89 @@
 <script setup lang="ts">
-  import { useRouter } from 'vue-router'
-  import { defineEmits } from 'vue'
+import { useRouter } from 'vue-router'
+import { defineEmits } from 'vue'
 
-  /**
-   * Defines the emits for this component
-   */
-  const emit = defineEmits(['route-pushed']);
+/**
+ * Defines the emits for this component
+ */
+const emit = defineEmits(['route-pushed'])
 
-  /**
-   * Initiates the router
-   */
-  const router = useRouter();
+/**
+ * Initiates the router
+ */
+const router = useRouter()
 
-  /**
-   * Navigates to the given path, then emits
-   * a route-pushed event
-   * @param path path to navigate to
-   */
-  const navigateTo = (path: string) => {
-    router.push(path);
-    emit('route-pushed', false);
-  }
+/**
+ * Navigates to the given path, then emits
+ * a route-pushed event
+ * @param path path to navigate to
+ */
+const navigateTo = (path: string) => {
+  router.push(path)
+  emit('route-pushed', false)
+}
 </script>
 
 <template>
   <div class="burger-menu-component">
     <div class="button-menu">
       <button class="menu-button" @click="navigateTo('/homepage/home')" data-testid="home-button">
-        <img src="/src/components/icons/navigation/house-chimney.svg" alt="Home Icon" class="icon">
+        <img
+          src="/src/components/icons/navigation/house-chimney.svg"
+          alt="Home Icon"
+          class="icon"
+        />
         <label class="button-label">Hjem</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/discover')" data-testid="discover-button">
-        <img src="/src/components/icons/navigation/lightbulb-on.svg" alt="Discover Icon" class="icon">
+      <button
+        class="menu-button"
+        @click="navigateTo('/homepage/discover')"
+        data-testid="discover-button"
+      >
+        <img
+          src="/src/components/icons/navigation/lightbulb-on.svg"
+          alt="Discover Icon"
+          class="icon"
+        />
         <label class="button-label">Sparetips</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/milestone')" data-testid="milestone-button">
-        <img src="/src/components/icons/navigation/piggy-bank.svg" alt="Milestone Icon" class="icon">
+      <button
+        class="menu-button"
+        @click="navigateTo('/homepage/milestone')"
+        data-testid="milestone-button"
+      >
+        <img
+          src="/src/components/icons/navigation/piggy-bank.svg"
+          alt="Milestone Icon"
+          class="icon"
+        />
         <label class="button-label">Sparemål</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/challenge')" data-testid="challenge-button">
-        <img src="/src/components/icons/navigation/challenge.svg" alt="Challenge Icon" class="icon">
+      <button
+        class="menu-button"
+        @click="navigateTo('/homepage/challenge')"
+        data-testid="challenge-button"
+      >
+        <img
+          src="/src/components/icons/navigation/challenge.svg"
+          alt="Challenge Icon"
+          class="icon"
+        />
         <label class="button-label">Utfordringer</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/economy')" data-testid="economy-button">
-        <img src="/src/components/icons/navigation/economy.svg" alt="Economy Icon" class="icon">
+      <button
+        class="menu-button"
+        @click="navigateTo('/homepage/economy')"
+        data-testid="economy-button"
+      >
+        <img src="/src/components/icons/navigation/economy.svg" alt="Economy Icon" class="icon" />
         <label class="button-label">Forbruk</label>
       </button>
-      <button class="menu-button" @click="navigateTo('/homepage/profile')" data-testid="profile-button">
-        <img src="/src/components/icons/navigation/user.svg" alt="Profile Icon" class="icon">
+      <button
+        class="menu-button"
+        @click="navigateTo('/homepage/profile')"
+        data-testid="profile-button"
+      >
+        <img src="/src/components/icons/navigation/user.svg" alt="Profile Icon" class="icon" />
         <label class="button-label">Profil</label>
       </button>
     </div>
@@ -55,8 +91,7 @@
 </template>
 
 <style scoped>
-
-.burger-menu-component{
+.burger-menu-component {
   display: flex;
   flex-direction: column;
 
@@ -68,12 +103,12 @@
   min-height: 650px;
   overflow-y: scroll;
 
-  padding: 5.0%;
+  padding: 5%;
 
   background-color: var(--color-background);
 }
 
-.button-menu{
+.button-menu {
   display: flex;
   flex-direction: column;
 
@@ -87,7 +122,7 @@
   gap: 2.5%;
 }
 
-.menu-button{
+.menu-button {
   display: flex;
   flex-direction: row;
 
@@ -103,12 +138,12 @@
   background-color: transparent;
 }
 
-.menu-button:hover{
+.menu-button:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
 
-.icon{
+.icon {
   width: 15%;
   height: 80%;
   margin: 0;
@@ -120,15 +155,13 @@
   }
 }
 
-.button-label{
+.button-label {
   margin: 0;
   font-size: medium;
   color: var(--color-text);
 }
 
-.button-label:hover{
+.button-label:hover {
   cursor: pointer;
 }
-
-
 </style>

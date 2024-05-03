@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import BaseInput from '@/components/create-form/BaseInput.vue'
 import BaseTextArea from '@/components/create-form/BaseTextArea.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
@@ -16,8 +15,8 @@ const router = useRouter()
 const title = ref('')
 const description = ref('')
 const end_date = ref()
-const current_sum = ref<string|number>('')
-const goal_sum = ref<string|number>('')
+const current_sum = ref<string | number>('')
+const goal_sum = ref<string | number>('')
 const start_date = ref(new Date())
 const titleError = ref('')
 const descriptionError = ref('')
@@ -53,19 +52,26 @@ const validate = () => {
     dateError.value = 'Oppgi sluttdato!'
     isValid = false
   }
-  if (isNaN(<number>current_sum.value) || current_sum.value == '' || <number>current_sum.value<=0) {
+  if (
+    isNaN(<number>current_sum.value) ||
+    current_sum.value == '' ||
+    <number>current_sum.value <= 0
+  ) {
     amountErrorStart.value = 'Fyll inn et gyldig beløp!'
-    isValid = false;
+    isValid = false
   }
 
-  if(isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value<=0){
+  if (isNaN(<number>goal_sum.value) || goal_sum.value == '' || <number>goal_sum.value <= 0) {
     amountErrorGoal.value = 'Fyll inn et gyldig beløp!'
-    isValid = false;
+    isValid = false
   }
 
-  if (parseInt(<string>goal_sum.value) <= parseInt(<string>current_sum.value) && amountErrorStart.value == '') {
-    amountErrorStart.value = 'Nåværende beløp kan ikke være lik eller større enn sparebeløpet!';
-    isValid = false;
+  if (
+    parseInt(<string>goal_sum.value) <= parseInt(<string>current_sum.value) &&
+    amountErrorStart.value == ''
+  ) {
+    amountErrorStart.value = 'Nåværende beløp kan ikke være lik eller større enn sparebeløpet!'
+    isValid = false
   }
   return isValid
 }
@@ -76,7 +82,7 @@ const validate = () => {
  * and constructs an object with milestone details including title, description, goal sum, current sum, image,
  * deadline date (if available), and start date (if available).
  * @returns {Object} An object representing milestone data with the following properties:
-*/
+ */
 const milestoneData = computed(() => ({
   milestoneTitle: title.value,
   milestoneDescription: description.value,
@@ -85,7 +91,7 @@ const milestoneData = computed(() => ({
   milestoneImage: image.value,
   deadlineDate: end_date.value ? end_date.value : null,
   startDate: start_date.value ? start_date.value : null
-}));
+}))
 
 /**
  * Validates milestone data and saves the input if validation passes.
@@ -96,8 +102,8 @@ const milestoneData = computed(() => ({
  */
 const saveInput = async () => {
   if (validate()) {
-    await createMilestone(milestoneData.value, tokenStore.jwtToken);
-    await router.push('/homepage/milestone');
+    await createMilestone(milestoneData.value, tokenStore.jwtToken)
+    await router.push('/homepage/milestone')
   } else {
     console.log('fail')
   }
@@ -118,14 +124,14 @@ const handleFileChange = (event: any) => {
   reader.readAsDataURL(file)
 }
 
-const fileInput = ref<HTMLInputElement | null>(null);
+const fileInput = ref<HTMLInputElement | null>(null)
 
 /**
  * Removes the image value by setting it to null.
  * @returns {void} This function does not return a value.
  */
 const removeImage = () => {
-  image.value = null;
+  image.value = null
 }
 
 /**
@@ -135,9 +141,9 @@ const removeImage = () => {
  */
 const openFileExplorer = () => {
   if (fileInput.value instanceof HTMLInputElement) {
-    fileInput.value.click();
+    fileInput.value.click()
   }
-};
+}
 </script>
 
 <template>
@@ -151,15 +157,28 @@ const openFileExplorer = () => {
     </div>
 
     <div class="input-container">
-
       <div class="image-container">
         <div class="add-image-box">
           <button @click="openFileExplorer" tabindex="0" type="button" class="image-button">
-            <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
-                   @change="handleFileChange">
-            <img v-if="image" :src="image" id="image" alt="Selected Image">
-            <button v-if="image" class="remove-image-button" @click="removeImage">Fjern bilde</button>
-            <img v-else src="../../components/icons/image/AddImage.png" alt="add image" id="placeholder-img" width="50px" height="50px">
+            <input
+              type="file"
+              style="display: none"
+              ref="fileInput"
+              accept="image/png, image/jpeg"
+              @change="handleFileChange"
+            />
+            <img v-if="image" :src="image" id="image" alt="Selected Image" />
+            <button v-if="image" class="remove-image-button" @click="removeImage">
+              Fjern bilde
+            </button>
+            <img
+              v-else
+              src="../../components/icons/image/AddImage.png"
+              alt="add image"
+              id="placeholder-img"
+              width="50px"
+              height="50px"
+            />
           </button>
         </div>
       </div>
@@ -172,8 +191,7 @@ const openFileExplorer = () => {
           type="email"
           :error="titleError !== ''"
         ></BaseInput>
-        <label class="error"
-               v-if="titleError">{{ titleError }}</label>
+        <label class="error" v-if="titleError">{{ titleError }}</label>
       </div>
 
       <div class="input-large" @keyup.enter="saveInput" id="description-area">
@@ -241,8 +259,7 @@ const openFileExplorer = () => {
 </template>
 
 <style scoped>
-
-.create-challenge-view{
+.create-challenge-view {
   display: flex;
   flex-direction: column;
   min-height: fit-content;
@@ -252,18 +269,18 @@ const openFileExplorer = () => {
   gap: 2.5%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   height: 5%;
 }
 
-.title{
-  color: var(--color-header)
+.title {
+  color: var(--color-header);
 }
 
-#top-button{
+#top-button {
   height: 100%;
   width: 30%;
 }
@@ -275,7 +292,7 @@ const openFileExplorer = () => {
   text-align: left;
   width: 100%;
   height: 85%;
-  gap: 1.0%;
+  gap: 1%;
 }
 
 .smaller-inputs {
@@ -286,7 +303,7 @@ const openFileExplorer = () => {
   gap: 2%;
 }
 
-.input-large{
+.input-large {
   display: flex;
   flex-direction: column;
   height: 60%;
@@ -330,17 +347,17 @@ label {
   overflow: hidden;
 }
 
-#image{
+#image {
   width: 100%;
   cursor: pointer;
 }
 
-.image-button{
+.image-button {
   background: none;
   border: none;
 }
 
-#placeholder-img:hover{
+#placeholder-img:hover {
   cursor: pointer;
   transform: scale(1.05);
 }
@@ -361,11 +378,11 @@ label {
   border-radius: 20px;
 }
 
-.remove-image-button:hover{
+.remove-image-button:hover {
   transform: scale(1.05);
 }
 
-.submit-button{
+.submit-button {
   width: 100%;
   height: 10%;
 }
@@ -397,29 +414,28 @@ label {
 }
 
 @media screen and (max-width: 1000px) {
-
-  .create-challenge-view{
+  .create-challenge-view {
     height: 150%;
   }
 
-  .input-container{
-    gap: 1.0%;
+  .input-container {
+    gap: 1%;
   }
-  .smaller-inputs{
+  .smaller-inputs {
     display: flex;
     flex-direction: column;
     height: 40%;
   }
 
-  .input{
-    height: 100%
+  .input {
+    height: 100%;
   }
 
-  #title-input{
-    height: 20%
+  #title-input {
+    height: 20%;
   }
 
-  .image-container{
+  .image-container {
     height: 45%;
   }
 }

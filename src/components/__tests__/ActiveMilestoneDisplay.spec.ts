@@ -1,11 +1,10 @@
-import { mount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import ActiveMilestoneDisplay from '../milestone/ActiveMilestoneDisplay.vue'
 import ProgressBar from '../ProgressBar.vue'
 
 describe('ActiveMilestoneDisplay', () => {
-
   beforeEach(() => {
     setActivePinia(createPinia())
   })
@@ -21,7 +20,7 @@ describe('ActiveMilestoneDisplay', () => {
     image: 'test.jpg'
   }
 
-  const id = 1;
+  const id = 1
   const title = 'Test Milestone'
   const description = 'Test Description'
   const goalSum = 1000
@@ -39,12 +38,8 @@ describe('ActiveMilestoneDisplay', () => {
     expect(wrapper.find('.description').text()).toBe(
       `${propsData.currentSum}kr av ${propsData.goalSum}kr`
     )
-    expect(wrapper.findComponent(ProgressBar).props('Max')).toBe(
-      propsData.goalSum
-    )
-    expect(wrapper.findComponent(ProgressBar).props('Current')).toBe(
-      propsData.currentSum
-    )
+    expect(wrapper.findComponent(ProgressBar).props('Max')).toBe(propsData.goalSum)
+    expect(wrapper.findComponent(ProgressBar).props('Current')).toBe(propsData.currentSum)
   })
 
   it('displays default image if image prop is not provided', async () => {
@@ -53,12 +48,11 @@ describe('ActiveMilestoneDisplay', () => {
     })
     await wrapper.setProps({ image: '' })
 
-    const imgElement = wrapper.find('img');
+    const imgElement = wrapper.find('img')
 
     // Assert that the <img> element exists
-    expect(imgElement.exists()).toBe(true);
+    expect(imgElement.exists()).toBe(true)
 
-    expect(imgElement.attributes('src')).toBe('/src/assets/background/img.png');
+    expect(imgElement.attributes('src')).toBe('/src/assets/background/img.png')
   })
-
-});
+})

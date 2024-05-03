@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
 import ActiveChallengesList from '@/components/challenge/ActiveChallengesList.vue'
 import InactiveChallengeList from '@/components/challenge/InactiveChallengeList.vue'
 import router from '@/router'
 import MilestoneHelpPopUp from '@/components/popups/help/MilestoneHelpPopUp.vue'
 import ChallengeHelpPopUp from '@/components/popups/help/ChallengeHelpPopUp.vue'
 
-const displayType = ref<boolean>(true);
+const displayType = ref<boolean>(true)
 const displayHelpPopUp = ref<boolean>(false)
 
 /**
@@ -14,7 +14,7 @@ const displayHelpPopUp = ref<boolean>(false)
  * @returns {void} This function does not return a value.
  */
 const displayNewChallenges = () => {
-  displayType.value = false;
+  displayType.value = false
 }
 
 /**
@@ -22,7 +22,7 @@ const displayNewChallenges = () => {
  * @returns {void} This function does not return a value.
  */
 const displayActiveChallenges = () => {
-  displayType.value = true;
+  displayType.value = true
 }
 
 /**
@@ -39,7 +39,7 @@ const navigateTo = (path: string) => {
  * @returns {void} This function does not return a value.
  */
 const openHelpPopUp = () => {
-  displayHelpPopUp.value = true;
+  displayHelpPopUp.value = true
 }
 
 /**
@@ -47,7 +47,7 @@ const openHelpPopUp = () => {
  * @returns {Promise<void>} A promise that resolves after closing the help pop-up.
  */
 const closeHelpPopUp = async () => {
-  displayHelpPopUp.value = false;
+  displayHelpPopUp.value = false
 }
 </script>
 
@@ -61,25 +61,32 @@ const closeHelpPopUp = async () => {
         @click="openHelpPopUp"
         tabindex="0"
         @keyup.enter="openHelpPopUp"
-        class="help-icon">
+        class="help-icon"
+      />
       <div v-if="displayHelpPopUp" class="popup-container">
-        <ChallengeHelpPopUp
-          @closePopUp="closeHelpPopUp"
-        ></ChallengeHelpPopUp>
+        <ChallengeHelpPopUp @closePopUp="closeHelpPopUp"></ChallengeHelpPopUp>
       </div>
     </div>
     <div class="toggle-buttons">
-      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+      <button
+        class="toggle-button"
+        @click="displayActiveChallenges"
+        :class="{ 'active-button': displayType }"
+      >
         <h3 class="toggle-button-title">Nye utfordringer</h3>
       </button>
-      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+      <button
+        class="toggle-button"
+        @click="displayNewChallenges"
+        :class="{ 'active-button': !displayType }"
+      >
         <h3 class="toggle-button-title">Aktive utfordringer</h3>
       </button>
     </div>
     <div class="main">
       <div class="left" :class="{ 'mobile-hide': !displayType }">
         <button class="create-challenge-button" @click="navigateTo('/homepage/create-challenge')">
-          <h2 class="display-help-button">Ny personlig utfordring + </h2>
+          <h2 class="display-help-button">Ny personlig utfordring +</h2>
         </button>
         <InactiveChallengeList></InactiveChallengeList>
       </div>
@@ -92,7 +99,7 @@ const closeHelpPopUp = async () => {
 </template>
 
 <style scoped>
-.home-view{
+.home-view {
   display: flex;
   flex-direction: column;
 
@@ -102,14 +109,14 @@ const closeHelpPopUp = async () => {
   gap: 2.5%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   max-height: 6.5%;
 }
 
-.help-icon:hover{
+.help-icon:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -128,7 +135,7 @@ const closeHelpPopUp = async () => {
   z-index: 1000; /* Adjust z-index as needed */
 }
 
-.title{
+.title {
   color: var(--color-heading);
 }
 
@@ -136,7 +143,7 @@ const closeHelpPopUp = async () => {
   display: none;
 }
 
-.main{
+.main {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -145,7 +152,7 @@ const closeHelpPopUp = async () => {
   gap: 2.5%;
 }
 
-.left{
+.left {
   display: flex;
   flex-direction: column;
   width: 60%;
@@ -153,7 +160,7 @@ const closeHelpPopUp = async () => {
   gap: 2.5%;
 }
 
-.create-challenge-button{
+.create-challenge-button {
   border-radius: 20px;
   background-color: var(--color-confirm-button);
   border: 2px solid var(--color-border);
@@ -161,19 +168,19 @@ const closeHelpPopUp = async () => {
   min-height: 10%;
 }
 
-.create-challenge-button:active{
+.create-challenge-button:active {
   background-color: var(--color-confirm-button-click);
 }
 
-.create-challenge-button:hover{
+.create-challenge-button:hover {
   transform: scale(1.02);
 }
 
-.display-help-button{
+.display-help-button {
   font-weight: bold;
 }
 
-.right{
+.right {
   display: flex;
   flex-direction: column;
   place-content: space-between;
@@ -187,14 +194,14 @@ const closeHelpPopUp = async () => {
   width: 40%;
 }
 
-.active-challenges-title{
+.active-challenges-title {
   color: var(--color-headerText);
   text-align: center;
   font-weight: bold;
 }
 
-@media only screen and (max-width: 1000px){
-  .main{
+@media only screen and (max-width: 1000px) {
+  .main {
     display: flex;
     flex-direction: column;
 
@@ -202,7 +209,7 @@ const closeHelpPopUp = async () => {
     width: 100%;
   }
 
-  .toggle-buttons{
+  .toggle-buttons {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -210,46 +217,44 @@ const closeHelpPopUp = async () => {
     place-content: space-between;
   }
 
-  .toggle-button{
+  .toggle-button {
     width: 49.5%;
     border-radius: 20px;
     border: none;
     background-color: var(--color-confirm-button);
   }
 
-  .toggle-button:hover{
+  .toggle-button:hover {
     transform: scale(1.02);
   }
 
-  .toggle-button-title{
+  .toggle-button-title {
     font-weight: bold;
     color: var(--color-headerText);
   }
 
-  .active-button{
+  .active-button {
     background-color: var(--color-confirm-button-click);
   }
 
-  .mobile-hide{
+  .mobile-hide {
     display: none;
   }
 
-  .left{
+  .left {
     width: 100%;
     height: 100%;
   }
 
-  .right{
+  .right {
     min-height: 110%;
     width: 100%;
   }
-
 }
 
 @media (prefers-color-scheme: dark) {
-  .help-icon{
+  .help-icon {
     filter: invert(1);
   }
 }
-
 </style>

@@ -1,27 +1,26 @@
 <script setup lang="ts">
-
 /**
  * Defines the emits for this component
  */
-const emit = defineEmits(['closePopUp']);
+const emit = defineEmits(['closePopUp'])
 
 /**
  * Emits a closePopUp event to the parent
  */
 const closePopUp = () => {
-  emit('closePopUp');
+  emit('closePopUp')
 }
 </script>
 
 <template>
   <div class="popup-content">
     <div class="header">
-      <img src="/src/components/icons/navigation/lightbulb-on.svg" alt="pop-up-icon" class="img">
+      <img src="/src/components/icons/navigation/lightbulb-on.svg" alt="pop-up-icon" class="img" />
       <h2>Transaksjoner</h2>
     </div>
     <h3>
-      Hei! Du befinner deg for øyeblikket på transaksjon-siden til Sparesti.
-      På denne siden finner du en oversikt over dine nyligste transaksjoner.
+      Hei! Du befinner deg for øyeblikket på transaksjon-siden til Sparesti. På denne siden finner
+      du en oversikt over dine nyligste transaksjoner.
     </h3>
 
     <div class="option-buttons">
@@ -30,7 +29,6 @@ const closePopUp = () => {
       </button>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -54,7 +52,7 @@ const closePopUp = () => {
   gap: 2.5%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: start;
@@ -63,11 +61,11 @@ const closePopUp = () => {
   gap: 1.5%;
 }
 
-.img{
+.img {
   height: 100%;
 }
 
-.option-buttons{
+.option-buttons {
   display: flex;
   flex-direction: row;
 
@@ -75,30 +73,29 @@ const closePopUp = () => {
   place-content: center;
 }
 
-.option-button{
+.option-button {
   border: none;
   border-radius: 20px;
   width: 35%;
-
 }
 
-.option-button-title{
+.option-button-title {
   color: var(--color-headerText);
   font-weight: bold;
 }
 
-#delete-button{
+#delete-button {
   background-color: var(--color-confirm-button);
 }
-#delete-button:active{
+#delete-button:active {
   background-color: var(--color-confirm-button-click);
 }
 
-#delete-button:hover{
+#delete-button:hover {
   transform: scale(1.02);
 }
 
-@media only screen and (max-width: 1000px){
+@media only screen and (max-width: 1000px) {
   .popup-content {
     width: 90%;
     height: 60%;
@@ -106,9 +103,8 @@ const closePopUp = () => {
 }
 
 @media (prefers-color-scheme: dark) {
-  .img{
+  .img {
     filter: invert(1);
   }
 }
-
 </style>

@@ -1,48 +1,48 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
 import ActiveChallengesList from '@/components/challenge/ActiveChallengesList.vue'
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
 import { getUserTotalSavings } from '@/utils/HomePageUtils'
 
 import HomeHelpPopUp from '@/components/popups/help/HomeHelpPopUp.vue'
 import TotalSavings from '@/components/HomeComponents/TotalSavings.vue'
-import router from "@/router";
-import TutorialView from "@/views/HomePage/TutorialView.vue";
+import router from '@/router'
+import TutorialView from '@/views/HomePage/TutorialView.vue'
 
-const displayType = ref<boolean>(true);
-const displayHelpPopUp = ref<boolean>(false);
+const displayType = ref<boolean>(true)
+const displayHelpPopUp = ref<boolean>(false)
 
 /**
  * Sets the display type to show new challenges.
  * @returns {void} This function does not return a value.
  */
 const displayNewChallenges = () => {
-  displayType.value = false;
-};
+  displayType.value = false
+}
 
 /**
  * Sets the display type to show active challenges.
  * @returns {void} This function does not return a value.
  */
 const displayActiveChallenges = () => {
-  displayType.value = true;
-};
+  displayType.value = true
+}
 
 /**
  * Opens the help pop-up by setting its display state to true.
  * @returns {void} This function does not return a value.
  */
 const openHelpPopUp = () => {
-  displayHelpPopUp.value = true;
-};
+  displayHelpPopUp.value = true
+}
 
 /**
  * Closes the help pop-up asynchronously by setting its display state to false.
  * @returns {Promise<void>} A promise that resolves when the help pop-up is successfully closed.
  */
 const closeHelpPopUp = async () => {
-  displayHelpPopUp.value = false;
-};
+  displayHelpPopUp.value = false
+}
 
 const saved = ref(0)
 
@@ -50,12 +50,12 @@ const saved = ref(0)
  * Asynchronously updates the `saved` value with the user's total savings.
  * Fetches the user's total savings using `getUserTotalSavings` and updates the `saved` value accordingly.
  */
-async function userSavings(){
+async function userSavings() {
   saved.value = await getUserTotalSavings()
 }
 
-const DisplayTutorial = () =>{
-   router.push('/homepage/tutorial')
+const DisplayTutorial = () => {
+  router.push('/homepage/tutorial')
 }
 
 userSavings()
@@ -71,26 +71,35 @@ userSavings()
         @click="openHelpPopUp"
         tabindex="0"
         @keyup.enter="openHelpPopUp"
-        class="help-icon">
+        class="help-icon"
+      />
       <div v-if="displayHelpPopUp" class="popup-container">
-        <HomeHelpPopUp
-          @closePopUp="closeHelpPopUp"
-        ></HomeHelpPopUp>
+        <HomeHelpPopUp @closePopUp="closeHelpPopUp"></HomeHelpPopUp>
       </div>
     </div>
 
     <div class="toggle-buttons">
-      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+      <button
+        class="toggle-button"
+        @click="displayActiveChallenges"
+        :class="{ 'active-button': displayType }"
+      >
         <h3 class="toggle-button-title">Aktive sparemål</h3>
       </button>
-      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+      <button
+        class="toggle-button"
+        @click="displayNewChallenges"
+        :class="{ 'active-button': !displayType }"
+      >
         <h3 class="toggle-button-title">Aktive utfordringer</h3>
       </button>
     </div>
     <div class="main">
       <div class="left" :class="{ 'mobile-hide': !displayType }">
         <TotalSavings class="create-challenge-button" :total-saved="saved"></TotalSavings>
-        <button class="tutorial-button" @click="DisplayTutorial">Ny til Sparesti? Trykk her!</button>
+        <button class="tutorial-button" @click="DisplayTutorial">
+          Ny til Sparesti? Trykk her!
+        </button>
         <ActiveMilestonesList class="active-milestones"></ActiveMilestonesList>
       </div>
       <div class="right" :class="{ 'mobile-hide': displayType }">
@@ -102,7 +111,7 @@ userSavings()
 </template>
 
 <style scoped>
-.home-view{
+.home-view {
   display: flex;
   flex-direction: column;
 
@@ -112,14 +121,14 @@ userSavings()
   gap: 2.5%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   max-height: 6.5%;
 }
 
-.help-icon:hover{
+.help-icon:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -152,7 +161,7 @@ userSavings()
   transform: scale(1.02);
 }
 
-.title{
+.title {
   color: var(--color-heading);
 }
 
@@ -160,7 +169,7 @@ userSavings()
   display: none;
 }
 
-.main{
+.main {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -169,24 +178,24 @@ userSavings()
   gap: 2.5%;
 }
 
-.left{
+.left {
   display: flex;
   flex-direction: column;
   width: 60%;
   min-height: 100%;
 }
 
-.create-challenge-button{
+.create-challenge-button {
   border-radius: 20px;
   border: 2px solid var(--color-border);
   min-height: 10%;
 }
 
-.active-milestones{
+.active-milestones {
   height: 78%;
 }
 
-.right{
+.right {
   display: flex;
   flex-direction: column;
   place-content: space-between;
@@ -200,14 +209,14 @@ userSavings()
   width: 40%;
 }
 
-.active-challenges-title{
+.active-challenges-title {
   color: var(--color-headerText);
   text-align: center;
   font-weight: bold;
 }
 
-@media only screen and (max-width: 1000px){
-  .main{
+@media only screen and (max-width: 1000px) {
+  .main {
     display: flex;
     flex-direction: column;
 
@@ -215,7 +224,7 @@ userSavings()
     width: 100%;
   }
 
-  .toggle-buttons{
+  .toggle-buttons {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -223,45 +232,44 @@ userSavings()
     place-content: space-between;
   }
 
-  .toggle-button{
+  .toggle-button {
     width: 49.5%;
     border-radius: 20px;
     border: none;
     background-color: var(--color-confirm-button);
   }
 
-  .toggle-button:hover{
+  .toggle-button:hover {
     transform: scale(1.02);
   }
 
-  .toggle-button-title{
+  .toggle-button-title {
     font-weight: bold;
     color: var(--color-headerText);
   }
 
-  .active-button{
+  .active-button {
     background-color: var(--color-confirm-button-click);
   }
 
-  .mobile-hide{
+  .mobile-hide {
     display: none;
   }
 
-  .left{
+  .left {
     width: 100%;
     height: 100%;
   }
 
-  .right{
+  .right {
     min-height: 110%;
     width: 100%;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  .help-icon{
+  .help-icon {
     filter: invert(1);
   }
 }
-
 </style>

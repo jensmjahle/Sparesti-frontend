@@ -1,59 +1,57 @@
 <script setup lang="ts">
-
 import { onMounted, ref } from 'vue'
 import { getUserInfo, updateIncomeInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
-import {useToast} from "vue-toast-notification";
-
+import { useToast } from 'vue-toast-notification'
 
 /**
  * Initiates toast for error messaging
  */
-const toast = useToast();
+const toast = useToast()
 
 /**
  * Holds the users monthly income
  */
-const monthlyIncome = ref<number>(0);
+const monthlyIncome = ref<number>(0)
 
 /**
  * Holds the users monthly income
  */
-const monthlyFixedExpenses = ref<number>(0);
+const monthlyFixedExpenses = ref<number>(0)
 
 /**
  * Holds the users monthly savings
  */
-const monthlySavings = ref<number>(0);
+const monthlySavings = ref<number>(0)
 
 /**
  * Holds the monthly income error
  */
-const monthlyIncomeError = ref<string|null>(null);
+const monthlyIncomeError = ref<string | null>(null)
 
 /**
  * Holds the monthly spending error
  */
-const monthlySpendingError = ref<string|null>(null);
+const monthlySpendingError = ref<string | null>(null)
 
 /**
  * Holds the monthly savings error
  */
-const monthlySavingError = ref<string|null>(null);
+const monthlySavingError = ref<string | null>(null)
 
 /**
  * Holds the income error
  */
-const incomeError = ref<string|null>(null);
+const incomeError = ref<string | null>(null)
 
 /**
  * Code to execute on component mount
  */
 onMounted(async () => {
   try {
-    await fetchIncomeInfo();
+    await fetchIncomeInfo()
   } catch (error) {
-    console.error('Error fetching achievements:', error);
+    console.error('Error fetching achievements:', error)
   }
 })
 
@@ -61,14 +59,14 @@ onMounted(async () => {
  * Fetches the info registered on the user for monthly income,
  * monthly fixed expenses and monthly savings
  */
-const fetchIncomeInfo = async () =>{
-  try{
-    const response = await getUserInfo(useTokenStore().jwtToken);
-    monthlyIncome.value = response.monthlyIncome;
-    monthlyFixedExpenses.value = response.monthlyFixedExpenses;
-    monthlySavings.value = response.monthlySavings;
-  } catch (error){
-    console.error('Error fetching income info:', error);
+const fetchIncomeInfo = async () => {
+  try {
+    const response = await getUserInfo(useTokenStore().jwtToken)
+    monthlyIncome.value = response.monthlyIncome
+    monthlyFixedExpenses.value = response.monthlyFixedExpenses
+    monthlySavings.value = response.monthlySavings
+  } catch (error) {
+    console.error('Error fetching income info:', error)
   }
 }
 
@@ -78,17 +76,18 @@ const fetchIncomeInfo = async () =>{
  * gives a error if not successful
  */
 const saveInput = async () => {
-  if(validInput()){
+  if (validInput()) {
     try {
       await updateIncomeInfo(
         useTokenStore().jwtToken,
         monthlyIncome.value,
         monthlyFixedExpenses.value,
-        monthlySavings.value)
-        await fetchIncomeInfo();
-        toast.success('Inntektsinformasjonen ble oppdatert!')
-    } catch (error){
-      console.error('Error updating income info: ', error);
+        monthlySavings.value
+      )
+      await fetchIncomeInfo()
+      toast.success('Inntektsinformasjonen ble oppdatert!')
+    } catch (error) {
+      console.error('Error updating income info: ', error)
       toast.error('Noe gikk galt! Venligst prøv på nytt.')
       incomeError.value = 'Noe gikk galt! Venligst prøv på nytt.'
     }
@@ -99,42 +98,45 @@ const saveInput = async () => {
  * validates the inputs for input fields
  */
 const validInput = () => {
-  checkInput();
+  checkInput()
   return (
     monthlyIncomeError.value === null &&
     monthlySpendingError.value === null &&
     monthlySavingError.value === null
-  );
-};
+  )
+}
 
 /**
  * Checks the input of each field an ensures the inputs are valid
  */
 const checkInput = () => {
-  const stringIncome = monthlyIncome.value.toString();
-  const stringFixedExpenses = monthlyFixedExpenses.value.toString();
-  const stringSavings = monthlySavings.value.toString();
+  const stringIncome = monthlyIncome.value.toString()
+  const stringFixedExpenses = monthlyFixedExpenses.value.toString()
+  const stringSavings = monthlySavings.value.toString()
 
-  if (isNaN(monthlyIncome.value) || monthlyIncome.value< 0 || stringIncome == '') {
-    monthlyIncomeError.value = 'Vennligst oppgi en gyldig månedlig inntekt!';
+  if (isNaN(monthlyIncome.value) || monthlyIncome.value < 0 || stringIncome == '') {
+    monthlyIncomeError.value = 'Vennligst oppgi en gyldig månedlig inntekt!'
   } else {
-    monthlyIncomeError.value = null;
+    monthlyIncomeError.value = null
   }
 
-  if (isNaN(monthlyFixedExpenses.value) ||monthlyFixedExpenses.value< 0 || stringFixedExpenses == '') {
-    monthlySpendingError.value = 'Vennligst oppgi gyldige faste utgifter!';
+  if (
+    isNaN(monthlyFixedExpenses.value) ||
+    monthlyFixedExpenses.value < 0 ||
+    stringFixedExpenses == ''
+  ) {
+    monthlySpendingError.value = 'Vennligst oppgi gyldige faste utgifter!'
   } else {
-    monthlySpendingError.value = null;
+    monthlySpendingError.value = null
   }
 
-  if (isNaN(monthlySavings.value) ||monthlySavings.value< 0 || stringSavings == '') {
-    monthlySavingError.value = 'Vennligst oppgi et gyldig ønsket sparebeløp!';
+  if (isNaN(monthlySavings.value) || monthlySavings.value < 0 || stringSavings == '') {
+    monthlySavingError.value = 'Vennligst oppgi et gyldig ønsket sparebeløp!'
   } else {
-    monthlySavingError.value = null;
+    monthlySavingError.value = null
   }
-  incomeError.value = null;
-};
-
+  incomeError.value = null
+}
 </script>
 
 <template>
@@ -146,116 +148,131 @@ const checkInput = () => {
       </button>
     </div>
     <div class="input-fields" @keyup.enter="saveInput">
-
       <div class="description-collection">
         <div class="description-box">
-          <h4 class="description">Månedlig inntekt (NOK): </h4>
+          <h4 class="description">Månedlig inntekt (NOK):</h4>
         </div>
         <div class="description-box">
-          <h4 class="description">Faste utgifter (NOK):   </h4>
+          <h4 class="description">Faste utgifter (NOK):</h4>
         </div>
         <div class="description-box">
-          <h4 class="description">Ønsket sparebeløp (NOK): </h4>
+          <h4 class="description">Ønsket sparebeløp (NOK):</h4>
         </div>
       </div>
 
       <div class="input-collection">
         <div class="input">
-          <input class="input-field" id="monthlyIncome" :class="{'error': monthlyIncomeError}" v-model="monthlyIncome">
+          <input
+            class="input-field"
+            id="monthlyIncome"
+            :class="{ error: monthlyIncomeError }"
+            v-model="monthlyIncome"
+          />
           <div class="alert-box">
-            <h4 v-if="monthlyIncomeError" id="incomeError" class="error-message">{{monthlyIncomeError}}</h4>
+            <h4 v-if="monthlyIncomeError" id="incomeError" class="error-message">
+              {{ monthlyIncomeError }}
+            </h4>
           </div>
         </div>
 
         <div class="input">
-          <input class="input-field" id="monthlySpending" :class="{'error': monthlySpendingError}" v-model="monthlyFixedExpenses">
+          <input
+            class="input-field"
+            id="monthlySpending"
+            :class="{ error: monthlySpendingError }"
+            v-model="monthlyFixedExpenses"
+          />
           <div class="alert-box">
-            <h4 v-if="monthlySpendingError" class="error-message" id="spendingError" >{{monthlySpendingError}}</h4>
+            <h4 v-if="monthlySpendingError" class="error-message" id="spendingError">
+              {{ monthlySpendingError }}
+            </h4>
           </div>
         </div>
 
         <div class="input">
-          <input class="input-field" id="monthlySaving" :class="{'error': monthlySavingError}" v-model="monthlySavings">
+          <input
+            class="input-field"
+            id="monthlySaving"
+            :class="{ error: monthlySavingError }"
+            v-model="monthlySavings"
+          />
           <div class="alert-box">
-            <h4 v-if="monthlySavingError" id="savingError" class="error-message">{{monthlySavingError}}</h4>
-            <h4 v-if="incomeError" class="error-message">{{incomeError}}</h4>
+            <h4 v-if="monthlySavingError" id="savingError" class="error-message">
+              {{ monthlySavingError }}
+            </h4>
+            <h4 v-if="incomeError" class="error-message">{{ incomeError }}</h4>
           </div>
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </template>
 
 <style scoped>
-.income-info{
+.income-info {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   width: 100%;
   place-content: space-between;
 }
 
-.title{
+.title {
   font-weight: bold;
 }
 
-.save-button{
+.save-button {
   border-radius: 20px;
-  padding-right: 5.0%;
-  padding-left: 5.0%;
+  padding-right: 5%;
+  padding-left: 5%;
   color: var(--color-headerText);
   background-color: var(--color-save-button);
   border: none;
 }
 
-.save-button:hover{
+.save-button:hover {
   transform: scale(1.02);
 }
 
-.save-button:active{
+.save-button:active {
   background-color: var(--color-save-button-click);
 }
 
-.save-button-title{
+.save-button-title {
   font-weight: bold;
 }
 
-.input-fields{
+.input-fields {
   display: flex;
   flex-direction: row;
 
   height: 100%;
   width: 100%;
-  padding-top: 2.0%;
+  padding-top: 2%;
 
-  gap: 1.0%;
-
+  gap: 1%;
 }
 
-.description-collection{
+.description-collection {
   display: flex;
   flex-direction: column;
   place-content: space-between;
 }
 
-.description-box{
+.description-box {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100%/3);
+  height: calc(100% / 3);
 }
 
-.input-collection{
+.input-collection {
   flex: 1;
   width: 100%;
   height: 100%;
@@ -264,24 +281,24 @@ const checkInput = () => {
   place-content: space-between;
 }
 
-.input{
+.input {
   display: flex;
   flex-direction: column;
 
   width: 100%;
-  height: calc(100%/3);
+  height: calc(100% / 3);
 }
 
-.input-field{
+.input-field {
   width: 100%;
   height: 50%;
   border-radius: 20px;
   border: 2px solid var(--color-border);
   min-height: 30px;
-  padding-left: 2.0%;
+  padding-left: 2%;
 }
 
-.alert-box{
+.alert-box {
   display: flex;
   flex-direction: column;
   place-items: center;
@@ -290,18 +307,17 @@ const checkInput = () => {
   min-height: 25px;
 }
 
-.error{
+.error {
   border-color: var(--color-border-error);
 }
 
-.error-message{
+.error-message {
   color: var(--color-text-error);
 }
 
-@media only screen and (max-width: 1000px){
-  .input-fields{
-    padding-top: 3.0%;
+@media only screen and (max-width: 1000px) {
+  .input-fields {
+    padding-top: 3%;
   }
 }
-
 </style>

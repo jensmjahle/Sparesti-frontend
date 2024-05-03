@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 /**
  * Defines the props necessary for this component
  */
@@ -13,35 +12,43 @@ const props = defineProps({
   startDate: Date,
   image: String,
   expanded: Boolean
-});
-
+})
 </script>
 
 <template>
-<div class="completed-milestone-display" tabindex="0">
-  <h2 class="title">{{props.title}}</h2>
-  <div class="center-content">
-    <div class="img">
-      <img class="milestone-img" v-if="props.image" :src="`data:image/png;base64,${props.image}` " id="literal-image" alt="milestone-img">
-      <img class="milestone-img" v-else src="/src/assets/background/img.png" alt="Add Image">
+  <div class="completed-milestone-display" tabindex="0">
+    <h2 class="title">{{ props.title }}</h2>
+    <div class="center-content">
+      <div class="img">
+        <img
+          class="milestone-img"
+          v-if="props.image"
+          :src="`data:image/png;base64,${props.image}`"
+          id="literal-image"
+          alt="milestone-img"
+        />
+        <img class="milestone-img" v-else src="/src/assets/background/img.png" alt="Add Image" />
+      </div>
+      <div class="description-info" :class="{ expanded: expanded }">
+        <h4 class="description-title">Beskrivelse:</h4>
+        <h4 class="description">{{ props.description }}</h4>
+      </div>
     </div>
-    <div class="description-info" :class="{'expanded':expanded}">
-      <h4 class="description-title">Beskrivelse: </h4>
-      <h4 class="description">{{props.description}}</h4>
+
+    <div class="info">
+      <h4 v-if="currentSum">Du sparte {{ props.currentSum }}kr av {{ props.goalSum }}kr</h4>
+      <h4 v-if="deadline">
+        {{ new Date(deadline).getDate() }}/{{ new Date(deadline).getMonth() }}-{{
+          new Date(deadline).getFullYear()
+        }}
+      </h4>
     </div>
   </div>
-
-  <div class="info">
-    <h4  v-if="currentSum">Du sparte {{props.currentSum}}kr av {{props.goalSum}}kr</h4>
-    <h4 v-if="deadline">{{new Date(deadline).getDate()}}/{{new Date(deadline).getMonth()}}-{{new Date(deadline).getFullYear()}}</h4>
-  </div>
-
-</div>
 </template>
 
 <style scoped>
-.completed-milestone-display{
-  display:flex;
+.completed-milestone-display {
+  display: flex;
   flex-direction: column;
   place-items: start;
   height: 100%;
@@ -50,22 +57,25 @@ const props = defineProps({
   color: var(--color-text-black);
 }
 
-h1:hover, h3:hover, h2:hover, h4:hover{
+h1:hover,
+h3:hover,
+h2:hover,
+h4:hover {
   cursor: pointer;
 }
 
-.title{
+.title {
   place-content: start;
 }
 
-.center-content{
+.center-content {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 50%;
 }
 
-.img{
+.img {
   display: flex;
   border-radius: 10px;
   background-color: lightgrey;
@@ -76,17 +86,17 @@ h1:hover, h3:hover, h2:hover, h4:hover{
   overflow: hidden;
 }
 
-.milestone-img{
+.milestone-img {
   display: flex;
   filter: grayscale(100%);
   width: 100%;
 }
 
-.description-info{
+.description-info {
   display: none;
 }
 
-.expanded{
+.expanded {
   display: flex;
   flex-direction: column;
   height: 50%;
@@ -96,15 +106,15 @@ h1:hover, h3:hover, h2:hover, h4:hover{
   text-align: start;
 }
 
-.description-title{
+.description-title {
   text-decoration: underline;
 }
 
-.description{
+.description {
   overflow-y: scroll;
 }
 
-.info{
+.info {
   display: flex;
   flex-direction: row;
   height: 100%;
@@ -113,7 +123,5 @@ h1:hover, h3:hover, h2:hover, h4:hover{
   justify-content: space-between;
   align-content: end;
   place-items: end;
-
 }
-
 </style>

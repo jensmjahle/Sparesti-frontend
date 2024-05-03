@@ -1,40 +1,39 @@
 <script setup lang="ts">
-
 import { onMounted, ref, watch } from 'vue'
 import { getUserInfo, updateUserInfo } from '@/utils/profileutils'
 import { useTokenStore } from '@/stores/token'
 import eventBus from '@/components/service/eventBus.js'
-import {useToast} from "vue-toast-notification";
+import { useToast } from 'vue-toast-notification'
 
 /**
  * Initiates toast for error messages
  */
-const toast = useToast();
+const toast = useToast()
 
 /**
  * Holds the email error
  */
-const emailError = ref<null|string>(null);
+const emailError = ref<null | string>(null)
 
 /**
  * Holds the image error
  */
-const imgError = ref<null|string>(null);
+const imgError = ref<null | string>(null)
 
 /**
  * Holds the input error
  */
-const inputError = ref<null|string>(null)
+const inputError = ref<null | string>(null)
 
 /**
  * Holds the username
  */
-const username = ref<string>('');
+const username = ref<string>('')
 
 /**
  * Holds the email
  */
-const email = ref<string>('');
+const email = ref<string>('')
 
 /**
  * Holds the profile picture as a base 64 encoded string
@@ -46,24 +45,25 @@ const profilePictureBase64 = ref<any>()
  */
 onMounted(async () => {
   try {
-    await fetchUserInfo();
+    await fetchUserInfo()
   } catch (error) {
-    console.error('Error fetching user info:', error);
+    console.error('Error fetching user info:', error)
   }
 })
 
 /**
  * Fetches the user info for the username, email and profile picture
  */
-const fetchUserInfo = async () =>{
-  try{
+const fetchUserInfo = async () => {
+  try {
     const response = await getUserInfo(useTokenStore().jwtToken)
-    username.value = response.username;
-    email.value = response.email;
-    profilePictureBase64.value = response.profilePictureBase64 ?
-      `data:image/png;base64,${response.profilePictureBase64}` : null
-  } catch (error){
-    console.error('Error fetching user info:', error);
+    username.value = response.username
+    email.value = response.email
+    profilePictureBase64.value = response.profilePictureBase64
+      ? `data:image/png;base64,${response.profilePictureBase64}`
+      : null
+  } catch (error) {
+    console.error('Error fetching user info:', error)
   }
 }
 
@@ -71,35 +71,33 @@ const fetchUserInfo = async () =>{
  * Validates the entries in the email and img fields
  */
 const validInput = () => {
-  checkInput();
-  return (emailError.value == null && imgError.value == null)
+  checkInput()
+  return emailError.value == null && imgError.value == null
 }
 
 /**
  * Checks that the inputs in the email and image fields follow the standard
  */
 const checkInput = () => {
-
-  if(email.value.trim() == '' || !isValidEmail(email.value)){
+  if (email.value.trim() == '' || !isValidEmail(email.value)) {
     emailError.value = 'Ikke gyldig e-post adresse!'
   } else {
-    emailError.value = null;
+    emailError.value = null
   }
 
-  inputError.value = null;
-
+  inputError.value = null
 }
 const isValidEmail = (email: string) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return email.trim() !== '' && emailRegex.test(email);
-};
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return email.trim() !== '' && emailRegex.test(email)
+}
 
 const saveUserInfo = async () => {
-  checkInput();
-  if(validInput()){
-    try{
-      await updateUserInfo( useTokenStore().jwtToken,email.value, profilePictureBase64.value);
-      eventBus.emit('updateProfilePicture');
+  checkInput()
+  if (validInput()) {
+    try {
+      await updateUserInfo(useTokenStore().jwtToken, email.value, profilePictureBase64.value)
+      eventBus.emit('updateProfilePicture')
       toast.success('Bruker opplysninger ble lagret!')
     } catch (error) {
       inputError.value = 'Noe gikk galt! Venligst prøv på nytt.'
@@ -127,18 +125,17 @@ const handleFileChange = (event: any) => {
   }
 }
 
-const fileInput = ref<HTMLInputElement | null>(null);
+const fileInput = ref<HTMLInputElement | null>(null)
 
 /**
  * Opens the file explorer to let the user select new image
  */
 const openFileExplorer = () => {
   if (fileInput.value instanceof HTMLInputElement) {
-    fileInput.value.click();
+    fileInput.value.click()
   }
-};
-watch(email, checkInput);
-
+}
+watch(email, checkInput)
 </script>
 
 <template>
@@ -151,38 +148,61 @@ watch(email, checkInput);
     </div>
     <div class="input-fields">
       <div class="img-input">
-        <button tabindex="0" type="button" for="profile-picture-input" class="profile-picture-button" @click="openFileExplorer">
-          <input type="file" style="display: none" ref="fileInput" accept="image/png, image/jpeg"
-                 @change="handleFileChange">
+        <button
+          tabindex="0"
+          type="button"
+          for="profile-picture-input"
+          class="profile-picture-button"
+          @click="openFileExplorer"
+        >
+          <input
+            type="file"
+            style="display: none"
+            ref="fileInput"
+            accept="image/png, image/jpeg"
+            @change="handleFileChange"
+          />
           <div class="profile-picture-container">
-            <img v-if="profilePictureBase64" :src="profilePictureBase64" alt="profile-picture" class="profile-picture">
-            <img v-else src="/src/components/icons/navigation/user.svg" alt="profile-picture" class="profile-picture">
-            <img src="/src/components/icons/image/edit-image.png" alt="edit-icon" class="edit-icon">
+            <img
+              v-if="profilePictureBase64"
+              :src="profilePictureBase64"
+              alt="profile-picture"
+              class="profile-picture"
+            />
+            <img
+              v-else
+              src="/src/components/icons/navigation/user.svg"
+              alt="profile-picture"
+              class="profile-picture"
+            />
+            <img
+              src="/src/components/icons/image/edit-image.png"
+              alt="edit-icon"
+              class="edit-icon"
+            />
           </div>
         </button>
       </div>
-      <div class="text-input"  @keyup.enter="saveUserInfo">
+      <div class="text-input" @keyup.enter="saveUserInfo">
         <div class="input-collection">
           <H4>Brukernavn: </H4>
-          <input class="input" id="username-input" v-model="username" readonly disabled >
+          <input class="input" id="username-input" v-model="username" readonly disabled />
         </div>
         <div class="input-collection">
           <H4>E-post: </H4>
-          <input class="input" id="email-input" :class="{'error': emailError}" v-model="email"  >
+          <input class="input" id="email-input" :class="{ error: emailError }" v-model="email" />
           <div class="alert-box">
-            <h4 v-if="emailError" class="error-message">{{emailError}}</h4>
-            <h4 v-if="inputError" class="error-message">{{inputError}}</h4>
+            <h4 v-if="emailError" class="error-message">{{ emailError }}</h4>
+            <h4 v-if="inputError" class="error-message">{{ inputError }}</h4>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <style scoped>
-
-.user-info{
+.user-info {
   display: flex;
   flex-direction: column;
 
@@ -190,39 +210,39 @@ watch(email, checkInput);
   height: 100%;
 }
 
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   width: 100%;
 }
 
-.title{
+.title {
   font-weight: bold;
 }
 
-.save-button{
+.save-button {
   border-radius: 20px;
-  padding-right: 5.0%;
-  padding-left: 5.0%;
+  padding-right: 5%;
+  padding-left: 5%;
   color: var(--color-headerText);
   background-color: var(--color-save-button);
   border: none;
 }
 
-.save-button:hover{
+.save-button:hover {
   transform: scale(1.02);
 }
 
-.save-button:active{
+.save-button:active {
   background-color: var(--color-save-button-click);
 }
 
-.save-button-title{
+.save-button-title {
   font-weight: bold;
 }
 
-.input-fields{
+.input-fields {
   display: flex;
   flex-direction: row;
 
@@ -232,10 +252,10 @@ watch(email, checkInput);
   height: 100%;
   width: 100%;
 
-  gap: 2.0%;
+  gap: 2%;
 }
 
-.text-input{
+.text-input {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -244,21 +264,20 @@ watch(email, checkInput);
   height: 100%;
 }
 
-.input{
+.input {
   border-radius: 20px;
   border: 2px solid var(--color-border);
   min-height: 30px;
-  padding-left: 2.0%;
+  padding-left: 2%;
 }
 
-#username-input{
+#username-input {
   background-color: #cccccc;
-  border:none;
+  border: none;
   color: var(--color-text-black);
-
 }
 
-.img-input{
+.img-input {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -273,14 +292,14 @@ watch(email, checkInput);
 .edit-icon {
   position: absolute;
   top: 0;
-  left: -1.0vw;
+  left: -1vw;
   width: 2vw;
   height: 2vw;
   z-index: 1;
   transform: scaleX(-1);
 }
 
-.input-collection{
+.input-collection {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -289,25 +308,25 @@ watch(email, checkInput);
   height: 50%;
 }
 
-.save-button{
+.save-button {
   border-radius: 20px;
-  padding-right: 5.0%;
-  padding-left: 5.0%;
+  padding-right: 5%;
+  padding-left: 5%;
   color: var(--color-headerText);
   font-weight: bold;
   background-color: var(--color-save-button);
   border: none;
 }
 
-.save-button:hover{
+.save-button:hover {
   transform: scale(1.02);
 }
 
-.save-button:active{
+.save-button:active {
   background-color: var(--color-save-button-click);
 }
 
-.profile-picture-button{
+.profile-picture-button {
   display: flex;
   flex-direction: column;
   place-content: center;
@@ -318,18 +337,18 @@ watch(email, checkInput);
   border: 2px solid var(--color-border);
 }
 
-.profile-picture-button:hover{
+.profile-picture-button:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
 
-.profile-picture{
+.profile-picture {
   width: 100%;
-  aspect-ratio: 1/1 ;
+  aspect-ratio: 1/1;
   border-radius: 50%;
 }
 
-.alert-box{
+.alert-box {
   display: flex;
   flex-direction: column;
 
@@ -338,24 +357,23 @@ watch(email, checkInput);
   min-height: 20px;
 }
 
-.error{
+.error {
   border-color: var(--color-border-error);
 }
 
-.error-message{
+.error-message {
   color: var(--color-text-error);
 }
 
 @media only screen and (max-width: 1000px) {
-  .img-input{
+  .img-input {
     max-width: 15%;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  .edit-icon{
+  .edit-icon {
     filter: invert(1);
   }
 }
-
 </style>

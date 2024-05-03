@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import PotentialChallengeDisplay from '@/components/challenge/InactiveChallengeDisplay.vue'
 import { onMounted, ref } from 'vue'
 import { getInactiveChallenges } from '@/utils/challengeutils'
@@ -8,12 +7,12 @@ import { useTokenStore } from '@/stores/token'
 /**
  * Initiates object type challenge with all necessary fields for a challenge
  */
-interface Challenge{
-  challengeId: number,
-  challengeTitle: string,
-  challengeDescription: string,
-  goalSum:number,
-  expirationDate:string
+interface Challenge {
+  challengeId: number
+  challengeTitle: string
+  challengeDescription: string
+  goalSum: number
+  expirationDate: string
 }
 
 /**
@@ -30,9 +29,9 @@ const inactiveChallenges = ref<Challenge[]>([])
  */
 onMounted(async () => {
   try {
-    await fetchInactiveChallenges();
+    await fetchInactiveChallenges()
   } catch (error) {
-    console.error('Error fetching user info:', error);
+    console.error('Error fetching user info:', error)
   }
 })
 
@@ -41,10 +40,10 @@ onMounted(async () => {
  */
 const fetchInactiveChallenges = async () => {
   try {
-    const { content}  = await getInactiveChallenges(useTokenStore().jwtToken)
-    inactiveChallenges.value = content;
+    const { content } = await getInactiveChallenges(useTokenStore().jwtToken)
+    inactiveChallenges.value = content
   } catch (error) {
-    console.error('Error fetching active challenges:', error);
+    console.error('Error fetching active challenges:', error)
   }
 }
 
@@ -52,21 +51,19 @@ const fetchInactiveChallenges = async () => {
  * Function to handle the emitted challengeAccepted event
  */
 const handleChallengeAccepted = async () => {
-  await fetchInactiveChallenges();
+  await fetchInactiveChallenges()
 }
 
 /**
  * Function to handle the emitted challengeDeclined event
  */
 const handleChallengeDeclined = async () => {
-  await fetchInactiveChallenges();
+  await fetchInactiveChallenges()
 }
-
 </script>
 
 <template>
   <div class="inactive-challenge-list">
-
     <div class="challenge-recommendations">
       <PotentialChallengeDisplay
         class="potential-challenge"
@@ -78,20 +75,17 @@ const handleChallengeDeclined = async () => {
       ></PotentialChallengeDisplay>
 
       <h4 class="challenge-placeholder" v-if="inactiveChallenges.length == 0">
-        Ojda, her gikk det unna.<br>
-        Vi har for øyeblikket ingen flere forslag til utfordringer. <br>
-        Lag din egen personlige utfordring eller kom tilbake senere! <br>
+        Ojda, her gikk det unna.<br />
+        Vi har for øyeblikket ingen flere forslag til utfordringer. <br />
+        Lag din egen personlige utfordring eller kom tilbake senere! <br />
         Nye utfordringer blir generert med gjevne mellomrom.
       </h4>
     </div>
-
   </div>
-
 </template>
 
 <style scoped>
-
-.inactive-challenge-list{
+.inactive-challenge-list {
   display: flex;
   flex-direction: column;
   place-content: space-between;
@@ -102,7 +96,7 @@ const handleChallengeDeclined = async () => {
   height: 100%;
 }
 
-.challenge-recommendations{
+.challenge-recommendations {
   display: flex;
   flex-direction: column;
 
@@ -111,21 +105,20 @@ const handleChallengeDeclined = async () => {
   gap: 2.5%;
 }
 
-.challenge-placeholder{
+.challenge-placeholder {
   text-align: center;
 }
 
-.potential-challenge{
+.potential-challenge {
   border-radius: 20px;
   border: 2px solid var(--color-border);
   box-shadow: 0 4px 4px var(--color-shadow);
 
-  height: calc(100%/3);
+  height: calc(100% / 3);
   width: 100%;
 }
 
-.potential-challenge:hover{
+.potential-challenge:hover {
   transform: scale(1.02);
 }
-
 </style>

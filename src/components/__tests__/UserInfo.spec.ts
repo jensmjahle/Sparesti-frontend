@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import UserInfo from '@/components/profile/UserInfo.vue'
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { updateUserInfo } from '../../utils/profileutils'
 
 // Mocking getUserInfo and updateUserInfo functions
@@ -15,7 +15,7 @@ vi.mock('@/stores/token', () => ({
 }))
 
 describe('UserInfo', () => {
-  let wrapper:any
+  let wrapper: any
 
   beforeEach(() => {
     wrapper = mount(UserInfo)

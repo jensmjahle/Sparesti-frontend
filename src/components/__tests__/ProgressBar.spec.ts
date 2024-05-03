@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils'
 import ProgressBar from '@/components/ProgressBar.vue'
 import { describe, it, expect } from 'vitest'
 
@@ -9,10 +9,10 @@ describe('MyComponent', () => {
         Max: 10,
         Current: 5
       }
-    });
+    })
 
-    expect(wrapper.find('progress').exists()).toBe(true);
-  });
+    expect(wrapper.find('progress').exists()).toBe(true)
+  })
 
   it('renders progress bar with correct max and value attributes', () => {
     const wrapper = shallowMount(ProgressBar, {
@@ -20,10 +20,10 @@ describe('MyComponent', () => {
         Max: 10,
         Current: 5
       }
-    });
+    })
 
-    const progress = wrapper.find('progress');
-    expect(progress.attributes('max')).toBe('10');
-    expect(progress.attributes('value')).toBe('6');
-  });
-});
+    const progress = wrapper.find('progress')
+    expect(progress.attributes('max')).toBe('10')
+    expect(progress.attributes('value')).toBe('6')
+  })
+})

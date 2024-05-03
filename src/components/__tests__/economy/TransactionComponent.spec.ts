@@ -24,7 +24,7 @@ describe('TransactionComponent', () => {
     if (titleElement.exists()) {
       expect(titleElement.text()).toContain(title)
     } else {
-      throw new Error('Title element not found');
+      throw new Error('Title element not found')
     }
 
     // Find all component-right-field elements
@@ -37,7 +37,7 @@ describe('TransactionComponent', () => {
       if (dateElement) {
         expect(dateElement.text()).toContain('29/04/2024')
       } else {
-        throw new Error('Date element not found');
+        throw new Error('Date element not found')
       }
 
       // amount rendering
@@ -45,7 +45,7 @@ describe('TransactionComponent', () => {
       if (amountElement) {
         expect(amountElement.text()).toContain(`${amount}kr`)
       } else {
-        throw new Error('Amount element not found');
+        throw new Error('Amount element not found')
       }
 
       // category rendering
@@ -53,11 +53,10 @@ describe('TransactionComponent', () => {
       if (categoryElement) {
         expect(categoryElement.text()).toContain(category)
       } else {
-        throw new Error('Category element not found');
+        throw new Error('Category element not found')
       }
     } else {
-      throw new Error('Expected elements not found');
+      throw new Error('Expected elements not found')
     }
   })
-
 })

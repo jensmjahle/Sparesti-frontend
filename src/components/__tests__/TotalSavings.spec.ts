@@ -15,5 +15,4 @@ describe('TotalSavings', () => {
 
     expect(savedAmount.text()).toBe(`${totalSaved} NOK`)
   })
-
 })

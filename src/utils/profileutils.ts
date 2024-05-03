@@ -2,134 +2,133 @@
  * This file contains functions related to user management, such as retrieving user information,
  * updating user profile, and deleting user account via API calls.
  */
-import axios from 'axios';
-import {BASE_URL} from "@/config/config";
-import {useToast} from "vue-toast-notification";
+import axios from 'axios'
+import { BASE_URL } from '@/config/config'
+import { useToast } from 'vue-toast-notification'
 /**
  * Test data for user accounts
  */
-const testDataUserAccounts:{}[] = [
+const testDataUserAccounts: {}[] = [
   {
-    'accountNumber': 123456789,
-    'username': 'brukernavn',
-    'balance': 12000,
-    'name': 'A',
-    'type': 'Forbrukskonto',
-    'currency': 'NOK'
+    accountNumber: 123456789,
+    username: 'brukernavn',
+    balance: 12000,
+    name: 'A',
+    type: 'Forbrukskonto',
+    currency: 'NOK'
   },
   {
-    'accountNumber': 987654321,
-    'username': 'brukernavn',
-    'balance': 13000,
-    'name': 'B',
-    'type': 'Sparekonto',
-    'currency': 'NOK'
+    accountNumber: 987654321,
+    username: 'brukernavn',
+    balance: 13000,
+    name: 'B',
+    type: 'Sparekonto',
+    currency: 'NOK'
   },
   {
-    'accountNumber': 111222333,
-    'username': 'brukernavn',
-    'balance': 14000,
-    'name': 'C',
-    'type': 'Forbrukskonto',
-    'currency': 'NOK'
+    accountNumber: 111222333,
+    username: 'brukernavn',
+    balance: 14000,
+    name: 'C',
+    type: 'Forbrukskonto',
+    currency: 'NOK'
   },
   {
-    'accountNumber': 444555666,
-    'username': 'brukernavn',
-    'balance': 1500,
-    'name': 'D',
-    'type': 'Sparekonto',
-    'currency': 'NOK'
-  },
-
+    accountNumber: 444555666,
+    username: 'brukernavn',
+    balance: 1500,
+    name: 'D',
+    type: 'Sparekonto',
+    currency: 'NOK'
+  }
 ]
 /**
  * Test data for user
  */
 const testDataUser = {
-  'username': 'brukernavn',
-  'email': 'brukernavn@email.com',
-  'firstName': 'Fornavn',
-  'lastName': 'Etternavn',
-  'profilePictureBase64':'',
-  'monthlyIncome': 12000,
-  'monthlySavings':3500,
-  'monthlyFixedExpenses': 7000,
-  'currentAccount': 123456789,
-  'savingsAccount': 987654321,
-  'achievements': [
+  username: 'brukernavn',
+  email: 'brukernavn@email.com',
+  firstName: 'Fornavn',
+  lastName: 'Etternavn',
+  profilePictureBase64: '',
+  monthlyIncome: 12000,
+  monthlySavings: 3500,
+  monthlyFixedExpenses: 7000,
+  currentAccount: 123456789,
+  savingsAccount: 987654321,
+  achievements: [
     {
-      id:1,
+      id: 1,
       title: 'Mynt A',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:2,
+      id: 2,
       title: 'Mynt B',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:3,
+      id: 3,
       title: 'Mynt C',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:4,
+      id: 4,
       title: 'Mynt D',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:5,
+      id: 5,
       title: 'Mynt E',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:6,
+      id: 6,
       title: 'Mynt F',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:7,
+      id: 7,
       title: 'Mynt G',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:8,
+      id: 8,
       title: 'Mynt H',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:9,
+      id: 9,
       title: 'Mynt I',
-      img:'/src/assets/png/gold-coin.png'
+      img: '/src/assets/png/gold-coin.png'
     },
     {
-      id:10,
+      id: 10,
       title: 'Mynt J',
-      img:'/src/assets/png/gold-coin.png'
-    },
-  ],
+      img: '/src/assets/png/gold-coin.png'
+    }
+  ]
 }
 
-const toast = useToast();
+const toast = useToast()
 /**
  * Deletes the user account.
  * @param token User token for authentication.
  * @returns Promise with the response data.
  */
-export const deleteUser = async (token:string):Promise<any>=>{
-  try{
+export const deleteUser = async (token: string): Promise<any> => {
+  try {
     const config = {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
-    };
-    return await axios.delete(`${BASE_URL}/users/delete`,config);
-  } catch (error){
-    console.error(error);
-    toast.error('Kunne ikke slette brukeren. Prøv igjen senere.');
-    throw error;
+    }
+    return await axios.delete(`${BASE_URL}/users/delete`, config)
+  } catch (error) {
+    console.error(error)
+    toast.error('Kunne ikke slette brukeren. Prøv igjen senere.')
+    throw error
   }
 }
 /**
@@ -137,20 +136,19 @@ export const deleteUser = async (token:string):Promise<any>=>{
  * @param token User token for authentication.
  * @returns Promise with the response data of the user's bank accounts.
  */
-export const getUserAccountInfo = async (token:string):Promise<any> => {
-  try{
+export const getUserAccountInfo = async (token: string): Promise<any> => {
+  try {
     const config = {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    };
-    const result = await axios.get(`${BASE_URL}/user/account`, config);
-    return result.data;
-  } catch (error){
-    console.log(error);
-    toast.error('Kunne ikke hente brukerkontoer. Prøv igjen senere.');
-
+        Authorization: `Bearer ${token}`
+      }
+    }
+    const result = await axios.get(`${BASE_URL}/user/account`, config)
+    return result.data
+  } catch (error) {
+    console.log(error)
+    toast.error('Kunne ikke hente brukerkontoer. Prøv igjen senere.')
   }
 }
 /**
@@ -158,20 +156,20 @@ export const getUserAccountInfo = async (token:string):Promise<any> => {
  * @param token User token for authentication.
  * @returns Promise with the response data of the user's info.
  */
-export const getUserInfo = async (token:string): Promise<any> => {
-  try{
+export const getUserInfo = async (token: string): Promise<any> => {
+  try {
     const config = {
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    };
-    const result = await axios.get(`${BASE_URL}/users/get`, config);
-    return result.data;
-  } catch (error){
-    console.log(error);
-    toast.error('Kunne ikke hente brukerinfo. Prøv igjen senere.');
-    throw error;
+        Authorization: `Bearer ${token}`
+      }
+    }
+    const result = await axios.get(`${BASE_URL}/users/get`, config)
+    return result.data
+  } catch (error) {
+    console.log(error)
+    toast.error('Kunne ikke hente brukerinfo. Prøv igjen senere.')
+    throw error
   }
 }
 /**
@@ -182,25 +180,26 @@ export const getUserInfo = async (token:string): Promise<any> => {
  * @returns Promise with the response data.
  */
 export const updateUserInfo = async (
-  token:string,
+  token: string,
   email: string,
-  profilePictureBase64: string)=> {
-  try{
-    const config ={
-      headers:{
+  profilePictureBase64: string
+) => {
+  try {
+    const config = {
+      headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    };
+        Authorization: `Bearer ${token}`
+      }
+    }
     const data = {
-      'email': email,
-      'profilePictureBase64': profilePictureBase64
-    };
-    return await axios.put(`${BASE_URL}/users/update`,data,config);
-  } catch (error){
+      email: email,
+      profilePictureBase64: profilePictureBase64
+    }
+    return await axios.put(`${BASE_URL}/users/update`, data, config)
+  } catch (error) {
     console.error(error)
-    toast.error('Kunne ikke oppdatere brukerinfo. Prøv igjen senere.');
-    throw error;
+    toast.error('Kunne ikke oppdatere brukerinfo. Prøv igjen senere.')
+    throw error
   }
 }
 /**
@@ -211,24 +210,25 @@ export const updateUserInfo = async (
  * @returns Promise with the response data if it went well or not.
  */
 export const updatePasswordInfo = async (
-  token:string,
+  token: string,
   currentPassword: string,
-  newPassword:string)=> {
-  try{
-    const config ={
-      headers:{
+  newPassword: string
+) => {
+  try {
+    const config = {
+      headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    };
+        Authorization: `Bearer ${token}`
+      }
+    }
     const data = {
-      'password': currentPassword,
-      'newPassword': newPassword
-    };
-    return await axios.put(`${BASE_URL}/userCredentials/updatePassword`,data,config);
-  } catch (error){
+      password: currentPassword,
+      newPassword: newPassword
+    }
+    return await axios.put(`${BASE_URL}/userCredentials/updatePassword`, data, config)
+  } catch (error) {
     console.error(error)
-    throw error;
+    throw error
   }
 }
 /**
@@ -239,24 +239,25 @@ export const updatePasswordInfo = async (
  * @returns Promise with the response data.
  */
 export const updateBankAccountInfo = async (
-  token:string,
+  token: string,
   checkingAccount: number,
-  savingAccount: number): Promise<any> =>{
-  try{
-    const config ={
-      headers:{
+  savingAccount: number
+): Promise<any> => {
+  try {
+    const config = {
+      headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    };
+        Authorization: `Bearer ${token}`
+      }
+    }
     const data = {
-      'currentAccount': checkingAccount,
-      'savingsAccount': savingAccount
-    };
-    return await axios.put(`${BASE_URL}/users/update`,data,config);
-  } catch (error){
+      currentAccount: checkingAccount,
+      savingsAccount: savingAccount
+    }
+    return await axios.put(`${BASE_URL}/users/update`, data, config)
+  } catch (error) {
     console.error(error)
-    throw error;
+    throw error
   }
 }
 /**
@@ -268,26 +269,27 @@ export const updateBankAccountInfo = async (
  * @returns Promise with the response data.
  */
 export const updateIncomeInfo = async (
-  token:string,
-  monthlyIncome:number,
-  monthlyFixedExpenses:number,
-  monthlySavings:number): Promise<any> =>{
-  try{
-    const config ={
-      headers:{
+  token: string,
+  monthlyIncome: number,
+  monthlyFixedExpenses: number,
+  monthlySavings: number
+): Promise<any> => {
+  try {
+    const config = {
+      headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
-    };
+    }
     const data = {
-      'monthlyIncome': monthlyIncome,
-      'monthlyFixedExpenses': monthlyFixedExpenses,
-      'monthlySavings': monthlySavings
-    };
-    return await axios.put(`${BASE_URL}/users/update`,data,config);
-  } catch (error){
+      monthlyIncome: monthlyIncome,
+      monthlyFixedExpenses: monthlyFixedExpenses,
+      monthlySavings: monthlySavings
+    }
+    return await axios.put(`${BASE_URL}/users/update`, data, config)
+  } catch (error) {
     console.error(error)
-    throw error;
+    throw error
   }
 }
 
@@ -296,20 +298,18 @@ export const updateIncomeInfo = async (
  * @param token User token for authentication.
  * @returns Promise with the response data of the uncompleted achievements
  */
-export const getLockedAchievements =  async (token:string):Promise<any> => {
+export const getLockedAchievements = async (token: string): Promise<any> => {
   try {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    };
-    const result = await axios.get(`${BASE_URL}/achievement/locked`, config);
-    return result.data;
+        Authorization: `Bearer ${token}`
+      }
+    }
+    const result = await axios.get(`${BASE_URL}/achievement/locked`, config)
+    return result.data
   } catch (error) {
     console.log(error)
-    throw error;
+    throw error
   }
-
 }
-

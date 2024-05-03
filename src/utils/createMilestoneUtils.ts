@@ -3,9 +3,9 @@
  */
 
 import axios from 'axios'
-import {BASE_URL} from "@/config/config";
-import {useToast} from "vue-toast-notification";
-const toast = useToast();
+import { BASE_URL } from '@/config/config'
+import { useToast } from 'vue-toast-notification'
+const toast = useToast()
 /**
  * Creates a new milestone.
  * @param milestoneData Data of the milestone to be created.
@@ -16,10 +16,10 @@ export const createMilestone = async (milestoneData: any, token: string) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`
     }
   }
-  try{
+  try {
     return await axios.post(`${BASE_URL}/milestone/create`, milestoneData, config)
   } catch (e) {
     console.log(e)

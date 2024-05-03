@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from "@/router";
+import router from '@/router'
 import ActiveMilestonesList from '@/components/milestone/ActiveMilestonesList.vue'
 import MilestoneLogList from '@/components/milestone/MilestoneLogList.vue'
 import { ref } from 'vue'
@@ -12,40 +12,39 @@ const displayHelpPopUp = ref<boolean>(false)
  * Sets the display type to show new challenges.
  */
 const displayNewChallenges = () => {
-  displayType.value = false;
-};
+  displayType.value = false
+}
 
 /**
  * Sets the display type to show active challenges.
  */
 const displayActiveChallenges = () => {
-  displayType.value = true;
-};
+  displayType.value = true
+}
 
 /**
  * Navigates to the specified path using the router.
  * @param {string} path - The path to navigate to.
  */
 const navigateTo = (path: string) => {
-  router.push(path);
-};
+  router.push(path)
+}
 
 /**
  * Opens the help pop-up by setting its display state to true.
  */
 const openHelpPopUp = () => {
-  displayHelpPopUp.value = true;
-};
+  displayHelpPopUp.value = true
+}
 
 /**
  * Closes the help pop-up by setting its display state to false.
  * Also logs the current display state of the help pop-up.
  */
 const closeHelpPopUp = () => {
-  displayHelpPopUp.value = false;
-  console.log(displayHelpPopUp);
-};
-
+  displayHelpPopUp.value = false
+  console.log(displayHelpPopUp)
+}
 </script>
 
 <template>
@@ -58,25 +57,32 @@ const closeHelpPopUp = () => {
         @click="openHelpPopUp"
         tabindex="0"
         @keyup.enter="openHelpPopUp"
-        class="help-icon">
+        class="help-icon"
+      />
       <div v-if="displayHelpPopUp" class="popup-container">
-        <MilestoneHelpPopUp
-          @closePopUp="closeHelpPopUp"
-        ></MilestoneHelpPopUp>
+        <MilestoneHelpPopUp @closePopUp="closeHelpPopUp"></MilestoneHelpPopUp>
       </div>
     </div>
     <div class="toggle-buttons">
-      <button class="toggle-button" @click="displayActiveChallenges" :class="{ 'active-button': displayType}">
+      <button
+        class="toggle-button"
+        @click="displayActiveChallenges"
+        :class="{ 'active-button': displayType }"
+      >
         <h3 class="toggle-button-title">Aktive sparemål</h3>
       </button>
-      <button class="toggle-button" @click="displayNewChallenges" :class="{ 'active-button': !displayType}">
+      <button
+        class="toggle-button"
+        @click="displayNewChallenges"
+        :class="{ 'active-button': !displayType }"
+      >
         <h3 class="toggle-button-title">Fullførte sparemål</h3>
       </button>
     </div>
     <div class="main">
       <div class="left" :class="{ 'mobile-hide': !displayType }">
         <button class="create-milestone-button" @click="navigateTo('/homepage/create-milestone')">
-          <h2 class="create-milestone-button-title">Lag nytt sparemål + </h2>
+          <h2 class="create-milestone-button-title">Lag nytt sparemål +</h2>
         </button>
         <ActiveMilestonesList class="active-milestones"></ActiveMilestonesList>
       </div>
@@ -89,7 +95,7 @@ const closeHelpPopUp = () => {
 </template>
 
 <style scoped>
-.milestone-view{
+.milestone-view {
   display: flex;
   flex-direction: column;
 
@@ -98,14 +104,14 @@ const closeHelpPopUp = () => {
 
   gap: 2.5%;
 }
-.header{
+.header {
   display: flex;
   flex-direction: row;
   place-content: space-between;
   max-height: 6.5%;
 }
 
-.help-icon:hover{
+.help-icon:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -124,15 +130,15 @@ const closeHelpPopUp = () => {
   z-index: 1000; /* Adjust z-index as needed */
 }
 
-.title{
+.title {
   color: var(--color-heading);
 }
 
-.toggle-buttons{
+.toggle-buttons {
   display: none;
 }
 
-.main{
+.main {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -141,14 +147,14 @@ const closeHelpPopUp = () => {
   gap: 2.5%;
 }
 
-.left{
+.left {
   display: flex;
   flex-direction: column;
   width: 60%;
   min-height: 100%;
 }
 
-.create-milestone-button{
+.create-milestone-button {
   border-radius: 20px;
   background-color: var(--color-confirm-button);
   border: 2px solid var(--color-border);
@@ -156,23 +162,23 @@ const closeHelpPopUp = () => {
   min-height: 10%;
 }
 
-.create-milestone-button:active{
+.create-milestone-button:active {
   background-color: var(--color-confirm-button-click);
 }
 
-.create-milestone-button:hover{
+.create-milestone-button:hover {
   transform: scale(1.02);
 }
 
-.create-milestone-button-title{
+.create-milestone-button-title {
   font-weight: bold;
 }
 
-.active-milestones{
+.active-milestones {
   height: 90%;
 }
 
-.right{
+.right {
   display: flex;
   flex-direction: column;
   place-content: space-between;
@@ -186,24 +192,24 @@ const closeHelpPopUp = () => {
   width: 40%;
 }
 
-.completed-milestones-title{
+.completed-milestones-title {
   color: var(--color-headerText);
   text-align: center;
   font-weight: bold;
 }
-@media only screen and (max-width: 1000px){
-  .main{
+@media only screen and (max-width: 1000px) {
+  .main {
     display: flex;
     flex-direction: column;
 
     min-height: 115%;
     width: 100%;
 
-    padding-top: 1.0%;
-    padding-bottom: 1.0%;
+    padding-top: 1%;
+    padding-bottom: 1%;
   }
 
-  .toggle-buttons{
+  .toggle-buttons {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -211,46 +217,44 @@ const closeHelpPopUp = () => {
     place-content: space-between;
   }
 
-  .toggle-button{
+  .toggle-button {
     width: 49.5%;
     border-radius: 20px;
     border: none;
     background-color: var(--color-confirm-button);
   }
 
-  .toggle-button:hover{
+  .toggle-button:hover {
     transform: scale(1.02);
   }
 
-  .toggle-button-title{
+  .toggle-button-title {
     font-weight: bold;
     color: var(--color-headerText);
   }
 
-  .active-button{
+  .active-button {
     background-color: var(--color-confirm-button-click);
   }
 
-  .mobile-hide{
+  .mobile-hide {
     display: none;
   }
 
-  .left{
+  .left {
     width: 100%;
     height: 100%;
   }
 
-  .right{
+  .right {
     min-height: 110%;
     width: 100%;
   }
-
 }
 
 @media (prefers-color-scheme: dark) {
-  .help-icon{
+  .help-icon {
     filter: invert(1);
   }
 }
-
 </style>

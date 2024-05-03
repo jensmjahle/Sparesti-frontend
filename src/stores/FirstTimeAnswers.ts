@@ -12,7 +12,7 @@ import { defineStore } from 'pinia'
  * Creates and returns a FirstTimeAnswersStore instance.
  */
 export const FirstTimeAnswersStore = defineStore('Answers', () => {
-  const userResponses = ref<any[]>([]);
+  const userResponses = ref<any[]>([])
 
   /**
    * Sets the user answer at a specific index.
@@ -21,10 +21,10 @@ export const FirstTimeAnswersStore = defineStore('Answers', () => {
    * @returns void
    */
   function setUserAnswer(index: number, answer: any) {
-    userResponses.value[index] = answer; // Setting user answer at the specified index
-    console.log(userResponses.value); // Logging user responses to console
+    userResponses.value[index] = answer // Setting user answer at the specified index
+    console.log(userResponses.value) // Logging user responses to console
   }
 
   // Returning the state and actions
-  return { userResponses, setUserAnswer };
+  return { userResponses, setUserAnswer }
 })

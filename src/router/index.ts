@@ -17,8 +17,7 @@ import MilestonePathView from '@/views/HomePage/MilestonePathView.vue'
 import CreateChallengeView from '@/views/HomePage/CreateChallengeView.vue'
 import CreateMilestoneView from '@/views/HomePage/CreateMilestoneView.vue'
 import EditMilestoneView from '@/views/HomePage/EditMilestoneView.vue'
-import TutorialView from "@/views/HomePage/TutorialView.vue";
-
+import TutorialView from '@/views/HomePage/TutorialView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,13 +38,13 @@ const router = createRouter({
         {
           path: 'signup',
           component: SignupView
-        },
+        }
       ]
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterPageView,
+      component: RegisterPageView
     },
     {
       path: '/homepage',

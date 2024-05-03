@@ -4,10 +4,9 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 
 describe('PasswordComponent', () => {
-
   beforeEach(() => {
-    setActivePinia(createPinia());
-  });
+    setActivePinia(createPinia())
+  })
 
   it('renders correctly', async () => {
     const wrapper = mount(PasswordInfo)

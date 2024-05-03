@@ -5,12 +5,12 @@ import { ref, watch } from 'vue'
 /**
  * Initializes the router
  */
-const router = useRouter();
+const router = useRouter()
 
 /**
  * Holds the current route
  */
-const currentRoute = router.currentRoute;
+const currentRoute = router.currentRoute
 
 /**
  * Holds the selected path
@@ -26,9 +26,8 @@ const navigateTo = (path: string) => {
 }
 
 watch(currentRoute, () => {
-  selectedPath.value = currentRoute.value.path;
+  selectedPath.value = currentRoute.value.path
 })
-
 </script>
 
 <template>
@@ -36,57 +35,90 @@ watch(currentRoute, () => {
     <div class="button-menu">
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/home' || currentRoute.path == '/homepage' || currentRoute.path == '/homepage/tutorial' }"
-        @click="navigateTo('/homepage/home')">
-        <img src="/src/components/icons/navigation/house-chimney.svg" alt="Home Icon" class="icon">
+        :class="{
+          active:
+            currentRoute.path == '/homepage/home' ||
+            currentRoute.path == '/homepage' ||
+            currentRoute.path == '/homepage/tutorial'
+        }"
+        @click="navigateTo('/homepage/home')"
+      >
+        <img
+          src="/src/components/icons/navigation/house-chimney.svg"
+          alt="Home Icon"
+          class="icon"
+        />
         <label class="button-label">Hjem</label>
       </button>
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/discover'}"
-        @click="navigateTo('/homepage/discover')">
-        <img src="/src/components/icons/navigation/lightbulb-on.svg" alt="Discover Icon" class="icon">
+        :class="{ active: currentRoute.path == '/homepage/discover' }"
+        @click="navigateTo('/homepage/discover')"
+      >
+        <img
+          src="/src/components/icons/navigation/lightbulb-on.svg"
+          alt="Discover Icon"
+          class="icon"
+        />
         <label class="button-label">Sparetips</label>
       </button>
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/milestone'
-        || currentRoute.path == '/homepage/create-milestone'
-        || currentRoute.path == '/homepage/edit-milestone'
-        || currentRoute.path == '/homepage/path'}"
-        @click="navigateTo('/homepage/milestone')">
-        <img src="/src/components/icons/navigation/piggy-bank.svg" alt="Milestone Icon" class="icon">
+        :class="{
+          active:
+            currentRoute.path == '/homepage/milestone' ||
+            currentRoute.path == '/homepage/create-milestone' ||
+            currentRoute.path == '/homepage/edit-milestone' ||
+            currentRoute.path == '/homepage/path'
+        }"
+        @click="navigateTo('/homepage/milestone')"
+      >
+        <img
+          src="/src/components/icons/navigation/piggy-bank.svg"
+          alt="Milestone Icon"
+          class="icon"
+        />
         <label class="button-label">Sparemål</label>
       </button>
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/challenge' || currentRoute.path == '/homepage/create-challenge'}"
-        @click="navigateTo('/homepage/challenge')">
-        <img src="/src/components/icons/navigation/challenge.svg" alt="Challenge Icon" class="icon">
+        :class="{
+          active:
+            currentRoute.path == '/homepage/challenge' ||
+            currentRoute.path == '/homepage/create-challenge'
+        }"
+        @click="navigateTo('/homepage/challenge')"
+      >
+        <img
+          src="/src/components/icons/navigation/challenge.svg"
+          alt="Challenge Icon"
+          class="icon"
+        />
         <label class="button-label">Utfordringer</label>
       </button>
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/economy' }"
-        @click="navigateTo('/homepage/economy')">
-        <img src="/src/components/icons/navigation/economy.svg" alt="Economy Icon" class="icon">
+        :class="{ active: currentRoute.path == '/homepage/economy' }"
+        @click="navigateTo('/homepage/economy')"
+      >
+        <img src="/src/components/icons/navigation/economy.svg" alt="Economy Icon" class="icon" />
         <label class="button-label">Forbruk</label>
       </button>
       <button
         class="menu-button"
-        :class="{ 'active': currentRoute.path == '/homepage/profile' }"
-        @click="navigateTo('/homepage/profile')">
-        <img src="/src/components/icons/navigation/user.svg" alt="Profile Icon" class="icon">
+        :class="{ active: currentRoute.path == '/homepage/profile' }"
+        @click="navigateTo('/homepage/profile')"
+      >
+        <img src="/src/components/icons/navigation/user.svg" alt="Profile Icon" class="icon" />
         <label class="button-label">Profil</label>
       </button>
     </div>
-    <img src="/src/assets/happy-pig.png" alt="Pig Logo" class="logo">
+    <img src="/src/assets/happy-pig.png" alt="Pig Logo" class="logo" />
   </div>
 </template>
 
-
 <style scoped>
-.side-navigation{
+.side-navigation {
   display: flex;
   flex-direction: column;
 
@@ -97,7 +129,7 @@ watch(currentRoute, () => {
   background-color: var(--color-background);
 }
 
-.button-menu{
+.button-menu {
   display: flex;
   flex-direction: column;
 
@@ -108,10 +140,10 @@ watch(currentRoute, () => {
   height: 65%;
   width: 100%;
 
-  gap: 5.0%;
+  gap: 5%;
 }
 
-.menu-button{
+.menu-button {
   display: flex;
   flex-direction: row;
 
@@ -131,12 +163,12 @@ watch(currentRoute, () => {
   border-color: var(--color-heading); /* Change to your desired color */
 }
 
-.menu-button:hover{
+.menu-button:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
 
-.icon{
+.icon {
   width: 15%;
   height: 80%;
   margin: 0;
@@ -147,19 +179,18 @@ watch(currentRoute, () => {
   }
 }
 
-.button-label{
+.button-label {
   margin: 0;
   font-size: medium;
   color: var(--color-text);
 }
 
-.button-label:hover{
+.button-label:hover {
   cursor: pointer;
 }
 
-.logo{
+.logo {
   height: 35%;
-  padding-top: 5.0%;
+  padding-top: 5%;
 }
-
 </style>

@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils'
 import CompletedMilestoneDisplay from '../milestone/CompletedMilestoneDisplay.vue'
 import { describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
@@ -16,26 +16,25 @@ describe('CompletedMilestoneDisplay', () => {
         startDate: new Date('2024-04-01'),
         image: 'test.jpg'
       }
-    });
+    })
 
-    expect(wrapper.find('.title').text()).toBe('Test Title');
+    expect(wrapper.find('.title').text()).toBe('Test Title')
 
-    expect(wrapper.find('.info').exists()).toBe(true);
-    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr');
+    expect(wrapper.find('.info').exists()).toBe(true)
+    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr')
 
-    await wrapper.trigger('mouseover');
+    await wrapper.trigger('mouseover')
 
-    await nextTick();
+    await nextTick()
 
-    expect(wrapper.find('.info').exists()).toBe(true);
-    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr');
+    expect(wrapper.find('.info').exists()).toBe(true)
+    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr')
 
-    await wrapper.trigger('mouseleave');
+    await wrapper.trigger('mouseleave')
 
-    await nextTick();
+    await nextTick()
 
-    expect(wrapper.find('.info').exists()).toBe(true);
-    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr');
-  });
-
-});
+    expect(wrapper.find('.info').exists()).toBe(true)
+    expect(wrapper.find('.info h4').text()).toBe('Du sparte 500kr av 1000kr')
+  })
+})

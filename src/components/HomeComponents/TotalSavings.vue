@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { defineProps } from 'vue'
 
 /**
@@ -7,23 +6,21 @@ import { defineProps } from 'vue'
  */
 const props = defineProps({
   totalSaved: Number
-});
-
-
+})
 </script>
 
 <template>
-  <div id = TotalSavings>
-    <img src="../../assets/png/pig_394778.png" alt = "logo" id = "logo"/>
-    <div id = SavingsText>
-      <h3 id = SavedInfo>Du har spart totalt: </h3>
-      <h3 id = Saved>{{ props.totalSaved }} NOK</h3>
+  <div id="TotalSavings">
+    <img src="../../assets/png/pig_394778.png" alt="logo" id="logo" />
+    <div id="SavingsText">
+      <h3 id="SavedInfo">Du har spart totalt:</h3>
+      <h3 id="Saved">{{ props.totalSaved }} NOK</h3>
     </div>
   </div>
 </template>
 
 <style scoped>
-#TotalSavings{
+#TotalSavings {
   width: 100%;
   margin-right: 5%;
   align-items: center;
@@ -34,27 +31,27 @@ const props = defineProps({
   display: flex;
 }
 
-#logo{
+#logo {
   max-width: 7vh;
   max-height: 7vh;
   margin-right: 5%;
 }
 
-#SavingsText{
+#SavingsText {
   display: flex;
   flex-direction: row;
 }
 
-#SavedInfo{
+#SavedInfo {
   white-space: nowrap;
 }
 
-#Saved{
+#Saved {
   font-weight: bold;
 }
 
 @media only screen and (max-width: 1000px) {
-  #TotalSavings{
+  #TotalSavings {
     margin-right: 0;
   }
 }
